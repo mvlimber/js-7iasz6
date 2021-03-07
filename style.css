@@ -12,8 +12,8 @@ a:link { text-transform: none; }
       }
           
 
-      displayHidden {display: none;}
-      displayBlock {display: block;}
+      div.displayHidden {display: none;}
+      div.displayBlock {display: block;}
 
        .tabs .tab a{
             background-color:#00796b;
