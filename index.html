@@ -3,6 +3,7 @@
 
 <head>
   <base target="_top">
+  <title>MyCondos</title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -86,15 +87,16 @@
   </center>
 
   <div id="applicationPanel" class="displayHidden">
-    <div class="row">
     <div class="col s12">
       <ul class="tabs">
         <li class="tab"><a class="active" href="#Home"><b>Home</b></a></li>
         <li class="tab"><a href="#Reports"><b>Reports</b></a></li>
         <li class="tab"><a href="#Transactions" onclick="loadTransactions()"><b>Transactions</b></a></li>
+        <!--
         <li class="tab"><a href="#Meters" onclick="loadMeters()"><b>Meters</b></a></li>
         <li class="tab"><a href="#Members" onclick="loadMembers()"><b>Members</b></a></li>
         <li class="tab"><a href="#Properties" onclick="loadProperties()"><b>Properties</b></a></li>
+        -->
       </ul>
     </div>
 
@@ -140,44 +142,44 @@
 
       <div id="modalTransactionClassify" class="modal">
         <div class="modal-content">
-  <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
-  <form class="col s12">
-      <div class="input-field col s12 m4">
-        <input id="transaction_account" type="text" readonly>
-        <label for="transaction_account">Account</label>
-      </div>
-      <div class="input-field col s12 m8">
-        <input id="transaction_name" type="text" readonly>
-        <label for="transaction_name">Name</label>
-      </div>
-      <div class="input-field col s12 m4">
-        <input id="transaction_amount" type="text" readonly>
-        <label for="transaction_amount">Amount</label>
-      </div>
-      <div class="input-field col s12 m8">
-        <input id="transaction_date" type="text" readonly>
-        <label for="transaction_date">Transaction Date</label>
-      </div>
-      <div class="input-field col s12">
-        <input id="transaction_communication" type="text" readonly>
-        <label for="transaction_communication">Communication</label>
-      </div>
-    <h5>Enter classification</h5>
-      <div class="input-field col s6">
-            <select id="transaction_classification" required required="true">
-              <option value="" disabled selected>Select the classification</option>
-              <option>61050 - NETTOYAGE</option>
-              <option>61051 - ENTRETIENT</option>
-              <option>61052 - REPARATION</option>
-            </select>
-            <label>Classification<b><font color='red'>*</font></b></label>
-      </div>
-  </form>
-</div>
-<div class="modal-footer">
-  <button style="float: right" class="btn-small waves-light" type="submit" onclick="classifyTransaction()">Submit<i class="material-icons right">send</i></button>
-  <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
-</div>
+          <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+          <form class="col s12">
+              <div class="input-field col s12 m4">
+                <input id="transaction_account" type="text" readonly>
+                <label for="transaction_account">Account</label>
+              </div>
+              <div class="input-field col s12 m8">
+                <input id="transaction_name" type="text" readonly>
+                <label for="transaction_name">Name</label>
+              </div>
+              <div class="input-field col s12 m4">
+                <input id="transaction_amount" type="text" readonly>
+                <label for="transaction_amount">Amount</label>
+              </div>
+              <div class="input-field col s12 m8">
+                <input id="transaction_date" type="text" readonly>
+                <label for="transaction_date">Transaction Date</label>
+              </div>
+              <div class="input-field col s12">
+                <input id="transaction_communication" type="text" readonly>
+                <label for="transaction_communication">Communication</label>
+              </div>
+            <h5>Enter classification</h5>
+              <div class="input-field col s6">
+                    <select id="transaction_classification" required required="true">
+                      <option value="" disabled selected>Select the classification</option>
+                      <option>61050 - NETTOYAGE</option>
+                      <option>61051 - ENTRETIENT</option>
+                      <option>61052 - REPARATION</option>
+                    </select>
+                    <label>Classification<b><font color='red'>*</font></b></label>
+              </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button style="float: right" class="btn-small waves-light" type="submit" onclick="classifyTransaction()">Submit<i class="material-icons right">send</i></button>
+          <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+        </div>
       </div>
     </div>
 
