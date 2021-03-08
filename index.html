@@ -101,28 +101,29 @@
     </div>
 
     <div id="Home" class="col s12">
-        <p>Welcome  to MyCondos! Your role is Administrator. </p>
-        <br>
-        <h6>Annoucements</h6>
-        <p> Chère / Cher Copropriétaire,
-    A défaut d'une Assemblée Générale au cours de laquelle nous pouvions vous tenir au courant de la
-    situation générale de notre immeuble et des travaux en cours, nous vous proposons de trouver ici touts les infos sur notre immeuble. </p>
-        <table>
-          <tr>
-            <td>Name Co-property</td>
-            <td>Azur</td>
-          </tr>
-          <tr>
-            <td>Address</td>
-            <td>Helihavenlaan 1-3, 1000, Brussels, Belgium</td>
-          </tr>
-        </table>
+      <p>Welcome to MyCondos! Your role is Administrator. </p>
+      <br>
+      <h6>Annoucements</h6>
+      <p> Chère / Cher Copropriétaire,
+        A défaut d'une Assemblée Générale au cours de laquelle nous pouvions vous tenir au courant de la
+        situation générale de notre immeuble et des travaux en cours, nous vous proposons de trouver ici touts les infos
+        sur notre immeuble. </p>
+      <table>
+        <tr>
+          <td>Name Co-property</td>
+          <td>Azur</td>
+        </tr>
+        <tr>
+          <td>Address</td>
+          <td>Helihavenlaan 1-3, 1000, Brussels, Belgium</td>
+        </tr>
+      </table>
     </div>
-    <!------------------------------------------------------------------------------------------------------>        
+    <!------------------------------------------------------------------------------------------------------>
     <div id="Reports" class="col s12">
-       <h6>Individual Reports</h6>
+      <h6>Individual Reports</h6>
     </div>
-    <!------------------------------------------------------------------------------------------------------>        
+    <!------------------------------------------------------------------------------------------------------>
     <div id="Transactions" class="col s12">
       <h5> Financial transactions</h5>
       <table class="striped">
@@ -142,16 +143,21 @@
 
       <div id="modalTransactionClassify" class="modal">
         <div class="modal-content">
-          <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
-          <form >
-              <div class="input-field col s12 m4">
-                <input id="transaction_account" type="text" readonly>
-                <label for="transaction_account">Account</label>
+          <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
+            Cancel</a>
+          <div class="row">
+            <form class="col s12">
+              <div class="row">
+                <div class="input-field col s12 m4">
+                  <input id="transaction_account" type="text" readonly>
+                  <label for="transaction_account">Account</label>
+                </div>
+                <div class="input-field col s12 m8">
+                  <input id="transaction_name" type="text" readonly>
+                  <label for="transaction_name">Name</label>
+                </div>
               </div>
-              <div class="input-field col s12 m8">
-                <input id="transaction_name" type="text" readonly>
-                <label for="transaction_name">Name</label>
-              </div>
+              <div class="row">
               <div class="input-field col s12 m4">
                 <input id="transaction_amount" type="text" readonly>
                 <label for="transaction_amount">Amount</label>
@@ -160,29 +166,32 @@
                 <input id="transaction_date" type="text" readonly>
                 <label for="transaction_date">Transaction Date</label>
               </div>
+              </div>
               <div class="input-field col s12">
                 <input id="transaction_communication" type="text" readonly>
                 <label for="transaction_communication">Communication</label>
               </div>
-            <h5>Enter classification</h5>
+              <h4>Enter classification</h4>
               <div class="input-field col s6">
-                    <select id="transaction_classification" required required="true">
-                      <option value="" disabled selected>Select the classification</option>
-                      <option>61050 - NETTOYAGE</option>
-                      <option>61051 - ENTRETIENT</option>
-                      <option>61052 - REPARATION</option>
-                    </select>
-                    <label>Classification<b><font color='red'>*</font></b></label>
+                <select id="transaction_classification" required required="true">
+                        <option value="" disabled selected>Select the classification</option>
+                        <option>61050 - NETTOYAGE</option>
+                        <option>61051 - ENTRETIENT</option>
+                        <option>61052 - REPARATION</option>
+                      </select>
+                <label>Classification<b><font color='red'>*</font></b></label>
               </div>
-          </form>
+            </form>
+          </div>
         </div>
         <div class="modal-footer">
           <button style="float: right" class="btn-small waves-light" type="submit" onclick="classifyTransaction()">Submit<i class="material-icons right">send</i></button>
-          <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+          <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
+            Cancel</a>
         </div>
       </div>
     </div>
- </div>
+  </div>
 
   <script>
     function showPasswordSet() {
@@ -293,8 +302,8 @@
       };
     };
   </script>
-  
-  
+
+
   <!--   Transaction scripts start here -->
   <script>
     var totalAmount = 0;
@@ -413,37 +422,14 @@
       var elems = document.querySelectorAll('select');
       M.FormSelect.init(elems);
       M.updateTextFields();
+      elems = document.querySelectorAll('.modal');
+  instances = M.Modal.init(elems, {dismissible:false});
     };
   </script>
-  
+
 </body>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
 
-    var elems = document.querySelectorAll('select');
-    var instances = M.FormSelect.init(elems);
-
-    elems = document.querySelectorAll('.sidenav');
-    instances = M.Sidenav.init(elems);    
-
-    const options = {
-      duration: 300,
-      onShow: null,
-      swipeable: false,
-      responsiveThreshold: Infinity
-    };
-
-    const tabsContainer = document.querySelector(".tabs");
-    M.Tabs.init(tabsContainer,options);
-
-    
-    elems = document.querySelectorAll('.datepicker');
-    instances = M.Datepicker.init(elems);
-
-    elems = document.querySelectorAll('.modal');
-    instances = M.Modal.init(elems, {dismissible:false});
-
-  });
 </script>
+
 </html>
