@@ -182,8 +182,7 @@
         </div>
       </div>
     </div>
-
-  </div>
+ </div>
   
  
  
@@ -270,26 +269,22 @@
   </script>
   <!--   Application scripts starts here -->
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      var elems = document.querySelectorAll('select');
-      var instances = M.FormSelect.init(elems);
-      elems = document.querySelectorAll('.sidenav');
-      instances = M.Sidenav.init(elems);    
-      const options = {
+    const options = {
         duration: 300,
         onShow: null,
         swipeable: false,
         responsiveThreshold: Infinity
-      };
-      const tabsContainer = document.querySelector(".tabs");
-      M.Tabs.init(tabsContainer,options);
-      
-      elems = document.querySelectorAll('.datepicker');
-      instances = M.Datepicker.init(elems);
+    };
+    const tabsContainer = document.querySelector(".tabs");
+    M.Tabs.init(tabsContainer,options);
+    elems = document.querySelectorAll('.datepicker');
+    instances = M.Datepicker.init(elems);
 
-      elems = document.querySelectorAll('.modal');
-      instances = M.Modal.init(elems, {dismissible:false});
-    });
+    elems = document.querySelectorAll('.modal');
+    instances = M.Modal.init(elems, {dismissible:false});
+
+    var elems = document.querySelectorAll('select');
+    var instances = M.FormSelect.init(elems); 
 
     var refCoproperty = firestore.doc("CoProperties/OrncEBHp37pJYisfxf79");
     var refCopropertyFiles = fileStorageRef.child("OrncEBHp37pJYisfxf79");
@@ -300,8 +295,9 @@
         set.removeChild(set.firstChild);
       };
     };
-
   </script>
+  
+  
   <!--   Transaction scripts start here -->
   <script>
     var totalAmount = 0;
@@ -422,15 +418,6 @@
       M.updateTextFields();
     };
   </script>
-  <!--   Meter scripts start here -->
-  <script>
-  </script>
-  <!--   Member scripts start here -->
-  <script>
-  </script>
-  <!--   property scripts start here -->
-  <script>
-  </script>
+  
 </body>
-
 </html>
