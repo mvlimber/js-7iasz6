@@ -143,7 +143,7 @@
       <div id="modalTransactionClassify" class="modal">
         <div class="modal-content">
           <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
-          <form class="col s12">
+          <form >
               <div class="input-field col s12 m4">
                 <input id="transaction_account" type="text" readonly>
                 <label for="transaction_account">Account</label>
@@ -183,9 +183,6 @@
       </div>
     </div>
  </div>
-  
- 
- 
 
   <script>
     function showPasswordSet() {
@@ -280,11 +277,11 @@
     elems = document.querySelectorAll('.datepicker');
     instances = M.Datepicker.init(elems);
 
-    elems = document.querySelectorAll('.modal');
-    instances = M.Modal.init(elems, {dismissible:false});
-
     var elems = document.querySelectorAll('select');
     var instances = M.FormSelect.init(elems); 
+
+    elems = document.querySelectorAll('.modal');
+    instances = M.Modal.init(elems, {dismissible:false});
 
     var refCoproperty = firestore.doc("CoProperties/OrncEBHp37pJYisfxf79");
     var refCopropertyFiles = fileStorageRef.child("OrncEBHp37pJYisfxf79");
@@ -420,4 +417,33 @@
   </script>
   
 </body>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+
+    var elems = document.querySelectorAll('select');
+    var instances = M.FormSelect.init(elems);
+
+    elems = document.querySelectorAll('.sidenav');
+    instances = M.Sidenav.init(elems);    
+
+    const options = {
+      duration: 300,
+      onShow: null,
+      swipeable: false,
+      responsiveThreshold: Infinity
+    };
+
+    const tabsContainer = document.querySelector(".tabs");
+    M.Tabs.init(tabsContainer,options);
+
+    
+    elems = document.querySelectorAll('.datepicker');
+    instances = M.Datepicker.init(elems);
+
+    elems = document.querySelectorAll('.modal');
+    instances = M.Modal.init(elems, {dismissible:false});
+
+  });
+</script>
 </html>
