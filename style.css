@@ -15,28 +15,39 @@ a:link { text-transform: none; }
       div.displayHidden {display: none;}
       div.displayBlock {display: block;}
 
-       .tabs .tab a{
-            background-color:#00796b;
-            color:#ffffff;
-        } /*Black color to the text*/
 
-        .tabs .tab a:hover {
-            background-color:#00bfa5;
-            color:#ffffff;
-        } /*Text color on hover*/
 
-        .tabs .tab a.active {
-            background-color:#00bfa5;
-            color:#ffffff;
-        } /*Background and text color when a tab is active*/
 
-        .tabs .tab a:focus.active {
-          color:#ffffff;
-          /*Custom Text Color While Active*/
-          background-color: #00bfa5;
-          /*Custom Background Color While Active*/
+        header, main, footer {
+  padding-left: 300px;
 }
 
-        .tabs .indicator {
-            background-color:#004d40;
-        } /*Color of underline*/
+@media only screen and (max-width : 992px) {
+  header, main, footer {
+    padding-left: 0;
+  }
+}
+
+li.tab.side {
+    display: block;
+    text-align: inherit;
+}
+
+.text-teal * {
+  color: #26A69A !important;
+}
+
+.text-teal * {
+  color: #26A69A !important;
+}
+.text-teal .active {
+  background-color: #26A69A !important;
+  color: #FFF !important;
+}
+
+ul#slide-out.tabs {
+  display: block;
+}
+ul#slide-out.tabs .indicator{
+  display:none;
+}

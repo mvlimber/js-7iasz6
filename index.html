@@ -6,7 +6,7 @@
   <title>MyCondos</title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
@@ -87,18 +87,33 @@
   </center>
 
   <div id="applicationPanel" class="displayHidden">
-    <div class="col s12">
-      <ul class="tabs">
-        <li class="tab"><a class="active" href="#Home"><b>Home</b></a></li>
-        <li class="tab"><a href="#Reports"><b>Reports</b></a></li>
-        <li class="tab"><a href="#Transactions" onclick="loadTransactions()"><b>Transactions</b></a></li>
-        <!--
-        <li class="tab"><a href="#Meters" onclick="loadMeters()"><b>Meters</b></a></li>
-        <li class="tab"><a href="#Members" onclick="loadMembers()"><b>Members</b></a></li>
-        <li class="tab"><a href="#Properties" onclick="loadProperties()"><b>Properties</b></a></li>
-        -->
-      </ul>
-    </div>
+  <header>
+    <nav id="header" class="nav-fixed teal lighten-1">
+      <div class="nav-wrapper container center-align">
+        <a href="javascript:void(0)" class="brand-logo center center-align" id="logo-container">MyCondos</a>
+        <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+      </div>
+    </nav>
+    <ul class="side-nav fixed tabs" id="slide-out">
+      <li>
+      <div class="userView">
+        <div class="background">
+          <img style="width:100%" src="https://img1.goodfon.com/wallpaper/big/6/d8/android-material-fon-linii.jpg">
+        </div>
+        <img class="circle" src="//gravatar.com/avatar/be8eec3be360062c0f5ddcd9cad621c9?s=80&d=https://codepen.io/assets/avatars/user-avatar-80x80-bdcd44a3bfb9a5fd01eb8b86f9e033fa1a9897c3a15b33adfc2649a002dab1b6.png">
+        <span class="white-text name">Juan Montoya</span>
+        <span class="white-text email">juan.montoya@fakemail.com</span>
+      </div>
+      </li>
+      <li class="tab side text-teal"><a class="waves-effect" href="#Home">Home</a></li>
+      <li class="tab side text-teal"><a class="waves-effect" href="#Reports">Reports</a></li>
+      <li class="tab side text-teal"><a class="waves-effect" href="#Transactions" onclick="loadTransactions()">Transactions</a></li>
+    </ul>
+  </header>
+  <main>
+  <div class="row">
+
+
 
     <div id="Home" class="col s12">
       <p>Welcome to MyCondos! Your role is Administrator. </p>
@@ -190,6 +205,8 @@
             Cancel</a>
         </div>
       </div>
+      </div>
+      </main>
     </div>
   </div>
 
