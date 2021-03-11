@@ -5,7 +5,7 @@
   <base target="_top">
   <title>MyCondos</title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -89,143 +89,151 @@
   </center>
 
   <div id="applicationPanel" class="displayHidden">
-  <header>
-    <nav id="header" class="nav-fixed teal lighten-1">
-      <div class="nav-wrapper container center-align">
-        <a href="javascript:void(0)" class="brand-logo center center-align" id="logo-container">MyCondos</a>
-        <a href="#" data-target="slide-out" class="btn-collapsible sidenav-trigger" onclick="showMenu()"><i class="material-icons">menu</i></a>
-      </div>
-    </nav>
-    <ul class="side-nav fixed tabs collapsible" id="slide-out">
-      <li>
-      <div class="userView">
-        <div class="background">
-          <img style="width:100%" src="https://img1.goodfon.com/wallpaper/big/6/d8/android-material-fon-linii.jpg">
+    <header>
+      <nav id="header" class="nav-fixed teal lighten-1">
+        <div class="nav-wrapper container center-align">
+          <a href="javascript:void(0)" class="brand-logo center center-align" id="logo-container">MyCondos: Home</a>
+          <a href="#" data-target="slide-out" class="btn-collapsible sidenav-trigger"
+            onclick="showMenu()"><i class="material-icons">menu</i></a>
         </div>
-        <img class="circle" src="//gravatar.com/avatar/be8eec3be360062c0f5ddcd9cad621c9?s=80&d=https://codepen.io/assets/avatars/user-avatar-80x80-bdcd44a3bfb9a5fd01eb8b86f9e033fa1a9897c3a15b33adfc2649a002dab1b6.png">
-        <span class="white-text name">Juan Montoya</span>
-        <span class="white-text email">juan.montoya@fakemail.com</span>
-      </div>
-      </li>
-      <li class="tab side text-teal"><a class="waves-effect" href="#Home">Home</a></li>
-      <li class="tab side text-teal"><a class="waves-effect" href="#Reports">Reports</a></li>
-      <li class="tab side text-teal"><a class="waves-effect" href="#Transactions" onclick="loadTransactions()">Transactions</a></li>
-    </ul>
-    <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-  <script>
-    function showMenu(){
-      M.toast({html:"menu"});
+      </nav>
+      <ul class="side-nav fixed tabs collapsible" id="slide-out">
+        <li>
+          <div class="userView">
+            <div class="background">
+              <img style="width:100%" src="https://img1.goodfon.com/wallpaper/big/6/d8/android-material-fon-linii.jpg">
+            </div>
+            <img class="circle" src="//gravatar.com/avatar/be8eec3be360062c0f5ddcd9cad621c9?s=80&d=https://codepen.io/assets/avatars/user-avatar-80x80-bdcd44a3bfb9a5fd01eb8b86f9e033fa1a9897c3a15b33adfc2649a002dab1b6.png">
+            <span class="white-text name">Condomynium: </span>
+            <span class="white-text email">Azur</span>
+          </div>
+        </li>
+        <li class="tab side text-teal"><a class="waves-effect" href="#Home" onclick="loadHome()">Home</a></li>
+        <li class="tab side text-teal"><a class="waves-effect" href="#Reports" onclick="loadReports()">Reports</a></li>
+        <li class="tab side text-teal"><a class="waves-effect" href="#Transactions"
+            onclick="loadTransactions()">Transactions</a></li>
+      </ul>
+
+      <script>
+        function showMenu(){
       var el = document.getElementById("slide-out");
       M.Sidenav.init(el);
       var instance = M.Sidenav.getInstance(el);
       instance.open();
     };
-    var elemshier = document.querySelectorAll('.sidenav');
-    var instanceshier = M.Sidenav.init(elemshier);
+      function hideMenu(){
+        var el = document.getElementById("slide-out");
+        M.Sidenav.init(el);
+        var instance = M.Sidenav.getInstance(el);
+        instance.close();
+      };
+      var elemshier = document.querySelectorAll('.sidenav');
+      var instanceshier = M.Sidenav.init(elemshier);
 
-    var collapsibleElemhier = document.querySelector('.collapsible');
-    var collapsibleInstancehier = M.Collapsible.init(collapsibleElemhier);
-
-    
-  </script>
-  </header>
-  <main>
-    <div class="row">
-      <div id="Home" class="col s12">
-        <p>Welcome to MyCondos! Your role is Administrator. </p>
-        <br>
-        <h6>Annoucements</h6>
-        <p> Chère / Cher Copropriétaire,
-          A défaut d'une Assemblée Générale au cours de laquelle nous pouvions vous tenir au courant de la
-          situation générale de notre immeuble et des travaux en cours, nous vous proposons de trouver ici touts les infos
-          sur notre immeuble. </p>
-        <table>
-          <tr>
-            <td>Name Co-property</td>
-            <td>Azur</td>
-          </tr>
-          <tr>
-            <td>Address</td>
-            <td>Helihavenlaan 1-3, 1000, Brussels, Belgium</td>
-          </tr>
-        </table>
-      </div>
-      <!------------------------------------------------------------------------------------------------------>
-      <div id="Reports" class="col s12">
-        <h6>Individual Reports</h6>
-      </div>
-      <!------------------------------------------------------------------------------------------------------>
-      <div id="Transactions" class="col s12">
-        <h5> Financial transactions</h5>
-        <table class="striped">
-          <thead>
+      var collapsibleElemhier = document.querySelector('.collapsible');
+      var collapsibleInstancehier = M.Collapsible.init(collapsibleElemhier);
+      </script>
+    </header>
+    <main>
+      <div class="row">
+        <div id="Home" class="col s12">
+          <p>Welcome to MyCondos! Your role is Administrator. </p>
+          <br>
+          <h6>Annoucements</h6>
+          <p> Chère / Cher Copropriétaire,
+            A défaut d'une Assemblée Générale au cours de laquelle nous pouvions vous tenir au courant de la
+            situation générale de notre immeuble et des travaux en cours, nous vous proposons de trouver ici touts les
+            infos
+            sur notre immeuble. </p>
+          <table>
             <tr>
-              <th> Name </th>
-              <th> Amount</th>
-              <th> Transaction Date</th>
-              <th> Communication </th>
-              <th> Classification</th>
+              <td>Name Co-property</td>
+              <td>Azur</td>
             </tr>
-          </thead>
-          <tbody id="transactionsTable">
-          </tbody>
-        </table>
-        <h6> <b id="totalAmounts"> </b></h6>
+            <tr>
+              <td>Address</td>
+              <td>Helihavenlaan 1-3, 1000, Brussels, Belgium</td>
+            </tr>
+          </table>
+        </div>
+        <!------------------------------------------------------------------------------------------------------>
+        <div id="Reports" class="col s12">
+          <h6>Individual Reports</h6>
+        </div>
+        <!------------------------------------------------------------------------------------------------------>
+        <div id="Transactions" class="col s12">
+          <h5> Financial transactions</h5>
+          <table class="striped">
+            <thead>
+              <tr>
+                <th> Name </th>
+                <th> Amount</th>
+                <th> Transaction Date</th>
+                <th> Communication </th>
+                <th> Classification</th>
+              </tr>
+            </thead>
+            <tbody id="transactionsTable">
+            </tbody>
+          </table>
+          <h6> <b id="totalAmounts"> </b></h6>
 
-        <div id="modalTransactionClassify" class="modal">
-          <div class="modal-content">
-            <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
-              Cancel</a>
-            <div class="row">
-              <form class="col s12">
-                <div class="row">
-                  <div class="input-field col s12 m4">
-                    <input id="transaction_account" type="text" readonly>
-                    <label for="transaction_account">Account</label>
+          <div id="modalTransactionClassify" class="modal">
+            <div class="modal-content">
+              <a style="float: right"
+                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
+                Cancel</a>
+              <div class="row">
+                <form class="col s12">
+                  <div class="row">
+                    <div class="input-field col s12 m4">
+                      <input id="transaction_account" type="text" readonly>
+                      <label for="transaction_account">Account</label>
+                    </div>
+                    <div class="input-field col s12 m8">
+                      <input id="transaction_name" type="text" readonly>
+                      <label for="transaction_name">Name</label>
+                    </div>
                   </div>
-                  <div class="input-field col s12 m8">
-                    <input id="transaction_name" type="text" readonly>
-                    <label for="transaction_name">Name</label>
+                  <div class="row">
+                    <div class="input-field col s12 m4">
+                      <input id="transaction_amount" type="text" readonly>
+                      <label for="transaction_amount">Amount</label>
+                    </div>
+                    <div class="input-field col s12 m8">
+                      <input id="transaction_date" type="text" readonly>
+                      <label for="transaction_date">Transaction Date</label>
+                    </div>
                   </div>
-                </div>
-                <div class="row">
-                <div class="input-field col s12 m4">
-                  <input id="transaction_amount" type="text" readonly>
-                  <label for="transaction_amount">Amount</label>
-                </div>
-                <div class="input-field col s12 m8">
-                  <input id="transaction_date" type="text" readonly>
-                  <label for="transaction_date">Transaction Date</label>
-                </div>
-                </div>
-                <div class="input-field col s12">
-                  <input id="transaction_communication" type="text" readonly>
-                  <label for="transaction_communication">Communication</label>
-                </div>
-                <h4>Enter classification</h4>
-                <div class="input-field col s6">
-                  <select id="transaction_classification" required required="true">
+                  <div class="input-field col s12">
+                    <input id="transaction_communication" type="text" readonly>
+                    <label for="transaction_communication">Communication</label>
+                  </div>
+                  <h4>Enter classification</h4>
+                  <div class="input-field col s6">
+                    <select id="transaction_classification" required required="true">
                           <option value="" disabled selected>Select the classification</option>
                           <option>61050 - NETTOYAGE</option>
                           <option>61051 - ENTRETIENT</option>
                           <option>61052 - REPARATION</option>
                         </select>
-                  <label>Classification<b><font color='red'>*</font></b></label>
-                </div>
-              </form>
+                    <label>Classification<b><font color='red'>*</font></b></label>
+                  </div>
+                </form>
+              </div>
             </div>
-          </div>
-          <div class="modal-footer">
-            <button style="float: right" class="btn-small waves-light" type="submit" onclick="classifyTransaction()">Submit<i class="material-icons right">send</i></button>
-            <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
-              Cancel</a>
+            <div class="modal-footer">
+              <button style="float: right" class="btn-small waves-light" type="submit" onclick="classifyTransaction()">Submit<i class="material-icons right">send</i></button>
+              <a style="float: right"
+                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
+                Cancel</a>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </main>
-  <script>
-    function showPasswordSet() {
+    </main>
+    <script>
+      function showPasswordSet() {
       document.getElementById("loginPanel").setAttribute("class","displayHidden");
       document.getElementById("setPasswordPanel").setAttribute("class","displayBlock");
     };
@@ -303,10 +311,10 @@
               });
       };
     };
-  </script>
-  <!--   Application scripts starts here -->
-  <script>
-    const options = {
+    </script>
+    <!--   Application scripts starts here -->
+    <script>
+      const options = {
         duration: 300,
         onShow: null,
         swipeable: false,
@@ -341,12 +349,25 @@
     var collapsibleInstance = M.Collapsible.init(collapsibleElem);
 
     
-  </script>
+    </script>
 
-
-  <!--   Transaction scripts start here -->
-  <script>
-    var totalAmount = 0;
+    <!--   Home scripts start here -->
+    <script>
+      function loadHome() {
+      hideMenu();
+      document.getElementById("logo-container").innerHTML = "Mycondos: Home";
+    }
+    </script>
+    <!--   reports scripts start here -->
+    <script>
+      function loadReports() {
+      hideMenu();
+      document.getElementById("logo-container").innerHTML = "Mycondos: Reports";
+    }
+    </script>
+    <!--   Transaction scripts start here -->
+    <script>
+      var totalAmount = 0;
           var transactionsTable = document.getElementById("transactionsTable");
           function loadTransaction (objectFS){
               var object = objectFS.data();
@@ -410,6 +431,8 @@
 
         var transactionsLoaded = false;
         function loadTransactions(){
+          hideMenu();
+          document.getElementById("logo-container").innerHTML = "Mycondos: Transactions";
           if (!transactionsLoaded) {
             refreshTransactions();
             transactionsLoaded = true;
@@ -465,7 +488,7 @@
       elems = document.querySelectorAll('.modal');
       instances = M.Modal.init(elems, {dismissible:false});
     };
-  </script>
+    </script>
 </body>
 
 </html>
