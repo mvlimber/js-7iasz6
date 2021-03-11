@@ -248,6 +248,161 @@
 
 
         </div>
+        <!------------------------------------------------------------------------------------------------------>
+        <div id="Meters" class="col s12">
+          <table class="striped">
+            <thead>
+              <tr>
+                <th> Property </th>
+                <th> Type</th>
+                <th> Reading </th>
+                <th> Date</th>
+              </tr>
+            </thead>
+            <tbody id="metersTable">
+            </tbody>
+          </table>   
+          <br>
+          <button data-target="meterWrite" class="btn-small waves-light modal-trigger" onclick="resetSelectedMeter()"><i class="material-icons right">add</i>New Meter Reading</button>
+          
+          <div id="meterView" class="modal">
+            <div class="modal-content">
+              <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>Close</a>
+              <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
+              <form class="col s12">
+                <div class="input-field col s12 m4">
+                  <i class="material-icons prefix">account_circle</i>
+                  <input id="member_firstName" type="text" readonly>
+                  <label for="member_firstName" >First Name</label>
+                </div>
+                <div class="input-field col s12 m8">
+                  <i class="material-icons prefix">account_circle</i>
+                  <input id="member_lastName" type="text" readonly>
+                  <label for="member_lastName" >Last Name</label>
+                </div>
+                <div class="input-field col s12">
+                  <input id="member_email" type="email" readonly>
+                  <label for="member_email" >Email</label>
+                </div>
+                <div class="input-field col s12 m6">
+                  <i class="material-icons prefix">phone</i>
+                  <input id="member_phoneHome" type="tel" readonly>
+                  <label for="member_phoneHome">Telephone Home</label>
+                </div>
+                <div class="input-field col s12 m6">
+                  <i class="material-icons prefix">phone</i>
+                  <input id="member_phoneMobile" type="tel" readonly>
+                  <label for="member_phoneMobile">Mobile</label>
+                </div>
+                <p>  </p>
+                <div class="input-field col s12 m4">
+                  <input  id="member_country" type="text" readonly >
+                  <label for="member_country" >Country</label>
+                </div>
+                <div class="input-field col s12 m2">
+                  <input  id="member_zip" type="number" readonly>
+                  <label for="member_zip" >Zip</label>
+                </div>
+                <div class="input-field col s12 m6">
+                  <input  id="member_town" type="text" readonly >
+                  <label for="member_town">Town</label>
+                </div>
+                <div class="input-field col s12 m4">
+                  <input  id="member_street" type="text" readonly >
+                  <label for="member_street">Street</label>
+                </div>
+                <div class="input-field col s6 m2">
+                  <input  id="member_houseNumber" type="text" readonly >
+                  <label for="member_houseNumber">Number</label>
+                </div>
+                <div class="input-field col s6 m2">
+                  <input  id="member_bus" type="number" readonly >
+                  <label for="member_bus">Bus</label>
+                </div>
+                <button style="float: right" data-target="memberWrite" class="btn-small waves-light modal-trigger" onclick="setSelectedMember(selectedMemberId, selectedMemberObject,editMode)">Edit<i class="material-icons right">edit</i></button>
+              </form>
+              </div>
+              <div class="col s12 m4">
+                  <h6>Owner of:</h6>
+                  <p id="member_ownerOf"> </p>
+              </div>
+              <div class="col s12 m4">
+                  <h6>Occupant of:</h6>
+                  <p id="member_occupantOf"> </p>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <a class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>Close</a>
+            </div>
+          </div>
+
+          <div id="meterWrite" class="modal">
+            <div class="modal-content">
+              <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+              <form class="col s12">
+                <div class="input-field col s12 m4">
+                  <i class="material-icons prefix">account_circle</i>
+                  <input id="member_firstName_edit" type="text" class="validate" maxlength="50" required aria-required="true">
+                  <label for="member_firstName_edit" >First Name<b><font color='red'>*</font></b></label>
+                  <span class="helper-text" data-error="required field" ></span>
+                </div>
+                <div class="input-field col s12 m8">
+                  <i class="material-icons prefix">account_circle</i>
+                  <input id="member_lastName_edit" type="text" class="validate" maxlength="50" required aria-required="true">
+                  <label for="member_lastName_edit" >Last Name <b><font color='red'>*</font></b></label>
+                  <span class="helper-text" data-error="required field" ></span>
+                </div>
+                <div class="input-field col s12">
+                  <input id="member_email_edit" type="email" class="validate" maxlength="70" >
+                  <label for="member_email_edit" >Email</label>
+                  <span class="helper-text" data-error="email must contain @" ></span>
+                </div>
+                <div class="input-field col s12 m6">
+                  <i class="material-icons prefix">phone</i>
+                  <input id="member_phoneHome_edit" type="tel" pattern="[+]?([0-9]|[ ])*" class="validate">
+                  <label for="member_phoneHome_edit">Telephone Home</label>
+                  <span class="helper-text" data-error="only + , digits and spaces allowed" ></span>
+                </div>
+                <div class="input-field col s12 m6">
+                  <i class="material-icons prefix">phone</i>
+                  <input id="member_phoneMobile_edit" type="tel" pattern="[+]?([0-9]|[ ])*" class="validate">
+                  <label for="member_phoneMobile_edit">Mobile</label>
+                  <span class="helper-text" data-error="only + , digits and spaces allowed" ></span>
+                </div>
+                <p> Principal residence (only to be completed if not in co-property)</p>
+                <div class="input-field col s12 m4">
+                  <input  id="member_country_edit" type="text" class="validate" maxlength="30" >
+                  <label for="member_country_edit" >Country</label>
+                </div>
+                <div class="input-field col s6 m2">
+                  <input  id="member_zip_edit" type="number" class="validate" min="0" max="99999">
+                  <label for="member_zip_edit" >Zip</label>
+                  <span class="helper-text" data-error="please enter digits only" ></span>
+                </div>
+                <div class="input-field col s6 m6">
+                  <input  id="member_town_edit" type="text" class="validate" maxlength="30" >
+                  <label for="member_town_edit">Town</label>
+                </div>
+                <div class="input-field col s12 m8">
+                  <input  id="member_street_edit" type="text" class="validate" maxlength="30" >
+                  <label for="member_street_edit">Street</label>
+                </div>
+                <div class="input-field col s6 m2">
+                  <input  id="member_houseNumber_edit" type="text" class="validate" maxlength="10" >
+                  <label for="member_houseNumber_edit">Number</label>
+                </div>
+                <div class="input-field col s6 m2">
+                  <input  id="member_bus_edit" type="number" class="validate" min="0" max="99" >
+                  <label for="member_bus_edit">Bus</label>
+                  <span class="helper-text" data-error="please enter digits only" ></span>
+                </div>
+              </form>
+              <button style="float: right" class="btn-small waves-light" type="submit" onclick="writeMember()">Submit<i class="material-icons right">send</i></button>
+                <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+            </div>
+          </div>
+        </div>
+
       </div>
     </main>
     <script>
@@ -504,6 +659,285 @@
       elems = document.querySelectorAll('.modal');
       instances = M.Modal.init(elems, {dismissible:false});
     };
+    </script>
+    <!--   Meters scripts start here -->
+    <script>
+      var meterMode;
+      var selectedMeterId;
+      var selectedMeterObject;
+      var selectedMeterPhotoURL;
+      function setSelectedMeter(propertyCode, id,object,modeArg) {
+        selectedMeterId=id;
+        selectedMeterObject=object;
+        meterMode="edit";
+        document.getElementById("meter_type"+modeArg).value=object.type;
+        document.getElementById("meter_date"+modeArg).value=object.date;
+        document.getElementById("meter_reading"+modeArg).value=object.reading;
+        var el;
+        if (modeArg) {
+          // in edit mode
+          emptyHTMLSet(document.getElementById("meter_photo_text_edit"));
+          if (selectedMeterPhotoURL) {
+            el = document.createElement("a");
+            el.setAttribute("href",selectedMeterPhotoURL);
+            el.setAttribute("target","_blank"); 
+            el.innerHTML = "<font color='blue'>EXISTING PHOTO</font> can be replaced here below";
+            document.getElementById("meter_photo_text_edit").appendChild(el);
+          };
+          listProperties (document.getElementById("meter_property"+modeArg), object.property, object.meter);
+        } else {
+          // in view mode        
+          document.getElementById("meter_meter"+modeArg).value=object.meter;
+          document.getElementById("meter_property"+modeArg).value=propertyCode;
+          emptyHTMLSet(document.getElementById("meter_photo"));
+          
+          refCopropertyFiles.child(object.property).child("Meters").child(id).getDownloadURL().then(function(url) {
+            el = document.createElement("a");
+            el.setAttribute("href",url);
+            el.setAttribute("target","_blank"); 
+            el.innerHTML = "<font color='blue'>PHOTO</font>";
+            document.getElementById("meter_photo").appendChild(el);
+            selectedMeterPhotoURL = url;
+          }).catch(function(error) {
+            el = document.createElement("p");
+            el.innerHTML = "No photo available";
+            document.getElementById("meter_photo").appendChild(el);
+          });
+          
+        };
+        M.updateTextFields();
+        var elems = document.querySelectorAll('select');
+        M.FormSelect.init(elems);
+      };
+      
+      var meterFile;
+
+      function getMeterEntries() {
+        return {
+          property: document.getElementById("meter_property_edit").value,
+          meter: document.getElementById("meter_meter_edit").value,
+          type: document.getElementById("meter_type_edit").value,
+          date:document.getElementById("meter_date_edit").value,
+          reading: document.getElementById("meter_reading_edit").value
+        };
+      };
+
+      function validateMeterEntries() {
+        var valid = true
+        if (!(document.getElementById("meter_property_edit").value)) {
+          M.toast({html:"Please enter Property"});
+          valid=false;
+        };
+        if (!(document.getElementById("meter_meter_edit").value)) {
+          M.toast({html:"Please enter Meter"});
+          valid=false;
+        };
+        if (!document.getElementById("meter_date_edit").checkValidity()) {
+          M.toast({html:"Please enter valid Date"});
+          valid=false;
+        };
+        if (!document.getElementById("meter_reading_edit").checkValidity()) {
+          M.toast({html:"Please enter valid Reading"});
+          valid=false;
+        };
+
+        meterFile = document.getElementById('meterFile').files[0];
+        let allowed_mime_types = [ 'image/jpeg', 'image/png' ];
+        let allowed_size_kb = 500;
+        if (meterFile) {
+          if(allowed_mime_types.indexOf(meterFile.type) == -1) {
+            M.toast({html:"Incorrect file type (only jpeg or png allowed)"});
+            valid=false;
+          };
+          if(meterFile.size > allowed_size_kb*1024) {
+            M.toast({html:"Photo exceeds max size 500KB"});
+            valid=false;
+          };
+
+        }
+        return valid;
+      };
+
+      var metersMatrix = new Map();
+      function listProperties(el, selectedOption, selectedMeter) {
+        var option;
+        emptyHTMLSet(el);
+        if (!Boolean(selectedOption)) {
+          option = document.createElement("option");
+          option.setAttribute("value","");
+          option.setAttribute("disabled",true);
+          option.setAttribute("selected",true);
+          option.innerHTML = "Select Property";
+          el.appendChild(option);
+        };
+        refCoproperty.collection("Properties").get().then(function(querySnapshot) {
+          querySnapshot.forEach(function(property) {
+              option = document.createElement("option");
+              option.setAttribute("value",property.id);
+              propertyData = property.data();
+              if (property.id == selectedOption) {
+                option.setAttribute("selected",true);
+                //  meters invullen!!!!!!!!!!!!!!
+              };
+              option.innerHTML = propertyData.code;
+              el.appendChild(option);
+              var meters= new Set();
+              if (propertyData.meterColdWater) {meters.add({type:"cold water",meter:propertyData.meterColdWater})};
+              if (propertyData.meterHotWater) {meters.add({type:"hot water",meter:propertyData.meterHotWater})};
+              if (propertyData.meterHeating) {meters.add({type:"heating",meter:propertyData.meterHeating})};
+              metersMatrix.set(property.id,meters);
+            });
+          if (selectedMeter) {listMeters(selectedMeter)};
+          var elems = document.querySelectorAll('select');
+          M.FormSelect.init(elems);
+        });
+      };
+
+      function listMeters(selectedOption){
+        var el = document.getElementById("meter_meter_edit");
+        emptyHTMLSet(el);
+        if (!Boolean(selectedOption)) {
+          option = document.createElement("option");
+          option.setAttribute("value","");
+          option.setAttribute("disabled",true);
+          option.setAttribute("selected",true);
+          option.innerHTML = "Select Meter";
+          el.appendChild(option);
+        };
+        
+        metersMatrix.get(document.getElementById("meter_property_edit").value).forEach(function(meterCouple){
+          option = document.createElement("option");
+          option.setAttribute("value",meterCouple.meter);
+          option.innerHTML = meterCouple.meter + "  " + meterCouple.type;
+          el.appendChild(option);
+        });
+        var elems = document.querySelectorAll('select');
+        M.FormSelect.init(elems);
+      };
+
+      function editType() {
+        var property = document.getElementById("meter_property_edit").value;
+        var meter = document.getElementById("meter_meter_edit").value;
+        metersMatrix.get(document.getElementById("meter_property_edit").value).forEach(function(meterCouple){
+          if (meterCouple.meter === meter) {document.getElementById("meter_type_edit").value = meterCouple.type }
+        });
+      };
+
+      function resetSelectedMeter() {
+        selectedMeterId=null;
+        selectedMeterObject=null;
+        selectedMeterPhotoURL=null;
+        meterFile=null;
+        meterMode="add";
+        document.getElementById("meter_property_edit").value="";
+        document.getElementById("meter_meter_edit").value="";
+        document.getElementById("meter_type_edit").value="";
+        document.getElementById("meter_date_edit").value="";
+        document.getElementById("meter_reading_edit").value="";
+        document.getElementById("meterFile").value="";
+        document.getElementById("meterFileText").value="";
+        emptyHTMLSet(document.getElementById("meter_photo_text_edit"));
+        listProperties(document.getElementById("meter_property_edit"),"",null);
+        M.updateTextFields();
+        M.FormSelect.init(document.querySelectorAll('select'));
+      };
+    </script>
+    <!--   Members scripts start here -->
+    <script>
+        function getMemberEntries() {
+      return {
+            firstName: document.getElementById("member_firstName_edit").value,
+            lastName: document.getElementById("member_lastName_edit").value,
+            email: document.getElementById("member_email_edit").value,
+            phoneHome: document.getElementById("member_phoneHome_edit").value,
+            phoneMobile: document.getElementById("member_phoneMobile_edit").value,
+            country: document.getElementById("member_country_edit").value,
+            zip: document.getElementById("member_zip_edit").value,
+            town: document.getElementById("member_town_edit").value,
+            street: document.getElementById("member_street_edit").value,
+            houseNumber: document.getElementById("member_houseNumber_edit").value,
+            bus: document.getElementById("member_bus_edit").value
+      };
+    };
+    
+    function propertyJump (propertyId, propertyObject){
+      
+      M.Modal.getInstance(document.getElementById("memberView")).close();
+      setSelectedProperty(propertyId,propertyObject,"");
+    };
+
+    
+    function propertyLinkFromMemberView(property) {
+      var elA = document.createElement('a');
+      elA.setAttribute("data-target", "propertyView");
+      elA.setAttribute('class','btn-flat modal-trigger');
+      elA.setAttribute('onclick','propertyJump('+JSON.stringify(property.id)+','+JSON.stringify(property.data())+')');
+      elA.innerHTML = "<font color='blue'>"+property.data().code+"</font>"+ "  ";
+      return elA;
+    };
+
+    
+    
+    var mode;
+    var selectedMemberId;
+    var selectedMemberObject;
+    function setSelectedMember(id,object,modeArg) {
+      selectedMemberId=id;
+      selectedMemberObject=object;
+      mode="edit";
+      document.getElementById("member_firstName"+modeArg).value=object.firstName;
+      document.getElementById("member_lastName"+modeArg).value=object.lastName;
+      document.getElementById("member_email"+modeArg).value=object.email;
+      document.getElementById("member_phoneHome"+modeArg).value=object.phoneHome;
+      document.getElementById("member_phoneMobile"+modeArg).value=object.phoneMobile;
+      document.getElementById("member_country"+modeArg).value=object.country;
+      document.getElementById("member_zip"+modeArg).value=object.zip;
+      document.getElementById("member_town"+modeArg).value=object.town;
+      document.getElementById("member_street"+modeArg).value=object.street;
+      document.getElementById("member_houseNumber"+modeArg).value=object.houseNumber;
+      document.getElementById("member_bus"+modeArg).value=object.bus;
+      if (!modeArg) {
+        var ownerOfEl = document.getElementById("member_ownerOf");
+        emptyHTMLSet(ownerOfEl);
+        refCoproperty.collection("Properties").where("owner", "==", id).get().then (function (querySnapshot){
+          querySnapshot.forEach (function (property) {
+            ownerOfEl.appendChild(propertyLinkFromMemberView(property));
+          });
+        });
+        var occupantOfEl = document.getElementById("member_occupantOf");
+        emptyHTMLSet(occupantOfEl);
+        refCoproperty.collection("Properties").get().then (function (querySnapshotProperties){
+          querySnapshotProperties.forEach (function (property) {
+            property.ref.collection("Occupants").where("occupant", "==", id).get().then (function (querySnapshotOccupants){
+              if (querySnapshotOccupants.docs.length > 0) {
+                occupantOfEl.appendChild(propertyLinkFromMemberView(property));
+              };
+            });
+          });
+        });
+      };
+      M.updateTextFields();
+    };
+
+    function resetSelectedMember() {
+      selectedMemberId=null;
+      selectedMemberObject=null;
+      mode="add";
+      document.getElementById("member_firstName_edit").value="";
+      document.getElementById("member_lastName_edit").value="";
+      document.getElementById("member_email_edit").value="";
+      document.getElementById("member_phoneHome_edit").value="";
+      document.getElementById("member_phoneMobile_edit").value="";
+      document.getElementById("member_country_edit").value="";
+      document.getElementById("member_zip_edit").value="";
+      document.getElementById("member_town_edit").value="";
+      document.getElementById("member_street_edit").value="";
+      document.getElementById("member_houseNumber_edit").value="";
+      document.getElementById("member_bus_edit").value="";
+      M.updateTextFields();
+    };
+
+
     </script>
 </body>
 
