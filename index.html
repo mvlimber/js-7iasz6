@@ -232,14 +232,12 @@
           </div>
         </div>
         <div id="Transactions" class="col s12">
-          <h5> Financial transactions</h5>
           <table class="striped">
             <thead>
               <tr>
                 <th> Name </th>
                 <th> Amount</th>
                 <th> Transaction Date</th>
-                <th> Communication </th>
                 <th> Classification</th>
               </tr>
             </thead>
@@ -409,11 +407,6 @@
               objectsRow.appendChild(cell);  
               
               cellContent = document.createTextNode(object.date);
-              cell = document.createElement('td');
-              cell.appendChild(cellContent);
-              objectsRow.appendChild(cell); 
-              
-              cellContent = document.createTextNode(object.communication);
               cell = document.createElement('td');
               cell.appendChild(cellContent);
               objectsRow.appendChild(cell); 
