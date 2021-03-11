@@ -3,7 +3,8 @@
 
 <head>
   <base target="_top">
-  <title><font color:#00796b><b>MC</b></font> MyCondos</title>
+  <title style:"color:#00796b bold">MyCondos</title>
+  <link rel="icon" href="https://firebasestorage.googleapis.com/v0/b/slimmeeigendomdb.appspot.com/o/Building-32.png?alt=media&token=9754f9c3-9d56-42fc-bd61-839ce2354a95">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
@@ -95,8 +96,8 @@
     <header>
       <nav id="header" class="nav-fixed teal lighten-1">
         <div class="nav-wrapper container center-align">
-          <a href="javascript:void(0)" class="brand-logo center center-align" id="logo-container">MyCondos: Home</a>
-          <a href="#" data-target="slide-out" class="btn-collapsible sidenav-trigger"
+          <a href="javascript:void(0)" class="brand-logo right right-align" id="logo-container">MyCondos: Home</a>
+          <a href="#" data-target="slide-out" class="btn-collapsible sidenav-trigger left left-align"
             onclick="showMenu()"><i class="material-icons">menu</i></a>
         </div>
       </nav>
@@ -371,14 +372,14 @@
     <script>
       function loadHome() {
       hideMenu();
-      document.getElementById("logo-container").innerHTML = "Mycondos: Home";
+      document.getElementById("logo-container").innerHTML = "MyCondos: Home";
     }
     </script>
     <!--   reports scripts start here -->
     <script>
       function loadReports() {
       hideMenu();
-      document.getElementById("logo-container").innerHTML = "Mycondos: Reports";
+      document.getElementById("logo-container").innerHTML = "MyCondos: Reports";
     }
     </script>
     <!--   Transaction scripts start here -->
@@ -448,7 +449,7 @@
         var transactionsLoaded = false;
         function loadTransactions(){
           hideMenu();
-          document.getElementById("logo-container").innerHTML = "Mycondos: Transactions";
+          document.getElementById("logo-container").innerHTML = "MyCondos: Transactions";
           if (!transactionsLoaded) {
             refreshTransactions();
             transactionsLoaded = true;
