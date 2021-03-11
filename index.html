@@ -117,6 +117,8 @@
         <li class="tab side text-teal"><a class="waves-effect" href="#Reports" onclick="loadReports()">Reports</a></li>
         <li class="tab side text-teal"><a class="waves-effect" href="#Transactions"
             onclick="loadTransactions()">Transactions</a></li>
+        <li class="tab side text-teal"><a class="waves-effect" href="#Meters"
+            onclick="loadMeters()">Meters</a></li>
       </ul>
 
       <script>
@@ -662,6 +664,122 @@
     </script>
     <!--   Meters scripts start here -->
     <script>
+      var metersTable = document.getElementById("metersTable");
+
+      function propertyLink(property) {
+        var elA = document.createElement('a');
+        elA.setAttribute("data-target", "propertyView");
+        elA.setAttribute('class','btn-flat modal-trigger');
+        elA.setAttribute('onclick','setSelectedProperty('+JSON.stringify(property.id)+','+JSON.stringify(property.data())+',"")');
+        elA.innerHTML = "<font color='blue'>"+property.data().code+"</font>";
+        return elA;
+      };
+
+      function makePropertyLink(propertyId) {
+        refCoproperty.collection("Properties").doc(propertyId).get().then(function(objectFS){
+          return propertyLink(objectFS);
+        }).catch(function(error) {
+          console.log("Error getting document:", error);
+            return document.createTextNode("error");
+            
+          });
+      };
+
+      function loadMeter (objectFS){
+        var object = objectFS.data();
+        var objectsRow= document.createElement('tr');
+          
+        var cellLink = document.createElement('td');
+        var cellContent = document.createTextNode("");
+        cellLink.appendChild(cellContent);
+        objectsRow.appendChild(cellLink);
+            
+        refCoproperty.collection("Properties").doc(object.property).get().then(function(property){
+          cellLink.removeChild(cellLink.firstChild);
+          cellLink.appendChild(propertyLink(property));
+          cellContent = document.createTextNode(object.type);
+          var cell = document.createElement('td');
+          cell.appendChild(cellContent);
+          objectsRow.appendChild(cell); 
+          
+          cellContent = document.createElement('a');
+          cellContent.setAttribute("data-target", "meterView");
+          cellContent.setAttribute('class','btn-flat waves-light modal-trigger');
+          cellContent.setAttribute('onclick','setSelectedMeter('+JSON.stringify(property.data().code)+','+JSON.stringify(objectFS.id)+','+JSON.stringify(object)+',"")');
+          cellContent.innerHTML = "<font color='blue'>"+object.reading+"</font>";
+          cell = document.createElement('td');
+          cell.appendChild(cellContent);
+          objectsRow.appendChild(cell); 
+          
+          cellContent = document.createTextNode(object.date);
+          cell = document.createElement('td');
+          cell.appendChild(cellContent);
+          objectsRow.appendChild(cell); 
+
+          metersTable.appendChild (objectsRow);
+        
+        });
+          
+      };
+      
+      function refreshMeters() {
+        emptyHTMLSet(metersTable);
+        refCoproperty.collection("Meters").orderBy("date","desc").get().then(function(objectsFSArray){
+          objectsFSArray.forEach(function(objectFS){
+            loadMeter(objectFS);
+          });  
+        });    
+      };
+
+      var metersLoaded = false;
+      function loadMeters(){
+        hideMenu();
+        document.getElementById("logo-container").innerHTML = "MyCondos: Meters";
+        if (!metersLoaded) {
+          refreshMeters();
+          metersLoaded = true;
+        };
+      };
+
+      function writeMeter() {
+        if (validateMeterEntries()) {  
+          var entries = getMeterEntries();
+          if (meterMode === "add"){
+              refCoproperty.collection("Meters").add(entries).then(function(docref) {
+                if (meterFile) {
+                  var fileRef = refCopropertyFiles.child(entries.property).child("Meters").child(docref.id);  
+                  fileRef.put(meterFile).then (function (){});
+                };
+                M.Modal.getInstance(document.getElementById("meterWrite")).close();
+                refreshMeters();
+            }).catch(function(error) {
+              console.error("Error writing document: ", error);
+            });
+        } else {
+            console.log ('in meter edit write mode');
+            refCoproperty.collection("Meters").doc(selectedMeterId).set(entries).then(function() {
+                if (meterFile) {
+                  var fileRef = refCopropertyFiles.child(entries.property).child("Meters").child(selectedMeterId);  
+                  fileRef.put(meterFile).then (function (){
+                    var el = document.getElementById("meter_property_edit");
+                    setSelectedMeter(el.options[el.selectedIndex].innerHTML, selectedMeterId,getMeterEntries(),"");
+                    M.Modal.getInstance(document.getElementById("meterWrite")).close();
+                    refreshMeters();
+                  });
+                } else {
+                  var el = document.getElementById("meter_property_edit");
+                  setSelectedMeter(el.options[el.selectedIndex].innerHTML, selectedMeterId,getMeterEntries(),"");
+                  M.Modal.getInstance(document.getElementById("meterWrite")).close();
+                  refreshMeters();
+                };
+                
+            }).catch(function(error) {
+              console.error("Error writing document: ", error);
+            });
+          };
+        };
+      };
+
       var meterMode;
       var selectedMeterId;
       var selectedMeterObject;
@@ -938,6 +1056,326 @@
     };
 
 
+    </script>
+    <!--   Properties scripts start here -->
+    <script>
+      var totalQuotas = 0;
+      var propertiesTable = document.getElementById("propertiesTable");
+
+      function loadProperty (objectFS){
+        var object = objectFS.data();
+        var objectsRow= document.createElement('tr');
+        var cellContent = propertyLink(objectFS);
+        var cell = document.createElement('td');
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell);
+        
+        totalQuotas = totalQuotas + parseInt(object.quota);
+        cellContent = document.createTextNode(object.quota);
+        cell = document.createElement('td');
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell);  
+        
+        cellContent = document.createTextNode(object.type);
+        cell = document.createElement('td');
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell); 
+        
+        cellContent = document.createTextNode(object.cellar);
+        cell = document.createElement('td');
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell); 
+        
+        cellContent = document.createTextNode("");
+        var ownerCell = document.createElement('td');
+        ownerCell.appendChild(cellContent);
+        objectsRow.appendChild(ownerCell); 
+
+        propertiesTable.appendChild (objectsRow);
+
+        if (Boolean(object.owner)) {
+          refCoproperty.collection("Members").doc(object.owner).get().then(function(ownerFS) {
+            var owner = ownerFS.data();
+            cellContent = document.createElement('a');
+            cellContent.setAttribute("data-target", "memberView");
+            cellContent.setAttribute('class','btn-flat waves-light modal-trigger');
+            cellContent.setAttribute('onclick','setSelectedMember('+JSON.stringify(objectFS.id)+','+JSON.stringify(object)+',"")');
+            cellContent.innerHTML = "<font color='blue'>" + owner.firstName+"   "+owner.lastName + "</font>";
+            ownerCell.removeChild(ownerCell.firstChild);
+            ownerCell.appendChild(cellContent);
+          }).catch(function(error) {
+            console.log("Error getting document:", error);
+          });
+        }; 
+      };
+
+      function refreshProperties() {
+        emptyHTMLSet(propertiesTable);
+        totalQuotas = 0;
+        refCoproperty.collection("Properties").orderBy("code").get().then(function(objectsFSArray){
+          objectsFSArray.forEach(function(objectFS){
+            loadProperty(objectFS);
+          });
+          document.getElementById("totalQuotas").innerHTML = "Total Quotas = " + totalQuotas;  
+        });    
+      };
+
+      var propertiesLoaded = false;
+      function loadProperties(){
+        if (!propertiesLoaded) {
+          refreshProperties();
+          propertiesLoaded = true;
+        };
+      };
+
+      function addProperty(property){
+        refCoproperty.collection("Properties").add(property)
+          .then(function(docref) {
+            refreshProperties();
+            M.Modal.getInstance(document.getElementById("propertyWrite")).close();
+          }).catch(function(error) {
+            M.toast({html:"Error occurred adding this property:" + error}); 
+          });
+      };
+
+      function updateProperty(property){
+        refCoproperty.collection("Properties").doc(selectedPropertyId).set(property)
+          .then(function(docref) {
+            refreshProperties();
+            setSelectedProperty(selectedPropertyId,getPropertyEntries(),"");
+            M.Modal.getInstance(document.getElementById("propertyWrite")).close();
+          }).catch(function(error) {
+            M.toast({html:"Error occurred updating this member:" + error}); 
+          });
+      };
+
+      function writeProperty() {
+        if (validatePropertyEntries()) {  
+          var entries = getPropertyEntries();
+          if (propertyMode === "add"){
+            refCoproperty.collection("Properties").where("code", "==", entries.code).get()
+                .then(function(existingList) {
+                  if (existingList.docs.length > 0) {
+                    M.toast({html:"Error: property with this code already exists"}); 
+                  } else {
+                      addProperty(entries);
+                    };
+                }) .catch (function(error) {
+                  M.toast({html:"Error occurred checking code uniqueness:" + error}); 
+                });
+          } else {
+            if (! (entries.code.normalize() === selectedPropertyObject.code.normalize())) {
+              refCoproperty.collection("Properties").where("code", "==", entries.code).get()
+                .then(function(existingList) {
+                  if (existingList.docs.length > 0) {
+                    M.toast({html:"Error: property with this code already exists"}); 
+                  } else {
+                      updateProperty(entries);
+                    };
+                }) .catch (function(error) {
+                  M.toast({html:"Error occurred checking code uniqueness:" + error}); 
+                });
+            } else {
+                    updateProperty(entries);
+            };
+          };
+        };
+      };
+
+      function enableOccupantAdd() {
+        document.getElementById("buttonOccupantAdd").setAttribute("class","btn-small waves-light");
+      }
+
+      var propertyMode;
+      var selectedPropertyId;
+      var selectedPropertyObject;
+      var selectedPropertyOccupants;
+      var occupantsTable = document.getElementById("property_occupants");
+        
+      function displayOccupant(property,occupant){
+        refCoproperty.collection("Members").doc(occupant.data().occupant).get().then(function(member) {
+          var objectsRow= document.createElement('tr');
+          var cell = document.createElement('td');
+          var cellContent = document.createElement('a');
+          cellContent.setAttribute("data-target", "memberView");
+          cellContent.setAttribute('class','btn-flat modal-trigger');
+          cellContent.setAttribute('onclick','setSelectedMember('+JSON.stringify(member.id)+','+JSON.stringify(member.data())+',"")');
+          cellContent.innerHTML = "<u><font color='blue'>"+member.data().firstName + " " + member.data().lastName+"</font></u>";
+          cell.appendChild(cellContent);
+          objectsRow.appendChild(cell); 
+
+          cell = document.createElement('td');
+          cellContent = document.createElement('a'); 
+          cellContent.setAttribute('class','waves-light btn-small red');
+          cellContent.setAttribute('onclick','removeOccupant('+JSON.stringify(property)+',' +JSON.stringify(occupant.id)+')');
+          objectsRow.setAttribute("id", occupant.id)
+          cellButtonIcon = document.createElement('i');
+          cellButtonIcon.setAttribute('class','material-icons right');
+          cellButtonIcon.innerHTML="delete";           
+          cellContent.appendChild(cell);
+          cellContent.innerHTML = "Remove Occupant";
+          cell.appendChild(cellContent);
+          objectsRow.appendChild(cell); 
+
+          occupantsTable.appendChild (objectsRow);
+        }).catch (function(error) {
+          M.toast({html:"Error occurred during add occupant:" + error}); 
+        });
+      };
+      
+      function addOccupant() {
+        var selectedOccupant = document.getElementById("property_occupant_add").value;
+        var collRef = refCoproperty.collection("Properties").doc(selectedPropertyId).collection("Occupants");
+        collRef.where("occupant", "==", selectedOccupant).get()
+        .then(function(existingList) {
+          if (existingList.docs.length > 0) {
+            M.toast({html:"Error: This member is already occupant"}); 
+          } else {
+              collRef.add({occupant:selectedOccupant}).then(function(docRef){
+                docRef.get().then(function(newOccupant) {
+                  displayOccupant(selectedPropertyId,newOccupant);
+                });
+              });
+            };
+        }) .catch (function(error) {
+          M.toast({html:"Error occurred checking code uniqueness:" + error}); 
+        });
+      };
+      
+      function removeOccupant(property,occupant){
+        refCoproperty.collection("Properties").doc(property).collection("Occupants").doc(occupant).delete().then(function(){
+          document.getElementById(occupant).remove();
+        }).catch(function(error) {
+            M.toast({html:"Error removing occupant:" + error});
+        });
+      };
+
+      function listMembers(el, selectedOption) {
+        var option;
+        emptyHTMLSet(el);
+        if (!Boolean(selectedOption)) {
+          option = document.createElement("option");
+          option.setAttribute("value","");
+          option.setAttribute("disabled",true);
+          option.setAttribute("selected",true);
+          option.innerHTML = "Select Member";
+          el.appendChild(option);
+        };
+        refCoproperty.collection("Members").get().then(function(querySnapshot) {
+          querySnapshot.forEach(function(member) {
+              option = document.createElement("option");
+              option.setAttribute("value",member.id);
+              if (member.id == selectedOption) {option.setAttribute("selected",true);};
+              option.innerHTML = member.data().firstName + " " + member.data().lastName;
+              el.appendChild(option);
+            });
+          var elems = document.querySelectorAll('select');
+          M.FormSelect.init(elems);
+        });
+        
+      };
+      
+      function displayOccupants(property) {
+        emptyHTMLSet(occupantsTable);
+        refCoproperty.collection("Properties").doc(property).collection("Occupants").get().then( function (querySnapshot) {
+          if (Boolean(querySnapshot)) {
+            querySnapshot.forEach(function(occupant) {
+              displayOccupant(property,occupant);
+            });
+          };
+        });
+        listMembers(document.getElementById("property_occupant_add"),"");   
+      };
+
+      function setSelectedProperty(id,object,modeArg) {
+        selectedPropertyId=id;
+        selectedPropertyObject=object;
+        propertyMode="edit";
+        document.getElementById("buttonOccupantAdd").setAttribute("class","btn-small waves-light disabled");
+        document.getElementById("property_code"+modeArg).value=object.code;
+        document.getElementById("property_quota"+modeArg).value=object.quota;
+        document.getElementById("property_type"+modeArg).value=object.type;
+        document.getElementById("property_cellar"+modeArg).value=object.cellar;
+        document.getElementById("property_meterColdWater"+modeArg).value=object.meterColdWater;
+        document.getElementById("property_meterHotWater"+modeArg).value=object.meterHotWater;
+        document.getElementById("property_meterHeating"+modeArg).value=object.meterHeating;
+        var ownerEl = document.getElementById("property_owner"+modeArg);
+        if (!modeArg) {
+          if (Boolean(object.owner)) {
+            refCoproperty.collection("Members").doc(object.owner).get().then(function(member) {
+              ownerEl.setAttribute('onclick','setSelectedMember('+JSON.stringify(member.id)+','+JSON.stringify(member.data())+',"")');
+              ownerEl.innerHTML = "<u><font color='blue'>"+member.data().firstName + " " + member.data().lastName+"</font></u>";
+            });
+          } else {
+            ownerEl.innerHTML = "";
+          };
+          displayOccupants(id);
+        } else {
+          listMembers(ownerEl,object.owner);
+        };  
+        var elems = document.querySelectorAll('select');
+        M.FormSelect.init(elems);
+        M.updateTextFields();
+      };
+
+      function resetSelectedProperty() {
+        selectedPropertyId=null;
+        selectedPropertyObject=null;
+        mode="add";
+        document.getElementById("property_code_edit").value="";
+        document.getElementById("property_quota_edit").value="";
+        document.getElementById("property_type_edit").value="";
+        document.getElementById("property_cellar_edit").value="";
+        document.getElementById("property_meterColdWater_edit").value="";
+        document.getElementById("property_meterHotWater_edit").value="";
+        document.getElementById("property_meterHeating_edit").value="";
+        document.getElementById("property_owner_edit").value="";
+        listMembers(document.getElementById("property_owner_edit"),"");
+        M.updateTextFields();
+        M.FormSelect.init(document.querySelectorAll('select'));
+      };
+
+      function validatePropertyEntries() {
+        var valid= true;
+        if (!document.getElementById("property_code_edit").checkValidity()) {
+          M.toast({html:"Please enter Code"});
+          valid=false;
+        };
+        if (!document.getElementById("property_quota_edit").checkValidity()) {
+          M.toast({html:"Please enter valid Quota"});
+          valid=false;
+        };
+        if (!document.getElementById("property_type_edit").checkValidity()) {
+          M.toast({html:"Please enter valid Type"});
+          valid=false;
+        };
+        if (!document.getElementById("property_meterColdWater_edit").checkValidity()) {
+          M.toast({html:"Please enter valid meter cold water"});
+          valid=false;
+        };
+        if (!document.getElementById("property_meterHotWater_edit").checkValidity()) {
+          M.toast({html:"Please enter valid meter hot water"});
+          valid=false;
+        };
+        if (!document.getElementById("property_meterHeating_edit").checkValidity()) {
+          M.toast({html:"Please enter valid meter central heating"});
+          valid=false;
+        };
+        return valid;
+      };
+
+      function getPropertyEntries() {
+        return {
+              code: document.getElementById("property_code_edit").value,
+              quota: document.getElementById("property_quota_edit").value,
+              type: document.getElementById("property_type_edit").value,
+              cellar: document.getElementById("property_cellar_edit").value,
+              meterColdWater: document.getElementById("property_meterColdWater_edit").value,
+              meterHotWater: document.getElementById("property_meterHotWater_edit").value,
+              meterHeating: document.getElementById("property_meterHeating_edit").value,
+              owner: document.getElementById("property_owner_edit").value,
+            };
+  }
     </script>
 </body>
 
