@@ -4,7 +4,8 @@
 <head>
   <base target="_top">
   <title style:"color:#00796b bold">MyCondos</title>
-  <link rel="icon" href="https://firebasestorage.googleapis.com/v0/b/slimmeeigendomdb.appspot.com/o/Building-32.png?alt=media&token=9754f9c3-9d56-42fc-bd61-839ce2354a95">
+  <link rel="icon"
+    href="https://firebasestorage.googleapis.com/v0/b/slimmeeigendomdb.appspot.com/o/Building-32.png?alt=media&token=9754f9c3-9d56-42fc-bd61-839ce2354a95">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
@@ -111,7 +112,8 @@
             <span class="white-text name">Condomynium: Azur</span>
           </div>
         </li>
-        <li class="tab side text-teal"><a class="waves-effect" href="#Home" onclick="loadHome()">Home</a></li>
+        <li id="homeTab" class="tab side text-teal"><a class=" active waves-effect" href="#Home" onclick="loadHome()">Home</a>
+        </li>
         <li class="tab side text-teal"><a class="waves-effect" href="#Reports" onclick="loadReports()">Reports</a></li>
         <li class="tab side text-teal"><a class="waves-effect" href="#Transactions"
             onclick="loadTransactions()">Transactions</a></li>
@@ -119,22 +121,27 @@
 
       <script>
         function showMenu(){
-      var el = document.getElementById("slide-out");
-      M.Sidenav.init(el);
-      var instance = M.Sidenav.getInstance(el);
-      instance.open();
-    };
-      function hideMenu(){
-        var el = document.getElementById("slide-out");
-        M.Sidenav.init(el);
-        var instance = M.Sidenav.getInstance(el);
-        instance.close();
-      };
-      var elemshier = document.querySelectorAll('.sidenav');
-      var instanceshier = M.Sidenav.init(elemshier);
+          var el = document.getElementById("slide-out");
+          M.Sidenav.init(el);
+          var instance = M.Sidenav.getInstance(el);
+          instance.open();
+        };
+        function hideMenu(){
+          var el = document.getElementById("slide-out");
+          M.Sidenav.init(el);
+          var instance = M.Sidenav.getInstance(el);
+          instance.close();
+        };
+        var elemshier = document.querySelectorAll('.sidenav');
+        var instanceshier = M.Sidenav.init(elemshier);
 
-      var collapsibleElemhier = document.querySelector('.collapsible');
-      var collapsibleInstancehier = M.Collapsible.init(collapsibleElemhier);
+        var collapsibleElemhier = document.querySelector('.collapsible');
+        var collapsibleInstancehier = M.Collapsible.init(collapsibleElemhier);
+        
+        const tabsContainer = document.querySelector(".tabs");
+        M.Tabs.init(tabsContainer);
+        var instance = M.Tabs.getInstance(document.getElementById("slide-out"));
+        instance.select("#Home");
       </script>
     </header>
     <main>
@@ -166,15 +173,64 @@
               </table>
             </div>
             <div class="col s12 m6">
-               <img width="300" height="175"" class="center" src="https://firebasestorage.googleapis.com/v0/b/slimmeeigendomdb.appspot.com/o/Azur_small.gif?alt=media&token=289506e5-49da-435a-877d-bd00757f3aac"> 
+              <img width="300" height="175"" class="center" src="https://firebasestorage.googleapis.com/v0/b/slimmeeigendomdb.appspot.com/o/Azur_small.gif?alt=media&token=289506e5-49da-435a-877d-bd00757f3aac">
             </div>
-        </div>
+          </div>
         </div>
         <!------------------------------------------------------------------------------------------------------>
         <div id="Reports" class="col s12">
           <h6>Individual Reports</h6>
         </div>
         <!------------------------------------------------------------------------------------------------------>
+        <div id="modalTransactionClassify" class="modal">
+          <div class="modal-content">
+            <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
+              Cancel</a>
+            <div class="row">
+              <form class="col s12">
+                <div class="row">
+                  <div class="input-field col s12 m4">
+                    <input id="transaction_account" type="text" readonly>
+                    <label for="transaction_account">Account</label>
+                  </div>
+                  <div class="input-field col s12 m8">
+                    <input id="transaction_name" type="text" readonly>
+                    <label for="transaction_name">Name</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col s12 m4">
+                    <input id="transaction_amount" type="text" readonly>
+                    <label for="transaction_amount">Amount</label>
+                  </div>
+                  <div class="input-field col s12 m8">
+                    <input id="transaction_date" type="text" readonly>
+                    <label for="transaction_date">Transaction Date</label>
+                  </div>
+                </div>
+                <div class="input-field col s12">
+                  <input id="transaction_communication" type="text" readonly>
+                  <label for="transaction_communication">Communication</label>
+                </div>
+                <h4>Enter classification</h4>
+                <div class="input-field col s6">
+                  <select id="transaction_classification" required required="true">
+                          <option value="" disabled selected>Select the classification</option>
+                          <option>61050 - NETTOYAGE</option>
+                          <option>61051 - ENTRETIENT</option>
+                          <option>61052 - REPARATION</option>
+                        </select>
+                  <label>Classification<b><font color='red'>*</font></b></label>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button style="float: right" class="btn-small waves-light" type="submit" onclick="classifyTransaction()">Submit<i class="material-icons right">send</i></button>
+            <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
+              Cancel</a>
+          </div>
+        </div>
         <div id="Transactions" class="col s12">
           <h5> Financial transactions</h5>
           <table class="striped">
@@ -192,57 +248,7 @@
           </table>
           <h6> <b id="totalAmounts"> </b></h6>
 
-          <div id="modalTransactionClassify" class="modal">
-            <div class="modal-content">
-              <a style="float: right"
-                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
-                Cancel</a>
-              <div class="row">
-                <form class="col s12">
-                  <div class="row">
-                    <div class="input-field col s12 m4">
-                      <input id="transaction_account" type="text" readonly>
-                      <label for="transaction_account">Account</label>
-                    </div>
-                    <div class="input-field col s12 m8">
-                      <input id="transaction_name" type="text" readonly>
-                      <label for="transaction_name">Name</label>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="input-field col s12 m4">
-                      <input id="transaction_amount" type="text" readonly>
-                      <label for="transaction_amount">Amount</label>
-                    </div>
-                    <div class="input-field col s12 m8">
-                      <input id="transaction_date" type="text" readonly>
-                      <label for="transaction_date">Transaction Date</label>
-                    </div>
-                  </div>
-                  <div class="input-field col s12">
-                    <input id="transaction_communication" type="text" readonly>
-                    <label for="transaction_communication">Communication</label>
-                  </div>
-                  <h4>Enter classification</h4>
-                  <div class="input-field col s6">
-                    <select id="transaction_classification" required required="true">
-                          <option value="" disabled selected>Select the classification</option>
-                          <option>61050 - NETTOYAGE</option>
-                          <option>61051 - ENTRETIENT</option>
-                          <option>61052 - REPARATION</option>
-                        </select>
-                    <label>Classification<b><font color='red'>*</font></b></label>
-                  </div>
-                </form>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button style="float: right" class="btn-small waves-light" type="submit" onclick="classifyTransaction()">Submit<i class="material-icons right">send</i></button>
-              <a style="float: right"
-                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
-                Cancel</a>
-            </div>
-          </div>
+
         </div>
       </div>
     </main>
@@ -347,7 +353,7 @@
 
     
     elems = document.querySelectorAll('.modal');
-    instances = M.Modal.init(elems, {dismissible:false});
+    instances = M.Modal.init(elems, {dismissible:false,preventScrolling:false});
 
     var refCoproperty = firestore.doc("CoProperties/OrncEBHp37pJYisfxf79");
     var refCopropertyFiles = fileStorageRef.child("OrncEBHp37pJYisfxf79");
@@ -371,9 +377,9 @@
     <!--   Home scripts start here -->
     <script>
       function loadHome() {
-      hideMenu();
-      document.getElementById("logo-container").innerHTML = "MyCondos: Home";
-    }
+        hideMenu();
+        document.getElementById("logo-container").innerHTML = "MyCondos: Home";
+      }
     </script>
     <!--   reports scripts start here -->
     <script>
