@@ -588,7 +588,6 @@
                 <th> Code </th>
                 <th> Quota </th>
                 <th> Type </th>
-                <th> Cellar </th>
                 <th> Owner </th>
               </tr>
             </thead>
@@ -1465,13 +1464,9 @@
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell); 
         
-        cellContent = document.createTextNode(object.cellar);
-        cell = document.createElement('td');
-        cell.appendChild(cellContent);
-        objectsRow.appendChild(cell); 
-        
         cellContent = document.createTextNode("");
         var ownerCell = document.createElement('td');
+        ownerCell.setAttribute("style","white-space: nowrap");
         ownerCell.appendChild(cellContent);
         objectsRow.appendChild(ownerCell); 
 
