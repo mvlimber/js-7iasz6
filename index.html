@@ -4,6 +4,7 @@
 <head>
   <base target="_top">
   <title style:"color:#00796b bold">MyCondos</title>
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <link rel="icon"
     href="https://firebasestorage.googleapis.com/v0/b/slimmeeigendomdb.appspot.com/o/Building-32.png?alt=media&token=9754f9c3-9d56-42fc-bd61-839ce2354a95">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -109,16 +110,20 @@
               <img style="width:100%" src="https://img1.goodfon.com/wallpaper/big/6/d8/android-material-fon-linii.jpg">
             </div>
             <img width="150" height="100"" class="center" src="https://firebasestorage.googleapis.com/v0/b/slimmeeigendomdb.appspot.com/o/Azur_small.gif?alt=media&token=289506e5-49da-435a-877d-bd00757f3aac">
-            <span class="white-text name">Condomynium: Azur</span>
+            <span class="white-text name" style="font-size:18px">Condomynium: Azur</span>
           </div>
         </li>
-        <li id="homeTab" class="tab side text-teal"><a class=" active waves-effect" href="#Home" onclick="loadHome()">Home</a>
+        <li id="homeTab" class="tab side text-teal" ><a class=" active waves-effect" href="#Home" style="font-size:22px" onclick="loadHome()">Home</a>
         </li>
-        <li class="tab side text-teal"><a class="waves-effect" href="#Reports" onclick="loadReports()">Reports</a></li>
-        <li class="tab side text-teal"><a class="waves-effect" href="#Transactions"
+        <li class="tab side text-teal"><a class="waves-effect" href="#Reports" style="font-size:22px" onclick="loadReports()">Reports</a></li>
+        <li class="tab side text-teal"><a class="waves-effect" href="#Transactions" style="font-size:22px" 
             onclick="loadTransactions()">Transactions</a></li>
-        <li class="tab side text-teal"><a class="waves-effect" href="#Meters"
+        <li class="tab side text-teal"><a class="waves-effect" href="#Meters" style="font-size:22px" 
             onclick="loadMeters()">Meters</a></li>
+        <li class="tab side text-teal"><a class="waves-effect" href="#Members" style="font-size:22px" 
+            onclick="loadMembers()">Members</a></li>
+        <li class="tab side text-teal"><a class="waves-effect" href="#Properties" style="font-size:22px" 
+            onclick="loadProperties()">Properties</a></li>
       </ul>
 
       <script>
@@ -149,14 +154,10 @@
     <main>
       <div class="row">
         <div id="Home" class="col s12">
-          <p>Welcome to MyCondos! Your role is Administrator. </p>
-          <br>
           <h6>Annoucements</h6>
           <p> Chère / Cher Copropriétaire,
             A défaut d'une Assemblée Générale au cours de laquelle nous pouvions vous tenir au courant de la
-            situation générale de notre immeuble et des travaux en cours, nous vous proposons de trouver ici touts les
-            infos
-            sur notre immeuble. </p>
+            situation générale de notre immeuble et des travaux en cours, nous vous proposons de trouver ici touts les infos sur notre immeuble. </p>
           <div class="row">
             <div class="col s12 m6">
               <table>
@@ -181,7 +182,16 @@
         </div>
         <!------------------------------------------------------------------------------------------------------>
         <div id="Reports" class="col s12">
-          <h6>Individual Reports</h6>
+          <h6 style="font-size:22px "><b>Individual Reports</b></h6>
+          <br>
+          <a target="_blank"
+          https://firebasestorage.googleapis.com/v0/b/slimmeeigendomdb.appspot.com/o/Azur_2020_Q4_MarcVanLimberghen.pdf?alt=media&token=ce10ffa1-6a9e-40b6-a04d-72d240ab6d90">Azur_2020_Q4_MarcVanLimberghen</a>
+          <br>
+          <a target="_blank" href="https://firebasestorage.googleapis.com/v0/b/slimmeeigendomdb.appspot.com/o/Azur_2020_Q3_MarcVanLimberghen.pdf?alt=media&token=90074a5b-36b0-49c3-ba80-f24f361ade70">Azur_2020_Q3_MarcVanLimberghen</a>
+          <br><br>
+          <h6 style="font-size:22px "><b>Condomynium Reports</b></h6>
+          <br>
+          <a target="_blank" href="https://firebasestorage.googleapis.com/v0/b/slimmeeigendomdb.appspot.com/o/Azur_AG_2020_PV.pdf?alt=media&token=4e3db48c-eb71-4efd-bf62-6e0ec1fba6a0">Azur_2020_AssembléeGénérale</a>
         </div>
         <!------------------------------------------------------------------------------------------------------>
         <div id="modalTransactionClassify" class="modal">
@@ -603,6 +613,7 @@
                   <label for="property_quota_edit">Quota<b><font color='red'>*</font></b></label>
                   <span class="helper-text" data-error="please enter a number of max 4 digits"></span>
                 </div>
+                <div class="row">
                 <div class="input-field col s6 m6">
                   <select id="property_type_edit" required aria-required="true">
                     <option value="" disabled selected>Select the type</option>
@@ -612,24 +623,26 @@
                   <label for="property_type_edit">Type<b><font color='red'>*</font></b></label>
                 </div> 
                 <div class="input-field col s6 m6">
-                  <input id="property_cellar_edit" type="text">
+                  <input id="property_cellar_edit" type="text" maxlength="10" class="validate">
                   <label for="property_cellar_edit">Cellar</label>
                 </div>
-                <div class="input-field col s12 m4">
+                </div>
+                <div class="input-field col s6 m4">
                   <input id="property_meterColdWater_edit" type="text" class="validate" pattern="([A-Z]|[0-9]){4,10}">
                   <label for="property_meterColdWater_edit">ID Cold water meter</label>
                   <span class="helper-text" data-error="4 to 10 digts or capital letters"></span>
                 </div>
-                <div class="input-field col s12 m4">
+                <div class="input-field col s6 m4">
                   <input id="property_meterHotWater_edit" type="text" class="validate" pattern="([A-Z]|[0-9]){4,10}">
                   <label for="property_meterHotWater_edit">ID Hot water meter</label>
                   <span class="helper-text" data-error="4 to 10 digts or capital letters"></span>
                 </div>
-                <div class="input-field col s12 m4">
+                <div class="input-field col s6 m4">
                   <input id="property_meterHeating_edit" type="text" class="validate" pattern="([A-Z]|[0-9]){4,10}">
                   <label for="property_meterHeating_edit">ID Central heating meter</label>
                   <span class="helper-text" data-error="4 to 10 digts or capital letters"></span>
                 </div>
+                
                 <div class="input-field col s12 m6">
                   <select id="property_owner_edit">
                     <option value="" disabled selected>Select the owner</option>
@@ -765,7 +778,6 @@
 
     
     </script>
-
     <!--   Home scripts start here -->
     <script>
       function loadHome() {
@@ -773,7 +785,7 @@
         document.getElementById("logo-container").innerHTML = "MyCondos: Home";
       }
     </script>
-    <!--   reports scripts start here -->
+    <!--   Reports scripts start here -->
     <script>
       function loadReports() {
       hideMenu();
@@ -1236,6 +1248,8 @@
 
       var membersLoaded = false;
       function loadMembers(){
+        hideMenu();
+        document.getElementById("logo-container").innerHTML = "MyCondos: Members";
         if (!membersLoaded) {
           refreshMembers();
           membersLoaded = true;
@@ -1491,6 +1505,8 @@
 
       var propertiesLoaded = false;
       function loadProperties(){
+          hideMenu();
+          document.getElementById("logo-container").innerHTML = "MyCondos: Properties";
         if (!propertiesLoaded) {
           refreshProperties();
           propertiesLoaded = true;
