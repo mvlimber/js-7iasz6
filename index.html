@@ -333,7 +333,7 @@
                 <label for="meter_type_edit">Type<b><font color='red'>*</font></b></label>
               </div>
               <div class="input-field col s12 m6">
-                <input id="meter_reading_edit" type="number" class="validate" min="1000" max="9999999999" required required="true">
+                <input id="meter_reading_edit" type="number" class="validate" max="9999999999" required required="true">
                 <label for="meter_reading_edit">Reading<b><font color='red'>*</font></b></label>
                 <span class="helper-text" data-error="please enter a number of max 10 digits" ></span>
               </div>
@@ -374,7 +374,7 @@
             </tbody>
           </table>
           <br>
-          <button data-target="memberWrite" class="btn-small waves-light modal-trigger" onclick="resetSelectedMember()"><i class="material-icons right">add</i>New Member</button>
+          <button style="float: right" data-target="memberWrite" class="btn-small waves-light modal-trigger" onclick="resetSelectedMember()"><i class="material-icons right">add</i>New Member</button>
         </div>
         <!--- shared views ------------------------------------------------------------------------------------>
         <div id="memberView" class="modal">
@@ -596,7 +596,7 @@
             </tbody>
           </table>
           <h6><b id="totalQuotas"></b></h6>
-          <button data-target="propertyWrite" class="btn-small waves-light modal-trigger" onclick="resetSelectedProperty()"><i class="material-icons right">add</i>New Property</button>
+          <button style="float: right" data-target="propertyWrite" class="btn-small waves-light modal-trigger" onclick="resetSelectedProperty()"><i class="material-icons right">add</i>New Property</button>
 
           <div id="propertyWrite" class="modal">
             <div class="modal-content">
@@ -1706,7 +1706,7 @@
       function resetSelectedProperty() {
         selectedPropertyId=null;
         selectedPropertyObject=null;
-        mode="add";
+        propertyMode="add";
         document.getElementById("property_code_edit").value="";
         document.getElementById("property_quota_edit").value="";
         document.getElementById("property_type_edit").value="";
