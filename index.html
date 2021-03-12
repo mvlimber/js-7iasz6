@@ -188,6 +188,7 @@
           <div class="modal-content">
             <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
               Cancel</a>
+            <h5> Classify Transaction</h5>
             <div class="row">
               <form class="col s12">
                 <div class="row">
@@ -270,68 +271,33 @@
           <div id="meterView" class="modal">
             <div class="modal-content">
               <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>Close</a>
-              <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
+              <h5> View meter reading</h5>
               <form class="col s12">
                 <div class="input-field col s12 m4">
-                  <i class="material-icons prefix">account_circle</i>
-                  <input id="member_firstName" type="text" readonly>
-                  <label for="member_firstName" >First Name</label>
-                </div>
-                <div class="input-field col s12 m8">
-                  <i class="material-icons prefix">account_circle</i>
-                  <input id="member_lastName" type="text" readonly>
-                  <label for="member_lastName" >Last Name</label>
-                </div>
-                <div class="input-field col s12">
-                  <input id="member_email" type="email" readonly>
-                  <label for="member_email" >Email</label>
-                </div>
-                <div class="input-field col s12 m6">
-                  <i class="material-icons prefix">phone</i>
-                  <input id="member_phoneHome" type="tel" readonly>
-                  <label for="member_phoneHome">Telephone Home</label>
-                </div>
-                <div class="input-field col s12 m6">
-                  <i class="material-icons prefix">phone</i>
-                  <input id="member_phoneMobile" type="tel" readonly>
-                  <label for="member_phoneMobile">Mobile</label>
-                </div>
-                <p>  </p>
-                <div class="input-field col s12 m4">
-                  <input  id="member_country" type="text" readonly >
-                  <label for="member_country" >Country</label>
-                </div>
-                <div class="input-field col s12 m2">
-                  <input  id="member_zip" type="number" readonly>
-                  <label for="member_zip" >Zip</label>
-                </div>
-                <div class="input-field col s12 m6">
-                  <input  id="member_town" type="text" readonly >
-                  <label for="member_town">Town</label>
+                  <input id="meter_property" type="text" readonly>
+                  <label for="meter_property">Property</label>
                 </div>
                 <div class="input-field col s12 m4">
-                  <input  id="member_street" type="text" readonly >
-                  <label for="member_street">Street</label>
+                  <input id="meter_meter" type="text" readonly>
+                  <label for="meter_meter">Meter</label>
                 </div>
-                <div class="input-field col s6 m2">
-                  <input  id="member_houseNumber" type="text" readonly >
-                  <label for="member_houseNumber">Number</label>
+                <div class="input-field col s12 m4">
+                  <input id="meter_type" type="text" readonly>
+                  <label for="meter_type">Type</label>
                 </div>
-                <div class="input-field col s6 m2">
-                  <input  id="member_bus" type="number" readonly >
-                  <label for="member_bus">Bus</label>
+                <div class="input-field col s12 m6">
+                  <input id="meter_reading" type="number" readonly>
+                  <label for="meter_reading">Reading</label>
                 </div>
-                <button style="float: right" data-target="memberWrite" class="btn-small waves-light modal-trigger" onclick="setSelectedMember(selectedMemberId, selectedMemberObject,editMode)">Edit<i class="material-icons right">edit</i></button>
+                <div class="input-field col s12 m6">
+                  <input id="meter_date" type="text" readonly>
+                  <label for="meter_date">Date</label>
+                </div>
+                <div class="input-field col s12 m6" id="meter_photo">
+                </div>
+                <button style="float: right" data-target="meterWrite" class="btn-small waves-light modal-trigger" onclick="setSelectedMeter(null,selectedMeterId, selectedMeterObject,editMode)">Edit<i class="material-icons right">edit</i></button> 
+                <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>Close</a>
               </form>
-              </div>
-              <div class="col s12 m4">
-                  <h6>Owner of:</h6>
-                  <p id="member_ownerOf"> </p>
-              </div>
-              <div class="col s12 m4">
-                  <h6>Occupant of:</h6>
-                  <p id="member_occupantOf"> </p>
-              </div>
             </div>
             <div class="modal-footer">
               <a class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>Close</a>
@@ -339,8 +305,144 @@
           </div>
 
           <div id="meterWrite" class="modal">
-            <div class="modal-content">
-              <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+            <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+            <h5> Enter meter reading</h5>
+            <form class="col s12">
+              <div class="input-field col s12 m4">
+                <select id="meter_property_edit" onchange="listMeters()">
+                </select>
+                <label for="meter_property_edit">Property<b><font color='red'>*</font></b></label>
+              </div>
+              <div class="input-field col s12 m4" onchange="editType()">
+                <select id="meter_meter_edit">
+                </select>
+                <label for="meter_meter_edit">Meter<b><font color='red'>*</font></b></label>
+              </div>
+              <div class="input-field col s12 m4" hidden>
+                <input id="meter_type_edit" type="text" >
+                <label for="meter_type_edit">Type<b><font color='red'>*</font></b></label>
+              </div>
+              <div class="input-field col s12 m6">
+                <input id="meter_reading_edit" type="number" class="validate" min="1000" max="9999999999" required required="true">
+                <label for="meter_reading_edit">Reading<b><font color='red'>*</font></b></label>
+                <span class="helper-text" data-error="please enter a number of max 10 digits" ></span>
+              </div>
+              <div class="input-field col s12 m6">
+                <input id="meter_date_edit" type="text" class="datepicker validate" required required="true">
+                <label for="meter_date_edit">Date<b><font color='red'>*</font></b></label>
+                <span class="helper-text" data-error="required field" ></span>
+              </div>
+            </form>
+            <form> 
+              <div class="input-field col s12 m12" id="meter_photo_text_edit">
+              </div>
+              <div class="file-field input-field col s12 m6">
+                <div class="btn-small">
+                  <span>Photo<i class="material-icons right">attach_file</i></span>
+                  <input type="file" id="meterFile">
+                </div>
+                <div class="file-path-wrapper">
+                  <input class="file-path validate" type="text" id="meterFileText">
+                </div>
+              </div>
+            </form>
+            <button style="float: right" class="btn-small waves-light" type="submit" onclick="writeMeter()">Submit<i class="material-icons right">send</i></button>
+            <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+          </div>
+        </div>
+        <!------------------------------------------------------------------------------------------------------>
+        <div id="Members" class="col s12">
+          <table class="striped">
+            <thead>
+              <tr>
+                <th> First and Last Name </th>
+                <th> Email </th>
+                <th> Mobile </th>
+              </tr>
+            </thead>
+            <tbody id="membersTable">
+            </tbody>
+          </table>
+          <br>
+          <button data-target="memberWrite" class="btn-small waves-light modal-trigger" onclick="resetSelectedMember()"><i class="material-icons right">add</i>New Member</button>
+        </div>
+        <!--- shared views ------------------------------------------------------------------------------------>
+        <div id="memberView" class="modal">
+          <div class="modal-content">
+            <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>Close</a>
+            <h5> View member</h5>
+            <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
+            <form class="col s12">
+              <div class="input-field col s12 m4">
+                <i class="material-icons prefix">account_circle</i>
+                <input id="member_firstName" type="text" readonly>
+                <label for="member_firstName" >First Name</label>
+              </div>
+              <div class="input-field col s12 m8">
+                <i class="material-icons prefix">account_circle</i>
+                <input id="member_lastName" type="text" readonly>
+                <label for="member_lastName" >Last Name</label>
+              </div>
+              <div class="input-field col s12">
+                <input id="member_email" type="email" readonly>
+                <label for="member_email" >Email</label>
+              </div>
+              <div class="input-field col s12 m6">
+                <i class="material-icons prefix">phone</i>
+                <input id="member_phoneHome" type="tel" readonly>
+                <label for="member_phoneHome">Telephone Home</label>
+              </div>
+              <div class="input-field col s12 m6">
+                <i class="material-icons prefix">phone</i>
+                <input id="member_phoneMobile" type="tel" readonly>
+                <label for="member_phoneMobile">Mobile</label>
+              </div>
+              <p>  </p>
+              <div class="input-field col s12 m4">
+                <input  id="member_country" type="text" readonly >
+                <label for="member_country" >Country</label>
+              </div>
+              <div class="input-field col s12 m2">
+                <input  id="member_zip" type="number" readonly>
+                <label for="member_zip" >Zip</label>
+              </div>
+              <div class="input-field col s12 m6">
+                <input  id="member_town" type="text" readonly >
+                <label for="member_town">Town</label>
+              </div>
+              <div class="input-field col s12 m4">
+                <input  id="member_street" type="text" readonly >
+                <label for="member_street">Street</label>
+              </div>
+              <div class="input-field col s6 m2">
+                <input  id="member_houseNumber" type="text" readonly >
+                <label for="member_houseNumber">Number</label>
+              </div>
+              <div class="input-field col s6 m2">
+                <input  id="member_bus" type="number" readonly >
+                <label for="member_bus">Bus</label>
+              </div>
+              <button style="float: right" data-target="memberWrite" class="btn-small waves-light modal-trigger" onclick="setSelectedMember(selectedMemberId, selectedMemberObject,editMode)">Edit<i class="material-icons right">edit</i></button>
+            </form>
+            </div>
+            <div class="col s12 m4">
+                <h6>Owner of:</h6>
+                <p id="member_ownerOf"> </p>
+            </div>
+            <div class="col s12 m4">
+                <h6>Occupant of:</h6>
+                <p id="member_occupantOf"> </p>
+            </div>
+          </div>
+          <div class="modal-footer">
+          <a class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>Close</a>
+          </div>
+        </div>
+
+        <div id="memberWrite" class="modal">
+          <div class="modal-content">
+            <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+            <h5> Enter member data</h5>
               <form class="col s12">
                 <div class="input-field col s12 m4">
                   <i class="material-icons prefix">account_circle</i>
@@ -400,11 +502,146 @@
                 </div>
               </form>
               <button style="float: right" class="btn-small waves-light" type="submit" onclick="writeMember()">Submit<i class="material-icons right">send</i></button>
-                <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+              <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+            </div>
+          
+        </div>
+        
+        <div id="propertyView" class="modal">
+          <div class="modal-content">
+            <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>Close</a>
+            <h5> View property</h5>
+            <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
+              <form class="col s12">
+                <div class="input-field col s6 m6">
+                  <input id="property_code" type="text" readonly>
+                  <label for="property_code">Code</label>
+                </div>
+                <div class="input-field col s6 m6">
+                  <input id="property_quota" type="number" readonly>
+                  <label for="property_quota">Quota</label>
+                </div>
+                <div class="input-field col s6 m6">
+                  <input id="property_type" type="text" readonly>
+                  <label for="property_type">Type</label>
+                </div>
+                <div class="input-field col s6 m6">
+                  <input id="property_cellar" type="text" readonly>
+                  <label for="property_cellar">Cellar</label>
+                </div>
+
+                <div class="input-field col s12 m4">
+                  <input id="property_meterColdWater" type="text" readonly>
+                  <label for="property_meterColdWater">ID Cold water meter</label>
+                </div>
+                <div class="input-field col s12 m4">
+                  <input id="property_meterHotWater" type="text" readonly>
+                  <label for="property_meterHotWater">ID Hot water meter</label>
+                </div>
+                <div class="input-field col s12 m4">
+                  <input id="property_meterHeating" type="text" readonly>
+                  <label for="property_meterHeating">ID Central heating meter</label>
+                </div>
+                
+                <div class="input-field col s12 m6">
+                  <a id="property_owner" data-target="memberView" class="modal-trigger btn-flat"> </a>
+                  <label for="property_owner" class="active">Owner</label>
+                </div>
+                <button style="float: right" data-target="propertyWrite" class="btn-small waves-light modal-trigger" onclick="setSelectedProperty(selectedPropertyId, selectedPropertyObject,editMode)">Edit<i class="material-icons right">edit</i></button>
+              </form>
+            </div>
+              
+            <div border = "thick solid #0000FF">
+              <h5>Occupants</h5>
+              <table class="striped">
+                <tbody id="property_occupants">
+                </tbody>
+              </table>
+            </div>
+            <div class="input-field col s12 m4">
+              <select id="property_occupant_add" onchange="enableOccupantAdd()">
+              </select>
+            </div>
+            <div class="input-field col s12 m4">
+              <button id="buttonOccupantAdd" class="btn-small waves-light disabled" onclick="addOccupant()">Add Selected Member as Occupant<i class="material-icons right">add</i></button>
             </div>
           </div>
+          <div class="modal-footer">
+          <a class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>Close</a>
+          </div>
         </div>
+        <!------------------------------------------------------------------------------------------>
+        <div id="Properties" class="col s12">
+          <table class="striped">
+            <thead>
+              <tr>
+                <th> Code </th>
+                <th> Quota </th>
+                <th> Type </th>
+                <th> Cellar </th>
+                <th> Owner </th>
+              </tr>
+            </thead>
+            <tbody id="propertiesTable">
+            </tbody>
+          </table>
+          <h6><b id="totalQuotas"></b></h6>
+          <button data-target="propertyWrite" class="btn-small waves-light modal-trigger" onclick="resetSelectedProperty()"><i class="material-icons right">add</i>New Property</button>
 
+          <div id="propertyWrite" class="modal">
+            <div class="modal-content">
+              <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+              <h5> Enter property data</h5>
+              <form class="col s12">
+                <div class="input-field col s6 m6">
+                  <input id="property_code_edit" type="text" maxlength="5" class="validate" required aria-required="true">
+                  <label for="property_code_edit">Code<b><font color='red'>*</font></b></label>
+                  <span class="helper-text" data-error="please enter a string of max 4 characters" ></span>
+                </div>
+                <div class="input-field col s6 m6">
+                  <input id="property_quota_edit" type="number" class="validate" min="0" max="9999" required aria-required="true">
+                  <label for="property_quota_edit">Quota<b><font color='red'>*</font></b></label>
+                  <span class="helper-text" data-error="please enter a number of max 4 digits"></span>
+                </div>
+                <div class="input-field col s6 m6">
+                  <select id="property_type_edit" required aria-required="true">
+                    <option value="" disabled selected>Select the type</option>
+                    <option>Garage</option>
+                    <option>Apartment</option>
+                  </select>
+                  <label for="property_type_edit">Type<b><font color='red'>*</font></b></label>
+                </div> 
+                <div class="input-field col s6 m6">
+                  <input id="property_cellar_edit" type="text">
+                  <label for="property_cellar_edit">Cellar</label>
+                </div>
+                <div class="input-field col s12 m4">
+                  <input id="property_meterColdWater_edit" type="text" class="validate" pattern="([A-Z]|[0-9]){4,10}">
+                  <label for="property_meterColdWater_edit">ID Cold water meter</label>
+                  <span class="helper-text" data-error="4 to 10 digts or capital letters"></span>
+                </div>
+                <div class="input-field col s12 m4">
+                  <input id="property_meterHotWater_edit" type="text" class="validate" pattern="([A-Z]|[0-9]){4,10}">
+                  <label for="property_meterHotWater_edit">ID Hot water meter</label>
+                  <span class="helper-text" data-error="4 to 10 digts or capital letters"></span>
+                </div>
+                <div class="input-field col s12 m4">
+                  <input id="property_meterHeating_edit" type="text" class="validate" pattern="([A-Z]|[0-9]){4,10}">
+                  <label for="property_meterHeating_edit">ID Central heating meter</label>
+                  <span class="helper-text" data-error="4 to 10 digts or capital letters"></span>
+                </div>
+                <div class="input-field col s12 m6">
+                  <select id="property_owner_edit">
+                    <option value="" disabled selected>Select the owner</option>
+                  </select>
+                  <label for="property_owner_edit">Owner</label>
+                </div> 
+              </form>
+              <button style="float: right" class="btn-small waves-light" type="submit" onclick="writeProperty()">Submit<i class="material-icons right">send</i></button>
+            <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+              </div>
+          </div>
+        </div>
       </div>
     </main>
     <script>
@@ -512,7 +749,7 @@
 
     var refCoproperty = firestore.doc("CoProperties/OrncEBHp37pJYisfxf79");
     var refCopropertyFiles = fileStorageRef.child("OrncEBHp37pJYisfxf79");
-    const editMode = "_edit";
+    var editMode = "_edit";
         
     function emptyHTMLSet(set) {
       while(set.hasChildNodes()){
@@ -962,100 +1199,232 @@
     </script>
     <!--   Members scripts start here -->
     <script>
-        function getMemberEntries() {
-      return {
-            firstName: document.getElementById("member_firstName_edit").value,
-            lastName: document.getElementById("member_lastName_edit").value,
-            email: document.getElementById("member_email_edit").value,
-            phoneHome: document.getElementById("member_phoneHome_edit").value,
-            phoneMobile: document.getElementById("member_phoneMobile_edit").value,
-            country: document.getElementById("member_country_edit").value,
-            zip: document.getElementById("member_zip_edit").value,
-            town: document.getElementById("member_town_edit").value,
-            street: document.getElementById("member_street_edit").value,
-            houseNumber: document.getElementById("member_houseNumber_edit").value,
-            bus: document.getElementById("member_bus_edit").value
+      var membersTable = document.getElementById("membersTable");
+      function loadMember (objectFS){
+        var object = objectFS.data();
+        var objectsRow= document.createElement('tr');
+        var cellContent = document.createElement('a');
+        cellContent.setAttribute("data-target", "memberView");
+        cellContent.setAttribute('class','btn-flat waves-light modal-trigger');
+        cellContent.setAttribute('onclick','setSelectedMember('+JSON.stringify(objectFS.id)+','+JSON.stringify(object)+',"")');
+        cellContent.innerHTML = "<font color='blue'>" + object.firstName+"   "+object.lastName + "</font>";
+        var cell = document.createElement('td');
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell);
+        
+        cellContent = document.createTextNode(object.email);
+        cell = document.createElement('td');
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell);  
+
+        cellContent = document.createTextNode(object.phoneMobile);
+        cell = document.createElement('td');
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell);  
+
+        membersTable.appendChild (objectsRow);
       };
-    };
-    
-    function propertyJump (propertyId, propertyObject){
       
-      M.Modal.getInstance(document.getElementById("memberView")).close();
-      setSelectedProperty(propertyId,propertyObject,"");
-    };
-
-    
-    function propertyLinkFromMemberView(property) {
-      var elA = document.createElement('a');
-      elA.setAttribute("data-target", "propertyView");
-      elA.setAttribute('class','btn-flat modal-trigger');
-      elA.setAttribute('onclick','propertyJump('+JSON.stringify(property.id)+','+JSON.stringify(property.data())+')');
-      elA.innerHTML = "<font color='blue'>"+property.data().code+"</font>"+ "  ";
-      return elA;
-    };
-
-    
-    
-    var mode;
-    var selectedMemberId;
-    var selectedMemberObject;
-    function setSelectedMember(id,object,modeArg) {
-      selectedMemberId=id;
-      selectedMemberObject=object;
-      mode="edit";
-      document.getElementById("member_firstName"+modeArg).value=object.firstName;
-      document.getElementById("member_lastName"+modeArg).value=object.lastName;
-      document.getElementById("member_email"+modeArg).value=object.email;
-      document.getElementById("member_phoneHome"+modeArg).value=object.phoneHome;
-      document.getElementById("member_phoneMobile"+modeArg).value=object.phoneMobile;
-      document.getElementById("member_country"+modeArg).value=object.country;
-      document.getElementById("member_zip"+modeArg).value=object.zip;
-      document.getElementById("member_town"+modeArg).value=object.town;
-      document.getElementById("member_street"+modeArg).value=object.street;
-      document.getElementById("member_houseNumber"+modeArg).value=object.houseNumber;
-      document.getElementById("member_bus"+modeArg).value=object.bus;
-      if (!modeArg) {
-        var ownerOfEl = document.getElementById("member_ownerOf");
-        emptyHTMLSet(ownerOfEl);
-        refCoproperty.collection("Properties").where("owner", "==", id).get().then (function (querySnapshot){
-          querySnapshot.forEach (function (property) {
-            ownerOfEl.appendChild(propertyLinkFromMemberView(property));
-          });
-        });
-        var occupantOfEl = document.getElementById("member_occupantOf");
-        emptyHTMLSet(occupantOfEl);
-        refCoproperty.collection("Properties").get().then (function (querySnapshotProperties){
-          querySnapshotProperties.forEach (function (property) {
-            property.ref.collection("Occupants").where("occupant", "==", id).get().then (function (querySnapshotOccupants){
-              if (querySnapshotOccupants.docs.length > 0) {
-                occupantOfEl.appendChild(propertyLinkFromMemberView(property));
-              };
-            });
-          });
-        });
+      function refreshMembers() {
+        emptyHTMLSet(membersTable);
+        refCoproperty.collection("Members").orderBy("firstName").get().then(function(objectsFSArray){
+          objectsFSArray.forEach(function(objectFS){
+            loadMember(objectFS);
+          });  
+        });    
       };
-      M.updateTextFields();
-    };
 
-    function resetSelectedMember() {
-      selectedMemberId=null;
-      selectedMemberObject=null;
-      mode="add";
-      document.getElementById("member_firstName_edit").value="";
-      document.getElementById("member_lastName_edit").value="";
-      document.getElementById("member_email_edit").value="";
-      document.getElementById("member_phoneHome_edit").value="";
-      document.getElementById("member_phoneMobile_edit").value="";
-      document.getElementById("member_country_edit").value="";
-      document.getElementById("member_zip_edit").value="";
-      document.getElementById("member_town_edit").value="";
-      document.getElementById("member_street_edit").value="";
-      document.getElementById("member_houseNumber_edit").value="";
-      document.getElementById("member_bus_edit").value="";
-      M.updateTextFields();
-    };
+      var membersLoaded = false;
+      function loadMembers(){
+        if (!membersLoaded) {
+          refreshMembers();
+          membersLoaded = true;
+        };
+      };
 
+      function addMember(member){
+        refCoproperty.collection("Members").add(member)
+          .then(function(docref) {
+            refreshMembers();
+            M.Modal.getInstance(document.getElementById("memberWrite")).close();
+          }).catch(function(error) {
+            M.toast({html:"Error occurred adding this member:" + error}); 
+          });
+      };
 
+      function updateMember(member){
+        refCoproperty.collection("Members").doc(selectedMemberId).set(member)
+          .then(function(docref) {
+            refreshMembers();
+            setSelectedMember(selectedMemberId,getMemberEntries(),"");
+            M.Modal.getInstance(document.getElementById("memberWrite")).close();
+          }).catch(function(error) {
+            M.toast({html:"Error occurred updating this member:" + error}); 
+          });
+      };
+
+      function writeMember() {
+        if (validateMemberEntries()) {  
+          var entries = getMemberEntries();
+          if (mode === "add"){
+            if (entries.email) {
+              refCoproperty.collection("Members").where("email", "==", entries.email).get()
+                .then(function(existingList) {
+                  if (existingList.docs.length > 0) {
+                    M.toast({html:"Error: member with this email already exists"}); 
+                  } else {
+                      addMember(entries);
+                    };
+                }) .catch (function(error) {
+                  M.toast({html:"Error occurred checking email uniqueness:" + error}); 
+                });
+            } else {
+                    addMember(entries);
+            };
+          } else {
+            if ((entries.email) && (! (entries.email.normalize() === selectedMemberObject.email.normalize()))) {
+              refCoproperty.collection("Members").where("email", "==", entries.email).get()
+                .then(function(existingList) {
+                  if (existingList.docs.length > 0) {
+                    M.toast({html:"Error: member with this email already exists"}); 
+                  } else {
+                      updateMember(entries);
+                    };
+                }) .catch (function(error) {
+                  M.toast({html:"Error occurred checking email uniqueness:" + error}); 
+                });
+            } else {
+                    updateMember(entries);
+            };
+          };
+        };
+      };        
+
+        function getMemberEntries() {
+          return {
+                firstName: document.getElementById("member_firstName_edit").value,
+                lastName: document.getElementById("member_lastName_edit").value,
+                email: document.getElementById("member_email_edit").value,
+                phoneHome: document.getElementById("member_phoneHome_edit").value,
+                phoneMobile: document.getElementById("member_phoneMobile_edit").value,
+                country: document.getElementById("member_country_edit").value,
+                zip: document.getElementById("member_zip_edit").value,
+                town: document.getElementById("member_town_edit").value,
+                street: document.getElementById("member_street_edit").value,
+                houseNumber: document.getElementById("member_houseNumber_edit").value,
+                bus: document.getElementById("member_bus_edit").value
+          };
+        };
+        
+        function propertyJump (propertyId, propertyObject){
+          
+          M.Modal.getInstance(document.getElementById("memberView")).close();
+          setSelectedProperty(propertyId,propertyObject,"");
+        };
+
+        
+        function propertyLinkFromMemberView(property) {
+          var elA = document.createElement('a');
+          elA.setAttribute("data-target", "propertyView");
+          elA.setAttribute('class','btn-flat modal-trigger');
+          elA.setAttribute('onclick','propertyJump('+JSON.stringify(property.id)+','+JSON.stringify(property.data())+')');
+          elA.innerHTML = "<font color='blue'>"+property.data().code+"</font>"+ "  ";
+          return elA;
+        };
+
+        
+        
+        var mode;
+        var selectedMemberId;
+        var selectedMemberObject;
+        function setSelectedMember(id,object,modeArg) {
+          selectedMemberId=id;
+          selectedMemberObject=object;
+          mode="edit";
+          document.getElementById("member_firstName"+modeArg).value=object.firstName;
+          document.getElementById("member_lastName"+modeArg).value=object.lastName;
+          document.getElementById("member_email"+modeArg).value=object.email;
+          document.getElementById("member_phoneHome"+modeArg).value=object.phoneHome;
+          document.getElementById("member_phoneMobile"+modeArg).value=object.phoneMobile;
+          document.getElementById("member_country"+modeArg).value=object.country;
+          document.getElementById("member_zip"+modeArg).value=object.zip;
+          document.getElementById("member_town"+modeArg).value=object.town;
+          document.getElementById("member_street"+modeArg).value=object.street;
+          document.getElementById("member_houseNumber"+modeArg).value=object.houseNumber;
+          document.getElementById("member_bus"+modeArg).value=object.bus;
+          if (!modeArg) {
+            var ownerOfEl = document.getElementById("member_ownerOf");
+            emptyHTMLSet(ownerOfEl);
+            refCoproperty.collection("Properties").where("owner", "==", id).get().then (function (querySnapshot){
+              querySnapshot.forEach (function (property) {
+                ownerOfEl.appendChild(propertyLinkFromMemberView(property));
+              });
+            });
+            var occupantOfEl = document.getElementById("member_occupantOf");
+            emptyHTMLSet(occupantOfEl);
+            refCoproperty.collection("Properties").get().then (function (querySnapshotProperties){
+              querySnapshotProperties.forEach (function (property) {
+                property.ref.collection("Occupants").where("occupant", "==", id).get().then (function (querySnapshotOccupants){
+                  if (querySnapshotOccupants.docs.length > 0) {
+                    occupantOfEl.appendChild(propertyLinkFromMemberView(property));
+                  };
+                });
+              });
+            });
+          };
+          M.updateTextFields();
+        };
+
+        function resetSelectedMember() {
+          selectedMemberId=null;
+          selectedMemberObject=null;
+          mode="add";
+          document.getElementById("member_firstName_edit").value="";
+          document.getElementById("member_lastName_edit").value="";
+          document.getElementById("member_email_edit").value="";
+          document.getElementById("member_phoneHome_edit").value="";
+          document.getElementById("member_phoneMobile_edit").value="";
+          document.getElementById("member_country_edit").value="";
+          document.getElementById("member_zip_edit").value="";
+          document.getElementById("member_town_edit").value="";
+          document.getElementById("member_street_edit").value="";
+          document.getElementById("member_houseNumber_edit").value="";
+          document.getElementById("member_bus_edit").value="";
+          M.updateTextFields();
+        };
+
+        function validateMemberEntries() {
+              var valid= true;
+              if (!document.getElementById("member_firstName_edit").checkValidity()) {
+                M.toast({html:"Please enter First Name"});
+                valid=false;
+              };
+              if (!document.getElementById("member_lastName_edit").checkValidity()) {
+                M.toast({html:"Please enter Last Name"});
+                valid=false;
+              };
+              if (!document.getElementById("member_email_edit").checkValidity()) {
+                M.toast({html:"Please enter valid Email"});
+                valid=false;
+              };
+              if (!document.getElementById("member_phoneHome_edit").checkValidity()) {
+                M.toast({html:"Please enter valid Phone Home"});
+                valid=false;
+              };
+              if (!document.getElementById("member_phoneMobile_edit").checkValidity()) {
+                M.toast({html:"Please enter valid Mobile"});
+                valid=false;
+              };
+              if (!document.getElementById("member_zip_edit").checkValidity()) {
+                M.toast({html:"Please enter valid Zip"});
+                valid=false;
+              };
+              if (!document.getElementById("member_bus_edit").checkValidity()) {
+                M.toast({html:"Please enter valid Bus"});
+                valid=false;
+              };
+              return valid;
+        };
     </script>
     <!--   Properties scripts start here -->
     <script>
