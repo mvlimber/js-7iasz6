@@ -365,7 +365,7 @@
           <table class="striped">
             <thead>
               <tr>
-                <th> First and Last Name </th>
+                <th style="white-space: nowrap"> First and Last Name </th>
                 <th> Email </th>
                 <th> Mobile </th>
               </tr>
@@ -1221,6 +1221,7 @@
         cellContent.setAttribute('onclick','setSelectedMember('+JSON.stringify(objectFS.id)+','+JSON.stringify(object)+',"")');
         cellContent.innerHTML = "<font color='blue'>" + object.firstName+"   "+object.lastName + "</font>";
         var cell = document.createElement('td');
+        cell.setAttribute("style","white-space: nowrap");
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);
         
