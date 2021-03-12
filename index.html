@@ -1478,7 +1478,7 @@
             cellContent = document.createElement('a');
             cellContent.setAttribute("data-target", "memberView");
             cellContent.setAttribute('class','btn-flat waves-light modal-trigger');
-            cellContent.setAttribute('onclick','setSelectedMember('+JSON.stringify(objectFS.id)+','+JSON.stringify(object)+',"")');
+            cellContent.setAttribute('onclick','setSelectedMember('+JSON.stringify(objectFS.id)+','+JSON.stringify(owner)+',"")');
             cellContent.innerHTML = "<font color='blue'>" + owner.firstName+"   "+owner.lastName + "</font>";
             ownerCell.removeChild(ownerCell.firstChild);
             ownerCell.appendChild(cellContent);
