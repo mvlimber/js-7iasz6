@@ -682,7 +682,7 @@
     
     function login(){
       if (validateLoginEntries()) {
-        var email = document.getElementById("login_email").value;
+        var email = document.getElementById("login_email").value.toLowerCase();
         var password = document.getElementById("login_password").value;
 
         var docUserRef = firestore.collection("Users").doc(email);
