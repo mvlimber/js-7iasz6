@@ -66,16 +66,19 @@
 
       <button class="btn waves-effect waves-light" type="submit" onclick="login()">Log in<i class="material-icons right">perm_identity</i></button>
       <br>
+      <button class="btn-flat" onclick="showPasswordReset()">
+        <font color='blue'>Forgot password? </font>
+      </button>
+      <br>
       <button class="btn-flat" onclick="showPasswordSet()">
-        <font color='blue'>Forgot password? First time user?</font>
+        <font color='blue'>First time user?</font>
       </button>
     </div>
 
     <div id="setPasswordPanel" class="displayHidden">
       <h6 style="font-size:36px;color:#00796b">MyCondos</h6>
       <h6 style="font-size:12px;color:black">Stay connected to your properties</h6>
-      <h6 style="font-size:20px;color:black">Please enter your email address and</h6>
-      <h6 style="font-size:20px;color:black">further instructions will be sent by email.</h6>
+      <h6 style="font-size:20px;color:black">Create password</h6>
       <div style="width:500px">
         <form class="col s12">
           <div class="input-field col s12">
@@ -85,10 +88,38 @@
           </div>
         </form>
       </div>
-
-      <button class="btn waves-effect waves-light" type="submit" onclick="passwordSet()">Submit<i class="material-icons right">send</i></button>
+      <h6 style="font-size:16px;color:black">An email will be sent to the above address</h6>
+      <h6 style="font-size:16px;color:black">with a link to set your  password.</h6>
       <br>
-      <button class="btn-flat" onclick="backToLogin()">
+      <h6 style="font-size:16px;color:black">Note that your administrator should yet </h6>
+      <h6 style="font-size:16px;color:black">have entered your email address.</h6>
+      <br>
+      <button class="btn waves-effect waves-light" type="submit" onclick="passwordSet()">Submit<i class="material-icons right">send</i></button>
+      <br><br>
+      <button class="btn-flat" onclick="backToLoginFromSetPW()">
+        <font color='blue'>Back to Login</font>
+      </button>
+    </div>
+
+    <div id="resetPasswordPanel" class="displayHidden">
+      <h6 style="font-size:36px;color:#00796b">MyCondos</h6>
+      <h6 style="font-size:12px;color:black">Stay connected to your properties</h6>
+      <h6 style="font-size:20px;color:black">Reset password</h6>
+      <div style="width:500px">
+        <form class="col s12">
+          <div class="input-field col s12">
+            <input id="passwordSet_email" type="email" maxlength="50" class="validate" required aria-required="true">
+            <label for="passwordSet_email">Email</label>
+            <span class="helper-text" data-error="please enter valid email" ></span>
+          </div>
+        </form>
+      </div>
+      <h6 style="font-size:16px;color:black">An email will be sent to the above address</h6>
+      <h6 style="font-size:16px;color:black">with a link to set your new password.</h6>
+      <br>
+      <button class="btn waves-effect waves-light" type="submit" onclick="passwordSet()">Submit<i class="material-icons right">send</i></button>
+      <br><br>
+      <button class="btn-flat" onclick="backToLoginFromResetPW()">
         <font color='blue'>Back to Login</font>
       </button>
     </div>
@@ -660,7 +691,12 @@
       function showPasswordSet() {
       document.getElementById("loginPanel").setAttribute("class","displayHidden");
       document.getElementById("setPasswordPanel").setAttribute("class","displayBlock");
-    };
+      };
+
+      function showPasswordReset() {
+      document.getElementById("loginPanel").setAttribute("class","displayHidden");
+      document.getElementById("resetPasswordPanel").setAttribute("class","displayBlock");
+      };
 
     function validateLoginEntries() {
       var valid= true;
@@ -708,8 +744,12 @@
       };
     };
 
-    function backToLogin() {
+    function backToLoginFromSetPW() {
       document.getElementById("setPasswordPanel").setAttribute("class","displayHidden");
+      document.getElementById("loginPanel").setAttribute("class","displayBlock"); 
+    };
+    function backToLoginFromResetPW() {
+      document.getElementById("resetPasswordPanel").setAttribute("class","displayHidden");
       document.getElementById("loginPanel").setAttribute("class","displayBlock"); 
     };
     function showLogin() {
