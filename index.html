@@ -108,8 +108,8 @@
       <div style="width:500px">
         <form class="col s12">
           <div class="input-field col s12">
-            <input id="passwordSet_email" type="email" maxlength="50" class="validate" required aria-required="true">
-            <label for="passwordSet_email">Email</label>
+            <input id="passwordReset_email" type="email" maxlength="50" class="validate" required aria-required="true">
+            <label for="passwordReset_email">Email</label>
             <span class="helper-text" data-error="please enter valid email" ></span>
           </div>
         </form>
@@ -117,7 +117,7 @@
       <h6 style="font-size:16px;color:black">An email will be sent to the above address</h6>
       <h6 style="font-size:16px;color:black">with a link to set your new password.</h6>
       <br>
-      <button class="btn waves-effect waves-light" type="submit" onclick="passwordSet()">Submit<i class="material-icons right">send</i></button>
+      <button class="btn waves-effect waves-light" type="submit" onclick="passwordReset()">Submit<i class="material-icons right">send</i></button>
       <br><br>
       <button class="btn-flat" onclick="backToLoginFromResetPW()">
         <font color='blue'>Back to Login</font>
@@ -217,7 +217,7 @@
         </div>
         <!------------------------------------------------------------------------------------------------------>
         <div id="Reports" class="col s12">
-          <div id="reportsAdd" class="modal">
+          <div id="reportAdd" class="modal">
           <div class="modal-content">
             <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
               Cancel</a>
@@ -232,22 +232,22 @@
                   <input type="file" id="reportFile">
                 </div>
                 <div class="file-path-wrapper">
-                  <input class="file-path validate" type="text" id="meterFileText">
+                  <input class="file-path validate" type="text" id="reportFileText">
                 </div>
               </div>
             </form>
              <form class="col s12">
                 <div class="row">
                   <div class="input-field col s12 m4">
-                    <input id="report_type" type="text" required required="true">
-                    <label for="report_type">type</label>
+                    <input id="report_type_edit" type="text" required required="true">
+                    <label for="report_type_edit">type</label>
                   </div>
                 </div>
               </form>
             </div>
           </div>
           <div class="modal-footer">
-            <button style="float: right" class="btn-small waves-light" type="submit" onclick="storeReport()">Submit<i class="material-icons right">send</i></button>
+            <button style="float: right" class="btn-small waves-light" type="submit" onclick="writeReport()">Submit<i class="material-icons right">send</i></button>
             <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
               Cancel</a>
           </div>
@@ -280,9 +280,6 @@
           </table>
           <br>
           <button data-target="reportAdd" class="btn-small waves-light modal-trigger" ><i class="material-icons right">add</i>New Report</button>
-          <br>
-          <a target="_blank"
-            href="https://firebasestorage.googleapis.com/v0/b/slimmeeigendomdb.appspot.com/o/Azur_AG_2020_PV.pdf?alt=media&token=4e3db48c-eb71-4efd-bf62-6e0ec1fba6a0">Azur_2020_AssembléeGénérale</a>
         </div>
         <!------------------------------------------------------------------------------------------------------>
         <div id="modalTransactionClassify" class="modal">
@@ -848,6 +845,17 @@
               });
       };
     };
+    function passwordReset(){
+      if (validatePasswordSetEntries()) {
+        var email = document.getElementById("passwordReset_email").value;
+            firebase.auth().sendPasswordResetEmail(email).then(function() {
+                M.toast({html:"Please follow instructions sent by mail"});
+                showLogin();
+              }).catch(function(error) {
+                M.toast({html:"Unknown email: Please contact your administrator"});
+              });
+      };
+    };
     </script>
     <!--   Application scripts starts here -->
     <script>
@@ -904,7 +912,7 @@
 
       function removeReport(id) {
         
-      }
+      };
 
       function loadReport (objectFS){
         var object = objectFS.data();
@@ -962,7 +970,63 @@
             refreshReports();
             transactionsLoaded = true;
           };
-    }
+      };
+
+      var reportFile;
+      function validateReportEntries() {
+        var valid = true
+        if (!(document.getElementById("report_type_edit").value)) {
+          M.toast({html:"Please enter type"});
+          valid=false;
+        };
+      
+        reportFile = document.getElementById('reportFile').files[0];
+        let allowed_mime_types = ['pdf'];
+        let allowed_size_kb = 500;
+        if (reportFile) {
+          if(allowed_mime_types.indexOf(reportFile.type) == -1) {
+            M.toast({html:"Incorrect file type (only pdf allowed)"});
+            valid=false;
+          };
+          if(reportFile.size > allowed_size_kb*1024) {
+            M.toast({html:"File exceeds max size 500KB"});
+            valid=false;
+          } else {
+            M.toast({html:"Please enter file"});
+            valid=false;
+          };
+        }
+        return valid;
+      };
+
+      function getReportEntries() {
+        return {
+          fileName: reportFile.name,
+          property: document.getElementById("report_type_edit").value,
+          date:"19/03/2021",
+        };
+      };
+
+
+      function writeReport() {
+        if (validateReportEntries()) {  
+          var entries = getMeterEntries();
+          refCoproperty.collection("Reports").add(entries).then(function(docref) {
+            if (reportFile) {
+              var fileRef = refCopropertyFiles.child("Reports").child(docref.id);  
+              fileRef.put(meterFile).then (function (){});
+              M.Modal.getInstance(document.getElementById("reportAdd")).close();
+              refreshReports();
+            } else {
+              M.toast({html:"System error writing file"});
+            };
+          }).catch(function(error) {
+            M.toast({html:"System error writing document: " + error});
+          });
+        };
+      };
+
+
     </script>
     <!--   Transaction scripts start here -->
     <script>
