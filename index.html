@@ -217,6 +217,41 @@
         </div>
         <!------------------------------------------------------------------------------------------------------>
         <div id="Reports" class="col s12">
+          <div id="reportsAdd" class="modal">
+          <div class="modal-content">
+            <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
+              Cancel</a>
+            <h5> New Report</h5>
+            <div class="row">
+              <form>
+              <div class="input-field col s12 m12" id="report_file_edit">
+              </div>
+              <div class="file-field input-field col s12 m6">
+                <div class="btn-small">
+                  <span>PDF Document<i class="material-icons right">attach_file</i></span>
+                  <input type="file" id="reportFile">
+                </div>
+                <div class="file-path-wrapper">
+                  <input class="file-path validate" type="text" id="meterFileText">
+                </div>
+              </div>
+            </form>
+             <form class="col s12">
+                <div class="row">
+                  <div class="input-field col s12 m4">
+                    <input id="report_type" type="text" required required="true">
+                    <label for="report_type">type</label>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button style="float: right" class="btn-small waves-light" type="submit" onclick="storeReport()">Submit<i class="material-icons right">send</i></button>
+            <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
+              Cancel</a>
+          </div>
+        </div>
           <h6 style="font-size:22px "><b>Individual Reports</b></h6>
           <h6 style="font-size:12px;color:black">These reports are automatically generated after closure of each booking
             period</h6>
@@ -240,7 +275,7 @@
                 <th> Date </th>
               </tr>
             </thead>
-            <tbody id="reportTable">
+            <tbody id="reportsTable">
             </tbody>
           </table>
           <br>
@@ -861,9 +896,11 @@
     </script>
     <!--   Reports scripts start here -->
     <script>
-      function showReport(id, fileName) {
-
-      }
+      function showReport(id) {
+        refCopropertyFiles.child("Reports").child(id).getDownloadURL().then(function(url) {
+          window.open(url,"_blank");
+        });
+      };
 
       function removeReport(id) {
         
@@ -875,9 +912,8 @@
         
         var cellContent = document.createElement("button");
         cellContent.setAttribute('class','btn-flat');
-        cellContent.setAttribute('onclick','showReport('+JSON.stringify(objectFS.id)+','+object.fileName+')');
+        cellContent.setAttribute('onclick','showReport('+JSON.stringify(objectFS.id)+')');
         var cell = document.createElement('td');
-        cellContent.setAttribute("href",url);
         cellContent.setAttribute("target","_blank"); 
         cellContent.innerHTML = "<font color='blue'>" + object.fileName + "</font>";
         cell.appendChild(cellContent);
@@ -894,7 +930,7 @@
         objectsRow.appendChild(cell); 
         
         cellContent = document.createElement('button');
-        cellContent.setAttribute('class','btn-small waves-light');
+        cellContent.setAttribute('class','btn-small waves-light red');
         cellContent.setAttribute('onclick','removeReport('+JSON.stringify(objectFS.id)+')');
         var cellButtonIcon = document.createElement('i');
         cellButtonIcon.setAttribute('class','material-icons right');
@@ -908,8 +944,6 @@
         
         reportsTable.appendChild (objectsRow);
       };
-
-
 
       function refreshReports(){
         emptyHTMLSet(reportsTable);
@@ -962,7 +996,7 @@
 
               cellContent = document.createElement('button');
               cellContent.setAttribute("data-target", "modalTransactionClassify");
-              cellContent.setAttribute('class','btn-small waves-light modal-trigger');
+              cellContent.setAttribute('class','btn-small waves-light modal-trigger red');
               cellContent.setAttribute('onclick','setSelectedTransaction('+JSON.stringify(objectFS.id)+','+JSON.stringify(object)+')');
               cellButtonIcon = document.createElement('i');
               cellButtonIcon.setAttribute('class','material-icons right');
