@@ -709,6 +709,49 @@
           <h6><b id="totalQuotas"></b></h6>
           <button style="float: right" data-target="propertyWrite" class="btn-small waves-light modal-trigger" onclick="resetSelectedProperty()"><i class="material-icons right">add</i>New Property</button>
 
+          <div id="propertyAdd" class="modal">
+            <div class="modal-content">
+              <a style="float: right"
+                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+              <h5> Enter property data</h5>
+              <form class="col s12">
+                <div class="input-field col s6 m6">
+                  <input id="property_code_add" type="text" maxlength="5" class="validate" required aria-required="true">
+                  <label for="property_code_add">Code<b><font color='red'>*</font></b></label>
+                  <span class="helper-text" data-error="please enter a string of max 4 characters" ></span>
+                </div>
+                <div class="input-field col s6 m6">
+                  <input id="property_quota_add" type="number" class="validate" min="0" max="9999" required aria-required="true">
+                  <label for="property_quota_add">Quota<b><font color='red'>*</font></b></label>
+                  <span class="helper-text" data-error="please enter a number of max 4 digits"></span>
+                </div>
+                <div class="row">
+                  <div class="input-field col s6 m6">
+                    <select id="property_type_add" required aria-required="true">
+                    <option value="" disabled selected>Select the type</option>
+                    <option>Garage</option>
+                    <option>Apartment</option>
+                  </select>
+                    <label for="property_type_add">Type<b><font color='red'>*</font></b></label>
+                  </div>
+                  <div class="input-field col s6 m6">
+                    <input id="property_cellar_add" type="text" maxlength="10" class="validate">
+                    <label for="property_cellar_add">Cellar</label>
+                  </div>
+                </div>
+                <div class="input-field col s12 m6">
+                  <select id="property_owner_add">
+                    <option value="" disabled selected>Select the owner</option>
+                  </select>
+                  <label for="property_owner_add">Owner</label>
+                </div>
+              </form>
+              <button style="float: right" class="btn-small waves-light" type="submit" onclick="addProperty()">Save and complete<i class="material-icons right">send</i></button>
+              <a style="float: right"
+                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+            </div>
+          </div>
+          
           <div id="propertyWrite" class="modal">
             <div class="modal-content">
               <a style="float: right"
