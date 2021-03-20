@@ -981,7 +981,8 @@
         };
       
         reportFile = document.getElementById('reportFile').files[0];
-        let allowed_mime_types = ['pdf'];
+        console.log("file type: " +reportFile.type);
+        let allowed_mime_types = ['application/pdf'];
         let allowed_size_kb = 500;
         if (reportFile) {
           if(allowed_mime_types.indexOf(reportFile.type) == -1) {
@@ -991,18 +992,18 @@
           if(reportFile.size > allowed_size_kb*1024) {
             M.toast({html:"File exceeds max size 500KB"});
             valid=false;
-          } else {
+          };
+        } else {
             M.toast({html:"Please enter file"});
             valid=false;
-          };
-        }
+        };
         return valid;
       };
 
       function getReportEntries() {
         return {
           fileName: reportFile.name,
-          property: document.getElementById("report_type_edit").value,
+          type: document.getElementById("report_type_edit").value,
           date:"19/03/2021",
         };
       };
@@ -1010,11 +1011,11 @@
 
       function writeReport() {
         if (validateReportEntries()) {  
-          var entries = getMeterEntries();
+          var entries = getReportEntries();
           refCoproperty.collection("Reports").add(entries).then(function(docref) {
             if (reportFile) {
               var fileRef = refCopropertyFiles.child("Reports").child(docref.id);  
-              fileRef.put(meterFile).then (function (){});
+              fileRef.put(reportFile).then (function (){});
               M.Modal.getInstance(document.getElementById("reportAdd")).close();
               refreshReports();
             } else {
