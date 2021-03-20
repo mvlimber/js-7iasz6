@@ -228,7 +228,7 @@
               </div>
               <div class="file-field input-field col s12 m6">
                 <div class="btn-small">
-                  <span>PDF Document<i class="material-icons right">attach_file</i></span>
+                  <span>PDF Document<b><font color='red'>*</font></b><i class="material-icons right">attach_file</i></span>
                   <input type="file" id="reportFile">
                 </div>
                 <div class="file-path-wrapper">
@@ -236,13 +236,13 @@
                 </div>
               </div>
             </form>
-             <form class="col s12">
-                <div class="row">
-                  <div class="input-field col s12 m4">
-                    <input id="report_type_edit" type="text" required required="true">
-                    <label for="report_type_edit">type</label>
+             <form class="col s12 m6">
+                  <div class="input-field col s12 m6">
+                    <input id="report_type_edit" type="text" required required="true" maxlength="50">
+                    <label for="report_type_edit">Type<b><font color='red'>*</font></b></label>
+                    <span class="helper-text" data-error="maximum 50 characters" ></span>
                   </div>
-                </div>
+                
               </form>
             </div>
           </div>
@@ -270,16 +270,16 @@
           <table class="striped">
             <thead>
               <tr>
-                <th> Document </th>
-                <th> Type</th>
-                <th> Date </th>
+                <th> File name </th>
+                <th> Document Type</th>
+                <th> Upload Date </th>
               </tr>
             </thead>
             <tbody id="reportsTable">
             </tbody>
           </table>
           <br>
-          <button data-target="reportAdd" class="btn-small waves-light modal-trigger" ><i class="material-icons right">add</i>New Report</button>
+          <button style="float: right" data-target="reportAdd" class="btn-small waves-light modal-trigger" onclick="emptyReportFields()"><i class="material-icons right">add</i>New Report</button>
         </div>
         <!------------------------------------------------------------------------------------------------------>
         <div id="modalTransactionClassify" class="modal">
@@ -364,7 +364,7 @@
             </tbody>
           </table>
           <br>
-          <button data-target="meterWrite" class="btn-small waves-light modal-trigger" onclick="resetSelectedMeter()"><i class="material-icons right">add</i>New Meter Reading</button>
+          <button style="float: right" data-target="meterWrite" class="btn-small waves-light modal-trigger" onclick="resetSelectedMeter()"><i class="material-icons right">add</i>New Meter Reading</button>
 
           <div id="meterView" class="modal">
             <div class="modal-content">
@@ -552,13 +552,13 @@
                 <i class="material-icons prefix">account_circle</i>
                 <input id="member_firstName_edit" type="text" class="validate" maxlength="50" required aria-required="true">
                 <label for="member_firstName_edit" >First Name<b><font color='red'>*</font></b></label>
-                <span class="helper-text" data-error="required field" ></span>
+                <span class="helper-text" data-error="maximum 50 characters" ></span>
               </div>
               <div class="input-field col s12 m8">
                 <i class="material-icons prefix">account_circle</i>
                 <input id="member_lastName_edit" type="text" class="validate" maxlength="50" required aria-required="true">
                 <label for="member_lastName_edit" >Last Name <b><font color='red'>*</font></b></label>
-                <span class="helper-text" data-error="required field" ></span>
+                <span class="helper-text" data-error="maximum 50 characters" ></span>
               </div>
               <div class="input-field col s12">
                 <input id="member_email_edit" type="email" class="validate" maxlength="70" >
@@ -904,6 +904,12 @@
     </script>
     <!--   Reports scripts start here -->
     <script>
+      function emptyReportFields(){
+        document.getElementById("reportFile").value = "";
+        document.getElementById("reportFileText").value = "";
+        document.getElementById("report_type_edit").value = "";
+      };
+      
       function showReport(id) {
         refCopropertyFiles.child("Reports").child(id).getDownloadURL().then(function(url) {
           window.open(url,"_blank");
@@ -976,14 +982,13 @@
       function validateReportEntries() {
         var valid = true
         if (!(document.getElementById("report_type_edit").value)) {
-          M.toast({html:"Please enter type"});
+          M.toast({html:"Please enter Type"});
           valid=false;
         };
       
         reportFile = document.getElementById('reportFile').files[0];
-        console.log("file type: " +reportFile.type);
         let allowed_mime_types = ['application/pdf'];
-        let allowed_size_kb = 500;
+        let allowed_size_kb = 5000;
         if (reportFile) {
           if(allowed_mime_types.indexOf(reportFile.type) == -1) {
             M.toast({html:"Incorrect file type (only pdf allowed)"});
@@ -994,17 +999,18 @@
             valid=false;
           };
         } else {
-            M.toast({html:"Please enter file"});
+            M.toast({html:"Please select PDF File"});
             valid=false;
         };
         return valid;
       };
 
       function getReportEntries() {
+        var d = new Date();
         return {
           fileName: reportFile.name,
           type: document.getElementById("report_type_edit").value,
-          date:"19/03/2021",
+          date: d.toDateString()
         };
       };
 
@@ -1027,6 +1033,19 @@
         };
       };
 
+      function removeReport(report){
+        refCoproperty.collection("Reports").doc(report).delete().then(function(){
+          refreshReports();
+          var fileRef = refCopropertyFiles.child("Reports").child(report);
+          fileRef.delete().then(function() {
+          }).catch(function(error) {
+            M.toast({html:"System error removing report file:" + error});
+            console.log(error);
+          });
+        }).catch(function(error) {
+            M.toast({html:"System error removing report:" + error});
+        });
+      };
 
     </script>
     <!--   Transaction scripts start here -->
