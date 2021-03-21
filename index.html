@@ -660,27 +660,18 @@
                 <div class="input-field col s6 m6">
                   <input id="property_cellar" type="text" readonly>
                   <label for="property_cellar">Cellar</label>
-                </div>
-
-                <div class="input-field col s12 m4">
-                  <input id="property_meterColdWater" type="text" readonly>
-                  <label for="property_meterColdWater">ID Cold water meter</label>
-                </div>
-                <div class="input-field col s12 m4">
-                  <input id="property_meterHotWater" type="text" readonly>
-                  <label for="property_meterHotWater">ID Hot water meter</label>
-                </div>
-                <div class="input-field col s12 m4">
-                  <input id="property_meterHeating" type="text" readonly>
-                  <label for="property_meterHeating">ID Central heating meter</label>
-                </div>
-
-                <div class="input-field col s12 m6">
-                  <a id="property_owner" data-target="memberView" class="modal-trigger btn-flat"> </a>
-                  <label for="property_owner" class="active">Owner</label>
-                </div>
-                <button style="float: right" data-target="propertyWrite" class="btn-small waves-light modal-trigger" onclick="setSelectedProperty(selectedPropertyId, selectedPropertyObject,editMode)">Edit<i class="material-icons right">edit</i></button>
+                </div>               
+                <button style="float: right" data-target="propertyWrite" class="btn-small waves-light modal-trigger" onclick="setEditPropertyEntries()">Edit<i class="material-icons right">edit</i></button>
               </form>
+            </div>
+            <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
+              <div class="input-field col s12 m6">
+                  <a id="property_owner" data-target="memberView" class="modal-trigger btn-flat"> </a>
+                  <label for="property_owner" class="active">Current Owner</label>
+              </div>
+              <div class="input-field col s12 m6">
+              <button style="float: right" data-target="newOwner" class="btn-small waves-light modal-trigger" onclick="newOwner(selectedPropertyId, selectedPropertyObject)">New Owner<i class="material-icons right">add</i></button>
+              </div>
             </div>
             <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
               <div>
@@ -718,13 +709,13 @@
             </tbody>
           </table>
           <h6><b id="totalQuotas"></b></h6>
-          <button style="float: right" data-target="propertyWrite" class="btn-small waves-light modal-trigger" onclick="resetSelectedProperty()"><i class="material-icons right">add</i>New Property</button>
+          <button style="float: right" data-target="propertyAdd" class="btn-small waves-light modal-trigger" onclick="resetSelectedProperty()"><i class="material-icons right">add</i>New Property</button>
 
           <div id="propertyAdd" class="modal">
             <div class="modal-content">
               <a style="float: right"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
-              <h5> Enter property data</h5>
+              <h5> New Property</h5>
               <form class="col s12">
                 <div class="input-field col s6 m6">
                   <input id="property_code_add" type="text" maxlength="5" class="validate" required aria-required="true">
@@ -745,19 +736,34 @@
                   </select>
                     <label for="property_type_add">Type<b><font color='red'>*</font></b></label>
                   </div>
-                  <div class="input-field col s6 m6">
-                    <input id="property_cellar_add" type="text" maxlength="10" class="validate">
-                    <label for="property_cellar_add">Cellar</label>
+                  <div class="input-field col s12 m6">
+                    <select id="property_owner_add" required aria-required="true">
+                      <option value="" disabled selected>Select the owner</option>
+                    </select>
+                    <label for="property_owner_add">Owner<b><font color='red'>*</font></b></label>
                   </div>
                 </div>
-                <div class="input-field col s12 m6">
-                  <select id="property_owner_add">
-                    <option value="" disabled selected>Select the owner</option>
-                  </select>
-                  <label for="property_owner_add">Owner</label>
+                <div class="input-field col s6 m4">
+                  <input id="property_meterColdWater_add" type="text" class="validate" pattern="([A-Z]|[0-9]){4,10}">
+                  <label for="property_meterColdWater_add">ID Cold water meter</label>
+                  <span class="helper-text" data-error="4 to 10 digts or capital letters"></span>
+                </div>
+                <div class="input-field col s6 m4">
+                  <input id="property_meterHotWater_add" type="text" class="validate" pattern="([A-Z]|[0-9]){4,10}">
+                  <label for="property_meterHotWater_add">ID Hot water meter</label>
+                  <span class="helper-text" data-error="4 to 10 digts or capital letters"></span>
+                </div>
+                <div class="input-field col s6 m4">
+                  <input id="property_meterHeating_add" type="text" class="validate" pattern="([A-Z]|[0-9]){4,10}">
+                  <label for="property_meterHeating_add">ID Central heating meter</label>
+                  <span class="helper-text" data-error="4 to 10 digts or capital letters"></span>
+                </div>
+                <div class="input-field col s6 m6">
+                  <input id="property_cellar_add" type="text" maxlength="10" class="validate">
+                  <label for="property_cellar_add">Cellar (for info only)</label>
                 </div>
               </form>
-              <button style="float: right" class="btn-small waves-light" type="submit" onclick="addProperty()">Save and complete<i class="material-icons right">send</i></button>
+              <button style="float: right" class="btn-small waves-light" type="submit" onclick="addProperty()">Submit<i class="material-icons right">send</i></button>
               <a style="float: right"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
             </div>
@@ -767,7 +773,7 @@
             <div class="modal-content">
               <a style="float: right"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
-              <h5> Enter property data</h5>
+              <h5> Edit property data</h5>
               <form class="col s12">
                 <div class="input-field col s6 m6">
                   <input id="property_code_edit" type="text" maxlength="5" class="validate" required aria-required="true">
@@ -792,28 +798,6 @@
                     <input id="property_cellar_edit" type="text" maxlength="10" class="validate">
                     <label for="property_cellar_edit">Cellar</label>
                   </div>
-                </div>
-                <div class="input-field col s6 m4">
-                  <input id="property_meterColdWater_edit" type="text" class="validate" pattern="([A-Z]|[0-9]){4,10}">
-                  <label for="property_meterColdWater_edit">ID Cold water meter</label>
-                  <span class="helper-text" data-error="4 to 10 digts or capital letters"></span>
-                </div>
-                <div class="input-field col s6 m4">
-                  <input id="property_meterHotWater_edit" type="text" class="validate" pattern="([A-Z]|[0-9]){4,10}">
-                  <label for="property_meterHotWater_edit">ID Hot water meter</label>
-                  <span class="helper-text" data-error="4 to 10 digts or capital letters"></span>
-                </div>
-                <div class="input-field col s6 m4">
-                  <input id="property_meterHeating_edit" type="text" class="validate" pattern="([A-Z]|[0-9]){4,10}">
-                  <label for="property_meterHeating_edit">ID Central heating meter</label>
-                  <span class="helper-text" data-error="4 to 10 digts or capital letters"></span>
-                </div>
-
-                <div class="input-field col s12 m6">
-                  <select id="property_owner_edit">
-                    <option value="" disabled selected>Select the owner</option>
-                  </select>
-                  <label for="property_owner_edit">Owner</label>
                 </div>
               </form>
               <button style="float: right" class="btn-small waves-light" type="submit" onclick="writeProperty()">Submit<i class="material-icons right">send</i></button>
@@ -1840,14 +1824,26 @@
         };
       };
 
-      function addProperty(property){
-        refCoproperty.collection("Properties").add(property)
-          .then(function(docref) {
-            refreshProperties();
-            M.Modal.getInstance(document.getElementById("propertyWrite")).close();
-          }).catch(function(error) {
-            M.toast({html:"Error occurred adding this property:" + error}); 
+      function addProperty(){
+       if (validateAddPropertyEntries()) {  
+        var entries = getAddPropertyEntries();
+        refCoproperty.collection("Properties").where("code", "==", entries.code).get()
+          .then(function(existingList) {
+            if (existingList.docs.length > 0) {
+              M.toast({html:"Error: property with this code already exists"}); 
+            } else {
+              refCoproperty.collection("Properties").add(entries)
+                .then(function(docref) {
+                  refreshProperties();
+                  M.Modal.getInstance(document.getElementById("propertyAdd")).close();
+                }).catch(function(error) {
+                  M.toast({html:"Error occurred adding this property:" + error}); 
+                });
+            };
+          }).catch (function(error) {
+            M.toast({html:"Error occurred checking code uniqueness:" + error}); 
           });
+       };
       };
 
       function updateProperty(property){
@@ -1862,34 +1858,21 @@
       };
 
       function writeProperty() {
-        if (validatePropertyEntries()) {  
-          var entries = getPropertyEntries();
-          if (propertyMode === "add"){
+        if (validateEditPropertyEntries()) {  
+          var entries = getEditPropertyEntries();
+          if (! (entries.code.normalize() === selectedPropertyObject.code.normalize())) {
             refCoproperty.collection("Properties").where("code", "==", entries.code).get()
-                .then(function(existingList) {
-                  if (existingList.docs.length > 0) {
-                    M.toast({html:"Error: property with this code already exists"}); 
-                  } else {
-                      addProperty(entries);
-                    };
-                }) .catch (function(error) {
-                  M.toast({html:"Error occurred checking code uniqueness:" + error}); 
-                });
-          } else {
-            if (! (entries.code.normalize() === selectedPropertyObject.code.normalize())) {
-              refCoproperty.collection("Properties").where("code", "==", entries.code).get()
-                .then(function(existingList) {
-                  if (existingList.docs.length > 0) {
-                    M.toast({html:"Error: property with this code already exists"}); 
-                  } else {
-                      updateProperty(entries);
-                    };
-                }) .catch (function(error) {
-                  M.toast({html:"Error occurred checking code uniqueness:" + error}); 
-                });
-            } else {
+              .then(function(existingList) {
+                if (existingList.docs.length > 0) {
+                  M.toast({html:"Error: property with this code already exists"}); 
+                } else {
                     updateProperty(entries);
-            };
+                  };
+              }) .catch (function(error) {
+                M.toast({html:"Error occurred checking code uniqueness:" + error}); 
+              });
+          } else {
+                  updateProperty(entries);
           };
         };
       };
@@ -1898,7 +1881,6 @@
         document.getElementById("buttonOccupantAdd").setAttribute("class","btn-small waves-light");
       }
 
-      var propertyMode;
       var selectedPropertyId;
       var selectedPropertyObject;
       var selectedPropertyOccupants;
@@ -1999,32 +1981,20 @@
         listMembers(document.getElementById("property_occupant_add"),"");   
       };
 
-      function setSelectedProperty(id,object,modeArg) {
+      function setSelectedProperty(id,object) {
         selectedPropertyId=id;
         selectedPropertyObject=object;
-        propertyMode="edit";
         document.getElementById("buttonOccupantAdd").setAttribute("class","btn-small waves-light disabled");
-        document.getElementById("property_code"+modeArg).value=object.code;
-        document.getElementById("property_quota"+modeArg).value=object.quota;
-        document.getElementById("property_type"+modeArg).value=object.type;
-        document.getElementById("property_cellar"+modeArg).value=object.cellar;
-        document.getElementById("property_meterColdWater"+modeArg).value=object.meterColdWater;
-        document.getElementById("property_meterHotWater"+modeArg).value=object.meterHotWater;
-        document.getElementById("property_meterHeating"+modeArg).value=object.meterHeating;
-        var ownerEl = document.getElementById("property_owner"+modeArg);
-        if (!modeArg) {
-          if (Boolean(object.owner)) {
-            refCoproperty.collection("Members").doc(object.owner).get().then(function(member) {
+        document.getElementById("property_code").value=object.code;
+        document.getElementById("property_quota").value=object.quota;
+        document.getElementById("property_type").value=object.type;
+        document.getElementById("property_cellar").valuetype=object.cellar;
+        var ownerEl = document.getElementById("property_owner");
+        refCoproperty.collection("Members").doc(object.owner).get().then(function(member) {
               ownerEl.setAttribute('onclick','setSelectedMember('+JSON.stringify(member.id)+','+JSON.stringify(member.data())+',"")');
               ownerEl.innerHTML = "<u><font color='blue'>"+member.data().firstName + " " + member.data().lastName+"</font></u>";
-            });
-          } else {
-            ownerEl.innerHTML = "";
-          };
-          displayOccupants(id);
-        } else {
-          listMembers(ownerEl,object.owner);
-        };  
+        });
+        displayOccupants(id); 
         var elems = document.querySelectorAll('select');
         M.FormSelect.init(elems);
         M.updateTextFields();
@@ -2033,61 +2003,97 @@
       function resetSelectedProperty() {
         selectedPropertyId=null;
         selectedPropertyObject=null;
-        propertyMode="add";
-        document.getElementById("property_code_edit").value="";
-        document.getElementById("property_quota_edit").value="";
-        document.getElementById("property_type_edit").value="";
-        document.getElementById("property_cellar_edit").value="";
-        document.getElementById("property_meterColdWater_edit").value="";
-        document.getElementById("property_meterHotWater_edit").value="";
-        document.getElementById("property_meterHeating_edit").value="";
-        document.getElementById("property_owner_edit").value="";
-        listMembers(document.getElementById("property_owner_edit"),"");
+        document.getElementById("property_code_add").value="";
+        document.getElementById("property_quota_add").value="";
+        document.getElementById("property_type_add").value="";
+        document.getElementById("property_cellar_add").value="";
+        document.getElementById("property_meterColdWater_add").value="";
+        document.getElementById("property_meterHotWater_add").value="";
+        document.getElementById("property_meterHeating_add").value="";
+        document.getElementById("property_owner_add").value="";
+        listMembers(document.getElementById("property_owner_add"),"");
         M.updateTextFields();
         M.FormSelect.init(document.querySelectorAll('select'));
       };
 
-      function validatePropertyEntries() {
+      function validateAddPropertyEntries() {
         var valid= true;
-        if (!document.getElementById("property_code_edit").checkValidity()) {
+        if (!document.getElementById("property_code_add").checkValidity()) {
           M.toast({html:"Please enter Code"});
           valid=false;
         };
-        if (!document.getElementById("property_quota_edit").checkValidity()) {
+        if (!document.getElementById("property_quota_add").checkValidity()) {
           M.toast({html:"Please enter valid Quota"});
           valid=false;
         };
-        if (!document.getElementById("property_type_edit").checkValidity()) {
+        if (!document.getElementById("property_type_add").checkValidity()) {
           M.toast({html:"Please enter valid Type"});
           valid=false;
         };
-        if (!document.getElementById("property_meterColdWater_edit").checkValidity()) {
+        if (!document.getElementById("property_owner_add").checkValidity()) {
+          M.toast({html:"Please select Owner"});
+          valid=false;
+        };
+        if (!document.getElementById("property_meterColdWater_add").checkValidity()) {
           M.toast({html:"Please enter valid meter cold water"});
           valid=false;
         };
-        if (!document.getElementById("property_meterHotWater_edit").checkValidity()) {
+        if (!document.getElementById("property_meterHotWater_add").checkValidity()) {
           M.toast({html:"Please enter valid meter hot water"});
           valid=false;
         };
-        if (!document.getElementById("property_meterHeating_edit").checkValidity()) {
+        if (!document.getElementById("property_meterHeating_add").checkValidity()) {
           M.toast({html:"Please enter valid meter central heating"});
           valid=false;
         };
         return valid;
       };
 
-      function getPropertyEntries() {
+      function validateEditPropertyEntries() {
+        var valid= true;
+        if (!document.getElementById("property_code_add").checkValidity()) {
+          M.toast({html:"Please enter Code"});
+          valid=false;
+        };
+        if (!document.getElementById("property_quota_add").checkValidity()) {
+          M.toast({html:"Please enter valid Quota"});
+          valid=false;
+        };
+        if (!document.getElementById("property_type_add").checkValidity()) {
+          M.toast({html:"Please enter valid Type"});
+          valid=false;
+        };
+        return valid;
+      };
+
+      function getAddPropertyEntries() {
+        return {
+              code: document.getElementById("property_code_add").value,
+              quota: document.getElementById("property_quota_add").value,
+              type: document.getElementById("property_type_add").value,
+              cellar: document.getElementById("property_cellar_add").value,
+              meterColdWater: document.getElementById("property_meterColdWater_add").value,
+              meterHotWater: document.getElementById("property_meterHotWater_add").value,
+              meterHeating: document.getElementById("property_meterHeating_add").value,
+              owner: document.getElementById("property_owner_add").value,
+            };
+      };
+
+      function getEditPropertyEntries() {
         return {
               code: document.getElementById("property_code_edit").value,
               quota: document.getElementById("property_quota_edit").value,
               type: document.getElementById("property_type_edit").value,
               cellar: document.getElementById("property_cellar_edit").value,
-              meterColdWater: document.getElementById("property_meterColdWater_edit").value,
-              meterHotWater: document.getElementById("property_meterHotWater_edit").value,
-              meterHeating: document.getElementById("property_meterHeating_edit").value,
-              owner: document.getElementById("property_owner_edit").value,
             };
-  }
+      };
+
+      function setEditPropertyEntries() {
+        document.getElementById("property_code_edit").value=selectedPropertyObject.code;
+        document.getElementById("property_quota_edit").value=selectedPropertyObject.quota;
+        document.getElementById("property_type_edit").value=selectedPropertyObject.type;
+        document.getElementById("property_cellar_edit").valuetype=selectedPropertyObject.cellar; 
+      };
     </script>
 </body>
 
