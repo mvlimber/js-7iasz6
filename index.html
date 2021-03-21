@@ -670,7 +670,7 @@
                   <label for="property_owner" class="active">Current Owner</label>
               </div>
               <div class="input-field col s12 m6">
-              <button style="float: right" data-target="newOwner" class="btn-small waves-light modal-trigger" onclick="newOwner(selectedPropertyId, selectedPropertyObject)">New Owner<i class="material-icons right">add</i></button>
+              <button style="float: right" data-target="newOwner" class="btn-small waves-light modal-trigger" onclick="newOwner()">New Owner<i class="material-icons right">add</i></button>
               </div>
             </div>
             <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
@@ -764,6 +764,30 @@
                 </div>
               </form>
               <button style="float: right" class="btn-small waves-light" type="submit" onclick="addProperty()">Submit<i class="material-icons right">send</i></button>
+              <a style="float: right"
+                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+            </div>
+          </div>
+
+          <div id="newOwner" class="modal">
+            <div class="modal-content">
+              <a style="float: right"
+                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+              <h5> Transfer property to new owner</h5>
+              <form class="col s12">
+                <div class="input-field col s12 m6">
+                    <select id="property_newOwner" required aria-required="true">
+                      <option value="" disabled selected>Select the new owner</option>
+                    </select>
+                    <label for="property_newOwner">New Owner<b><font color='red'>*</font></b></label>
+                  </div>
+                <div class="input-field col s12 m6">
+                  <input id="property_transferDate" type="text" class="datepicker validate" required required="true">
+                  <label for="property_transferDate">Transfer Date<b><font color='red'>*</font></b></label>
+                  <span class="helper-property_transferDate" data-error="required field" ></span>
+                </div>
+              </form>
+              <button style="float: right" class="btn-small waves-light" type="submit" onclick="setNewOwner()">Submit<i class="material-icons right">send</i></button>
               <a style="float: right"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
             </div>
@@ -1525,6 +1549,7 @@
     </script>
     <!--   Members scripts start here -->
     <script>
+
       var membersTable = document.getElementById("membersTable");
       function loadMember (objectFS){
         var object = objectFS.data();
@@ -1850,7 +1875,14 @@
         refCoproperty.collection("Properties").doc(selectedPropertyId).set(property)
           .then(function(docref) {
             refreshProperties();
-            setSelectedProperty(selectedPropertyId,getPropertyEntries(),"");
+            selectedPropertyObject.code=property.code;
+            selectedPropertyObject.quota=property.quota;
+            selectedPropertyObject.type=property.type;
+            selectedPropertyObject.cellar=property.cellar;
+            document.getElementById("property_code").value=property.code;
+            document.getElementById("property_quota").value=property.quota;
+            document.getElementById("property_type").value=property.type;
+            document.getElementById("property_cellar").valuetype=property.cellar;
             M.Modal.getInstance(document.getElementById("propertyWrite")).close();
           }).catch(function(error) {
             M.toast({html:"Error occurred updating this member:" + error}); 
@@ -1981,6 +2013,15 @@
         listMembers(document.getElementById("property_occupant_add"),"");   
       };
 
+      function displayMember(el,memberId){
+        var ownerEl = document.getElementById("property_owner");
+        refCoproperty.collection("Members").doc(object.owner).get().then(function(member) {
+              ownerEl.setAttribute('onclick','setSelectedMember('+JSON.stringify(member.id)+','+JSON.stringify(member.data())+',"")');
+              ownerEl.innerHTML = "<u><font color='blue'>"+member.data().firstName + " " + member.data().lastName+"</font></u>";
+        });
+        
+      };
+      
       function setSelectedProperty(id,object) {
         selectedPropertyId=id;
         selectedPropertyObject=object;
@@ -2051,15 +2092,15 @@
 
       function validateEditPropertyEntries() {
         var valid= true;
-        if (!document.getElementById("property_code_add").checkValidity()) {
+        if (!document.getElementById("property_code_edit").checkValidity()) {
           M.toast({html:"Please enter Code"});
           valid=false;
         };
-        if (!document.getElementById("property_quota_add").checkValidity()) {
+        if (!document.getElementById("property_quota_edit").checkValidity()) {
           M.toast({html:"Please enter valid Quota"});
           valid=false;
         };
-        if (!document.getElementById("property_type_add").checkValidity()) {
+        if (!document.getElementById("property_type_edit").checkValidity()) {
           M.toast({html:"Please enter valid Type"});
           valid=false;
         };
@@ -2092,8 +2133,88 @@
         document.getElementById("property_code_edit").value=selectedPropertyObject.code;
         document.getElementById("property_quota_edit").value=selectedPropertyObject.quota;
         document.getElementById("property_type_edit").value=selectedPropertyObject.type;
-        document.getElementById("property_cellar_edit").valuetype=selectedPropertyObject.cellar; 
+        document.getElementById("property_cellar_edit").value=selectedPropertyObject.cellar;
+        M.updateTextFields();
+        M.FormSelect.init(document.querySelectorAll('select')); 
       };
+
+      function newOwner() {
+        document.getElementById("property_transferDate").value="";
+        document.getElementById("property_newOwner").value="";
+        listMembers(document.getElementById("property_newOwner"),"");
+        M.updateTextFields();
+        M.FormSelect.init(document.querySelectorAll('select'));
+      };
+
+      function validateNewOwnerEntries() {
+        var valid= true;
+        if (!document.getElementById("property_transferDate").checkValidity()) {
+          M.toast({html:"Please enter Code"});
+          valid=false;
+        };
+        if (!document.getElementById("property_newOwner").checkValidity()) {
+          M.toast({html:"Please enter valid Quota"});
+          valid=false;
+        };
+        return valid;
+      };
+
+      function getNewOwnerEntries(){
+        return {
+              date: document.getElementById("property_transferDate").value,
+              owner: document.getElementById("property_newOwner").value,
+            };
+      };
+
+
+      function setNewOwner() {
+        if (validateNewOwnerEntries()) {  
+          var entries = getNewOwnerEntries();
+          if (entries.owner == selectedPropertyObject.owner) {
+            M.toast({html:"Error: new and existing owner must be different"});
+          } else {
+            refCoproperty.collection("Properties").doc(selectedPropertyId).doc("PreviousOwners").add(entries)
+              .then(function(docrefPreviousOwner) {
+                selectedPropertyObject.owner=entries.owner;
+                refCoproperty.collection("Properties").doc(selectedPropertyId).set(selectedPropertyObject).
+                  .then(function(docrefProperty) {
+                    refreshProperties();
+                    displaymember(getElementById("property_newOwner"),entries.owner);
+HIER NU vERDER INVULLEN EN NAKIJKEN
+
+            refreshProperties();
+            selectedPropertyObject.code=property.code;
+            selectedPropertyObject.quota=property.quota;
+            selectedPropertyObject.type=property.type;
+            selectedPropertyObject.cellar=property.cellar;
+            document.getElementById("property_code").value=property.code;
+            document.getElementById("property_quota").value=property.quota;
+            document.getElementById("property_type").value=property.type;
+            document.getElementById("property_cellar").valuetype=property.cellar;
+            M.Modal.getInstance(document.getElementById("propertyWrite")).close();
+          }).catch(function(error) {
+            M.toast({html:"Error occurred updating this member:" + error}); 
+          });
+
+
+
+          }
+            refCoproperty.collection("Properties").where("code", "==", entries.code).get()
+              .then(function(existingList) {
+                if (existingList.docs.length > 0) {
+                  M.toast({html:"Error: property with this code already exists"}); 
+                } else {
+                    updateProperty(entries);
+                  };
+              }) .catch (function(error) {
+                M.toast({html:"Error occurred checking code uniqueness:" + error}); 
+              });
+          } else {
+                  updateProperty(entries);
+          };
+        };
+
+      }:
     </script>
 </body>
 
