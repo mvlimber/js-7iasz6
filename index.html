@@ -670,7 +670,10 @@
                   <label for="property_owner" class="active">Current Owner</label>
               </div>
               <div class="input-field col s12 m6">
-              <button style="float: right" data-target="newOwner" class="btn-small waves-light modal-trigger" onclick="newOwner()">New Owner<i class="material-icons right">add</i></button>
+              <button style="float:right;margin-left: 20px;" data-target="previousOwners" class="btn-small waves-light modal-trigger" onclick="showPreviousOwnersTable()">Previous Owners</button>
+              
+              <button style="float:right" data-target="newOwner" class="btn-small waves-light modal-trigger" onclick="newOwner()">New Owner<i class="material-icons right">add</i></button>
+              
               </div>
             </div>
             <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
@@ -711,7 +714,7 @@
           <h6><b id="totalQuotas"></b></h6>
           <button style="float: right" data-target="propertyAdd" class="btn-small waves-light modal-trigger" onclick="resetSelectedProperty()"><i class="material-icons right">add</i>New Property</button>
 
-          <div id="propertyPreviousOwners" class="modal">
+          <div id="previousOwners" class="modal">
             <table class="striped">
               <thead>
                 <tr>
@@ -797,7 +800,7 @@
                 <div class="input-field col s12 m6">
                   <input id="property_transferDate" type="text" class="datepicker validate" required required="true">
                   <label for="property_transferDate">Transfer Date<b><font color='red'>*</font></b></label>
-                  <span class="helper-property_transferDate" data-error="required field" ></span>
+                  <span class="helper-text" data-error="required field" ></span>
                 </div>
               </form>
               <button style="float: right" class="btn-small waves-light" type="submit" onclick="setNewOwner()">Submit<i class="material-icons right">send</i></button>
@@ -806,25 +809,25 @@
             </div>
           </div>
 
-          <div id="newOwner" class="modal">
+          <div id="previousOwner" class="modal">
             <div class="modal-content">
               <a style="float: right"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
-              <h5> Transfer property to new owner</h5>
+              <h5> Previous Owner</h5>
               <form class="col s12">
                 <div class="input-field col s12 m6">
-                    <select id="property_newOwner" required aria-required="true">
-                      <option value="" disabled selected>Select the new owner</option>
+                    <select id="property_previousOwner" required aria-required="true">
+                      <option value="" disabled selected>Correct the previous owner</option>
                     </select>
-                    <label for="property_newOwner">New Owner<b><font color='red'>*</font></b></label>
+                    <label for="property_previousOwner">Previous Owner<b><font color='red'>*</font></b></label>
                   </div>
                 <div class="input-field col s12 m6">
-                  <input id="property_transferDate" type="text" class="datepicker validate" required required="true">
-                  <label for="property_transferDate">Transfer Date<b><font color='red'>*</font></b></label>
-                  <span class="helper-property_transferDate" data-error="required field" ></span>
+                  <input id="property_transferDatePrevious" type="text" class="datepicker validate" required required="true">
+                  <label for="property_transferDatePrevious">Transfer Date<b><font color='red'>*</font></b></label>
+                  <span class="helper-text" data-error="required field" ></span>
                 </div>
               </form>
-              <button style="float: right" class="btn-small waves-light" type="submit" onclick="setNewOwner()">Submit<i class="material-icons right">send</i></button>
+              <button style="float: right" class="btn-small waves-light" type="submit" onclick="setPreviousOwner()">Submit<i class="material-icons right">send</i></button>
               <a style="float: right"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
             </div>
@@ -2214,6 +2217,9 @@
       };
 
 
+      function setPreviousOwner() {
+      };
+
       function setNewOwner() {
         if (validateNewOwnerEntries()) {  
           var entries = getNewOwnerEntries();
@@ -2238,7 +2244,7 @@
         };
       };
 
-      var propertiesPreviousOwnersTable = document.getElementById("propertiesPreviousOwnersTable");
+      var propertyPreviousOwnersTable = document.getElementById("propertyPreviousOwnersTable");
 
       function loadPreviousOwner(objectFS){
         var object = objectFS.data();
@@ -2263,13 +2269,12 @@
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);    
         
-        propertiesPreviousOwnersTable.appendChild (objectsRow);
-
+        propertyPreviousOwnersTable.appendChild (objectsRow);
       };
       
       function showPreviousOwnersTable(){
-        emptyHTMLSet(propertiesPreviousOwnersTable);
-        refCoproperty.collection("Properties").doc(selectedPropertyId).collection("PreviousOwners")orderBy("date").get().then(function(objectsFSArray){
+        emptyHTMLSet(propertyPreviousOwnersTable);
+        refCoproperty.collection("Properties").doc(selectedPropertyId).collection("PreviousOwners").orderBy("date").get().then(function(objectsFSArray){
           objectsFSArray.forEach(function(objectFS){
             loadPreviousOwner(objectFS);
           });
