@@ -711,6 +711,19 @@
           <h6><b id="totalQuotas"></b></h6>
           <button style="float: right" data-target="propertyAdd" class="btn-small waves-light modal-trigger" onclick="resetSelectedProperty()"><i class="material-icons right">add</i>New Property</button>
 
+          <div id="propertyPreviousOwners" class="modal">
+            <table class="striped">
+              <thead>
+                <tr>
+                  <th> Member </th>
+                  <th> Transfer Date </th>
+                </tr>
+              </thead>
+              <tbody id="propertyPreviousOwnersTable">
+              </tbody>
+            </table>
+          </div>
+          
           <div id="propertyAdd" class="modal">
             <div class="modal-content">
               <a style="float: right"
@@ -792,6 +805,31 @@
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
             </div>
           </div>
+
+          <div id="newOwner" class="modal">
+            <div class="modal-content">
+              <a style="float: right"
+                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+              <h5> Transfer property to new owner</h5>
+              <form class="col s12">
+                <div class="input-field col s12 m6">
+                    <select id="property_newOwner" required aria-required="true">
+                      <option value="" disabled selected>Select the new owner</option>
+                    </select>
+                    <label for="property_newOwner">New Owner<b><font color='red'>*</font></b></label>
+                  </div>
+                <div class="input-field col s12 m6">
+                  <input id="property_transferDate" type="text" class="datepicker validate" required required="true">
+                  <label for="property_transferDate">Transfer Date<b><font color='red'>*</font></b></label>
+                  <span class="helper-property_transferDate" data-error="required field" ></span>
+                </div>
+              </form>
+              <button style="float: right" class="btn-small waves-light" type="submit" onclick="setNewOwner()">Submit<i class="material-icons right">send</i></button>
+              <a style="float: right"
+                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+            </div>
+          </div>
+
           
           <div id="propertyWrite" class="modal">
             <div class="modal-content">
@@ -2014,12 +2052,21 @@
       };
 
       function displayMember(el,memberId){
-        var ownerEl = document.getElementById("property_owner");
+        // displays the member into a yet defined HTML hyperlink element
         refCoproperty.collection("Members").doc(object.owner).get().then(function(member) {
-              ownerEl.setAttribute('onclick','setSelectedMember('+JSON.stringify(member.id)+','+JSON.stringify(member.data())+',"")');
-              ownerEl.innerHTML = "<u><font color='blue'>"+member.data().firstName + " " + member.data().lastName+"</font></u>";
+              el.setAttribute('onclick','setSelectedMember('+JSON.stringify(member.id)+','+JSON.stringify(member.data())+',"")');
+              el.innerHTML = "<u><font color='blue'>"+member.data().firstName + " " + member.data().lastName+"</font></u>";
+              el.setAttribute("style","white-space: nowrap");
         });
-        
+      };
+
+      function createMemberLink(memberId){
+        // creates the member HTML hyperlink element
+        var el = document.createElement('a');
+        el.setAttribute("data-target", "memberView");
+        el.setAttribute('class','btn-flat modal-trigger');
+        displayMember(el,memberId);
+        return el;
       };
       
       function setSelectedProperty(id,object) {
@@ -2173,48 +2220,61 @@
           if (entries.owner == selectedPropertyObject.owner) {
             M.toast({html:"Error: new and existing owner must be different"});
           } else {
-            refCoproperty.collection("Properties").doc(selectedPropertyId).doc("PreviousOwners").add(entries)
+            refCoproperty.collection("Properties").doc(selectedPropertyId).collection("PreviousOwners").add(entries)
               .then(function(docrefPreviousOwner) {
                 selectedPropertyObject.owner=entries.owner;
-                refCoproperty.collection("Properties").doc(selectedPropertyId).set(selectedPropertyObject).
+                refCoproperty.collection("Properties").doc(selectedPropertyId).update({owner:(entries.owner)})
                   .then(function(docrefProperty) {
                     refreshProperties();
-                    displaymember(getElementById("property_newOwner"),entries.owner);
-HIER NU vERDER INVULLEN EN NAKIJKEN
-
-            refreshProperties();
-            selectedPropertyObject.code=property.code;
-            selectedPropertyObject.quota=property.quota;
-            selectedPropertyObject.type=property.type;
-            selectedPropertyObject.cellar=property.cellar;
-            document.getElementById("property_code").value=property.code;
-            document.getElementById("property_quota").value=property.quota;
-            document.getElementById("property_type").value=property.type;
-            document.getElementById("property_cellar").valuetype=property.cellar;
-            M.Modal.getInstance(document.getElementById("propertyWrite")).close();
-          }).catch(function(error) {
-            M.toast({html:"Error occurred updating this member:" + error}); 
-          });
-
-
-
-          }
-            refCoproperty.collection("Properties").where("code", "==", entries.code).get()
-              .then(function(existingList) {
-                if (existingList.docs.length > 0) {
-                  M.toast({html:"Error: property with this code already exists"}); 
-                } else {
-                    updateProperty(entries);
-                  };
-              }) .catch (function(error) {
-                M.toast({html:"Error occurred checking code uniqueness:" + error}); 
+                    displayMember(document.getElementById("property_owner"),entries.owner);
+                    M.Modal.getInstance(document.getElementById("newOwner")).close();
+                  }).catch(function(error) {
+                    M.toast({html:"Error occurred updating current owner:" + error}); 
+                  });
+              }).catch(function(error) {
+                M.toast({html:"Error occurred updating previous owners:" + error}); 
               });
-          } else {
-                  updateProperty(entries);
           };
         };
+      };
 
-      }:
+      var propertiesPreviousOwnersTable = document.getElementById("propertiesPreviousOwnersTable");
+
+      function loadPreviousOwner(objectFS){
+        var object = objectFS.data();
+        var objectsRow= document.createElement('tr');
+        var cellContent = createMemberLink(object.owner);
+        var cell = document.createElement('td');
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell);
+        
+        cellContent = document.createTextNode(object.date);
+        cell = document.createElement('td');
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell);  
+        
+        cellContent = document.createElement('button');
+        cellContent.setAttribute("data-target", "previousOwner");
+        cellContent.setAttribute('class','btn-small waves-light modal-trigger');
+        cellContent.setAttribute('onclick','setSelectedPreviousOwner('+JSON.stringify(objectFS.id)+','+JSON.stringify(object)+')');
+        cellContent.innerHTML = "Edit";
+
+        cell = document.createElement('td');
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell);    
+        
+        propertiesPreviousOwnersTable.appendChild (objectsRow);
+
+      };
+      
+      function showPreviousOwnersTable(){
+        emptyHTMLSet(propertiesPreviousOwnersTable);
+        refCoproperty.collection("Properties").doc(selectedPropertyId).collection("PreviousOwners")orderBy("date").get().then(function(objectsFSArray){
+          objectsFSArray.forEach(function(objectFS){
+            loadPreviousOwner(objectFS);
+          });
+        });
+      };
     </script>
 </body>
 
