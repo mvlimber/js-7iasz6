@@ -549,7 +549,7 @@
                   <input  id="member_bus" type="number" readonly >
                   <label for="member_bus">Bus</label>
                 </div>
-                <button style="float: right" data-target="memberWrite" class="btn-small waves-light modal-trigger" onclick="setSelectedMember(selectedMemberId, selectedMemberObject,editMode)">Edit<i class="material-icons right">edit</i></button>
+                <button style="float: right;margin-bottom: 10px" data-target="memberWrite" class="btn-small waves-light modal-trigger" onclick="setSelectedMember(selectedMemberId, selectedMemberObject,editMode)">Edit<i class="material-icons right">edit</i></button>
               </form>
             </div>
             <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
@@ -661,7 +661,7 @@
                   <input id="property_cellar" type="text" readonly>
                   <label for="property_cellar">Cellar</label>
                 </div>               
-                <button style="float: right" data-target="propertyWrite" class="btn-small waves-light modal-trigger" onclick="setEditPropertyEntries()">Edit<i class="material-icons right">edit</i></button>
+                <button style="float: right;margin-bottom: 10px" data-target="propertyWrite" class="btn-small waves-light modal-trigger" onclick="setEditPropertyEntries()">Edit<i class="material-icons right">edit</i></button>
               </form>
             </div>
             <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
@@ -715,16 +715,23 @@
           <button style="float: right" data-target="propertyAdd" class="btn-small waves-light modal-trigger" onclick="resetSelectedProperty()"><i class="material-icons right">add</i>New Property</button>
 
           <div id="previousOwners" class="modal">
-            <table class="striped">
-              <thead>
-                <tr>
-                  <th> Member </th>
-                  <th> Transfer Date </th>
-                </tr>
-              </thead>
-              <tbody id="propertyPreviousOwnersTable">
-              </tbody>
-            </table>
+            <div class="modal-content">
+              <a style="float: right"
+                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Close</a>
+              <h5> Previous Owners:</h5>
+              <table class="striped">
+                <thead>
+                  <tr>
+                    <th> Member </th>
+                    <th> Transfer Date </th>
+                  </tr>
+                </thead>
+                <tbody id="propertyPreviousOwnersTable">
+                </tbody>
+              </table>
+              <a style="float: right"
+                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Close</a>
+            </div>
           </div>
           
           <div id="propertyAdd" class="modal">
@@ -803,7 +810,7 @@
                   <span class="helper-text" data-error="required field" ></span>
                 </div>
               </form>
-              <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="setNewOwner()">Submit<i class="material-icons right">send</i></button>
+              <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="writeNewOwner()">Submit<i class="material-icons right">send</i></button>
               <a style="float: right"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
             </div>
@@ -827,7 +834,7 @@
                   <span class="helper-text" data-error="required field" ></span>
                 </div>
               </form>
-              <button style="float: right" class="btn-small waves-light" type="submit" onclick="setPreviousOwner()">Submit<i class="material-icons right">send</i></button>
+              <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="writePreviousOwner()">Submit<i class="material-icons right">send</i></button>
               <a style="float: right"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
             </div>
@@ -865,7 +872,7 @@
                   </div>
                 </div>
               </form>
-              <button style="float: right" class="btn-small waves-light" type="submit" onclick="writeProperty()">Submit<i class="material-icons right">send</i></button>
+              <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="writeProperty()">Submit<i class="material-icons right">send</i></button>
               <a style="float: right"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
             </div>
@@ -2217,10 +2224,16 @@
       };
 
 
-      function setPreviousOwner() {
+      var previousOwnerId;
+      function setPreviousOwner(poId, poObject) {
+        previousOwnerId=poId;
+        listMembers(document.getElementById("property_previousOwner"), poObject.owner); 
+        document.getElementById("property_transferDatePrevious").value=poObject.date;
+        M.updateTextFields();
+        M.FormSelect.init(document.querySelectorAll('select'));
       };
 
-      function setNewOwner() {
+      function writeNewOwner() {
         if (validateNewOwnerEntries()) {  
           var entries = getNewOwnerEntries();
           if (entries.owner == selectedPropertyObject.owner) {
@@ -2262,7 +2275,7 @@
         cellContent = document.createElement('button');
         cellContent.setAttribute("data-target", "previousOwner");
         cellContent.setAttribute('class','btn-small waves-light modal-trigger');
-        cellContent.setAttribute('onclick','setSelectedPreviousOwner('+JSON.stringify(objectFS.id)+','+JSON.stringify(object)+')');
+        cellContent.setAttribute('onclick','setPreviousOwner('+JSON.stringify(objectFS.id)+','+JSON.stringify(object)+')');
         cellContent.innerHTML = "Edit";
 
         cell = document.createElement('td');
@@ -2279,6 +2292,34 @@
             loadPreviousOwner(objectFS);
           });
         });
+      };
+
+      Function validatePreviousOwnerEntries(){
+        var valid= true;
+        if (!document.getElementById("property_previousOwner").checkValidity()) {
+          M.toast({html:"Please enter Owner"});
+          valid=false;
+        };
+        if (!document.getElementById("property_transferDatePrevious").checkValidity()) {
+          M.toast({html:"Please enter Transfer Date"});
+          valid=false;
+        };
+        return valid;
+
+      };
+      
+      function writePreviousowner(){
+        if validatePreviousOwnerEntries() {
+          var entries= {
+              owner: (getElementById("property_previousOwner").value), 
+              date: (getElementById("property_transferDatePrevious").value)}
+          refCoproperty.collection("Properties").doc(selectedPropertyId).collection("PreviousOwners").doc(previousOwnerId).set(entries).then(function(docrefPreviousOwner) {
+            showPreviousOwnersTable();
+            M.Modal.getInstance(document.getElementById("previousOwner")).close();
+          }).catch(function(error) {
+            M.toast({html:"Error occurred updating previous owner:" + error}); 
+          });
+        }:
       };
     </script>
 </body>
