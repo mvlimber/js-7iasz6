@@ -223,7 +223,7 @@
               <p id="report_to_remove"> </p>
             </div>
             <div class="modal-footer">
-              <button style="float: right" class="btn-small waves-light" type="submit" onclick="removeReport(report_to_remove)">Confirm<i class="material-icons right">send</i></button>
+              <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="removeReport(report_to_remove)">Confirm<i class="material-icons right">send</i></button>
               <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
                 Cancel</a>
             </div>
@@ -258,7 +258,7 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button style="float: right" class="btn-small waves-light" type="submit" onclick="writeReport()">Submit<i class="material-icons right">send</i></button>
+              <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="writeReport()">Submit<i class="material-icons right">send</i></button>
               <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
                 Cancel</a>
             </div>
@@ -631,7 +631,7 @@
                 <span class="helper-text" data-error="please enter digits only" ></span>
               </div>
             </form>
-            <button style="float: right" class="btn-small waves-light" type="submit" onclick="writeMember()">Submit<i class="material-icons right">send</i></button>
+            <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="writeMember()">Submit<i class="material-icons right">send</i></button>
             <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
               Cancel</a>
           </div>
@@ -779,7 +779,7 @@
                   <label for="property_cellar_add">Cellar (for info only)</label>
                 </div>
               </form>
-              <button style="float: right" class="btn-small waves-light" type="submit" onclick="addProperty()">Submit<i class="material-icons right">send</i></button>
+              <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="addProperty()">Submit<i class="material-icons right">send</i></button>
               <a style="float: right"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
             </div>
@@ -803,7 +803,7 @@
                   <span class="helper-text" data-error="required field" ></span>
                 </div>
               </form>
-              <button style="float: right" class="btn-small waves-light" type="submit" onclick="setNewOwner()">Submit<i class="material-icons right">send</i></button>
+              <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="setNewOwner()">Submit<i class="material-icons right">send</i></button>
               <a style="float: right"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
             </div>
@@ -2056,7 +2056,7 @@
 
       function displayMember(el,memberId){
         // displays the member into a yet defined HTML hyperlink element
-        refCoproperty.collection("Members").doc(object.owner).get().then(function(member) {
+        refCoproperty.collection("Members").doc(memberId).get().then(function(member) {
               el.setAttribute('onclick','setSelectedMember('+JSON.stringify(member.id)+','+JSON.stringify(member.data())+',"")');
               el.innerHTML = "<u><font color='blue'>"+member.data().firstName + " " + member.data().lastName+"</font></u>";
               el.setAttribute("style","white-space: nowrap");
