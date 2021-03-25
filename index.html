@@ -1904,8 +1904,31 @@
             if (existingList.docs.length > 0) {
               M.toast({html:"Error: property with this code already exists"}); 
             } else {
-              refCoproperty.collection("Properties").add(entries)
+              var po = {
+                code : entries.code,
+                quota: entries.quota,
+                type: entries.type,
+                owner: entries.owner,
+                cellar: entries.cellar,
+              };
+              refCoproperty.collection("Properties").add(po)
                 .then(function(docref) {
+                  var cw = {
+                    type: "cold water",
+                    meter: entries.meterColdWater,
+                    status: "actif"
+                  };
+                  var hw = {
+                    type: "hot water",
+                    meter: entries.meterHotWater,
+                    status: "actif"
+                  };
+                  var he = {
+                    type: "heating",
+                    meter: entries.meterHeating,
+                    status: "actif"
+                  };
+ //HIER NU vervolledigen: 3 meters adden                 
                   refreshProperties();
                   M.Modal.getInstance(document.getElementById("propertyAdd")).close();
                 }).catch(function(error) {
