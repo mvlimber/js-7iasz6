@@ -678,7 +678,7 @@
             </div>
             <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
               <div>
-                <h5>Occupants</h5>
+                <h7>Occupants</h7>
                 <table class="striped">
                   <tbody id="property_occupants">
                   </tbody>
@@ -2238,17 +2238,19 @@
           if (entries.owner == selectedPropertyObject.owner) {
             M.toast({html:"Error: new and existing owner must be different"});
           } else {
-            refCoproperty.collection("Properties").doc(selectedPropertyId).collection("PreviousOwners").add(entries)
-              .then(function(docrefPreviousOwner) {
-                selectedPropertyObject.owner=entries.owner;
-                refCoproperty.collection("Properties").doc(selectedPropertyId).update({owner:(entries.owner)})
-                  .then(function(docrefProperty) {
-                    refreshProperties();
-                    displayMember(document.getElementById("property_owner"),entries.owner);
-                    M.Modal.getInstance(document.getElementById("newOwner")).close();
-                  }).catch(function(error) {
-                    M.toast({html:"Error occurred updating current owner:" + error}); 
-                  });
+            refCoproperty.collection("Properties").doc(selectedPropertyId).update({owner:(entries.owner)})
+              .then(function(docrefProperty) {
+                var po = {
+                  owner: selectedPropertyObject.owner,
+                  date: entries.date,
+                };
+                refCoproperty.collection("Properties").doc(selectedPropertyId).collection("PreviousOwners").add(po).then(function(docrefPreviousOwner) {
+                  refreshProperties();
+                  displayMember(document.getElementById("property_owner"),entries.owner);
+                  M.Modal.getInstance(document.getElementById("newOwner")).close();
+                }).catch(function(error) {
+                  M.toast({html:"Error occurred updating current owner:" + error}); 
+                });
               }).catch(function(error) {
                 M.toast({html:"Error occurred updating previous owners:" + error}); 
               });
