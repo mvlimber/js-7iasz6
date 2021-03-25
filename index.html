@@ -2306,12 +2306,18 @@
         return valid;
       };
       
-      function writePreviousOwner(){
-        if validatePreviousOwnerEntries() {
-          var entries= {
-              owner: (getElementById("property_previousOwner").value), 
-              date: (getElementById("property_transferDatePrevious").value),
+      function getPreviousOwnerEntries() {
+        return {
+              owner: document.getElementById("property_previousOwner").value, 
+              date: document.getElementById("property_transferDatePrevious").value,
               };
+      };
+      
+      function writePreviousOwner(){
+        
+        if (validatePreviousOwnerEntries()) {
+          var entries = getPreviousOwnerEntries();
+          
           refCoproperty.collection("Properties").doc(selectedPropertyId).collection("PreviousOwners").doc(previousOwnerId).set(entries).then(function(docrefPreviousOwner) {
             showPreviousOwnersTable();
             M.Modal.getInstance(document.getElementById("previousOwner")).close();
