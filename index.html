@@ -839,8 +839,7 @@
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
             </div>
           </div>
-
-          
+       
           <div id="propertyWrite" class="modal">
             <div class="modal-content">
               <a style="float: right"
@@ -2226,9 +2225,9 @@
 
       var previousOwnerId;
       function setPreviousOwner(poId, poObject) {
-        previousOwnerId=poId;
+        previousOwnerId = poId;
         listMembers(document.getElementById("property_previousOwner"), poObject.owner); 
-        document.getElementById("property_transferDatePrevious").value=poObject.date;
+        document.getElementById("property_transferDatePrevious").value = poObject.date;
         M.updateTextFields();
         M.FormSelect.init(document.querySelectorAll('select'));
       };
@@ -2294,7 +2293,7 @@
         });
       };
 
-      Function validatePreviousOwnerEntries(){
+      function validatePreviousOwnerEntries(){
         var valid= true;
         if (!document.getElementById("property_previousOwner").checkValidity()) {
           M.toast({html:"Please enter Owner"});
@@ -2305,21 +2304,21 @@
           valid=false;
         };
         return valid;
-
       };
       
-      function writePreviousowner(){
+      function writePreviousOwner(){
         if validatePreviousOwnerEntries() {
           var entries= {
               owner: (getElementById("property_previousOwner").value), 
-              date: (getElementById("property_transferDatePrevious").value)}
+              date: (getElementById("property_transferDatePrevious").value),
+              };
           refCoproperty.collection("Properties").doc(selectedPropertyId).collection("PreviousOwners").doc(previousOwnerId).set(entries).then(function(docrefPreviousOwner) {
             showPreviousOwnersTable();
             M.Modal.getInstance(document.getElementById("previousOwner")).close();
           }).catch(function(error) {
             M.toast({html:"Error occurred updating previous owner:" + error}); 
           });
-        }:
+        };
       };
     </script>
 </body>
