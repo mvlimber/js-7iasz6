@@ -1913,23 +1913,31 @@
               };
               refCoproperty.collection("Properties").add(po)
                 .then(function(idNewP) {
-                  var cw = {
-                    type: "cold water",
-                    meter: entries.meterColdWater,
-                    status: "actif"
+                  var meter;
+                  if (entries.meterColdWater){
+                    meter = {
+                      type: "cold water",
+                      meter: entries.meterColdWater,
+                      status: "actif"
+                    };
+                    refCoproperty.collection("Properties").doc(idNewP).collection("Meters").add(meter).then(function(docrefCW) {});
                   };
-                  var hw = {
-                    type: "hot water",
-                    meter: entries.meterHotWater,
-                    status: "actif"
+                  if (entries.meterHotWater){
+                    meter = {
+                      type: "hot water",
+                      meter: entries.meterHotWater,
+                      status: "actif"
+                    };
+                    refCoproperty.collection("Properties").doc(idNewP).collection("Meters").add(meter).then(function(docrefCW) {});
                   };
-                  var he = {
-                    type: "heating",
-                    meter: entries.meterHeating,
-                    status: "actif"
-                  };
-                  refCoproperty.collection("Properties").add(po).then(function(docref) {
- //HIER NU vervolledigen: 3 meters adden                 
+                  if (entries.meterHeating){
+                    meter = {
+                      type: "heating",
+                      meter: entries.meterHeating,
+                      status: "actif"
+                    };
+                    refCoproperty.collection("Properties").doc(idNewP).collection("Meters").add(meter).then(function(docrefCW) {});
+                  };                 
                   refreshProperties();
                   M.Modal.getInstance(document.getElementById("propertyAdd")).close();
                 }).catch(function(error) {
