@@ -1912,7 +1912,7 @@
                 cellar: entries.cellar,
               };
               refCoproperty.collection("Properties").add(po)
-                .then(function(docref) {
+                .then(function(idNewP) {
                   var cw = {
                     type: "cold water",
                     meter: entries.meterColdWater,
@@ -1928,6 +1928,7 @@
                     meter: entries.meterHeating,
                     status: "actif"
                   };
+                  refCoproperty.collection("Properties").add(po).then(function(docref) {
  //HIER NU vervolledigen: 3 meters adden                 
                   refreshProperties();
                   M.Modal.getInstance(document.getElementById("propertyAdd")).close();
