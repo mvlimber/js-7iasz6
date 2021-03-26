@@ -692,6 +692,23 @@
                 <button id="buttonOccupantAdd" class="btn-small waves-light disabled" onclick="addOccupant()">Add as Occupant<i class="material-icons right">add</i></button>
               </div>
             </div>
+            <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
+              <div>
+                <h7>Meters</h7>
+                <table class="striped">
+                  <thead>
+                      <th>Type</th>
+                      <th>Meter Id</th>
+                      <th>Status</th>
+                  </thead>
+                  <tbody id="property_meters">
+                  </tbody>
+                </table>
+              </div>
+              <div class="input-field col s12 m4">
+                <button class="btn-small waves-light disabled" onclick="addMeter()">Add Meter<i class="material-icons right">add</i></button>
+              </div>
+            </div>
           </div>
           <div class="modal-footer">
             <a class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>Close</a>
@@ -713,6 +730,7 @@
           </table>
           <h6><b id="totalQuotas"></b></h6>
           <button style="float: right" data-target="propertyAdd" class="btn-small waves-light modal-trigger" onclick="resetSelectedProperty()"><i class="material-icons right">add</i>New Property</button>
+
 
           <div id="previousOwners" class="modal">
             <div class="modal-content">
@@ -1994,6 +2012,7 @@
       var selectedPropertyObject;
       var selectedPropertyOccupants;
       var occupantsTable = document.getElementById("property_occupants");
+      var metersTable = document.getElementById("property_meters");
         
       function displayOccupant(property,occupant){
         refCoproperty.collection("Members").doc(occupant.data().occupant).get().then(function(member) {
@@ -2022,9 +2041,44 @@
 
           occupantsTable.appendChild (objectsRow);
         }).catch (function(error) {
-          M.toast({html:"Error occurred during add occupant:" + error}); 
+          M.toast({html:"Error occurred during displaying occupant:" + error}); 
         });
       };
+
+      function displayMeter(meter){
+        var meterData= meter.data();
+        var objectsRow= document.createElement('tr');
+        var cell = document.createtextNode(meterData.type);
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell); 
+
+        var objectsRow= document.createElement('tr');
+        var cell = document.createtextNode(meterData.meter);
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell);
+
+        var objectsRow= document.createElement('tr');
+        var cell = document.createtextNode(meterData.status);
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell);
+
+        cell = document.createElement('td');
+        cellContent = document.createElement('a'); 
+        cellContent.setAttribute('class','waves-light btn-small red');
+        cellContent.setAttribute('onclick','editMeter('+JSON.stringify(meter.id)+',' +JSON.stringify(meterData)+')');
+        objectsRow.setAttribute("id", occupant.id)
+        cellButtonIcon = document.createElement('i');
+        cellButtonIcon.setAttribute('class','material-icons right');
+        cellButtonIcon.innerHTML="delete";           
+        cellContent.appendChild(cell);
+        cellContent.innerHTML = "Remove Occupant";
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell); 
+
+        occupantsTable.appendChild (objectsRow);
+        
+      };
+      
       
       function addOccupant() {
         var selectedOccupant = document.getElementById("property_occupant_add").value;
