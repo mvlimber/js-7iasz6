@@ -1899,8 +1899,7 @@
       function addProperty(){
        if (validateAddPropertyEntries()) {  
         var entries = getAddPropertyEntries();
-        refCoproperty.collection("Properties").where("code", "==", entries.code).get()
-          .then(function(existingList) {
+        refCoproperty.collection("Properties").where("code", "==", entries.code).get().then(function(existingList) {
             if (existingList.docs.length > 0) {
               M.toast({html:"Error: property with this code already exists"}); 
             } else {
@@ -1911,33 +1910,32 @@
                 owner: entries.owner,
                 cellar: entries.cellar,
               };
-              refCoproperty.collection("Properties").add(po)
-                .then(function(idNewP) {
+              refCoproperty.collection("Properties").add(po).then(function(idNewP) {
                   var meter;
                   if (entries.meterColdWater){
                     meter = {
                       type: "cold water",
                       meter: entries.meterColdWater,
-                      status: "actif"
+                      status: "actif",
                     };
-                    refCoproperty.collection("Properties").doc(idNewP).collection("Meters").add(meter).then(function(docrefCW) {});
-                  };
+                    refCoproperty.collection("Properties").doc(idNewP.id).collection("Meters").add(meter).then(function(docrefCW) {});
+                  };              
                   if (entries.meterHotWater){
                     meter = {
                       type: "hot water",
                       meter: entries.meterHotWater,
-                      status: "actif"
+                      status: "actif",
                     };
-                    refCoproperty.collection("Properties").doc(idNewP).collection("Meters").add(meter).then(function(docrefCW) {});
+                    refCoproperty.collection("Properties").doc(idNewP.id).collection("Meters").add(meter).then(function(docrefCW) {});
                   };
                   if (entries.meterHeating){
                     meter = {
                       type: "heating",
                       meter: entries.meterHeating,
-                      status: "actif"
+                      status: "actif",
                     };
-                    refCoproperty.collection("Properties").doc(idNewP).collection("Meters").add(meter).then(function(docrefCW) {});
-                  };                 
+                    refCoproperty.collection("Properties").doc(idNewP.id).collection("Meters").add(meter).then(function(docrefCW) {});
+                  };          
                   refreshProperties();
                   M.Modal.getInstance(document.getElementById("propertyAdd")).close();
                 }).catch(function(error) {
