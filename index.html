@@ -224,42 +224,45 @@
             </div>
             <div class="modal-footer">
               <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="removeReport(report_to_remove)">Confirm<i class="material-icons right">send</i></button>
-              <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
+              <a style="float: right"
+                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
                 Cancel</a>
             </div>
           </div>
           <div id="reportAdd" class="modal">
             <div class="modal-content">
-              <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
+              <a style="float: right"
+                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
                 Cancel</a>
               <h5> New Report</h5>
               <div class="row">
                 <form>
-                <div class="input-field col s12 m12" id="report_file_edit">
-                </div>
-                <div class="file-field input-field col s12 m6">
-                  <div class="btn-small">
-                    <span>PDF Document<b><font color='red'>*</font></b><i class="material-icons right">attach_file</i></span>
-                    <input type="file" id="reportFile">
+                  <div class="input-field col s12 m12" id="report_file_edit">
                   </div>
-                  <div class="file-path-wrapper">
-                    <input class="file-path validate" type="text" id="reportFileText">
-                  </div>
-                </div>
-              </form>
-              <form class="col s12 m6">
-                    <div class="input-field col s12 m6">
-                      <input id="report_type_edit" type="text" required required="true" maxlength="50">
-                      <label for="report_type_edit">Type<b><font color='red'>*</font></b></label>
-                      <span class="helper-text" data-error="maximum 50 characters" ></span>
+                  <div class="file-field input-field col s12 m6">
+                    <div class="btn-small">
+                      <span>PDF Document<b><font color='red'>*</font></b><i class="material-icons right">attach_file</i></span>
+                      <input type="file" id="reportFile">
                     </div>
-                  
+                    <div class="file-path-wrapper">
+                      <input class="file-path validate" type="text" id="reportFileText">
+                    </div>
+                  </div>
+                </form>
+                <form class="col s12 m6">
+                  <div class="input-field col s12 m6">
+                    <input id="report_type_edit" type="text" required required="true" maxlength="50">
+                    <label for="report_type_edit">Type<b><font color='red'>*</font></b></label>
+                    <span class="helper-text" data-error="maximum 50 characters" ></span>
+                  </div>
+
                 </form>
               </div>
             </div>
             <div class="modal-footer">
               <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="writeReport()">Submit<i class="material-icons right">send</i></button>
-              <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
+              <a style="float: right"
+                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
                 Cancel</a>
             </div>
           </div>
@@ -275,7 +278,7 @@
             <tbody>
               <tr>
                 <td><a target="_blank"
-            href="
+                    href="
           https://firebasestorage.googleapis.com/v0/b/slimmeeigendomdb.appspot.com/o/Azur_2020_Q4_MarcVanLimberghen.pdf?alt=media&token=ce10ffa1-6a9e-40b6-a04d-72d240ab6d90">2020_Q4_MVLimberghen</a>
                 </td>
                 <td>Individual Quarterly Report</td>
@@ -283,7 +286,7 @@
               </tr>
               <tr>
                 <td><a target="_blank"
-              href="https://firebasestorage.googleapis.com/v0/b/slimmeeigendomdb.appspot.com/o/Azur_2020_Q3_MarcVanLimberghen.pdf?alt=media&token=90074a5b-36b0-49c3-ba80-f24f361ade70">2020_Q3_MVLimberghen</a>
+                    href="https://firebasestorage.googleapis.com/v0/b/slimmeeigendomdb.appspot.com/o/Azur_2020_Q3_MarcVanLimberghen.pdf?alt=media&token=90074a5b-36b0-49c3-ba80-f24f361ade70">2020_Q3_MVLimberghen</a>
                 </td>
                 <td>Individual Quarterly Report</td>
                 <td>Sat Oct 03 2020</td>
@@ -387,94 +390,8 @@
             <tbody id="metersTable">
             </tbody>
           </table>
-          <br>
-          <button style="float: right" data-target="meterWrite" class="btn-small waves-light modal-trigger" onclick="resetSelectedMeter()"><i class="material-icons right">add</i>New Meter Reading</button>
-
-          <div id="meterView" class="modal">
-            <div class="modal-content">
-              <a style="float: right"
-                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>Close</a>
-              <h5> View meter reading</h5>
-              <form class="col s12">
-                <div class="input-field col s12 m4">
-                  <input id="meter_property" type="text" readonly>
-                  <label for="meter_property">Property</label>
-                </div>
-                <div class="input-field col s12 m4">
-                  <input id="meter_meter" type="text" readonly>
-                  <label for="meter_meter">Meter</label>
-                </div>
-                <div class="input-field col s12 m4">
-                  <input id="meter_type" type="text" readonly>
-                  <label for="meter_type">Type</label>
-                </div>
-                <div class="input-field col s12 m6">
-                  <input id="meter_reading" type="number" readonly>
-                  <label for="meter_reading">Reading</label>
-                </div>
-                <div class="input-field col s12 m6">
-                  <input id="meter_date" type="text" readonly>
-                  <label for="meter_date">Date</label>
-                </div>
-                <div class="input-field col s12 m6" id="meter_photo">
-                </div>
-                <button style="float: right" data-target="meterWrite" class="btn-small waves-light modal-trigger" onclick="setSelectedMeter(null,selectedMeterId, selectedMeterObject,editMode)">Edit<i class="material-icons right">edit</i></button>
-                <a style="float: right"
-                  class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>Close</a>
-              </form>
-            </div>
-            <div class="modal-footer">
-              <a class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>Close</a>
-            </div>
-          </div>
-
-          <div id="meterWrite" class="modal">
-            <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
-              Cancel</a>
-            <h5> Enter meter reading</h5>
-            <form class="col s12">
-              <div class="input-field col s12 m4">
-                <select id="meter_property_edit" onchange="listMeters()">
-                </select>
-                <label for="meter_property_edit">Property<b><font color='red'>*</font></b></label>
-              </div>
-              <div class="input-field col s12 m4" onchange="editType()">
-                <select id="meter_meter_edit">
-                </select>
-                <label for="meter_meter_edit">Meter<b><font color='red'>*</font></b></label>
-              </div>
-              <div class="input-field col s12 m4" hidden>
-                <input id="meter_type_edit" type="text" >
-                <label for="meter_type_edit">Type<b><font color='red'>*</font></b></label>
-              </div>
-              <div class="input-field col s12 m6">
-                <input id="meter_reading_edit" type="number" class="validate" max="9999999999" required required="true">
-                <label for="meter_reading_edit">Reading<b><font color='red'>*</font></b></label>
-                <span class="helper-text" data-error="please enter a number of max 10 digits" ></span>
-              </div>
-              <div class="input-field col s12 m6">
-                <input id="meter_date_edit" type="text" class="datepicker validate" required required="true">
-                <label for="meter_date_edit">Date<b><font color='red'>*</font></b></label>
-                <span class="helper-text" data-error="required field" ></span>
-              </div>
-            </form>
-            <form>
-              <div class="input-field col s12 m12" id="meter_photo_text_edit">
-              </div>
-              <div class="file-field input-field col s12 m6">
-                <div class="btn-small">
-                  <span>Photo<i class="material-icons right">attach_file</i></span>
-                  <input type="file" id="meterFile">
-                </div>
-                <div class="file-path-wrapper">
-                  <input class="file-path validate" type="text" id="meterFileText">
-                </div>
-              </div>
-            </form>
-            <button style="float: right" class="btn-small waves-light" type="submit" onclick="writeMeter()">Submit<i class="material-icons right">send</i></button>
-            <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
-              Cancel</a>
-          </div>
+          
+          
         </div>
         <!------------------------------------------------------------------------------------------------------>
         <div id="Members" class="col s12">
@@ -660,20 +577,20 @@
                 <div class="input-field col s6 m6">
                   <input id="property_cellar" type="text" readonly>
                   <label for="property_cellar">Cellar</label>
-                </div>               
+                </div>
                 <button style="float: right;margin-bottom: 3px" data-target="propertyWrite" class="btn-small waves-light modal-trigger" onclick="setEditPropertyEntries()">Edit<i class="material-icons right">edit</i></button>
               </form>
             </div>
             <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
               <div class="input-field col s12 m6">
-                  <a id="property_owner" data-target="memberView" class="modal-trigger btn-flat"> </a>
-                  <label for="property_owner" class="active">Current Owner</label>
+                <a id="property_owner" data-target="memberView" class="modal-trigger btn-flat"> </a>
+                <label for="property_owner" class="active">Current Owner</label>
               </div>
               <div class="input-field col s12 m6">
-              <button style="float:right;margin-left: 20px;" data-target="previousOwners" class="btn-small waves-light modal-trigger" onclick="showPreviousOwnersTable()">Previous Owners</button>
-              
-              <button style="float:right" data-target="newOwner" class="btn-small waves-light modal-trigger" onclick="newOwner()">New Owner<i class="material-icons right">add</i></button>
-              
+                <button style="float:right;margin-left: 20px;" data-target="previousOwners" class="btn-small waves-light modal-trigger" onclick="showPreviousOwnersTable()">Previous Owners</button>
+
+                <button style="float:right" data-target="newOwner" class="btn-small waves-light modal-trigger" onclick="newOwner()">New Owner<i class="material-icons right">add</i></button>
+
               </div>
             </div>
             <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
@@ -697,9 +614,9 @@
                 <h7>Meters</h7>
                 <table class="striped">
                   <thead>
-                      <th>Type</th>
-                      <th>Meter ID</th>
-                      <th>Status</th>
+                    <th>Type</th>
+                    <th>Meter ID</th>
+                    <th>Status</th>
                   </thead>
                   <tbody id="property_meters">
                   </tbody>
@@ -730,6 +647,41 @@
           <button style="float: right" data-target="propertyAdd" class="btn-small waves-light modal-trigger" onclick="resetSelectedProperty()"><i class="material-icons right">add</i>New Property</button>
 
 
+          <div id="meterWrite" class="modal">
+            <div class="modal-content">
+              <a style="float: right"
+                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Close</a>
+              <h5> Enter meter</h5>
+              <form class="col s12">
+                <div class="input-field col s12 m4">
+                  <select id="meter_type" required aria-required="true">
+                    <option value="" disabled selected>Select the type</option>
+                    <option>Cold Water</option>
+                    <option>Warm Water</option>
+                    <option>Heating</option>
+                  </select>
+                  <label for="meter_type">Type<b><font color='red'>*</font></b></label>
+                </div>
+                <div class="input-field col s12 m4">
+                  <input id="meter_id" type="text" maxlength="5" class="validate" required aria-required="true" pattern="([A-Z]|[0-9]){4,10}">
+                  <label for="meter_id">ID meter<b><font color='red'>*</font></b></label>
+                  <span class="helper-text" data-error="4 to 10 digts or capital letters" ></span>
+                </div>
+                <div class="input-field col s12 m4">
+                  <select id="meter_status" required aria-required="true">
+                    <option value="" disabled selected>Select the status</option>
+                    <option>Actif</option>
+                    <option>Removed</option>
+                  </select>
+                  <label for="meter_status">Status<b><font color='red'>*</font></b></label>
+                </div>
+              </form>
+              <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="writeMeter()">Submit<i class="material-icons right">send</i></button>
+              <a style="float: right"
+                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+            </div>
+          </div>
+
           <div id="previousOwners" class="modal">
             <div class="modal-content">
               <a style="float: right"
@@ -749,7 +701,7 @@
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Close</a>
             </div>
           </div>
-          
+
           <div id="propertyAdd" class="modal">
             <div class="modal-content">
               <a style="float: right"
@@ -815,11 +767,11 @@
               <h5> Transfer property to new owner</h5>
               <form class="col s12">
                 <div class="input-field col s12 m6">
-                    <select id="property_newOwner" required aria-required="true">
+                  <select id="property_newOwner" required aria-required="true">
                       <option value="" disabled selected>Select the new owner</option>
                     </select>
-                    <label for="property_newOwner">New Owner<b><font color='red'>*</font></b></label>
-                  </div>
+                  <label for="property_newOwner">New Owner<b><font color='red'>*</font></b></label>
+                </div>
                 <div class="input-field col s12 m6">
                   <input id="property_transferDate" type="text" class="datepicker validate" required required="true">
                   <label for="property_transferDate">Transfer Date<b><font color='red'>*</font></b></label>
@@ -839,11 +791,11 @@
               <h5> Previous Owner</h5>
               <form class="col s12">
                 <div class="input-field col s12 m6">
-                    <select id="property_previousOwner" required aria-required="true">
+                  <select id="property_previousOwner" required aria-required="true">
                       <option value="" disabled selected>Correct the previous owner</option>
                     </select>
-                    <label for="property_previousOwner">Previous Owner<b><font color='red'>*</font></b></label>
-                  </div>
+                  <label for="property_previousOwner">Previous Owner<b><font color='red'>*</font></b></label>
+                </div>
                 <div class="input-field col s12 m6">
                   <input id="property_transferDatePrevious" type="text" class="datepicker validate" required required="true">
                   <label for="property_transferDatePrevious">Transfer Date<b><font color='red'>*</font></b></label>
@@ -855,7 +807,7 @@
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
             </div>
           </div>
-       
+
           <div id="propertyWrite" class="modal">
             <div class="modal-content">
               <a style="float: right"
@@ -1314,305 +1266,10 @@
     </script>
     <!--   Meters scripts start here -->
     <script>
-      var metersTable = document.getElementById("metersTable");
-
-      function propertyLink(property) {
-        var elA = document.createElement('a');
-        elA.setAttribute("data-target", "propertyView");
-        elA.setAttribute('class','btn-flat modal-trigger');
-        elA.setAttribute('onclick','setSelectedProperty('+JSON.stringify(property.id)+','+JSON.stringify(property.data())+',"")');
-        elA.innerHTML = "<font color='blue'>"+property.data().code+"</font>";
-        return elA;
-      };
-
-      function makePropertyLink(propertyId) {
-        refCoproperty.collection("Properties").doc(propertyId).get().then(function(objectFS){
-          return propertyLink(objectFS);
-        }).catch(function(error) {
-          console.log("Error getting document:", error);
-            return document.createTextNode("error");
-            
-          });
-      };
-
-      function loadMeter (objectFS){
-        var object = objectFS.data();
-        var objectsRow= document.createElement('tr');
-          
-        var cellLink = document.createElement('td');
-        var cellContent = document.createTextNode("");
-        cellLink.appendChild(cellContent);
-        objectsRow.appendChild(cellLink);
-            
-        refCoproperty.collection("Properties").doc(object.property).get().then(function(property){
-          cellLink.removeChild(cellLink.firstChild);
-          cellLink.appendChild(propertyLink(property));
-          cellContent = document.createTextNode(object.type);
-          var cell = document.createElement('td');
-          cell.appendChild(cellContent);
-          objectsRow.appendChild(cell); 
-          
-          cellContent = document.createElement('a');
-          cellContent.setAttribute("data-target", "meterView");
-          cellContent.setAttribute('class','btn-flat waves-light modal-trigger');
-          cellContent.setAttribute('onclick','setSelectedMeter('+JSON.stringify(property.data().code)+','+JSON.stringify(objectFS.id)+','+JSON.stringify(object)+',"")');
-          cellContent.innerHTML = "<font color='blue'>"+object.reading+"</font>";
-          cell = document.createElement('td');
-          cell.appendChild(cellContent);
-          objectsRow.appendChild(cell); 
-          
-          cellContent = document.createTextNode(object.date);
-          cell = document.createElement('td');
-          cell.appendChild(cellContent);
-          objectsRow.appendChild(cell); 
-
-          metersTable.appendChild (objectsRow);
-        
-        });
-          
-      };
-      
-      function refreshMeters() {
-        emptyHTMLSet(metersTable);
-        refCoproperty.collection("Meters").orderBy("date","desc").get().then(function(objectsFSArray){
-          objectsFSArray.forEach(function(objectFS){
-            loadMeter(objectFS);
-          });  
-        });    
-      };
-
-      var metersLoaded = false;
-      function loadMeters(){
-        hideMenu();
-        document.getElementById("logo-container").innerHTML = "MyCondos: Meters";
-        if (!metersLoaded) {
-          refreshMeters();
-          metersLoaded = true;
-        };
-      };
-
-      function writeMeter() {
-        if (validateMeterEntries()) {  
-          var entries = getMeterEntries();
-          if (meterMode === "add"){
-              refCoproperty.collection("Meters").add(entries).then(function(docref) {
-                if (meterFile) {
-                  var fileRef = refCopropertyFiles.child(entries.property).child("Meters").child(docref.id);  
-                  fileRef.put(meterFile).then (function (){});
-                };
-                M.Modal.getInstance(document.getElementById("meterWrite")).close();
-                refreshMeters();
-            }).catch(function(error) {
-              console.error("Error writing document: ", error);
-            });
-        } else {
-            console.log ('in meter edit write mode');
-            refCoproperty.collection("Meters").doc(selectedMeterId).set(entries).then(function() {
-                if (meterFile) {
-                  var fileRef = refCopropertyFiles.child(entries.property).child("Meters").child(selectedMeterId);  
-                  fileRef.put(meterFile).then (function (){
-                    var el = document.getElementById("meter_property_edit");
-                    setSelectedMeter(el.options[el.selectedIndex].innerHTML, selectedMeterId,getMeterEntries(),"");
-                    M.Modal.getInstance(document.getElementById("meterWrite")).close();
-                    refreshMeters();
-                  });
-                } else {
-                  var el = document.getElementById("meter_property_edit");
-                  setSelectedMeter(el.options[el.selectedIndex].innerHTML, selectedMeterId,getMeterEntries(),"");
-                  M.Modal.getInstance(document.getElementById("meterWrite")).close();
-                  refreshMeters();
-                };
-                
-            }).catch(function(error) {
-              console.error("Error writing document: ", error);
-            });
-          };
-        };
-      };
-
-      var meterMode;
-      var selectedMeterId;
-      var selectedMeterObject;
-      var selectedMeterPhotoURL;
-      function setSelectedMeter(propertyCode, id,object,modeArg) {
-        selectedMeterId=id;
-        selectedMeterObject=object;
-        meterMode="edit";
-        document.getElementById("meter_type"+modeArg).value=object.type;
-        document.getElementById("meter_date"+modeArg).value=object.date;
-        document.getElementById("meter_reading"+modeArg).value=object.reading;
-        var el;
-        if (modeArg) {
-          // in edit mode
-          emptyHTMLSet(document.getElementById("meter_photo_text_edit"));
-          if (selectedMeterPhotoURL) {
-            el = document.createElement("a");
-            el.setAttribute("href",selectedMeterPhotoURL);
-            el.setAttribute("target","_blank"); 
-            el.innerHTML = "<font color='blue'>EXISTING PHOTO</font> can be replaced here below";
-            document.getElementById("meter_photo_text_edit").appendChild(el);
-          };
-          listProperties (document.getElementById("meter_property"+modeArg), object.property, object.meter);
-        } else {
-          // in view mode        
-          document.getElementById("meter_meter"+modeArg).value=object.meter;
-          document.getElementById("meter_property"+modeArg).value=propertyCode;
-          emptyHTMLSet(document.getElementById("meter_photo"));
-          
-          refCopropertyFiles.child(object.property).child("Meters").child(id).getDownloadURL().then(function(url) {
-            el = document.createElement("a");
-            el.setAttribute("href",url);
-            el.setAttribute("target","_blank"); 
-            el.innerHTML = "<font color='blue'>PHOTO</font>";
-            document.getElementById("meter_photo").appendChild(el);
-            selectedMeterPhotoURL = url;
-          }).catch(function(error) {
-            el = document.createElement("p");
-            el.innerHTML = "No photo available";
-            document.getElementById("meter_photo").appendChild(el);
-          });
-          
-        };
-        M.updateTextFields();
-        var elems = document.querySelectorAll('select');
-        M.FormSelect.init(elems);
-      };
-      
-      var meterFile;
-
-      function getMeterEntries() {
-        return {
-          property: document.getElementById("meter_property_edit").value,
-          meter: document.getElementById("meter_meter_edit").value,
-          type: document.getElementById("meter_type_edit").value,
-          date:document.getElementById("meter_date_edit").value,
-          reading: document.getElementById("meter_reading_edit").value
-        };
-      };
-
-      function validateMeterEntries() {
-        var valid = true
-        if (!(document.getElementById("meter_property_edit").value)) {
-          M.toast({html:"Please enter Property"});
-          valid=false;
-        };
-        if (!(document.getElementById("meter_meter_edit").value)) {
-          M.toast({html:"Please enter Meter"});
-          valid=false;
-        };
-        if (!document.getElementById("meter_date_edit").checkValidity()) {
-          M.toast({html:"Please enter valid Date"});
-          valid=false;
-        };
-        if (!document.getElementById("meter_reading_edit").checkValidity()) {
-          M.toast({html:"Please enter valid Reading"});
-          valid=false;
-        };
-
-        meterFile = document.getElementById('meterFile').files[0];
-        let allowed_mime_types = [ 'image/jpeg', 'image/png' ];
-        let allowed_size_kb = 500;
-        if (meterFile) {
-          if(allowed_mime_types.indexOf(meterFile.type) == -1) {
-            M.toast({html:"Incorrect file type (only jpeg or png allowed)"});
-            valid=false;
-          };
-          if(meterFile.size > allowed_size_kb*1024) {
-            M.toast({html:"Photo exceeds max size 500KB"});
-            valid=false;
-          };
-
-        }
-        return valid;
-      };
-
-      var metersMatrix = new Map();
-      function listProperties(el, selectedOption, selectedMeter) {
-        var option;
-        emptyHTMLSet(el);
-        if (!Boolean(selectedOption)) {
-          option = document.createElement("option");
-          option.setAttribute("value","");
-          option.setAttribute("disabled",true);
-          option.setAttribute("selected",true);
-          option.innerHTML = "Select Property";
-          el.appendChild(option);
-        };
-        refCoproperty.collection("Properties").get().then(function(querySnapshot) {
-          querySnapshot.forEach(function(property) {
-              option = document.createElement("option");
-              option.setAttribute("value",property.id);
-              propertyData = property.data();
-              if (property.id == selectedOption) {
-                option.setAttribute("selected",true);
-                //  meters invullen!!!!!!!!!!!!!!
-              };
-              option.innerHTML = propertyData.code;
-              el.appendChild(option);
-              var meters= new Set();
-              if (propertyData.meterColdWater) {meters.add({type:"cold water",meter:propertyData.meterColdWater})};
-              if (propertyData.meterHotWater) {meters.add({type:"hot water",meter:propertyData.meterHotWater})};
-              if (propertyData.meterHeating) {meters.add({type:"heating",meter:propertyData.meterHeating})};
-              metersMatrix.set(property.id,meters);
-            });
-          if (selectedMeter) {listMeters(selectedMeter)};
-          var elems = document.querySelectorAll('select');
-          M.FormSelect.init(elems);
-        });
-      };
-
-      function listMeters(selectedOption){
-        var el = document.getElementById("meter_meter_edit");
-        emptyHTMLSet(el);
-        if (!Boolean(selectedOption)) {
-          option = document.createElement("option");
-          option.setAttribute("value","");
-          option.setAttribute("disabled",true);
-          option.setAttribute("selected",true);
-          option.innerHTML = "Select Meter";
-          el.appendChild(option);
-        };
-        
-        metersMatrix.get(document.getElementById("meter_property_edit").value).forEach(function(meterCouple){
-          option = document.createElement("option");
-          option.setAttribute("value",meterCouple.meter);
-          option.innerHTML = meterCouple.meter + "  " + meterCouple.type;
-          el.appendChild(option);
-        });
-        var elems = document.querySelectorAll('select');
-        M.FormSelect.init(elems);
-      };
-
-      function editType() {
-        var property = document.getElementById("meter_property_edit").value;
-        var meter = document.getElementById("meter_meter_edit").value;
-        metersMatrix.get(document.getElementById("meter_property_edit").value).forEach(function(meterCouple){
-          if (meterCouple.meter === meter) {document.getElementById("meter_type_edit").value = meterCouple.type }
-        });
-      };
-
-      function resetSelectedMeter() {
-        selectedMeterId=null;
-        selectedMeterObject=null;
-        selectedMeterPhotoURL=null;
-        meterFile=null;
-        meterMode="add";
-        document.getElementById("meter_property_edit").value="";
-        document.getElementById("meter_meter_edit").value="";
-        document.getElementById("meter_type_edit").value="";
-        document.getElementById("meter_date_edit").value="";
-        document.getElementById("meter_reading_edit").value="";
-        document.getElementById("meterFile").value="";
-        document.getElementById("meterFileText").value="";
-        emptyHTMLSet(document.getElementById("meter_photo_text_edit"));
-        listProperties(document.getElementById("meter_property_edit"),"",null);
-        M.updateTextFields();
-        M.FormSelect.init(document.querySelectorAll('select'));
-      };
+     
     </script>
     <!--   Members scripts start here -->
     <script>
-
       var membersTable = document.getElementById("membersTable");
       function loadMember (objectFS){
         var object = objectFS.data();
@@ -1845,6 +1502,28 @@
     </script>
     <!--   Properties scripts start here -->
     <script>
+      function propertyLink(property) {
+        var elA = document.createElement('a');
+        elA.setAttribute("data-target", "propertyView");
+        elA.setAttribute('class','btn-flat modal-trigger');
+        elA.setAttribute('onclick','setSelectedProperty('+JSON.stringify(property.id)+','+JSON.stringify(property.data())+',"")');
+        elA.innerHTML = "<font color='blue'>"+property.data().code+"</font>";
+        return elA;
+      };
+
+      function makePropertyLink(propertyId) {
+        refCoproperty.collection("Properties").doc(propertyId).get().then(function(objectFS){
+          return propertyLink(objectFS);
+        }).catch(function(error) {
+          console.log("Error getting document:", error);
+            return document.createTextNode("error");
+            
+          });
+      };
+
+
+
+
       var totalQuotas = 0;
       var propertiesTable = document.getElementById("propertiesTable");
 
@@ -2009,6 +1688,7 @@
       var selectedPropertyId;
       var selectedPropertyObject;
       var selectedPropertyOccupants;
+      var selectedMeter;
       var occupantsTable = document.getElementById("property_occupants");
       var metersTable = document.getElementById("property_meters");
         
@@ -2044,12 +1724,24 @@
         });
       };
 
+      
       function editMeter(property, meter, meterData){
+        selectedMeter = meter;
+        document.getElementById("meter_type").value=meterData.type;
+        document.getElementById("meter_id").value=meterData.meter;
+        document.getElementById("meter_status").value=meterData.status;
+      };
+
+      function writeMeter(property, meter, meterData){
 
       };
+      function addMeter(property, meter, meterData){
+
+      };
+
       
       function displayMeter(property, meterFS){
-        var meterData= meterFS.data();
+        var meterData = meterFS.data();
         var objectsRow= document.createElement('tr');
         var cell = document.createElement('td');
         var cellContent = document.createTextNode(meterData.type);
@@ -2067,15 +1759,15 @@
         objectsRow.appendChild(cell);
 
         cell = document.createElement('td');
-        cellContent = document.createElement('a'); 
-        cellContent.setAttribute('class','waves-light btn-small');
+        cellContent = document.createElement('button'); 
+        cellContent.setAttribute('class','waves-light btn-small modal-trigger');
+        cellContent.setAttribute("data-target", "meterWrite");
         cellContent.setAttribute('onclick','editMeter('+JSON.stringify(property)+','+JSON.stringify(meterFS.id)+',' +JSON.stringify(meterData)+')');
         cellContent.innerHTML = "Edit";
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell); 
 
         metersTable.appendChild (objectsRow);
-        
       };
       
       
@@ -2151,8 +1843,7 @@
               displayMeter(property,meterFS);
             });
           };
-        });
-        listMembers(document.getElementById("property_occupant_add"),"");   
+        });  
       };
 
       function displayMember(el,memberId){
