@@ -378,23 +378,52 @@
         </div>
         <!------------------------------------------------------------------------------------------------------>
         <div id="MeterReadings" class="col s12">
+          <h6>Please enter your meter readings near and latest June 30th"</h6>
           <table class="striped">
             <thead>
               <tr>
-                <th>Property</th>
-                <th>Type</th>
-                <th>
-                  <p style="writing-mode: vertical-rl">Reading?</p>
-                </th>
-                <th>
-                  <p style="writing-mode: vertical-rl">Picture?</p>
-                </th>
-                <th>Date</th>
+                <th align=center><p style="writing-mode: vertical-rl">Property</p></th>
+                <th align=center><div class="writing-mode: vertical-rl">View/Edit<br>Reading</div></th>
+                <th align=center><p style="writing-mode: vertical-rl">Reading?</p></th>
+                <th align=center><p style="writing-mode: vertical-rl">Picture?</p></th>
+                <th align=center><p style="writing-mode: vertical-rl">Date</p></th>
               </tr>
             </thead>
             <tbody id="meterReadingsTable">
             </tbody>
           </table>
+
+          <div id="meterReadingWrite" class="modal">
+            <div class="modal-content">
+              <a style="float: right"
+                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Close</a>
+              <h5>Meter info</h5>
+              <form class="col s12">
+                <div class="input-field col s12 m4">
+                  <input id="meterReading_property" type="text" readonly>
+                  <label for="meterReading_property">Property</label>
+                </div>
+                <div class="input-field col s12 m4">
+                  <input id="meterReading_type" type="text" readonly>
+                  <label for="meterReading_type">Type</label>
+                </div>
+                <div class="input-field col s12 m4">
+                  <input id="meterReading_id" type="text" readonly>
+                  <label for="meterReading_id">ID meter</label>
+                </div>
+                <h5> Please enter Meter Reading here:</h5>
+                <div class="input-field col s12 m4">
+                  <input id="meterReading_reading" type="number" class="validate" max="9999999999" required required="true">
+                  <label for="meterReading_reading">Raeding<b><font color='red'>*</font></b></label>
+                  <span class="helper-text" data-error="max 10 digits. Include decimals and ignore the separator if present" ></span>
+                </div>
+              </form>
+              <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeMeterReading()">Submit<i class="material-icons right">send</i></button>
+              <a style="float: right;margin-bottom: 3px"
+                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+            </div>
+          </div>
+          
         </div>
         <!------------------------------------------------------------------------------------------------------>
         <div id="Members" class="col s12">
@@ -1267,7 +1296,7 @@
       instances = M.Modal.init(elems, {dismissible:false});
     };
     </script>
-    <!--   Meters scripts start here -->
+    <!--   Meter readings scripts start here -->
     <script>
       var meterReadingsTable = document.getElementById("meterReadingsTable");
       var meterReadingsLoaded = false;
@@ -1280,26 +1309,40 @@
         objectsRow.appendChild(cell);
         
         var meterData = meterFS.data();
-        cellContent = document.createTextNode(meterData.type);
+        var cellContent = document.createElement('button');
+        cellContent.setAttribute("data-target", "meterReadingWrite");
+        cellContent.setAttribute('class','btn-small waves-light modal-trigger');
+        cellContent.setAttribute('onclick','setSelectedMeterReading('+JSON.stringify(propertyFS.id)+','+JSON.stringify(propertyFS.data())+','+JSON.stringify(meterFS.id)+','+JSON.stringify(meterFS.data())+')');
+        cellContent.innerHTML = "<font color='blue'>" + meterData.type + "</font>";
         cell = document.createElement('td');
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);  
 
         if (meterData.reading) {
-           cellContent = document.createTextNode("a");
+           cellContent = document.createElement("i");
+           cellContent.setAttribute("class","material-icons  green ");
+           cellContent.innerHTML = "done";
         } else {
-          cellContent = document.createTextNode("a");
+          cellContent = document.createElement("i");
+           cellContent.setAttribute("class","material-icons  red ");
+           cellContent.innerHTML = "clear";
         };
         cell = document.createElement('td');
+        cell.setAttribute("align","center");
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);  
 
         if (meterData.picture) {
-           cellContent = document.createTextNode("a");
+           cellContent = document.createElement("i");
+           cellContent.setAttribute("class","material-icons  green ");
+           cellContent.innerHTML = "done";
         } else {
-          cellContent = document.createTextNode("a");
+          cellContent = document.createElement("i");
+           cellContent.setAttribute("class","material-icons  red ");
+           cellContent.innerHTML = "clear";
         };
         cell = document.createElement('td');
+        cell.setAttribute("align","center");
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);  
 
@@ -1308,16 +1351,16 @@
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);
 
-        membersTable.appendChild (objectsRow);
+        meterReadingsTable.appendChild (objectsRow);
       };
       
       function refreshMeterReadings(){
         emptyHTMLSet(meterReadingsTable);
         refCoproperty.collection("Properties").orderBy("code").get().then(function(propertyFSArray){
-          objectsFSArray.forEach(function(propertyFS){
+          propertyFSArray.forEach(function(propertyFS){
             refCoproperty.collection("Properties").doc(propertyFS.id).collection("Meters").orderBy("type").get().then(function(meterFSArray){
               meterFSArray.forEach(function(meterFS){
-                loadMeterReading(propertyFS,meterFS);
+                if (meterFS.data().status.normalize() === "Actif".normalize()) {loadMeterReading(propertyFS,meterFS);};
               });
             });
           });  
@@ -1330,6 +1373,41 @@
         if (!meterReadingsLoaded) {
           refreshMeterReadings();
           meterReadingsLoaded = true;
+        };
+      };
+
+      var selectedReadingId;
+      var selectedReadingPropertyId;
+      function setSelectedMeterReading(propertyId, propertyData,readingID, readingData){
+        selectedReadingId = readingID;
+        selectedReadingPropertyId = propertyId;
+        document.getElementById("meterReading_property").value = propertyData.code;
+        document.getElementById("meterReading_type").value = readingData.type;
+        document.getElementById("meterReading_id").value = readingData.meter;
+        document.getElementById("meterReading_reading").value = readingData.reading;
+        M.updateTextFields();
+      };
+
+      function validateMeterReading(){
+        var valid= true;
+        if (!document.getElementById("meterReading_reading").checkValidity()) {
+          M.toast({html:"Please enter valid reading"});
+          valid=false;
+        };
+        return valid;
+      };
+
+      function writeMeterReading(){
+        if (validateMeterReading()) {
+          var entries = {
+            reading: document.getElementById("meterReading_reading").value,
+          };
+          refCoproperty.collection("Properties").doc(selectedReadingPropertyId).collection("Meters").doc(selectedReadingId).update(entries).then(function(docref) {
+            refreshMeterReadings();
+            M.Modal.getInstance(document.getElementById("meterReadingWrite")).close();
+          }).catch(function(error) {
+            M.toast({html:"Error occurred updating meter reading:" + error}); 
+          });
         };
       };
     </script>
@@ -1674,34 +1752,34 @@
                   var meter;
                   if (entries.meterColdWater){
                     meter = {
-                      type: "cold water",
+                      type: "Cold Water",
                       meter: entries.meterColdWater,
-                      status: "actif",
+                      status: "Actif",
                       reading:"",
                       date:"",
-                      picture:"N",
+                      picture:"",
                     };
                     refCoproperty.collection("Properties").doc(idNewP.id).collection("Meters").add(meter).then(function(docrefCW) {});
                   };              
                   if (entries.meterHotWater){
                     meter = {
-                      type: "hot water",
+                      type: "Hot Water",
                       meter: entries.meterHotWater,
-                      status: "actif",
+                      status: "Actif",
                       reading:"",
                       date:"",
-                      picture:"N",
+                      picture:"",
                     };
                     refCoproperty.collection("Properties").doc(idNewP.id).collection("Meters").add(meter).then(function(docrefCW) {});
                   };
                   if (entries.meterHeating){
                     meter = {
-                      type: "heating",
+                      type: "Heating",
                       meter: entries.meterHeating,
-                      status: "actif",
+                      status: "Actif",
                       reading:"",
                       date:"",
-                      picture:"N",
+                      picture:"",
                     };
                     refCoproperty.collection("Properties").doc(idNewP.id).collection("Meters").add(meter).then(function(docrefCW) {});
                   };          
