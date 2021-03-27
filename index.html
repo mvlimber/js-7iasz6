@@ -1286,18 +1286,18 @@
         objectsRow.appendChild(cell);  
 
         if (meterData.reading) {
-           cellContent = document.createTextNode(&#9989);
+           cellContent = document.createTextNode("a");
         } else {
-          cellContent = document.createTextNode(&#9989);
+          cellContent = document.createTextNode("a");
         };
         cell = document.createElement('td');
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);  
 
         if (meterData.picture) {
-           cellContent = document.createTextNode(&#9989);
+           cellContent = document.createTextNode("a");
         } else {
-          cellContent = document.createTextNode(&#9989);
+          cellContent = document.createTextNode("a");
         };
         cell = document.createElement('td');
         cell.appendChild(cellContent);
@@ -1315,11 +1315,11 @@
         emptyHTMLSet(meterReadingsTable);
         refCoproperty.collection("Properties").orderBy("code").get().then(function(propertyFSArray){
           objectsFSArray.forEach(function(propertyFS){
-            refCoproperty.collection("Properties").doc(propertyFS.id).collection("Meters").orderBy("Type")get().then(function(meterFSArray){
+            refCoproperty.collection("Properties").doc(propertyFS.id).collection("Meters").orderBy("type").get().then(function(meterFSArray){
               meterFSArray.forEach(function(meterFS){
                 loadMeterReading(propertyFS,meterFS);
-              })
-            })
+              });
+            });
           });  
         });    
       };
@@ -1331,7 +1331,7 @@
           refreshMeterReadings();
           meterReadingsLoaded = true;
         };
-     };
+      };
     </script>
     <!--   Members scripts start here -->
     <script>
