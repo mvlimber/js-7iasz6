@@ -702,7 +702,7 @@
                 <div class="input-field col s12 m4">
                   <select id="meter_status" required aria-required="true">
                     <option value="" disabled selected>Select the status</option>
-                    <option>Actif</option>
+                    <option>Active</option>
                     <option>Removed</option>
                   </select>
                   <label for="meter_status">Status<b><font color='red'>*</font></b></label>
@@ -1360,7 +1360,7 @@
           propertyFSArray.forEach(function(propertyFS){
             refCoproperty.collection("Properties").doc(propertyFS.id).collection("Meters").orderBy("type").get().then(function(meterFSArray){
               meterFSArray.forEach(function(meterFS){
-                if (meterFS.data().status.normalize() === "Actif".normalize()) {loadMeterReading(propertyFS,meterFS);};
+                if (meterFS.data().status.normalize() === "Active".normalize()) {loadMeterReading(propertyFS,meterFS);};
               });
             });
           });  
@@ -1754,7 +1754,7 @@
                     meter = {
                       type: "Cold Water",
                       meter: entries.meterColdWater,
-                      status: "Actif",
+                      status: "Active",
                       reading:"",
                       date:"",
                       picture:"",
@@ -1765,7 +1765,7 @@
                     meter = {
                       type: "Hot Water",
                       meter: entries.meterHotWater,
-                      status: "Actif",
+                      status: "Active",
                       reading:"",
                       date:"",
                       picture:"",
@@ -1776,7 +1776,7 @@
                     meter = {
                       type: "Heating",
                       meter: entries.meterHeating,
-                      status: "Actif",
+                      status: "Active",
                       reading:"",
                       date:"",
                       picture:"",
