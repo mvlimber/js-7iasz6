@@ -549,7 +549,7 @@
                   <input  id="member_bus" type="number" readonly >
                   <label for="member_bus">Bus</label>
                 </div>
-                <button style="float: right;margin-bottom: 10px" data-target="memberWrite" class="btn-small waves-light modal-trigger" onclick="setSelectedMember(selectedMemberId, selectedMemberObject,editMode)">Edit<i class="material-icons right">edit</i></button>
+                <button style="float: right;margin-bottom: 3px" data-target="memberWrite" class="btn-small waves-light modal-trigger" onclick="setSelectedMember(selectedMemberId, selectedMemberObject,editMode)">Edit<i class="material-icons right">edit</i></button>
               </form>
             </div>
             <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
@@ -661,7 +661,7 @@
                   <input id="property_cellar" type="text" readonly>
                   <label for="property_cellar">Cellar</label>
                 </div>               
-                <button style="float: right;margin-bottom: 10px" data-target="propertyWrite" class="btn-small waves-light modal-trigger" onclick="setEditPropertyEntries()">Edit<i class="material-icons right">edit</i></button>
+                <button style="float: right;margin-bottom: 3px" data-target="propertyWrite" class="btn-small waves-light modal-trigger" onclick="setEditPropertyEntries()">Edit<i class="material-icons right">edit</i></button>
               </form>
             </div>
             <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
@@ -698,16 +698,14 @@
                 <table class="striped">
                   <thead>
                       <th>Type</th>
-                      <th>Meter Id</th>
+                      <th>Meter ID</th>
                       <th>Status</th>
                   </thead>
                   <tbody id="property_meters">
                   </tbody>
                 </table>
               </div>
-              <div class="input-field col s12 m4">
-                <button class="btn-small waves-light disabled" onclick="addMeter()">Add Meter<i class="material-icons right">add</i></button>
-              </div>
+              <button style="float: right;margin-bottom: 3px" class="btn-small waves-light" onclick="addMeter()">Add Meter<i class="material-icons right">add</i></button>
             </div>
           </div>
           <div class="modal-footer">
@@ -2028,6 +2026,7 @@
 
           cell = document.createElement('td');
           cellContent = document.createElement('a'); 
+          cellContent.setAttribute('style',"float: right");
           cellContent.setAttribute('class','waves-light btn-small red');
           cellContent.setAttribute('onclick','removeOccupant('+JSON.stringify(property)+',' +JSON.stringify(occupant.id)+')');
           objectsRow.setAttribute("id", occupant.id)
@@ -2045,37 +2044,37 @@
         });
       };
 
-      function displayMeter(meter){
-        var meterData= meter.data();
+      function editMeter(property, meter, meterData){
+
+      };
+      
+      function displayMeter(property, meterFS){
+        var meterData= meterFS.data();
         var objectsRow= document.createElement('tr');
-        var cell = document.createtextNode(meterData.type);
+        var cell = document.createElement('td');
+        var cellContent = document.createTextNode(meterData.type);
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell); 
 
-        var objectsRow= document.createElement('tr');
-        var cell = document.createtextNode(meterData.meter);
+        cell = document.createElement('td');
+        cellContent = document.createTextNode(meterData.meter);
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);
 
-        var objectsRow= document.createElement('tr');
-        var cell = document.createtextNode(meterData.status);
+        cell = document.createElement('td');
+        cellContent = document.createTextNode(meterData.status);
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);
 
         cell = document.createElement('td');
         cellContent = document.createElement('a'); 
-        cellContent.setAttribute('class','waves-light btn-small red');
-        cellContent.setAttribute('onclick','editMeter('+JSON.stringify(meter.id)+',' +JSON.stringify(meterData)+')');
-        objectsRow.setAttribute("id", occupant.id)
-        cellButtonIcon = document.createElement('i');
-        cellButtonIcon.setAttribute('class','material-icons right');
-        cellButtonIcon.innerHTML="delete";           
-        cellContent.appendChild(cell);
-        cellContent.innerHTML = "Remove Occupant";
+        cellContent.setAttribute('class','waves-light btn-small');
+        cellContent.setAttribute('onclick','editMeter('+JSON.stringify(property)+','+JSON.stringify(meterFS.id)+',' +JSON.stringify(meterData)+')');
+        cellContent.innerHTML = "Edit";
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell); 
 
-        occupantsTable.appendChild (objectsRow);
+        metersTable.appendChild (objectsRow);
         
       };
       
@@ -2144,6 +2143,18 @@
         listMembers(document.getElementById("property_occupant_add"),"");   
       };
 
+      function displayMeters(property) {
+        emptyHTMLSet(metersTable);
+        refCoproperty.collection("Properties").doc(property).collection("Meters").get().then( function (querySnapshot) {
+          if (Boolean(querySnapshot)) {
+            querySnapshot.forEach(function(meterFS) {
+              displayMeter(property,meterFS);
+            });
+          };
+        });
+        listMembers(document.getElementById("property_occupant_add"),"");   
+      };
+
       function displayMember(el,memberId){
         // displays the member into a yet defined HTML hyperlink element
         refCoproperty.collection("Members").doc(memberId).get().then(function(member) {
@@ -2176,6 +2187,7 @@
               ownerEl.innerHTML = "<u><font color='blue'>"+member.data().firstName + " " + member.data().lastName+"</font></u>";
         });
         displayOccupants(id); 
+        displayMeters(id);
         var elems = document.querySelectorAll('select');
         M.FormSelect.init(elems);
         M.updateTextFields();
