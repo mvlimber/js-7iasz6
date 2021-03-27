@@ -152,8 +152,8 @@
             onclick="loadReports()">Reports</a></li>
         <li class="tab side text-teal"><a class="waves-effect" href="#Transactions" style="font-size:22px"
             onclick="loadTransactions()">Transactions</a></li>
-        <li class="tab side text-teal"><a class="waves-effect" href="#Meters" style="font-size:22px"
-            onclick="loadMeters()">Meters</a></li>
+        <li class="tab side text-teal"><a class="waves-effect" href="#MeterReadings" style="font-size:22px"
+            onclick="loadMeterReadings()">Meter Readings</a></li>
         <li class="tab side text-teal"><a class="waves-effect" href="#Members" style="font-size:22px"
             onclick="loadMembers()">Members</a></li>
         <li class="tab side text-teal"><a class="waves-effect" href="#Properties" style="font-size:22px"
@@ -377,21 +377,24 @@
 
         </div>
         <!------------------------------------------------------------------------------------------------------>
-        <div id="Meters" class="col s12">
+        <div id="MeterReadings" class="col s12">
           <table class="striped">
             <thead>
               <tr>
-                <th> Property </th>
-                <th> Type</th>
-                <th> Reading </th>
-                <th> Date</th>
+                <th>Property</th>
+                <th>Type</th>
+                <th>
+                  <p style="writing-mode: vertical-rl">Reading?</p>
+                </th>
+                <th>
+                  <p style="writing-mode: vertical-rl">Picture?</p>
+                </th>
+                <th>Date</th>
               </tr>
             </thead>
-            <tbody id="metersTable">
+            <tbody id="meterReadingsTable">
             </tbody>
           </table>
-          
-          
         </div>
         <!------------------------------------------------------------------------------------------------------>
         <div id="Members" class="col s12">
@@ -622,7 +625,7 @@
                   </tbody>
                 </table>
               </div>
-              <button style="float: right;margin-bottom: 3px" class="btn-small waves-light" onclick="addMeter()">Add Meter<i class="material-icons right">add</i></button>
+              <button style="float: right;margin-bottom: 3px" class="btn-small waves-light modal-trigger" data-target="meterWrite" onclick="addMeter()">Add Meter<i class="material-icons right">add</i></button>
             </div>
           </div>
           <div class="modal-footer">
@@ -1266,7 +1269,69 @@
     </script>
     <!--   Meters scripts start here -->
     <script>
-     
+      var meterReadingsTable = document.getElementById("meterReadingsTable");
+      var meterReadingsLoaded = false;
+
+      function loadMeterReading(propertyFS,meterFS){
+        var objectsRow= document.createElement('tr');
+        var cellContent = propertyLink(propertyFS);
+        var cell = document.createElement('td');
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell);
+        
+        var meterData = meterFS.data();
+        cellContent = document.createTextNode(meterData.type);
+        cell = document.createElement('td');
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell);  
+
+        if (meterData.reading) {
+           cellContent = document.createTextNode(&#9989);
+        } else {
+          cellContent = document.createTextNode(&#9989);
+        };
+        cell = document.createElement('td');
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell);  
+
+        if (meterData.picture) {
+           cellContent = document.createTextNode(&#9989);
+        } else {
+          cellContent = document.createTextNode(&#9989);
+        };
+        cell = document.createElement('td');
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell);  
+
+        cellContent = document.createTextNode(meterData.date);
+        cell = document.createElement('td');
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell);
+
+        membersTable.appendChild (objectsRow);
+      };
+      
+      function refreshMeterReadings(){
+        emptyHTMLSet(meterReadingsTable);
+        refCoproperty.collection("Properties").orderBy("code").get().then(function(propertyFSArray){
+          objectsFSArray.forEach(function(propertyFS){
+            refCoproperty.collection("Properties").doc(propertyFS.id).collection("Meters").orderBy("Type")get().then(function(meterFSArray){
+              meterFSArray.forEach(function(meterFS){
+                loadMeterReading(propertyFS,meterFS);
+              })
+            })
+          });  
+        });    
+      };
+      
+      function loadMeterReadings() {
+        hideMenu();
+        document.getElementById("logo-container").innerHTML = "Meter Readings";
+        if (!meterReadingsLoaded) {
+          refreshMeterReadings();
+          meterReadingsLoaded = true;
+        };
+     };
     </script>
     <!--   Members scripts start here -->
     <script>
@@ -1612,6 +1677,9 @@
                       type: "cold water",
                       meter: entries.meterColdWater,
                       status: "actif",
+                      reading:"",
+                      date:"",
+                      picture:"N",
                     };
                     refCoproperty.collection("Properties").doc(idNewP.id).collection("Meters").add(meter).then(function(docrefCW) {});
                   };              
@@ -1620,6 +1688,9 @@
                       type: "hot water",
                       meter: entries.meterHotWater,
                       status: "actif",
+                      reading:"",
+                      date:"",
+                      picture:"N",
                     };
                     refCoproperty.collection("Properties").doc(idNewP.id).collection("Meters").add(meter).then(function(docrefCW) {});
                   };
@@ -1628,6 +1699,9 @@
                       type: "heating",
                       meter: entries.meterHeating,
                       status: "actif",
+                      reading:"",
+                      date:"",
+                      picture:"N",
                     };
                     refCoproperty.collection("Properties").doc(idNewP.id).collection("Meters").add(meter).then(function(docrefCW) {});
                   };          
@@ -1745,17 +1819,46 @@
       
       function writeMeter(){
         if (validateMeterEntries()) {
-          var entries = geMeterEntries();
-          refCoproperty.collection("Properties").doc(selectedPropertyId).collection("Meters").doc(selectedMeterId).set(entries).then(function(docrefmeter) {
-            displayMeters(selectedPropertyId);
-            M.Modal.getInstance(document.getElementById("meterWrite")).close();
-          }).catch(function(error) {
-            M.toast({html:"Error occurred writing meter:" + error}); 
-          });
+          if (selectedMeterId) {
+            var entries = {
+              type: document.getElementById("meter_type").value,
+              meter: document.getElementById("meter_id").value,
+              status: document.getElementById("meter_status").value,
+            };
+            refCoproperty.collection("Properties").doc(selectedPropertyId).collection("Meters").doc(selectedMeterId).update(entries).then(function(docrefmeter) {
+              displayMeters(selectedPropertyId);
+              meterReadingsLoaded = false;
+              M.Modal.getInstance(document.getElementById("meterWrite")).close();
+            }).catch(function(error) {
+              M.toast({html:"Error occurred editing meter:" + error}); 
+            });
+          } else {
+            var entries = {
+              type: document.getElementById("meter_type").value,
+              meter: document.getElementById("meter_id").value,
+              status: document.getElementById("meter_status").value,
+              reading:"",
+              date:"",
+              picture:"N",
+            };
+            refCoproperty.collection("Properties").doc(selectedPropertyId).collection("Meters").add(entries).then(function(docrefmeter) {
+              displayMeters(selectedPropertyId);
+              meterReadingsLoaded = false;
+              M.Modal.getInstance(document.getElementById("meterWrite")).close();
+            }).catch(function(error) {
+              M.toast({html:"Error occurred adding meter:" + error}); 
+            });
+          };
         };
       };
-      function addMeter(property, meter, meterData){
-
+      function addMeter(property){
+        selectedMeterId = "";
+        document.getElementById("meter_type").value="";
+        document.getElementById("meter_id").value="";
+        document.getElementById("meter_status").value="";
+        var elems = document.querySelectorAll('select');
+        M.FormSelect.init(elems);
+        M.updateTextFields();
       };
 
       
