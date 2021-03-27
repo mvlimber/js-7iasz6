@@ -657,7 +657,7 @@
                   <select id="meter_type" required aria-required="true">
                     <option value="" disabled selected>Select the type</option>
                     <option>Cold Water</option>
-                    <option>Warm Water</option>
+                    <option>Hot Water</option>
                     <option>Heating</option>
                   </select>
                   <label for="meter_type">Type<b><font color='red'>*</font></b></label>
@@ -676,8 +676,8 @@
                   <label for="meter_status">Status<b><font color='red'>*</font></b></label>
                 </div>
               </form>
-              <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="writeMeter()">Submit<i class="material-icons right">send</i></button>
-              <a style="float: right"
+              <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeMeter()">Submit<i class="material-icons right">send</i></button>
+              <a style="float: right;margin-bottom: 3px"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
             </div>
           </div>
@@ -1688,7 +1688,7 @@
       var selectedPropertyId;
       var selectedPropertyObject;
       var selectedPropertyOccupants;
-      var selectedMeter;
+      var selectedMeterId;
       var occupantsTable = document.getElementById("property_occupants");
       var metersTable = document.getElementById("property_meters");
         
@@ -1726,14 +1726,33 @@
 
       
       function editMeter(property, meter, meterData){
-        selectedMeter = meter;
+        selectedMeterId = meter;
         document.getElementById("meter_type").value=meterData.type;
         document.getElementById("meter_id").value=meterData.meter;
         document.getElementById("meter_status").value=meterData.status;
+        var elems = document.querySelectorAll('select');
+        M.FormSelect.init(elems);
+        M.updateTextFields();
       };
 
-      function writeMeter(property, meter, meterData){
-
+      function geMeterEntries(){
+        return {
+          type: document.getElementById("meter_type").value,
+          meter: document.getElementById("meter_id").value,
+          status: document.getElementById("meter_status").value,
+        };
+      };
+      
+      function writeMeter(){
+        if (validateMeterEntries()) {
+          var entries = geMeterEntries();
+          refCoproperty.collection("Properties").doc(selectedPropertyId).collection("Meters").doc(selectedMeterId).set(entries).then(function(docrefmeter) {
+            displayMeters(selectedPropertyId);
+            M.Modal.getInstance(document.getElementById("meterWrite")).close();
+          }).catch(function(error) {
+            M.toast({html:"Error occurred writing meter:" + error}); 
+          });
+        };
       };
       function addMeter(property, meter, meterData){
 
@@ -1835,6 +1854,23 @@
         listMembers(document.getElementById("property_occupant_add"),"");   
       };
 
+      function validateMeterEntries(){
+        var valid= true;
+        if (!document.getElementById("meter_type").checkValidity()) {
+          M.toast({html:"Please enter Type"});
+          valid=false;
+        };
+        if (!document.getElementById("meter_id").checkValidity()) {
+          M.toast({html:"Please enter valid Meter ID"});
+          valid=false;
+        };
+        if (!document.getElementById("meter_status").checkValidity()) {
+          M.toast({html:"Please enter Status"});
+          valid=false;
+        };
+        return valid;
+      };
+      
       function displayMeters(property) {
         emptyHTMLSet(metersTable);
         refCoproperty.collection("Properties").doc(property).collection("Meters").get().then( function (querySnapshot) {
