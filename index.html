@@ -237,7 +237,7 @@
               <h5> New Report</h5>
               <div class="row">
                 <form>
-                  <div class="input-field col s12 m12" id="report_file_edit">
+                  <div class="input-field" id="report_file_edit">
                   </div>
                   <div class="file-field input-field col s12 m6">
                     <div class="btn-small">
@@ -249,13 +249,12 @@
                     </div>
                   </div>
                 </form>
-                <form class="col s12 m6">
+                <form>
                   <div class="input-field col s12 m6">
                     <input id="report_type_edit" type="text" required required="true" maxlength="50">
                     <label for="report_type_edit">Type<b><font color='red'>*</font></b></label>
                     <span class="helper-text" data-error="maximum 50 characters" ></span>
                   </div>
-
                 </form>
               </div>
             </div>
@@ -412,12 +411,30 @@
                   <label for="meterReading_id">ID meter</label>
                 </div>
                 <h5> Please enter Meter Reading here:</h5>
-                <div class="input-field col s12 m4">
+                <div class="input-field col s12 m6">
                   <input id="meterReading_reading" type="number" class="validate" max="9999999999" required required="true">
                   <label for="meterReading_reading">Raeding<b><font color='red'>*</font></b></label>
                   <span class="helper-text" data-error="max 10 digits. Include decimals and ignore the separator if present" ></span>
                 </div>
+                <div class="input-field col s12 m6">
+                  <input id="meterReading_date" type="text" class="datepicker validate" required required="true">
+                  <label for="meterReading_date">Reading Date<b><font color='red'>*</font></b></label>
+                  <span class="helper-text" data-error="required field" ></span>
+                </div>
               </form>
+              <form>
+                <div class="input-field " id="meterReading_picture">
+                </div>
+                <div class="file-field input-field col s12 m6">
+                  <div class="btn-small">
+                    <span>Picture<i class="material-icons right">attach_file</i></span>
+                    <input type="file" id="meterReading_picture_file">
+                  </div>
+                  <div class="file-path-wrapper">
+                    <input class="file-path validate" type="text" id="meterReading_picture_text">
+                  </div>
+                </div>
+            </form>
               <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeMeterReading()">Submit<i class="material-icons right">send</i></button>
               <a style="float: right;margin-bottom: 3px"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
@@ -1385,6 +1402,10 @@
         document.getElementById("meterReading_type").value = readingData.type;
         document.getElementById("meterReading_id").value = readingData.meter;
         document.getElementById("meterReading_reading").value = readingData.reading;
+        document.getElementById("meterReading_date").value = readingData.date;
+        emptyHTMLSet(document.getElementById("meterReading_picture"));
+        document.getElementById("meterReading_picture_file").value = "";
+        document.getElementById("meterReading_picture_text").value = "";
         M.updateTextFields();
       };
 
@@ -1394,20 +1415,56 @@
           M.toast({html:"Please enter valid reading"});
           valid=false;
         };
+        if (!document.getElementById("meterReading_date").checkValidity()) {
+          M.toast({html:"Please enter Reading Date"});
+          valid=false;
+        };
+        var readingPicture = document.getElementById('meterReading_picture_file').files[0];
+        let allowed_mime_types = [ 'image/jpeg', 'image/png' ];
+        let allowed_size_kb = 500;
+        if (readingPicture) {
+          if(allowed_mime_types.indexOf(readingPicture.type) == -1) {
+            M.toast({html:"Incorrect file type (only jpeg or png allowed)"});
+            valid=false;
+          };
+          if(readingPicture.size > allowed_size_kb*1024) {
+            M.toast({html:"Picture exceeds max size 500KB"});
+            valid=false;
+          };
+        }
         return valid;
       };
 
       function writeMeterReading(){
+        var pictureFileText = document.getElementById("meterReading_picture_text").value;
         if (validateMeterReading()) {
-          var entries = {
-            reading: document.getElementById("meterReading_reading").value,
-          };
-          refCoproperty.collection("Properties").doc(selectedReadingPropertyId).collection("Meters").doc(selectedReadingId).update(entries).then(function(docref) {
-            refreshMeterReadings();
-            M.Modal.getInstance(document.getElementById("meterReadingWrite")).close();
-          }).catch(function(error) {
-            M.toast({html:"Error occurred updating meter reading:" + error}); 
-          });
+          if (pictureFileText) {
+            var entries = {
+              reading: document.getElementById("meterReading_reading").value,
+              date: document.getElementById("meterReading_date").value,
+              picture: "Y",
+            };
+            refCoproperty.collection("Properties").doc(selectedReadingPropertyId).collection("Meters").doc(selectedReadingId).update(entries).then(function() {
+              var pictureFile = document.getElementById('meterReading_picture_file').files[0];
+              var fileRef = refCopropertyFiles.child(selectedReadingPropertyId).child("Meters").child(selectedReadingId);  
+              fileRef.put(pictureFile).then (function (){});
+              refreshMeterReadings();
+              M.Modal.getInstance(document.getElementById("meterReadingWrite")).close();
+            }).catch(function(error) {
+              M.toast({html:"Error occurred updating meter reading:" + error}); 
+            });
+          } else {
+            var entries = {
+              reading: document.getElementById("meterReading_reading").value,
+              date: document.getElementById("meterReading_date").value,
+            };
+            refCoproperty.collection("Properties").doc(selectedReadingPropertyId).collection("Meters").doc(selectedReadingId).update(entries).then(function(docref) {
+              refreshMeterReadings();
+              M.Modal.getInstance(document.getElementById("meterReadingWrite")).close();
+            }).catch(function(error) {
+              M.toast({html:"Error occurred updating meter reading:" + error}); 
+            });
+          }
         };
       };
     </script>
