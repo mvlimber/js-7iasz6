@@ -396,7 +396,7 @@
             <div class="modal-content">
               <a style="float: right"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Close</a>
-              <h5>Meter info</h5>
+              <h6>Meter info</h6>
               <form class="col s12">
                 <div class="input-field col s12 m4">
                   <input id="meterReading_property" type="text" readonly>
@@ -410,10 +410,10 @@
                   <input id="meterReading_id" type="text" readonly>
                   <label for="meterReading_id">ID meter</label>
                 </div>
-                <h5> Please enter Meter Reading here:</h5>
+                <h6> Please enter Meter Reading here below:</h6>
                 <div class="input-field col s12 m6">
                   <input id="meterReading_reading" type="number" class="validate" max="9999999999" required required="true">
-                  <label for="meterReading_reading">Raeding<b><font color='red'>*</font></b></label>
+                  <label for="meterReading_reading">Reading<b><font color='red'>*</font></b></label>
                   <span class="helper-text" data-error="max 10 digits. Include decimals and ignore the separator if present" ></span>
                 </div>
                 <div class="input-field col s12 m6">
@@ -422,6 +422,8 @@
                   <span class="helper-text" data-error="required field" ></span>
                 </div>
               </form>
+              <div id="meterReading_picture_frame">
+              </div>
               <form>
                 <div class="input-field " id="meterReading_picture">
                 </div>
@@ -1403,6 +1405,15 @@
         document.getElementById("meterReading_id").value = readingData.meter;
         document.getElementById("meterReading_reading").value = readingData.reading;
         document.getElementById("meterReading_date").value = readingData.date;
+        if (readingData.picture) {
+          refCopropertyFiles.child(selectedReadingPropertyId).child("Meters").child(selectedReadingId).getDownloadURL().then(function(url) {
+            var imgEl = document.createElement("img");
+            imgEl.setAttribute("width","300");
+            imgEl.setAttribute("height","300");
+            imgEl.setAttribute("src",url);
+            document.getElementById("meterReading_picture_frame").appendChild(imgEl);
+          });
+        };
         emptyHTMLSet(document.getElementById("meterReading_picture"));
         document.getElementById("meterReading_picture_file").value = "";
         document.getElementById("meterReading_picture_text").value = "";
