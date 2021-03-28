@@ -385,7 +385,7 @@
                 <th align=center><div class="writing-mode: vertical-rl">View/Edit<br>Reading</div></th>
                 <th align=center><p style="writing-mode: vertical-rl">Reading?</p></th>
                 <th align=center><p style="writing-mode: vertical-rl">Picture?</p></th>
-                <th align=center><p style="writing-mode: vertical-rl">Date</p></th>
+                <th align=center>Date</th>
               </tr>
             </thead>
             <tbody id="meterReadingsTable">
@@ -1357,7 +1357,7 @@
         cellContent.setAttribute("data-target", "meterReadingWrite");
         cellContent.setAttribute('class','btn-small waves-light modal-trigger');
         cellContent.setAttribute('onclick','setSelectedMeterReading('+JSON.stringify(propertyFS.id)+','+JSON.stringify(propertyFS.data())+','+JSON.stringify(meterFS.id)+','+JSON.stringify(meterFS.data())+')');
-        cellContent.innerHTML = "<font color='blue'>" + meterData.type + "</font>";
+        cellContent.innerHTML = meterData.type;
         cell = document.createElement('td');
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);  
@@ -1377,9 +1377,10 @@
         objectsRow.appendChild(cell);  
 
         if (meterData.picture) {
-           cellContent = document.createElement("i");
+           cellContent = document.createTextNode("&#10060;");
+           /*cellContent = document.createElement("i");
            cellContent.setAttribute("class","material-icons  green ");
-           cellContent.innerHTML = "done";
+           cellContent.innerHTML = "done";*/
         } else {
           cellContent = document.createElement("i");
            cellContent.setAttribute("class","material-icons  red ");
