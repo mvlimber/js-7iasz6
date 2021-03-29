@@ -326,7 +326,7 @@
           <h6> <b id="totalAmounts"> </b></h6>
           <button style="float: right" data-target="transactionWrite" class="btn-small waves-light modal-trigger" onclick="resetSelectedTransaction()"><i class="material-icons right">add</i>New transaction</button>
 
-          <div id="writeTransaction" class="modal">
+          <div id="transactionWrite" class="modal">
             <div class="modal-content">
               <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
                 Cancel</a>
@@ -358,9 +358,10 @@
                     <label>Classification<b><font color='red'>*</font></b></label>
                   </div>
                   <div class="input-field col s12 m4">
-                    <input id="transaction_account" maxlength="10" class="validate" required aria-required="true" pattern="([A-Z]{2,4}( |[0-9]){15,20}">
+                    <input id="transaction_account" type="text" maxlength="24" class="validate"  
+                    pattern="^BE\d{14}$|^BE\d{2}\s\d{4}\s\d{4}\s\d{4}$">
                     <label for="transaction_account">Account</label>
-                    <span class="helper-text" data-error="2 to 4 letter followed by 17 to 20 digits or blanks" ></span>
+                    <span class="helper-text" data-error="BE followed by 14 digits, blancs for printing format allowed" ></span>
                   </div>
                   <div class="input-field col s12 m8">
                     <input id="transaction_communication" type="text" class="validate" maxlength="80" >
