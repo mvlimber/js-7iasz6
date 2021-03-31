@@ -383,7 +383,7 @@
                 <form class="col s12">
                   <div class="input-field col s12 m6">
                     <input id="transaction_name" type="text" readonly>
-                    <label for="transaction_name_add">Name Supplier</label>
+                    <label for="transaction_name">Name Supplier</label>
                   </div>
                   <div class="input-field col s12 m6">
                     <input id="transaction_amount" type="number" readonly>
@@ -394,7 +394,7 @@
                     <label for="transaction_date">Transaction Date</label>
                   </div>
                   <div class="input-field col s12 m6">
-                    <select id="transaction_classification_add" required required="true">
+                    <select id="transaction_classification" required required="true">
                       <option value="" disabled selected>Select the classification</option>
                       <option>61050 - NETTOYAGE</option>
                       <option>61051 - ENTRETIENT</option>
@@ -404,12 +404,12 @@
                   </div>
                   <div class="row"
                     <div class="input-field col s12 m3">
-                      <input id="transaction_account_add" type="text" readonly>
-                      <label for="transaction_account_add">Account</label>
+                      <input id="transaction_account" type="text" readonly>
+                      <label for="transaction_account">Account</label>
                     </div>
                     <div class="input-field col s12 m6">
-                      <input id="transaction_communication_add" type="text" readonly>
-                      <label for="transaction_communication_add">Communication</label>
+                      <input id="transaction_communication" type="text" readonly>
+                      <label for="transaction_communication">Communication</label>
                     </div>
                   </div>
                 </form>
@@ -1386,11 +1386,11 @@
         };
 
       function updateTransaction() {
-        if (validateTransactionEntries()) {  
-            refCoproperty.collection("Transactions").doc(selectedTransactionId).set(getTransactionEntries())
+        if (validateTransactionEdit()) {  
+            refCoproperty.collection("Transactions").doc(selectedTransactionId).set(getTransactionEntriesEdit())
           .then(function(docref) {
               refreshTransactions();
-              M.Modal.getInstance(document.getElementById("writeTransaction")).close();
+              M.Modal.getInstance(document.getElementById("transactionWrite")).close();
           }).catch(function(error) {
             console.error("Error updating transaction: ", error);
           });
@@ -1398,12 +1398,13 @@
       };
 
       function addTransaction() {
-        if (validateTransactionEntriesAdd()) {  
-            refCoproperty.collection("Transactions").add(getTransactionEntries()).then(function(docref) {
+        if (validateTransactionAdd()) {  
+            var entries = getTransactionEntriesAdd();
+            refCoproperty.collection("Transactions").add(entries).then(function(docref) {
               refreshTransactions();
-              setSelectedTransaction(docref.id,docref.data());
-              M.Modal.getInstance(document.getElementById("addTransaction")).close();
-              M.Modal.getInstance(document.getElementById("writeTransaction")).open();
+              setSelectedTransaction(docref.id,entries);
+              M.Modal.getInstance(document.getElementById("transactionAdd")).close();
+              M.Modal.getInstance(document.getElementById("transactionView")).open();
           }).catch(function(error) {
             console.error("Error adding transaction: ", error);
           });
