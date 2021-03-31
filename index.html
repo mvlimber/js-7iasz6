@@ -324,8 +324,60 @@
             </tbody>
           </table>
           <h6> <b id="totalAmounts"> </b></h6>
-          <button style="float: right" data-target="transactionWrite" class="btn-small waves-light modal-trigger" onclick="resetSelectedTransaction()"><i class="material-icons right">add</i>New transaction</button>
+          <button style="float: right" data-target="transactionAdd" class="btn-small waves-light modal-trigger" onclick="resetSelectedTransaction()"><i class="material-icons right">add</i>New transaction</button>
 
+          <div id="transactionAdd" class="modal">
+            <div class="modal-content">
+              <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
+                Cancel</a>
+              <h5> Enter Transaction Data</h5>
+              <div class="row">
+                <form class="col s12">
+                  <div class="input-field col s12 m6">
+                    <input id="transaction_name_add" type="text" class="validate" maxlength="50" required required="true">
+                    <label for="transaction_name_add">Name Supplier<b><font color='red'>*</font></b></label>
+                    <span class="helper-text" data-error="maximum 50 characters" ></span>
+                  </div>
+                  <div class="input-field col s12 m6">
+                    <input id="transaction_amount_add" type="number" class="validate" min="-99999" max="99999" step="0.1" required required="true">
+                    <label for="transaction_amount_add">Amount<b><font color='red'>*</font></b></label>
+                    <span class="helper-text" data-error="positive or negative amount with max 2 decimals and max 5 digits" ></span>
+                  </div>
+                  <div class="input-field col s12 m6">
+                    <input id="transaction_date_add" type="text" class="datepicker validate"  required required="true">
+                    <label for="transaction_date_add">Transaction Date<b><font color='red'>*</font></b></label>
+                    <span class="helper-text" data-error="required field" ></span>
+                  </div>
+                  <div class="input-field col s12 m6">
+                    <select id="transaction_classification_add" required required="true">
+                            <option value="" disabled selected>Select the classification</option>
+                            <option>61050 - NETTOYAGE</option>
+                            <option>61051 - ENTRETIENT</option>
+                            <option>61052 - REPARATION</option>
+                          </select>
+                    <label>Classification<b><font color='red'>*</font></b></label>
+                  </div>
+                  <div class="row"
+                    <div class="input-field col s12 m3">
+                      <input id="transaction_account_add" type="text" maxlength="24" class="validate"  
+                      pattern="^BE\d{14}$|^BE\d{2}\s\d{4}\s\d{4}\s\d{4}$">
+                      <label for="transaction_account_add">Account</label>
+                      <span class="helper-text" data-error="BE followed by 14 digits, blancs for printing format allowed"></span>
+                    </div>
+                    <div class="input-field col s12 m6">
+                      <input id="transaction_communication_add" type="text" class="validate" maxlength="80" >
+                      <label for="transaction_communication_add">Communication</label>
+                      <span class="helper-text" data-error="maximum 80 characters"></span>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="classifyTransaction()">Save and go to adding evidence<i class="material-icons right">send</i></button>
+              <a style="float: right;margin-bottom: 3px" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
+                Cancel</a>
+            </div>
+          </div>
+          
           <div id="transactionWrite" class="modal">
             <div class="modal-content">
               <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
@@ -1302,6 +1354,35 @@
           });
         };
       };
+    function validateTransactionAdd() {
+      var valid = true
+      if (!document.getElementById("transaction_account_add").checkValidity()) {
+        M.toast({html:"Please enter valid account"});
+        valid=false;
+      };
+      if (!document.getElementById("transaction_name_add").checkValidity()) {
+        M.toast({html:"Please enter supplier name"});
+        valid=false;
+      };
+      if (!document.getElementById("transaction_amount_add").checkValidity()) {
+        M.toast({html:"Please enter amount"});
+        valid=false;
+      };
+      if (!document.getElementById("transaction_date_add").checkValidity()) {
+        M.toast({html:"Please enter transaction date"});
+        valid=false;
+      };
+      if (!document.getElementById("transaction_communication_add").checkValidity()) {
+        M.toast({html:"Please enter valid communication"});
+        valid=false;
+      };
+      if (!document.getElementById("transaction_classification_add").checkValidity()) {
+        M.toast({html:"Please enter classification"});
+        valid=false;
+      };
+      return valid;
+    };
+
     function validateTransactionEntries() {
       var valid = true
       if (!document.getElementById("transaction_account").checkValidity()) {
@@ -1365,12 +1446,12 @@
       selectedTransactionId = null;
       selectedTransactionObject = null;
     
-      document.getElementById("transaction_account").value="";
-      document.getElementById("transaction_name").value="";
-      document.getElementById("transaction_amount").value="";
-      document.getElementById("transaction_date").value="";
-      document.getElementById("transaction_communication").value="";
-      document.getElementById("transaction_classification").value="";
+      document.getElementById("transaction_account_add").value="";
+      document.getElementById("transaction_name_add").value="";
+      document.getElementById("transaction_amount_add").value="";
+      document.getElementById("transaction_date_add").value="";
+      document.getElementById("transaction_communication_add").value="";
+      document.getElementById("transaction_classification_add").value="";
       var elems = document.querySelectorAll('select');
       M.FormSelect.init(elems);
       M.updateTextFields();
