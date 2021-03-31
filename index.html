@@ -1692,6 +1692,52 @@
         return valid;
       };
 
+      function getTransactionEvidenceEntries() {
+        return {
+          fileName: transactionEvidenceFile.name,
+          type: document.getElementById("report_type_edit").value,
+        };
+      };
+
+      function writeTransactionEvidence() {
+        if (validateTransactionEvidenceEntries()) {  
+          var entries = getTransactionEvidenceEntries();
+          refCoproperty.collection("Transactions").doc(selectedTransactionID).collection("Evidence").add(entries).then(function(docref) {
+            if (transactionEvidenceFile) {
+              var fileRef = refCopropertyFiles.child("Transactions").child(docref.id);  
+              fileRef.put(reportFile).then (function (){});
+              M.Modal.getInstance(document.getElementById("transactionEvidenceAdd")).close();
+              refreshTransactionEvidence();
+            } else {
+              M.toast({html:"System error writing file"});
+            };
+          }).catch(function(error) {
+            M.toast({html:"System error writing document: " + error});
+          });
+        };
+      };
+
+      var transactionEvidence_to_remove;
+      function popupRemoveTransactionEvidence(transactionEvidence,filename){
+        document.getElementById("transactionEvidence_to_remove").innerHTML=filename;
+        transactionEvidence_to_remove = transactionEvidence;
+      }
+      
+      function removeTransactionEvidence(transactionEvidence){
+        refCoproperty.collection("Transactions").doc(selectedTransactionID).collection("Evidence").doc(transactionEvidence).delete().then(function(){
+          refreshTransactionEvidence();
+          var fileRef = refCopropertyFiles.child("Transactions").child(transactionEvidence);
+          fileRef.delete().then(function() {
+          }).catch(function(error) {
+            M.toast({html:"System error removing transaction evidence file:" + error});
+            console.log(error);
+          });
+          M.Modal.getInstance(document.getElementById("transactionEvidenceRemove")).close();
+        }).catch(function(error) {
+            M.toast({html:"System error removing transaction evidence:" + error});
+        });
+      };
+
     </script>
     <!--   Meter readings scripts start here -->
     <script>
