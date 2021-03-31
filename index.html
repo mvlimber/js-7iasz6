@@ -414,8 +414,22 @@
                     <label for="transaction_communication">Communication</label>
                   </div>
                 </form>
+                <button style="float: right;margin-bottom: 3px" data-target="transactionWrite" class="btn-small waves-light modal-trigger" onclick="editTransaction(selectedTransactionId, selectedTransactionObject)">Edit<i class="material-icons right">edit</i></button>
+                <h6 style="font-size:20px "><b>Please add evidence here</b></h6>
+                <table class="striped">
+                  <thead>
+                    <tr>
+                      <th> File name </th>
+                      <th> Document Type</th>
+                    </tr>
+                  </thead>
+                  <tbody id="transactionEvidenceTable">
+                  </tbody>
+                </table>
+                <br>
+                <button style="float: right" data-target="transactionEvidenceAdd" class="btn-small waves-light modal-trigger" onclick="emptyTransactionEvidenceFields()"><i class="material-icons right">add</i>New Evidence</button>
               </div>
-              <button style="float: right;margin-bottom: 3px" data-target="transactionWrite" class="btn-small waves-light modal-trigger" onclick="editTransaction(selectedTransactionId, selectedTransactionObject)">Edit<i class="material-icons right">edit</i></button>
+              
               <a style="float: right;margin-bottom: 3px" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
                 Close</a>
             </div>
@@ -477,6 +491,56 @@
                 Cancel</a>
             </div>
           </div>
+
+          <div id="transactionEvidenceRemove" class="modal">
+            <div class="modal-content">
+              <h5> You are about to permanently remove the evidence</h5>
+              <p id="transactionEvidence_to_remove"> </p>
+            </div>
+            <div class="modal-footer">
+              <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="removeTransactionEvidence(transactionEvidence_to_remove)">Confirm<i class="material-icons right">send</i></button>
+              <a style="float: right"
+                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
+                Cancel</a>
+            </div>
+          </div>
+          <div id="transactionEvidenceAdd" class="modal">
+            <div class="modal-content">
+              <a style="float: right"
+                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
+                Cancel</a>
+              <h5> New Transaction transactionEvidenceRemove</h5>
+              <div class="row">
+                <form>
+                  <div class="input-field" id="transactionEvidence_file_edit">
+                  </div>
+                  <div class="file-field input-field col s12 m6">
+                    <div class="btn-small">
+                      <span>PDF Document<b><font color='red'>*</font></b><i class="material-icons right">attach_file</i></span>
+                      <input type="file" id="transactionEvidenceFile">
+                    </div>
+                    <div class="file-path-wrapper">
+                      <input class="file-path validate" type="text" id="transactionEvidenceFileText">
+                    </div>
+                  </div>
+                </form>
+                <form>
+                  <div class="input-field col s12 m6">
+                    <input id="transactionEvidence_type_edit" type="text" required required="true" maxlength="50">
+                    <label for="transactionEvidence_type_edit">Type<b><font color='red'>*</font></b></label>
+                    <span class="helper-text" data-error="maximum 50 characters" ></span>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="writeTransactionEvidence()">Submit<i class="material-icons right">send</i></button>
+              <a style="float: right"
+                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
+                Cancel</a>
+            </div>
+          </div>
+
         </div>
         <!------------------------------------------------------------------------------------------------------>
         <div id="MeterReadings" class="col s12">
@@ -1243,7 +1307,7 @@
       document.getElementById("logo-container").innerHTML = "MyCondos: Reports";
       if (!reportsLoaded) {
             refreshReports();
-            transactionsLoaded = true;
+            reportsLoaded = true;
           };
       };
 
@@ -1544,6 +1608,90 @@
       elems = document.querySelectorAll('.modal');
       instances = M.Modal.init(elems, {dismissible:false});
     };
+
+      function emptyTransactionEvidenceFields(){
+        document.getElementById("transactionEvidenceFile").value = "";
+        document.getElementById("transactionEvidenceFileText").value = "";
+        document.getElementById("transactionEvidence_type_edit").value = "";
+      };
+      
+      function showTansactionEvidence(id) {
+        refCopropertyFiles.child("Transactions").child(id).getDownloadURL().then(function(url) {
+          window.open(url,"_blank");
+        });
+      };
+
+      function loadTransactionEvidence (objectFS){
+        var object = objectFS.data();
+        var objectsRow= document.createElement('tr');
+        
+        var cellContent = document.createElement("button");
+        cellContent.setAttribute('class','btn-flat');
+        cellContent.setAttribute('onclick','showTansactionEvidence('+JSON.stringify(objectFS.id)+')');
+        var cell = document.createElement('td');
+        cellContent.setAttribute("target","_blank"); 
+        cellContent.innerHTML = "<font color='blue'>" + object.fileName + "</font>";
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell);
+        
+        cellContent = document.createTextNode(object.type);
+        cell = document.createElement('td');
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell);  
+        
+        cellContent = document.createElement('button');
+        cellContent.setAttribute('class','modal-trigger btn-small waves-light red');
+        cellContent.setAttribute("data-target", "transactionEvidenceRemove");
+        cellContent.setAttribute('onclick','popupRemoveTransactionEvidence('+JSON.stringify(objectFS.id)+','+JSON.stringify(object.fileName)+')');
+        var cellButtonIcon = document.createElement('i');
+        cellButtonIcon.setAttribute('class','material-icons right');
+        cellButtonIcon.innerHTML="delete";           
+        cellContent.appendChild(cellButtonIcon);
+        cellContent.innerHTML = "Remove";
+
+        cell = document.createElement('td');
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell);    
+        
+        reportsTable.appendChild (objectsRow);
+      };
+
+      function refreshTransactionEvidence(){
+        emptyHTMLSet(transactionEvidenceTable);
+        refCoproperty.collection("Transactions").get().then(function(objectsFSArray){
+            objectsFSArray.forEach(function(objectFS){
+              loadReport(objectFS);
+            })
+          });
+      };
+
+      var transactionEvidenceFile;
+      function validateTransactionEvidenceEntries() {
+        var valid = true
+        if (!(document.getElementById("transactionEvidence_type_edit").value)) {
+          M.toast({html:"Please enter Type"});
+          valid=false;
+        };
+      
+        transactionEvidenceFile = document.getElementById('transactionEvidenceFile').files[0];
+        let allowed_mime_types = ['application/pdf','image/jpeg', 'image/png'];
+        let allowed_size_kb = 5000;
+        if (reportFile) {
+          if(allowed_mime_types.indexOf(transactionEvidenceFile.type) == -1) {
+            M.toast({html:"Incorrect file type (only pdf, jpeg and png allowed)"});
+            valid=false;
+          };
+          if(transactionEvidenceFile.size > allowed_size_kb*1024) {
+            M.toast({html:"File exceeds max size 500KB"});
+            valid=false;
+          };
+        } else {
+            M.toast({html:"Please select PDF File"});
+            valid=false;
+        };
+        return valid;
+      };
+
     </script>
     <!--   Meter readings scripts start here -->
     <script>
