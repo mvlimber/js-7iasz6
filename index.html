@@ -336,9 +336,16 @@
                   <div class="input-field col s12 m6">
                     <select id="transaction_type_add" required required="true">
                             <option value="" disabled selected>Select the type</option>
-                            <option>Expense</option>
-                            <option>Revenue</option>
-                            <option>Credit Note</option>
+                            <option>Repair</option>
+                            <option>Maintenance</option>
+                            <option>Installation</option>
+                            <option>Insurance</option>
+                            <option>Water</option>
+                            <option>Electricity</option>
+                            <option>Gaz</option>
+                            <option>Services</option>
+                            <option>Small equipment</option>
+                            <option>Other</option>
                           </select>
                     <label>Type<b><font color='red'>*</font></b></label>
                   </div>
@@ -357,22 +364,13 @@
                     <label for="transaction_date_add">Transaction Date<b><font color='red'>*</font></b></label>
                     <span class="helper-text" data-error="required field" ></span>
                   </div>
-                  <div class="input-field col s12 m6">
-                    <select id="transaction_classification_add" required required="true">
-                        <option value="" disabled selected>Select the classification</option>
-                        <option>61050 - NETTOYAGE</option>
-                        <option>61051 - ENTRETIENT</option>
-                        <option>61052 - REPARATION</option>
-                      </select>
-                    <label>Classification<b><font color='red'>*</font></b></label>
-                  </div>
-                  <div class="input-field col s12 m4">
-                    <input id="transaction_account_add" type="text" maxlength="24" class="validate"  
+                  <div class="input-field col s12 m2">
+                    <input id="transaction_account_add" type="text" maxlength="17" class="validate"  
                     pattern="^BE\d{14}$|^BE\d{2}\s\d{4}\s\d{4}\s\d{4}$">
                     <label for="transaction_account_add">Account</label>
                     <span class="helper-text" data-error="BE followed by 14 digits, blancs for printing format allowed"></span>
                   </div>
-                  <div class="input-field col s12 m4">
+                  <div class="input-field col s12 m6">
                     <input id="transaction_communication_add" type="text" class="validate" maxlength="80" >
                     <label for="transaction_communication_add">Communication</label>
                     <span class="helper-text" data-error="maximum 80 characters"></span>
@@ -407,23 +405,17 @@
                     <input id="transaction_date" type="text" readonly>
                     <label for="transaction_date">Transaction Date</label>
                   </div>
-                  <div class="input-field col s12 m6">
-                    <input id="transaction_classification" readonly>
-                    <label>Classification<b><font color='red'>*</font></b></label>
+                  <div class="input-field col s12 m3">
+                    <input id="transaction_account" type="text" readonly>
+                    <label for="transaction_account">Account</label>
                   </div>
-                  
-                    <div class="input-field col s12 m3">
-                      <input id="transaction_account" type="text" readonly>
-                      <label for="transaction_account">Account</label>
-                    </div>
-                    <div class="input-field col s12 m6">
-                      <input id="transaction_communication" type="text" readonly>
-                      <label for="transaction_communication">Communication</label>
-                    </div>
-                  
+                  <div class="input-field col s12 m6">
+                    <input id="transaction_communication" type="text" readonly>
+                    <label for="transaction_communication">Communication</label>
+                  </div>
                 </form>
               </div>
-              <button style="float: right;margin-bottom: 3px" data-target="transactionWrite" class="btn-small waves-light modal-trigger" onclick="setSelectedTransaction(selectedTransactionId, selectedtransactionObject)">Edit<i class="material-icons right">edit</i></button>
+              <button style="float: right;margin-bottom: 3px" data-target="transactionWrite" class="btn-small waves-light modal-trigger" onclick="editTransaction(selectedTransactionId, selectedTransactionObject)">Edit<i class="material-icons right">edit</i></button>
               <a style="float: right;margin-bottom: 3px" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
                 Close</a>
             </div>
@@ -438,12 +430,19 @@
                 <form class="col s12">
                   <div class="input-field col s12 m6">
                     <select id="transaction_type_edit" required required="true">
-                            <option value="" disabled selected>Select the classification</option>
-                            <option>Expense</option>
-                            <option>Revenue</option>
-                            <option>Credit Note</option>
+                           <option value="" disabled selected>Select the type</option>
+                            <option>Repair</option>
+                            <option>Maintenance</option>
+                            <option>Installation</option>
+                            <option>Insurance</option>
+                            <option>Water</option>
+                            <option>Electricity</option>
+                            <option>Gaz</option>
+                            <option>Services</option>
+                            <option>Small equipment</option>
+                            <option>Other</option>
                           </select>
-                    <label>Classification<b><font color='red'>*</font></b></label>
+                    <label>Type<b><font color='red'>*</font></b></label>
                   </div>
                   <div class="input-field col s12 m6">
                     <input id="transaction_name_edit" type="text" class="validate" maxlength="50" required required="true">
@@ -459,15 +458,6 @@
                     <input id="transaction_date_edit" type="text" class="datepicker validate"  required required="true">
                     <label for="transaction_date_edit">Transaction Date<b><font color='red'>*</font></b></label>
                     <span class="helper-text" data-error="required field" ></span>
-                  </div>
-                  <div class="input-field col s12 m6">
-                    <select id="transaction_classification_edit" required required="true">
-                            <option value="" disabled selected>Select the classification</option>
-                            <option>61050 - NETTOYAGE</option>
-                            <option>61051 - ENTRETIENT</option>
-                            <option>61052 - REPARATION</option>
-                          </select>
-                    <label>Classification<b><font color='red'>*</font></b></label>
                   </div>
                   <div class="input-field col s12 m4">
                     <input id="transaction_account_edit" type="text" maxlength="24" class="validate"  
@@ -1343,7 +1333,7 @@
               var objectsRow= document.createElement('tr');
               
               cellContent = document.createElement('button');
-              cellContent.setAttribute("data-target", "transactionWrite");
+              cellContent.setAttribute("data-target", "transactionView");
               cellContent.setAttribute('class','btn-small waves-light modal-trigger');
               cellContent.setAttribute('onclick','setSelectedTransaction('+JSON.stringify(objectFS.id)+','+JSON.stringify(object)+')');
               cellButtonIcon = document.createElement('i');
@@ -1361,7 +1351,7 @@
               cell.appendChild(cellContent);
               objectsRow.appendChild(cell);
               
-              cellContent = document.createTextNode(object.Counterparty);
+              cellContent = document.createTextNode(object.name);
               cell = document.createElement('td');
               cell.appendChild(cellContent);
               objectsRow.appendChild(cell); 
@@ -1453,10 +1443,6 @@
         M.toast({html:"Please enter valid communication"});
         valid=false;
       };
-      if (!document.getElementById("transaction_classification_add").checkValidity()) {
-        M.toast({html:"Please enter classification"});
-        valid=false;
-      };
       return valid;
     };
 
@@ -1486,10 +1472,6 @@
         M.toast({html:"Please enter valid communication"});
         valid=false;
       };
-      if (!document.getElementById("transaction_classification_edit").checkValidity()) {
-        M.toast({html:"Please enter classification"});
-        valid=false;
-      };
       return valid;
     };
 
@@ -1501,7 +1483,6 @@
         amount: document.getElementById("transaction_amount_add").value,
         date: document.getElementById("transaction_date_add").value,
         communication:document.getElementById("transaction_communication_add").value,
-        classification: document.getElementById("transaction_classification_add").value
       };
     };
 
@@ -1513,7 +1494,6 @@
         amount: document.getElementById("transaction_amount_edit").value,
         date: document.getElementById("transaction_date_edit").value,
         communication:document.getElementById("transaction_communication_edit").value,
-        classification: document.getElementById("transaction_classification_edit").value
       };
     };
 
@@ -1528,7 +1508,20 @@
       document.getElementById("transaction_amount").value=object.amount;
       document.getElementById("transaction_date").value=object.date;
       document.getElementById("transaction_communication").value=object.communication;
-      document.getElementById("transaction_classification").value=object.classification;
+      var elems = document.querySelectorAll('select');
+      M.FormSelect.init(elems);
+      M.updateTextFields();
+      elems = document.querySelectorAll('.modal');
+      instances = M.Modal.init(elems, {dismissible:false});
+    };
+
+    function editTransaction(id,object) {
+      document.getElementById("transaction_type_edit").value=object.type;
+      document.getElementById("transaction_account_edit").value=object.account;
+      document.getElementById("transaction_name_edit").value=object.name;
+      document.getElementById("transaction_amount_edit").value=object.amount;
+      document.getElementById("transaction_date_edit").value=object.date;
+      document.getElementById("transaction_communication_edit").value=object.communication;
       var elems = document.querySelectorAll('select');
       M.FormSelect.init(elems);
       M.updateTextFields();
@@ -1545,7 +1538,6 @@
       document.getElementById("transaction_amount_add").value="";
       document.getElementById("transaction_date_add").value="";
       document.getElementById("transaction_communication_add").value="";
-      document.getElementById("transaction_classification_add").value="";
       var elems = document.querySelectorAll('select');
       M.FormSelect.init(elems);
       M.updateTextFields();
