@@ -331,7 +331,7 @@
             <div class="modal-content">
               <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
                 Cancel</a>
-              <h5> Enter Transaction Data</h5>
+              <h5>New Transaction</h5>
                 <form >
                   <div class="input-field col s12 m6">
                     <select id="transaction_type_add" required required="true">
@@ -386,8 +386,8 @@
             <div class="modal-content">
               <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
                 Close</a>
-              <h5> Transaction Data and evidence</h5>
-              <div class="row">
+              <h5> View Transaction</h5>
+              <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
                 <form class="col s12">
                   <div class="input-field col s12 m6">
                     <input id="transaction_type" type="text" readonly>
@@ -415,11 +415,13 @@
                   </div>
                 </form>
                 <button style="float: right;margin-bottom: 3px" data-target="transactionWrite" class="btn-small waves-light modal-trigger" onclick="editTransaction(selectedTransactionId, selectedTransactionObject)">Edit<i class="material-icons right">edit</i></button>
+              </div>
+              <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
                 <h6 style="font-size:20px "><b>Please add evidence here</b></h6>
                 <table class="striped">
                   <thead>
                     <tr>
-                      <th> File name </th>
+                      <th> File name</th>
                       <th> Document Type</th>
                     </tr>
                   </thead>
@@ -429,7 +431,6 @@
                 <br>
                 <button style="float: right" data-target="transactionEvidenceAdd" class="btn-small waves-light modal-trigger" onclick="emptyTransactionEvidenceFields()"><i class="material-icons right">add</i>New Evidence</button>
               </div>
-              
               <a style="float: right;margin-bottom: 3px" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
                 Close</a>
             </div>
@@ -439,7 +440,7 @@
             <div class="modal-content">
               <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
                 Cancel</a>
-              <h5> Edit Transaction Data</h5>
+              <h5>Edit Transaction</h5>
               <div class="row">
                 <form class="col s12">
                   <div class="input-field col s12 m6">
@@ -509,7 +510,7 @@
               <a style="float: right"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
                 Cancel</a>
-              <h5> New Transaction transactionEvidenceRemove</h5>
+              <h5> New Transaction Evidence</h5>
               <div class="row">
                 <form>
                   <div class="input-field" id="transactionEvidence_file_edit">
@@ -575,7 +576,7 @@
             <div class="modal-content">
               <a style="float: right"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Close</a>
-              <h6>Meter info</h6>
+              <h5>Meter info</h5>
               <form >
                 <div class="input-field col s12 m4">
                   <input id="meterReading_property" type="text" readonly>
@@ -590,7 +591,7 @@
                   <label for="meterReading_id">ID meter</label>
                 </div>
               </form>
-                <h6> Please enter Meter Reading here below:</h6>
+                <h6><b>Please enter Meter Reading here below:</b></h6>
                 <div class="row">
                   <form>
                   <div class="input-field col s12 m6">
@@ -1456,10 +1457,12 @@
         };
 
       function updateTransaction() {
-        if (validateTransactionEdit()) {  
-            refCoproperty.collection("Transactions").doc(selectedTransactionId).set(getTransactionEntriesEdit())
+        if (validateTransactionEdit()) { 
+            var entries =  getTransactionEntriesEdit();
+            refCoproperty.collection("Transactions").doc(selectedTransactionId).set(entries)
           .then(function(docref) {
               refreshTransactions();
+              setSelectedTransaction(selectedTransactionId,entries)
               M.Modal.getInstance(document.getElementById("transactionWrite")).close();
           }).catch(function(error) {
             console.error("Error updating transaction: ", error);
@@ -1575,8 +1578,6 @@
       var elems = document.querySelectorAll('select');
       M.FormSelect.init(elems);
       M.updateTextFields();
-      elems = document.querySelectorAll('.modal');
-      instances = M.Modal.init(elems, {dismissible:false});
     };
 
     function editTransaction(id,object) {
@@ -1589,8 +1590,6 @@
       var elems = document.querySelectorAll('select');
       M.FormSelect.init(elems);
       M.updateTextFields();
-      elems = document.querySelectorAll('.modal');
-      instances = M.Modal.init(elems, {dismissible:false});
     };
 
     function resetSelectedTransaction() {
@@ -1658,7 +1657,7 @@
 
       function refreshTransactionEvidence(){
         emptyHTMLSet(transactionEvidenceTable);
-        refCoproperty.collection("Transactions").get().then(function(objectsFSArray){
+        refCoproperty.collection("Transactions").doc(selectedTransactionId).collection("Evidence").get().then(function(objectsFSArray){
             objectsFSArray.forEach(function(objectFS){
               loadReport(objectFS);
             })
@@ -1676,7 +1675,7 @@
         transactionEvidenceFile = document.getElementById('transactionEvidenceFile').files[0];
         let allowed_mime_types = ['application/pdf','image/jpeg', 'image/png'];
         let allowed_size_kb = 5000;
-        if (reportFile) {
+        if (transactionEvidenceFile) {
           if(allowed_mime_types.indexOf(transactionEvidenceFile.type) == -1) {
             M.toast({html:"Incorrect file type (only pdf, jpeg and png allowed)"});
             valid=false;
@@ -1702,12 +1701,12 @@
       function writeTransactionEvidence() {
         if (validateTransactionEvidenceEntries()) {  
           var entries = getTransactionEvidenceEntries();
-          refCoproperty.collection("Transactions").doc(selectedTransactionID).collection("Evidence").add(entries).then(function(docref) {
+          refCoproperty.collection("Transactions").doc(selectedTransactionId).collection("Evidence").add(entries).then(function(docref) {
             if (transactionEvidenceFile) {
               var fileRef = refCopropertyFiles.child("Transactions").child(docref.id);  
               fileRef.put(reportFile).then (function (){});
-              M.Modal.getInstance(document.getElementById("transactionEvidenceAdd")).close();
               refreshTransactionEvidence();
+              M.Modal.getInstance(document.getElementById("transactionEvidenceAdd")).close();
             } else {
               M.toast({html:"System error writing file"});
             };
@@ -1724,7 +1723,7 @@
       }
       
       function removeTransactionEvidence(transactionEvidence){
-        refCoproperty.collection("Transactions").doc(selectedTransactionID).collection("Evidence").doc(transactionEvidence).delete().then(function(){
+        refCoproperty.collection("Transactions").doc(selectedTransactionId).collection("Evidence").doc(transactionEvidence).delete().then(function(){
           refreshTransactionEvidence();
           var fileRef = refCopropertyFiles.child("Transactions").child(transactionEvidence);
           fileRef.delete().then(function() {
