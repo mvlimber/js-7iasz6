@@ -314,11 +314,11 @@
           <table class="striped">
             <thead>
               <tr>
-                <th> Type </th>
-                <th> Evidence?</th>
-                <th> Counterparty</th>
-                <th> Amount</th>
-                <th> Date</th>
+                <th>Type</th>
+                <th><p style="writing-mode: vertical-rl">Evidence?</p></th>
+                <th>Counterparty</th>
+                <th>Amount</th>
+                <th>Date</th>
               </tr>
             </thead>
             <tbody id="transactionsTable">
@@ -344,7 +344,7 @@
                             <option>Electricity</option>
                             <option>Gaz</option>
                             <option>Services</option>
-                            <option>Small equipment</option>
+                            <option>Equipment</option>
                             <option>Other</option>
                           </select>
                     <label>Type<b><font color='red'>*</font></b></label>
@@ -417,7 +417,7 @@
                 <button style="float: right;margin-bottom: 3px" data-target="transactionWrite" class="btn-small waves-light modal-trigger" onclick="editTransaction(selectedTransactionId, selectedTransactionObject)">Edit<i class="material-icons right">edit</i></button>
               </div>
               <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
-                <h6 style="font-size:20px "><b>Please add evidence here</b></h6>
+                <h6 style="font-size:20px ">Please add evidence here</h6>
                 <table class="striped">
                   <thead>
                     <tr>
@@ -429,7 +429,7 @@
                   </tbody>
                 </table>
                 <br>
-                <button style="float: right" data-target="transactionEvidenceAdd" class="btn-small waves-light modal-trigger" onclick="emptyTransactionEvidenceFields()"><i class="material-icons right">add</i>New Evidence</button>
+                <button style="float: right;margin-bottom: 3px" data-target="transactionEvidenceAdd" class="btn-small waves-light modal-trigger" onclick="emptyTransactionEvidenceFields()"><i class="material-icons right">add</i>New Evidence</button>
               </div>
               <a style="float: right;margin-bottom: 3px" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
                 Close</a>
@@ -454,7 +454,7 @@
                             <option>Electricity</option>
                             <option>Gaz</option>
                             <option>Services</option>
-                            <option>Small equipment</option>
+                            <option>Equipment</option>
                             <option>Other</option>
                           </select>
                     <label>Type<b><font color='red'>*</font></b></label>
@@ -1397,22 +1397,31 @@
               var object = objectFS.data();
               var objectsRow= document.createElement('tr');
               
-              cellContent = document.createElement('button');
+              var cellContent = document.createElement('button');
               cellContent.setAttribute("data-target", "transactionView");
               cellContent.setAttribute('class','btn-small waves-light modal-trigger');
               cellContent.setAttribute('onclick','setSelectedTransaction('+JSON.stringify(objectFS.id)+','+JSON.stringify(object)+')');
-              cellButtonIcon = document.createElement('i');
+              var cellButtonIcon = document.createElement('i');
               cellButtonIcon.setAttribute('class','material-icons right');
               cellButtonIcon.innerHTML="add";           
               cellContent.appendChild(cellButtonIcon);
               cellContent.innerHTML = object.type;
-              cell = document.createElement('td');
+              var cell = document.createElement('td');
               cell.appendChild(cellContent);
               objectsRow.appendChild(cell);   
               
-              var cellContent = document.createTextNode("N");
-              var cell = document.createElement('td');
-              var cellButtonIcon;
+              refCoproperty.collection("Transactions").doc(objectFS.id).collection("Evidence").get().then(function(objectsFSArray){
+                if (objectsFSArray.docs.length > 0) {
+                  cellContent = document.createElement("i");
+                  cellContent.setAttribute("class","material-icons  green ");
+                  cellContent.innerHTML = "done";
+                } else {
+                  cellContent = document.createElement("i");
+                  cellContent.setAttribute("class","material-icons  red ");
+                  cellContent.innerHTML = "clear";
+                };
+              
+              cell = document.createElement('td');
               cell.appendChild(cellContent);
               objectsRow.appendChild(cell);
               
@@ -1431,8 +1440,10 @@
               cell = document.createElement('td');
               cell.appendChild(cellContent);
               objectsRow.appendChild(cell); 
+
               
               transactionsTable.appendChild (objectsRow);
+              });
             };
           
         function refreshTransactions(){
@@ -1575,6 +1586,7 @@
       document.getElementById("transaction_amount").value=object.amount;
       document.getElementById("transaction_date").value=object.date;
       document.getElementById("transaction_communication").value=object.communication;
+      refreshTransactionEvidence()
       var elems = document.querySelectorAll('select');
       M.FormSelect.init(elems);
       M.updateTextFields();
@@ -1652,14 +1664,14 @@
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);    
         
-        reportsTable.appendChild (objectsRow);
+        transactionEvidenceTable.appendChild (objectsRow);
       };
 
       function refreshTransactionEvidence(){
         emptyHTMLSet(transactionEvidenceTable);
         refCoproperty.collection("Transactions").doc(selectedTransactionId).collection("Evidence").get().then(function(objectsFSArray){
             objectsFSArray.forEach(function(objectFS){
-              loadReport(objectFS);
+              loadTransactionEvidence(objectFS);
             })
           });
       };
@@ -1694,7 +1706,7 @@
       function getTransactionEvidenceEntries() {
         return {
           fileName: transactionEvidenceFile.name,
-          type: document.getElementById("report_type_edit").value,
+          type: document.getElementById("transactionEvidence_type_edit").value,
         };
       };
 
@@ -1706,6 +1718,7 @@
               var fileRef = refCopropertyFiles.child("Transactions").child(docref.id);  
               fileRef.put(reportFile).then (function (){});
               refreshTransactionEvidence();
+              refreshTransactions();
               M.Modal.getInstance(document.getElementById("transactionEvidenceAdd")).close();
             } else {
               M.toast({html:"System error writing file"});
@@ -1725,6 +1738,7 @@
       function removeTransactionEvidence(transactionEvidence){
         refCoproperty.collection("Transactions").doc(selectedTransactionId).collection("Evidence").doc(transactionEvidence).delete().then(function(){
           refreshTransactionEvidence();
+          refreshTransactions();
           var fileRef = refCopropertyFiles.child("Transactions").child(transactionEvidence);
           fileRef.delete().then(function() {
           }).catch(function(error) {
