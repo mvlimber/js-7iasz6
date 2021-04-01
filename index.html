@@ -309,7 +309,6 @@
           <button style="float: right" data-target="reportAdd" class="btn-small waves-light modal-trigger" onclick="emptyReportFields()"><i class="material-icons right">add</i>New Report</button>
         </div>
         <!------------------------------------------------------------------------------------------------------>
-        
         <div id="Transactions" class="col s12">
           <table class="striped">
             <thead>
@@ -826,6 +825,21 @@
               </form>
             </div>
             <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
+              <div>
+                <h7>Meters</h7>
+                <table class="striped">
+                  <thead>
+                    <th>Type</th>
+                    <th>Meter ID</th>
+                    <th>Status</th>
+                  </thead>
+                  <tbody id="property_meters">
+                  </tbody>
+                </table>
+              </div>
+              <button style="float: right;margin-bottom: 3px" class="btn-small waves-light modal-trigger" data-target="meterWrite" onclick="addMeter()">Add Meter<i class="material-icons right">add</i></button>
+            </div>
+            <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
               <div class="input-field col s12 m6">
                 <a id="property_owner" data-target="memberView" class="modal-trigger btn-flat"> </a>
                 <label for="property_owner" class="active">Current Owner</label>
@@ -853,21 +867,7 @@
                 <button id="buttonOccupantAdd" class="btn-small waves-light disabled" onclick="addOccupant()">Add as Occupant<i class="material-icons right">add</i></button>
               </div>
             </div>
-            <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
-              <div>
-                <h7>Meters</h7>
-                <table class="striped">
-                  <thead>
-                    <th>Type</th>
-                    <th>Meter ID</th>
-                    <th>Status</th>
-                  </thead>
-                  <tbody id="property_meters">
-                  </tbody>
-                </table>
-              </div>
-              <button style="float: right;margin-bottom: 3px" class="btn-small waves-light modal-trigger" data-target="meterWrite" onclick="addMeter()">Add Meter<i class="material-icons right">add</i></button>
-            </div>
+            
           </div>
           <div class="modal-footer">
             <a class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>Close</a>
@@ -1716,7 +1716,7 @@
           refCoproperty.collection("Transactions").doc(selectedTransactionId).collection("Evidence").add(entries).then(function(docref) {
             if (transactionEvidenceFile) {
               var fileRef = refCopropertyFiles.child("Transactions").child(docref.id);  
-              fileRef.put(reportFile).then (function (){});
+              fileRef.put(transactionEvidenceFile).then (function (){});
               refreshTransactionEvidence();
               refreshTransactions();
               M.Modal.getInstance(document.getElementById("transactionEvidenceAdd")).close();
@@ -2404,7 +2404,7 @@
       };
 
       
-      function editMeter(property, meter, meterData){
+      function editMeter(meter, meterData){
         selectedMeterId = meter;
         document.getElementById("meter_type").value=meterData.type;
         document.getElementById("meter_id").value=meterData.meter;
@@ -2467,7 +2467,7 @@
       };
 
       
-      function displayMeter(property, meterFS){
+      function displayMeter(meterFS){
         var meterData = meterFS.data();
         var objectsRow= document.createElement('tr');
         var cell = document.createElement('td');
@@ -2489,7 +2489,7 @@
         cellContent = document.createElement('button'); 
         cellContent.setAttribute('class','waves-light btn-small modal-trigger');
         cellContent.setAttribute("data-target", "meterWrite");
-        cellContent.setAttribute('onclick','editMeter('+JSON.stringify(property)+','+JSON.stringify(meterFS.id)+',' +JSON.stringify(meterData)+')');
+        cellContent.setAttribute('onclick','editMeter('+JSON.stringify(meterFS.id)+',' +JSON.stringify(meterData)+')');
         cellContent.innerHTML = "Edit";
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell); 
@@ -2587,7 +2587,7 @@
         refCoproperty.collection("Properties").doc(property).collection("Meters").get().then( function (querySnapshot) {
           if (Boolean(querySnapshot)) {
             querySnapshot.forEach(function(meterFS) {
-              displayMeter(property,meterFS);
+              displayMeter(meterFS);
             });
           };
         });  
