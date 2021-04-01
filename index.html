@@ -270,7 +270,7 @@
           <table class="striped">
             <thead>
               <tr>
-                <th> File name </th>
+                <th>File name </th>
                 <th> Document Type</th>
                 <th> Creation Date </th>
               </tr>
@@ -316,14 +316,14 @@
                 <th>Type</th>
                 <th><p style="writing-mode: vertical-rl">Evidence?</p></th>
                 <th>Counterparty</th>
-                <th>Amount</th>
-                <th>Date</th>
+                <th><p style="text-align: right">Amount</p></th>
+                <th><p style="text-align: right">Date</p></th>
               </tr>
             </thead>
             <tbody id="transactionsTable">
             </tbody>
           </table>
-          <h6> <b id="totalAmounts"> </b></h6>
+          <h6> <b>Total Amount is </b><b id="totalAmount"></b></h6>
           <button style="float: right" data-target="transactionAdd" class="btn-small waves-light modal-trigger" onclick="resetSelectedTransaction()"><i class="material-icons right">add</i>New transaction</button>
 
           <div id="transactionAdd" class="modal">
@@ -354,7 +354,7 @@
                     <span class="helper-text" data-error="maximum 50 characters" ></span>
                   </div>
                   <div class="input-field col s12 m6">
-                    <input id="transaction_amount_add" type="number" class="validate" min="-99999" max="99999" step="0.1" required required="true">
+                    <input id="transaction_amount_add" type="number" class="validate" min="-99999" max="99999" step="0.01" required required="true">
                     <label for="transaction_amount_add">Amount<b><font color='red'>*</font></b></label>
                     <span class="helper-text" data-error="positive or negative amount with max 2 decimals and max 5 digits" ></span>
                   </div>
@@ -878,10 +878,10 @@
           <table class="striped">
             <thead>
               <tr>
-                <th> Code </th>
-                <th> Quota </th>
-                <th> Type </th>
-                <th> Owner </th>
+                <th>Code</th>
+                <th>Quota</th>
+                <th>Type</th>
+                <th>Owner</th>
               </tr>
             </thead>
             <tbody id="propertiesTable">
@@ -1391,7 +1391,7 @@
     </script>
     <!--   Transaction scripts start here -->
     <script>
-      var totalAmount = 0;
+      var totalAmount;
           var transactionsTable = document.getElementById("transactionsTable");
           function loadTransaction (objectFS){
               var object = objectFS.data();
@@ -1430,14 +1430,17 @@
               cell.appendChild(cellContent);
               objectsRow.appendChild(cell); 
 
-              totalAmount = totalAmount + parseInt(object.amount);
+              totalAmount = totalAmount + Number(object.amount);
+              console.log("amount is nu" + totalAmount);
               cellContent = document.createTextNode(object.amount);
               cell = document.createElement('td');
+              cell.setAttribute("style", "text-align: right"); 
               cell.appendChild(cellContent);
               objectsRow.appendChild(cell);  
               
               cellContent = document.createTextNode(object.date);
               cell = document.createElement('td');
+              cell.setAttribute("style", "text-align: right"); 
               cell.appendChild(cellContent);
               objectsRow.appendChild(cell); 
 
@@ -1452,8 +1455,9 @@
           refCoproperty.collection("Transactions").orderBy("date","desc").get().then(function(objectsFSArray){
               objectsFSArray.forEach(function(objectFS){
                 loadTransaction(objectFS);
-                document.getElementById("totalAmounts").innerHTML = "Total Amounts = " + totalAmount;
-              })
+                document.getElementById("totalAmount").innerHTML = totalAmount;
+              });
+              
             });
         };
 
