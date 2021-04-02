@@ -1950,15 +1950,22 @@
     </script>
     <!--   Members scripts start here -->
     <script>
+      function memberLink(memberFS) {
+        var memberData = memberFS.data();
+        var elA = document.createElement('button');
+        elA.setAttribute("data-target", "memberView");
+        elA.setAttribute('class','modal-trigger');
+        elA.setAttribute('style','border:none;background-color:Transparent');
+        elA.setAttribute('onclick','setSelectedMember('+JSON.stringify(memberFS.id)+','+JSON.stringify(memberData)+',"")');
+        elA.innerHTML = "<font color='#0000FF'>"+memberData.firstName+"   "+memberData.lastName+"</font>";
+        return elA;
+      };
+
       var membersTable = document.getElementById("membersTable");
       function loadMember (objectFS){
         var object = objectFS.data();
         var objectsRow= document.createElement('tr');
-        var cellContent = document.createElement('a');
-        cellContent.setAttribute("data-target", "memberView");
-        cellContent.setAttribute('class','btn-flat modal-trigger');
-        cellContent.setAttribute('onclick','setSelectedMember('+JSON.stringify(objectFS.id)+','+JSON.stringify(object)+',"")');
-        cellContent.innerHTML = "<font color='blue'>" + object.firstName+"   "+object.lastName + "</font>";
+        var cellContent = memberLink(objectFS);
         var cell = document.createElement('td');
         cell.setAttribute("style","white-space: nowrap");
         cell.appendChild(cellContent);
@@ -2182,13 +2189,13 @@
     </script>
     <!--   Properties scripts start here -->
     <script>
-      function propertyLink(property) {
+      function propertyLink(propertyFS) {
         var elA = document.createElement('button');
         elA.setAttribute("data-target", "propertyView");
         elA.setAttribute('class','modal-trigger');
         elA.setAttribute('style','border:none;background-color:Transparent');
-        elA.setAttribute('onclick','setSelectedProperty('+JSON.stringify(property.id)+','+JSON.stringify(property.data())+',"")');
-        elA.innerHTML = "<font color='#0000FF'>"+property.data().code+"</font>";
+        elA.setAttribute('onclick','setSelectedProperty('+JSON.stringify(propertyFS.id)+','+JSON.stringify(propertyFS.data())+',"")');
+        elA.innerHTML = "<font color='#0000FF'>"+propertyFS.data().code+"</font>";
         return elA;
       };
 
@@ -2237,14 +2244,8 @@
 
         if (Boolean(object.owner)) {
           refCoproperty.collection("Members").doc(object.owner).get().then(function(ownerFS) {
-            var owner = ownerFS.data();
-            cellContent = document.createElement('a');
-            cellContent.setAttribute("data-target", "memberView");
-            cellContent.setAttribute('class','btn-flat waves-light modal-trigger');
-            cellContent.setAttribute('onclick','setSelectedMember('+JSON.stringify(ownerFS.id)+','+JSON.stringify(owner)+',"")');
-            cellContent.innerHTML = "<font color='blue'>" + owner.firstName+"   "+owner.lastName + "</font>";
             ownerCell.removeChild(ownerCell.firstChild);
-            ownerCell.appendChild(cellContent);
+            ownerCell.appendChild(memberLink(ownerFS));
           }).catch(function(error) {
             console.log("Error getting document:", error);
           });
