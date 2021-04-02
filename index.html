@@ -277,19 +277,16 @@
             </thead>
             <tbody>
               <tr>
-                <td><a target="_blank"
-                    href="
-          https://firebasestorage.googleapis.com/v0/b/slimmeeigendomdb.appspot.com/o/Azur_2020_Q4_MarcVanLimberghen.pdf?alt=media&token=ce10ffa1-6a9e-40b6-a04d-72d240ab6d90">2020_Q4_MVLimberghen</a>
-                </td>
+                <td><button style="border:none;background-color:Transparent" onclick="showThisURL1()"><font color=" #0000FF">2020_Q4_MVLimberghen</font></button></td>
                 <td>Individual Quarterly Report</td>
                 <td>Sat Jan 02 2021</td>
               </tr>
               <tr>
-                <td><a target="_blank"
-                    href="https://firebasestorage.googleapis.com/v0/b/slimmeeigendomdb.appspot.com/o/Azur_2020_Q3_MarcVanLimberghen.pdf?alt=media&token=90074a5b-36b0-49c3-ba80-f24f361ade70">2020_Q3_MVLimberghen</a>
+                <td><button style="border:none;background-color:Transparent" onclick="showThisURL2()"><font color=" #0000FF">2020_Q3_MVLimberghen</font></button>
                 </td>
                 <td>Individual Quarterly Report</td>
                 <td>Sat Oct 03 2020</td>
+              </tr>
             </tbody>
           </table>
           <br><br>
@@ -313,7 +310,7 @@
           <table class="striped">
             <thead>
               <tr>
-                <th>Type</th>
+                <th>Click to<br>0pen Transaction</th>
                 <th><p style="writing-mode: vertical-rl">Evidence?</p></th>
                 <th>Counterparty</th>
                 <th><p style="text-align: right">Amount</p></th>
@@ -549,7 +546,7 @@
             <thead>
               <tr>
                 <th align=center><p style="writing-mode: vertical-rl">Property</p></th>
-                <th align=center><div class="writing-mode: vertical-rl">View/Edit<br>Reading</div></th>
+                <th align=center><div class="writing-mode: vertical-rl">Click To<br>Open Reading</div></th>
                 <th align=center><p style="writing-mode: vertical-rl">Reading?</p></th>
                 <th align=center><p style="writing-mode: vertical-rl">Picture?</p></th>
                 <th align=center>Date</th>
@@ -1196,6 +1193,16 @@
     </script>
     <!--   Application scripts starts here -->
     <script>
+      function showThisURL1() {
+      window.open("https://firebasestorage.googleapis.com/v0/b/slimmeeigendomdb.appspot.com/o/Azur_2020_Q4_MarcVanLimberghen.pdf?alt=media&token=37d2a067-5b93-4a59-85a2-9bf3c4ef4d41", "_blank");
+      };
+
+      function showThisURL2() {
+      window.open("https://firebasestorage.googleapis.com/v0/b/slimmeeigendomdb.appspot.com/o/Azur_2020_Q3_MarcVanLimberghen.pdf?alt=media&token=90074a5b-36b0-49c3-ba80-f24f361ade70", "_blank");
+      };
+
+      
+
       const options = {
         duration: 300,
         onShow: null,
@@ -1258,11 +1265,10 @@
         var objectsRow= document.createElement('tr');
         
         var cellContent = document.createElement("button");
-        cellContent.setAttribute('class','btn-flat');
+        cellContent.setAttribute('style','border:none;background-color:Transparent');
         cellContent.setAttribute('onclick','showReport('+JSON.stringify(objectFS.id)+')');
         var cell = document.createElement('td');
-        cellContent.setAttribute("target","_blank"); 
-        cellContent.innerHTML = "<font color='blue'>" + object.fileName + "</font>";
+        cellContent.innerHTML = "<font color='#0000FF'>" + object.fileName + "</font>";
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);
         
@@ -2177,11 +2183,12 @@
     <!--   Properties scripts start here -->
     <script>
       function propertyLink(property) {
-        var elA = document.createElement('a');
+        var elA = document.createElement('button');
         elA.setAttribute("data-target", "propertyView");
-        elA.setAttribute('class','btn-flat modal-trigger');
+        elA.setAttribute('class','modal-trigger');
+        elA.setAttribute('style','border:none;background-color:Transparent');
         elA.setAttribute('onclick','setSelectedProperty('+JSON.stringify(property.id)+','+JSON.stringify(property.data())+',"")');
-        elA.innerHTML = "<font color='blue'>"+property.data().code+"</font>";
+        elA.innerHTML = "<font color='#0000FF'>"+property.data().code+"</font>";
         return elA;
       };
 
