@@ -842,8 +842,9 @@
                 <label for="property_owner" class="active">Current Owner</label>
               </div>
               <div class="input-field col s12 m6">
+                <div class="displayHidden" id="previousOwnersButton">
                 <button style="float:right;margin-left: 20px;" data-target="previousOwners" class="btn-small waves-light modal-trigger" onclick="showPreviousOwnersTable()">Previous Owners</button>
-
+                </div>
                 <button style="float:right" data-target="newOwner" class="btn-small waves-light modal-trigger" onclick="newOwner()">New Owner<i class="material-icons right">add</i></button>
 
               </div>
@@ -2210,8 +2211,6 @@
       };
 
 
-
-
       var totalQuotas = 0;
       var propertiesTable = document.getElementById("propertiesTable");
 
@@ -2636,11 +2635,19 @@
               ownerEl.setAttribute('onclick','setSelectedMember('+JSON.stringify(member.id)+','+JSON.stringify(member.data())+',"")');
               ownerEl.innerHTML = "<u><font color='blue'>"+member.data().firstName + " " + member.data().lastName+"</font></u>";
         });
+        refCoproperty.collection("Properties").doc(id).collection("PreviousOwners").get().then(function(existingList) {
+          if (existingList.docs.length > 0) {
+            document.getElementById("previousOwnersButton").setAttribute("class","displayBlock");
+          } else {
+            document.getElementById("previousOwnersButton").setAttribute("class","displayHidden");
+          };
+        
         displayOccupants(id); 
         displayMeters(id);
         var elems = document.querySelectorAll('select');
         M.FormSelect.init(elems);
         M.updateTextFields();
+        });
       };
 
       function resetSelectedProperty() {
@@ -2793,6 +2800,7 @@
                 refCoproperty.collection("Properties").doc(selectedPropertyId).collection("PreviousOwners").add(po).then(function(docrefPreviousOwner) {
                   refreshProperties();
                   displayMember(document.getElementById("property_owner"),entries.owner);
+                  document.getElementById("previousOwnersButton").setAttribute("class","displayBlock");
                   M.Modal.getInstance(document.getElementById("newOwner")).close();
                 }).catch(function(error) {
                   M.toast({html:"Error occurred updating current owner:" + error}); 
