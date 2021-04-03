@@ -849,15 +849,14 @@
               <button style="float: right;margin-bottom: 3px" class="btn-small waves-light modal-trigger" data-target="meterWrite" onclick="addMeter()">Add Meter<i class="material-icons right">add</i></button>
             </div>
             <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
-              <div class="input-field col s12 m6">
-                <a id="property_owner" data-target="memberView" class="modal-trigger btn-flat"> </a>
-                <label for="property_owner" class="active">Current Owner</label>
-              </div>
-              <div class="input-field col s12 m6">
+              <div >
+                <h7>Owner:  </h7>
+                <button id="property_owner" data-target="memberView" class="modal-trigger" style="border:none;background-color:Transparent"></button>
+              
                 <div class="displayHidden" id="previousOwnersButton">
-                <button style="float:right;margin-left: 20px;" data-target="previousOwners" class="btn-small waves-light modal-trigger" onclick="showPreviousOwnersTable()">Previous Owners</button>
+                <button style="float:right;margin-left: 20px;margin-bottom: 3px" data-target="previousOwners" class="btn-small waves-light modal-trigger" onclick="showPreviousOwnersTable()">Previous Owners</button>
                 </div>
-                <button style="float:right" data-target="newOwner" class="btn-small waves-light modal-trigger" onclick="newOwner()">New Owner<i class="material-icons right">add</i></button>
+                <button style="float:right;margin-bottom: 3px" data-target="newOwner" class="btn-small waves-light modal-trigger" onclick="newOwner()">New Owner<i class="material-icons right">add</i></button>
 
               </div>
             </div>
@@ -1032,8 +1031,8 @@
                   <span class="helper-text" data-error="required field" ></span>
                 </div>
               </form>
-              <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="writeNewOwner()">Submit<i class="material-icons right">send</i></button>
-              <a style="float: right"
+              <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeNewOwner()">Submit<i class="material-icons right">send</i></button>
+              <a style="float: right;margin-bottom: 3px"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
             </div>
           </div>
@@ -2643,7 +2642,7 @@
         var ownerEl = document.getElementById("property_owner");
         refCoproperty.collection("Members").doc(object.owner).get().then(function(member) {
               ownerEl.setAttribute('onclick','setSelectedMember('+JSON.stringify(member.id)+','+JSON.stringify(member.data())+',"")');
-              ownerEl.innerHTML = "<u><font color='blue'>"+member.data().firstName + " " + member.data().lastName+"</font></u>";
+              ownerEl.innerHTML = "<font color='#0000FF'>"+member.data().firstName + " " + member.data().lastName+"</font>";
         });
         refCoproperty.collection("Properties").doc(id).collection("PreviousOwners").get().then(function(existingList) {
           if (existingList.docs.length > 0) {
