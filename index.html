@@ -1266,13 +1266,8 @@
         document.getElementById("report_type_edit").value = "";
       };
       
-      function showReport() {
-        
-          //window.open(url,"_blank");
-          
-    
-        
-        
+      function showReport(url) {
+          window.open(url,"_blank");
       };
 
       function loadReport (objectFS){
@@ -1286,7 +1281,7 @@
         refCopropertyFiles.child("Reports").child(objectFS.id).getDownloadURL().then(function(url) {
           
         /*cellContent.setAttribute('onclick','showReport('+JSON.stringify(objectFS.id)+')');*/
-        cellContent.setAttribute('onclick','showReport()');
+        cellContent.setAttribute('onclick','showReport('+JSON.stringify(url)+')');
         cellContent.innerHTML = "<font color='#0000FF'>" + object.fileName + "</font>";
         var cell = document.createElement('td');
         cell.appendChild(cellContent);
