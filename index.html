@@ -473,7 +473,7 @@
                     <span class="helper-text" data-error="maximum 50 characters" ></span>
                   </div>
                   <div class="input-field col s12 m6">
-                    <input id="transaction_amount_edit" type="number" class="validate" min="-99999" max="99999" step="0.1" required required="true">
+                    <input id="transaction_amount_edit" type="number" class="validate" min="-99999" max="99999" step="0.01" required required="true">
                     <label for="transaction_amount_edit">Amount<b><font color='red'>*</font></b></label>
                     <span class="helper-text" data-error="positive or negative amount with max 2 decimals and max 5 digits" ></span>
                   </div>
@@ -1657,13 +1657,20 @@
       function loadTransactionEvidence (objectFS){
         var object = objectFS.data();
         var objectsRow= document.createElement('tr');
+
+        var cellContent = document.createElement("button");
+        cellContent.setAttribute('onclick','showTansactionEvidence('+JSON.stringify(objectFS.id)+')');
+        cellContent.setAttribute('style','border:none;background-color:Transparent');
+        cellContent.innerHTML = "<font color='#0000FF'>" + object.fileName + "</font>";
         
+        /*
         var cellContent = document.createElement("button");
         cellContent.setAttribute('class','btn-flat');
         cellContent.setAttribute('onclick','showTansactionEvidence('+JSON.stringify(objectFS.id)+')');
-        var cell = document.createElement('td');
         cellContent.setAttribute("target","_blank"); 
         cellContent.innerHTML = "<font color='blue'>" + object.fileName + "</font>";
+        */
+        var cell = document.createElement('td');
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);
         
