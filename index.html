@@ -229,6 +229,14 @@
           </div>
         </div>
         <!------------------------------------------------------------------------------------------------------>
+        <div id="fileShow" class="modal">
+          <a style="float: right;margin-top: 3px;margin-right: 5px"
+              class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>Close</a>
+              <body>
+          <iframe src="https://firebasestorage.googleapis.com/v0/b/slimmeeigendomdb.appspot.com/o/Azur_2020_Q4_MarcVanLimberghen.pdf?alt=media&token=37d2a067-5b93-4a59-85a2-9bf3c4ef4d41" width="100%" height="900px"></iframe>
+              </body>
+        </div>
+
         <div id="Reports" class="col s12">
           <div id="reportRemove" class="modal">
             <div class="modal-content">
@@ -282,14 +290,14 @@
           <table class="striped">
             <thead>
               <tr>
-                <th>File name </th>
+                <th>File2 name </th>
                 <th> Document Type</th>
                 <th> Creation Date </th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td><button style="border:none;background-color:Transparent" onclick="showThisURL1()"><font color=" #0000FF">2020_Q4_MVLimberghen</font></button></td>
+                <td><button style="border:none;background-color:Transparent" onclick="showThisURL1('https://firebasestorage.googleapis.com/v0/b/slimmeeigendomdb.appspot.com/o/Azur_2020_Q4_MarcVanLimberghen.pdf?alt=media&token=37d2a067-5b93-4a59-85a2-9bf3c4ef4d41')"><font color=" #0000FF">2020_Q4_MVLimberghen</font></button></td>
                 <td>Individual Quarterly Report</td>
                 <td>Sat Jan 02 2021</td>
               </tr>
@@ -1203,8 +1211,8 @@
     </script>
     <!--   Application scripts starts here -->
     <script>
-      function showThisURL1() {
-      window.open("https://firebasestorage.googleapis.com/v0/b/slimmeeigendomdb.appspot.com/o/Azur_2020_Q4_MarcVanLimberghen.pdf?alt=media&token=37d2a067-5b93-4a59-85a2-9bf3c4ef4d41", "_blank");
+      function showThisURL1(url) {
+      window.open(url, "_blank");
       };
 
       function showThisURL2() {
@@ -1266,10 +1274,13 @@
         document.getElementById("report_type_edit").value = "";
       };
       
-      function showReport(id) {
-        refCopropertyFiles.child("Reports").child(id).getDownloadURL().then(function(url) {
-          window.open(url,"_blank");
-        });
+      function showReport() {
+        
+          //window.open(url,"_blank");
+          
+    
+        
+        
       };
 
       function loadReport (objectFS){
@@ -1278,9 +1289,14 @@
         
         var cellContent = document.createElement("button");
         cellContent.setAttribute('style','border:none;background-color:Transparent');
-        cellContent.setAttribute('onclick','showReport('+JSON.stringify(objectFS.id)+')');
-        var cell = document.createElement('td');
+        cellContent.setAttribute('class','modal-trigger');
+        cellContent.setAttribute('data-target','fileShow');
+        refCopropertyFiles.child("Reports").child(objectFS.id).getDownloadURL().then(function(url) {
+          
+        /*cellContent.setAttribute('onclick','showReport('+JSON.stringify(objectFS.id)+')');*/
+        cellContent.setAttribute('onclick','showReport()');
         cellContent.innerHTML = "<font color='#0000FF'>" + object.fileName + "</font>";
+        var cell = document.createElement('td');
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);
         
@@ -1309,6 +1325,7 @@
         objectsRow.appendChild(cell);    
         
         reportsTable.appendChild (objectsRow);
+        });
       };
 
       function refreshReports(){
