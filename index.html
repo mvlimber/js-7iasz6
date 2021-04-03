@@ -189,10 +189,22 @@
       <div class="row">
         <div id="Home" class="col s12">
           <h6 style="font-size:20px "><b>Announcements</b></h6>
-          <p> Chère / Cher Copropriétaire,
+          <br>
+            <ul class="collapsible">
+              <li>
+                <div class="collapsible-header"><i class="material-icons">account_balance</i>Assemblées générales - Updated April 2 2020</div>
+                <div class="collapsible-body"><span>Chère / Cher Copropriétaire,
             A défaut d'une Assemblée Générale au cours de laquelle nous pouvions vous tenir au courant de la
             situation générale de notre immeuble et des travaux en cours, nous vous proposons de trouver ici touts les
-            infos sur notre immeuble. </p>
+            infos sur notre immeuble.</span></div>
+              </li>
+              <li>
+                <div class="collapsible-header"><i class="material-icons">build</i>Travaux - Updated Mars 29 2020</div>
+                <div class="collapsible-body"><span>Chère / Cher Copropriétaire,
+            Le réamenagement du jardin démarrera le mois moi de Mai. Veuillez nous excuser pour des éventuels inconvénients ayant la vision de retrouver après un jardin bien plus joli.</span></div>
+              </li>
+            </ul>
+          <br>
           <h6 style="font-size:20px "><b>Condomynium</b></h6>
           <div class="row">
             <div class="col s12 m6">
@@ -1234,10 +1246,12 @@
 
     elems = document.querySelectorAll('.sidenav');
     instances = M.Sidenav.init(elems);
-
+    /*
     var collapsibleElem = document.querySelector('.collapsible');
     var collapsibleInstance = M.Collapsible.init(collapsibleElem);
-
+    */
+    var elems = document.querySelectorAll('.collapsible');
+    var instances = M.Collapsible.init(elems);
     
     </script>
     <!--   Home scripts start here -->
@@ -1837,7 +1851,7 @@
       
       function loadMeterReadings() {
         hideMenu();
-        document.getElementById("logo-container").innerHTML = "Meter Readings";
+        document.getElementById("logo-container").innerHTML = "MyCondos:Meter Readings";
         if (!meterReadingsLoaded) {
           refreshMeterReadings();
           meterReadingsLoaded = true;
@@ -2386,11 +2400,7 @@
         refCoproperty.collection("Members").doc(occupant.data().occupant).get().then(function(member) {
           var objectsRow= document.createElement('tr');
           var cell = document.createElement('td');
-          var cellContent = document.createElement('a');
-          cellContent.setAttribute("data-target", "memberView");
-          cellContent.setAttribute('class','btn-flat modal-trigger');
-          cellContent.setAttribute('onclick','setSelectedMember('+JSON.stringify(member.id)+','+JSON.stringify(member.data())+',"")');
-          cellContent.innerHTML = "<u><font color='blue'>"+member.data().firstName + " " + member.data().lastName+"</font></u>";
+          var cellContent = memberLink(member);
           cell.appendChild(cellContent);
           objectsRow.appendChild(cell); 
 
