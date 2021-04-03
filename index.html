@@ -192,16 +192,16 @@
           <br>
             <ul class="collapsible">
               <li>
-                <div class="collapsible-header"><i class="material-icons">account_balance</i>Assemblées générales - Updated April 2 2020</div>
+                <div class="collapsible-header"><i class="material-icons">account_balance</i>Assemblée Générale Update Apr 2, 2020</div>
                 <div class="collapsible-body"><span>Chère / Cher Copropriétaire,
             A défaut d'une Assemblée Générale au cours de laquelle nous pouvions vous tenir au courant de la
             situation générale de notre immeuble et des travaux en cours, nous vous proposons de trouver ici touts les
             infos sur notre immeuble.</span></div>
               </li>
               <li>
-                <div class="collapsible-header"><i class="material-icons">build</i>Travaux - Updated Mars 29 2020</div>
+                <div class="collapsible-header"><i class="material-icons">build</i>Travaux Update Mar 29, 2020</div>
                 <div class="collapsible-body"><span>Chère / Cher Copropriétaire,
-            Le réamenagement du jardin démarrera le mois moi de Mai. Veuillez nous excuser pour des éventuels inconvénients ayant la vision de retrouver après un jardin bien plus joli.</span></div>
+            Le réamenagement du jardin démarrera le mois de Mai. Veuillez nous excuser pour des éventuels inconvénients ayant la vision de retrouver après un jardin bien plus joli.</span></div>
               </li>
             </ul>
           <br>
@@ -332,7 +332,7 @@
             <tbody id="transactionsTable">
             </tbody>
           </table>
-          <h6> <b>Total Amount is </b><b id="totalAmount"></b></h6>
+          <div class="displayHidden"  <h6> <b>Total Amount is </b><b id="totalAmount"></b></h6>  </div>
           <button style="float: right" data-target="transactionAdd" class="btn-small waves-light modal-trigger" onclick="resetSelectedTransaction()"><i class="material-icons right">add</i>New transaction</button>
 
           <div id="transactionAdd" class="modal">
@@ -1409,63 +1409,63 @@
     </script>
     <!--   Transaction scripts start here -->
     <script>
-      var totalAmount;
-          var transactionsTable = document.getElementById("transactionsTable");
-          function loadTransaction (objectFS){
-              var object = objectFS.data();
-              var objectsRow= document.createElement('tr');
-              
-              var cellContent = document.createElement('button');
-              cellContent.setAttribute("data-target", "transactionView");
-              cellContent.setAttribute('class','btn-small waves-light modal-trigger');
-              cellContent.setAttribute('onclick','setSelectedTransaction('+JSON.stringify(objectFS.id)+','+JSON.stringify(object)+')');
-              var cellButtonIcon = document.createElement('i');
-              cellButtonIcon.setAttribute('class','material-icons right');
-              cellButtonIcon.innerHTML="add";           
-              cellContent.appendChild(cellButtonIcon);
-              cellContent.innerHTML = object.type;
-              var cell = document.createElement('td');
-              cell.appendChild(cellContent);
-              objectsRow.appendChild(cell);   
-              
-              refCoproperty.collection("Transactions").doc(objectFS.id).collection("Evidence").get().then(function(objectsFSArray){
-                if (objectsFSArray.docs.length > 0) {
-                  cellContent = document.createElement("i");
-                  cellContent.setAttribute("class","material-icons  green ");
-                  cellContent.innerHTML = "done";
-                } else {
-                  cellContent = document.createElement("i");
-                  cellContent.setAttribute("class","material-icons  red ");
-                  cellContent.innerHTML = "clear";
-                };
-              
-              cell = document.createElement('td');
-              cell.appendChild(cellContent);
-              objectsRow.appendChild(cell);
-              
-              cellContent = document.createTextNode(object.name);
-              cell = document.createElement('td');
-              cell.appendChild(cellContent);
-              objectsRow.appendChild(cell); 
-
-              totalAmount = totalAmount + Number(object.amount);
-              console.log("amount is nu" + totalAmount);
-              cellContent = document.createTextNode(object.amount);
-              cell = document.createElement('td');
-              cell.setAttribute("style", "text-align: right"); 
-              cell.appendChild(cellContent);
-              objectsRow.appendChild(cell);  
-              
-              cellContent = document.createTextNode(object.date);
-              cell = document.createElement('td');
-              cell.setAttribute("style", "text-align: right"); 
-              cell.appendChild(cellContent);
-              objectsRow.appendChild(cell); 
-
-              
-              transactionsTable.appendChild (objectsRow);
-              });
+      var totalAmount=0;
+      var transactionsTable = document.getElementById("transactionsTable");
+      function loadTransaction (objectFS){
+          var object = objectFS.data();
+          var objectsRow= document.createElement('tr');
+          
+          var cellContent = document.createElement('button');
+          cellContent.setAttribute("data-target", "transactionView");
+          cellContent.setAttribute('class','btn-small waves-light modal-trigger');
+          cellContent.setAttribute('onclick','setSelectedTransaction('+JSON.stringify(objectFS.id)+','+JSON.stringify(object)+')');
+          var cellButtonIcon = document.createElement('i');
+          cellButtonIcon.setAttribute('class','material-icons right');
+          cellButtonIcon.innerHTML="add";           
+          cellContent.appendChild(cellButtonIcon);
+          cellContent.innerHTML = object.type;
+          var cell = document.createElement('td');
+          cell.appendChild(cellContent);
+          objectsRow.appendChild(cell);   
+          
+          refCoproperty.collection("Transactions").doc(objectFS.id).collection("Evidence").get().then(function(objectsFSArray){
+            if (objectsFSArray.docs.length > 0) {
+              cellContent = document.createElement("i");
+              cellContent.setAttribute("class","material-icons  green ");
+              cellContent.innerHTML = "done";
+            } else {
+              cellContent = document.createElement("i");
+              cellContent.setAttribute("class","material-icons  red ");
+              cellContent.innerHTML = "clear";
             };
+          
+          cell = document.createElement('td');
+          cell.appendChild(cellContent);
+          objectsRow.appendChild(cell);
+          
+          cellContent = document.createTextNode(object.name);
+          cell = document.createElement('td');
+          cell.appendChild(cellContent);
+          objectsRow.appendChild(cell); 
+
+          totalAmount = totalAmount + Number(object.amount);
+          console.log("amount is nu" + totalAmount);
+          cellContent = document.createTextNode(object.amount);
+          cell = document.createElement('td');
+          cell.setAttribute("style", "text-align: right"); 
+          cell.appendChild(cellContent);
+          objectsRow.appendChild(cell);  
+          
+          cellContent = document.createTextNode(object.date);
+          cell = document.createElement('td');
+          cell.setAttribute("style", "text-align: right"); 
+          cell.appendChild(cellContent);
+          objectsRow.appendChild(cell); 
+
+          
+          transactionsTable.appendChild (objectsRow);
+          });
+        };
           
         function refreshTransactions(){
           emptyHTMLSet(transactionsTable);
