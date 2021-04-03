@@ -663,9 +663,9 @@
         </div>
         <!--- shared views ------------------------------------------------------------------------------------>
         <div id="memberView" class="modal">
-          <div class="modal-content">
-            <a style="float: right"
+          <a style="float: right;margin-top: 3px;margin-right: 5px"
               class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>Close</a>
+          <div class="modal-content">
             <h5> View member</h5>
             <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
               <form class="col s12">
@@ -732,9 +732,7 @@
               </div>
             </div>
           </div>
-          <div class="modal-footer">
-            <a class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>Close</a>
-          </div>
+          <a style="float:right;margin-bottom: 3px;margin-right: 5px" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>Close</a>
         </div>
 
         <div id="memberWrite" class="modal">
@@ -800,17 +798,17 @@
                 <span class="helper-text" data-error="please enter digits only" ></span>
               </div>
             </form>
-            <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="writeMember()">Submit<i class="material-icons right">send</i></button>
-            <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
+            <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeMember()">Submit<i class="material-icons right">send</i></button>
+            <a style="float: right;margin-bottom: 3px" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
               Cancel</a>
           </div>
 
         </div>
 
         <div id="propertyView" class="modal">
-          <div class="modal-content">
-            <a style="float: right"
+          <a style="float: right;margin-top: 3px;margin-right: 5px"
               class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>Close</a>
+          <div class="modal-content">
             <h5> View property</h5>
             <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
               <form class="col s12">
@@ -878,9 +876,9 @@
             </div>
             
           </div>
-          <div class="modal-footer">
-            <a class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>Close</a>
-          </div>
+          
+            <a style="float:right;margin-bottom: 3px" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>Close</a>
+          
         </div>
         <!------------------------------------------------------------------------------------------>
         <div id="Properties" class="col s12">
@@ -1092,8 +1090,8 @@
                   </div>
                 </div>
               </form>
-              <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="writeProperty()">Submit<i class="material-icons right">send</i></button>
-              <a style="float: right"
+              <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeProperty()">Submit<i class="material-icons right">send</i></button>
+              <a style="float: right;margin-bottom: 3px"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
             </div>
           </div>
@@ -2386,6 +2384,10 @@
 
       function enableOccupantAdd() {
         document.getElementById("buttonOccupantAdd").setAttribute("class","btn-small waves-light");
+      };
+
+      function disableOccupantAdd() {
+        document.getElementById("buttonOccupantAdd").setAttribute("class","btn-small waves-light disabled");
       }
 
       var selectedPropertyId;
@@ -2530,6 +2532,7 @@
                 docRef.get().then(function(newOccupant) {
                   displayOccupant(selectedPropertyId,newOccupant);
                   document.getElementById("property_occupant_add").value = "";
+                  disableOccupantAdd();
                   var elems = document.querySelectorAll('select');
                   M.FormSelect.init(elems);
                 });
