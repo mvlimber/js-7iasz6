@@ -282,7 +282,7 @@
           <table class="striped">
             <thead>
               <tr>
-                <th>File2 name </th>
+                <th>File name </th>
                 <th> Document Type</th>
                 <th> Creation Date </th>
               </tr>
@@ -1652,18 +1652,14 @@
         document.getElementById("transactionEvidence_type_edit").value = "";
       };
       
-      function showTansactionEvidence(id) {
-        refCopropertyFiles.child("Transactions").child(id).getDownloadURL().then(function(url) {
-          window.open(url,"_blank");
-        });
-      };
 
       function loadTransactionEvidence (objectFS){
         var object = objectFS.data();
         var objectsRow= document.createElement('tr');
 
         var cellContent = document.createElement("button");
-        cellContent.setAttribute('onclick','showTansactionEvidence('+JSON.stringify(objectFS.id)+')');
+        refCopropertyFiles.child("Transactions").child(objectFS.id).getDownloadURL().then(function(url) {
+        cellContent.setAttribute('onclick','showReport('+JSON.stringify(url)+')');
         cellContent.setAttribute('style','border:none;background-color:Transparent');
         cellContent.innerHTML = "<font color='#0000FF'>" + object.fileName + "</font>";
         
@@ -1698,6 +1694,7 @@
         objectsRow.appendChild(cell);    
         
         transactionEvidenceTable.appendChild (objectsRow);
+        });
       };
 
       function refreshTransactionEvidence(){
