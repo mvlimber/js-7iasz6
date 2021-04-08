@@ -2921,7 +2921,16 @@ const doc = new jsPDF({
 });
 
 doc.text("Hello world!", 1, 1);
-doc.save("two-by-four.pdf");
+
+var fileRef = refCopropertyFiles.child("Periodic").child("Q2021_TR1");  
+fileRef.put(doc.save("two-by-four.pdf")).then (function (){
+  console.log("store success");
+}). catch(function(error) {
+            M.toast({html:"System error storing pdf:" + error});
+        });
+/*doc.save("two-by-four.pdf");*/
+
+
 
       }
     </script>
