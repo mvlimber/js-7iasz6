@@ -22,6 +22,8 @@
   <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-firestore.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-storage.js"></script>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+
   <script>
     var firebaseConfig = {
         apiKey: "AIzaSyDVT644vSE0ue8KyDy-o9YwbYPX3m0ZmSc",
@@ -158,6 +160,8 @@
             onclick="loadMembers()">Members</a></li>
         <li class="tab side text-teal"><a class="waves-effect" href="#Properties" style="font-size:22px"
             onclick="loadProperties()">Properties</a></li>
+        <li class="tab side text-teal"><a class="waves-effect" href="#Settings" style="font-size:22px"
+            onclick="loadSettings()">Settings</a></li>
       </ul>
 
       <script>
@@ -1095,6 +1099,9 @@
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
             </div>
           </div>
+        </div>
+        <div id="Settings" class="col s12">
+          <button onclick="downloadQuarter()" class="button">Download Quarter</button>
         </div>
       </div>
     </main>
@@ -2895,6 +2902,28 @@
           });
         };
       };
+    </script>
+    <!--   Settings scripts start here -->
+    <script>
+      function loadSettings() {
+        hideMenu();
+        document.getElementById("logo-container").innerHTML = "MyCondos: Settings";
+        
+      };
+
+      function downloadQuarter(){
+        // Landscape export, 2×4 inches
+window.jsPDF = window.jspdf.jsPDF;
+const doc = new jsPDF({
+  orientation: "landscape",
+  unit: "in",
+  format: [4, 2]
+});
+
+doc.text("Hello world!", 1, 1);
+doc.save("two-by-four.pdf");
+
+      }
     </script>
 </body>
 
