@@ -2924,11 +2924,11 @@
         refCoproperty.collection("Transactions").orderBy("type").get().then(function(mapFS){
           var data = [];
           mapFS.forEach(function(trFS){
-            var data = trFS.data();
-            data.push(data);
-            totalCommonExpenses = totalCommonExpenses + data.amount;
+            var trData = trFS.data();
+            data.push(trData);
+            totalCommonExpenses = totalCommonExpenses + trData.amount;
           });
-          data.push({"Total"," "," ",totalCommonExpenses});
+          data.push({type:"Total",name:"",communication:"",amount:totalCommonExpenses});
           doc.table(5, 5, data, headers);
           var fileRef = refCopropertyFiles.child("Periodic").child("Q2021_TR1");  
           fileRef.put(doc.output("blob"));
