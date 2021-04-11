@@ -2925,11 +2925,14 @@
           var data = [];
           mapFS.forEach(function(trFS){
             var trData = trFS.data();
+            if (!trData.communication) {trData.communication=" "};
             data.push(trData);
-            totalCommonExpenses = totalCommonExpenses + trData.amount;
+            totalCommonExpenses = totalCommonExpenses + parseFloat(trData.amount);
           });
-          data.push({type:"Total",name:"",communication:"",amount:totalCommonExpenses});
+
+          data.push({type:"Total",name:" ",communication:" ",amount:totalCommonExpenses.toString()});
           doc.table(5, 5, data, headers);
+          
           var fileRef = refCopropertyFiles.child("Periodic").child("Q2021_TR1");  
           fileRef.put(doc.output("blob"));
         });
