@@ -2912,26 +2912,44 @@
       };
 
       function downloadQuarter(){
-        // Landscape export, 2×4 inches
-window.jsPDF = window.jspdf.jsPDF;
-const doc = new jsPDF({
-  orientation: "landscape",
-  unit: "in",
-  format: [4, 2]
-});
-
-doc.text("Hello world!", 1, 1);
-
-var fileRef = refCopropertyFiles.child("Periodic").child("Q2021_TR1");  
-fileRef.put(doc.output("blob")).then (function (){
-  console.log("store success");
-}). catch(function(error) {
-            M.toast({html:"System error storing pdf:" + error});
+        window.jsPDF = window.jspdf.jsPDF;
+        var doc = new jsPDF({ putOnlyUsedFonts: true, orientation: "portrait" });
+        var headers = [
+            {id:"type",name:"type",prompt:"type",width: 40,align: "center",padding: 0},
+            {id:"name",name:"name",prompt:"name",width: 50,align: "center",padding: 0},
+            {id:"communication",name:"communication",prompt:"communication",width: 110,align: "center",padding: 0},
+            {id:"amount",name:"amount",prompt:"amount",width: 35,align: "right",padding: 0}
+          ];
+        var totalCommonExpenses = 0;
+        refCoproperty.collection("Transactions").orderBy("type").get().then(function(mapFS){
+          var data = [];
+          mapFS.forEach(function(trFS){
+            var data = trFS.data();
+            data.push(data);
+            totalCommonExpenses = totalCommonExpenses + data.amount;
+          });
+          data.push({"Total"," "," ",totalCommonExpenses});
+          doc.table(5, 5, data, headers);
+          var fileRef = refCopropertyFiles.child("Periodic").child("Q2021_TR1");  
+          fileRef.put(doc.output("blob"));
         });
-/*doc.save("two-by-four.pdf");*/
+        /*
+        window.jsPDF = window.jspdf.jsPDF;
+        const doc = new jsPDF({
+          orientation: "landscape",
+          unit: "in",
+          format: [4, 2]
+        });
 
+        doc.text("Hello world!", 1, 1);
 
-
+        var fileRef = refCopropertyFiles.child("Periodic").child("Q2021_TR1");  
+        fileRef.put(doc.output("blob")).then (function (){
+          console.log("store success");
+        }). catch(function(error) {
+                    M.toast({html:"System error storing pdf:" + error});
+                });
+        */
       }
     </script>
 </body>
