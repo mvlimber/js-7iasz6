@@ -2918,9 +2918,10 @@
         doc.setFontSize(32);
         doc.text("MyCondos", 60, 20);
         doc.setTextColor("black");
-        doc.setFontSize(16);
+        doc.setFontSize(24);
         doc.setFont("bold");
-        doc.text("Periodic Report of Charges", 20, 40);
+        doc.text("Periodic Report of Charges", 40, 40);
+        doc.setFontSize(16);
         doc.text("Condomynium:", 20, 50);
         doc.setFont("normal");
         doc.text("Name:", 30, 60);
@@ -2940,10 +2941,11 @@
         doc.text("  Table4: Charges per Owner", 40, 170);
         doc.line(20, 280, 200, 280);
         doc.setFontSize(12);
-        doc.text("Periodic Report Azur 01/04/2021 - 30/09/2021                                   Page 1/5", 20, 285);
+        doc.text("Periodic Report Azur 01/04/2021 - 30/09/2021                                             Page 1/5", 20, 285);
         doc.setFontSize(16);
         doc.addPage();
-        var headers = [
+        doc.text("Table1: Charges Common Parts", 20, 20);
+        var headersExpenses = [
             {id:"type",name:"type",prompt:"type",width: 40,align: "center",padding: 0},
             {id:"name",name:"name",prompt:"name",width: 50,align: "center",padding: 0},
             {id:"communication",name:"communication",prompt:"communication",width: 110,align: "center",padding: 0},
@@ -2951,24 +2953,35 @@
           ];
         var totalCommonExpenses = 0;
         refCoproperty.collection("Transactions").orderBy("type").get().then(function(mapFS){
-          var data = [];
+          var dataExpenses = [];
           mapFS.forEach(function(trFS){
             var trData = trFS.data();
             if (!trData.communication) {trData.communication=" "};
             data.push(trData);
             totalCommonExpenses = totalCommonExpenses + parseFloat(trData.amount);
           });
+          dataExpenses.push({type:"Total",name:" ",communication:" ",amount:totalCommonExpenses.toString()});
+          doc.table(20, 30, dataExpenses, headersExpenses);
+          doc.addPage();
+          doc.text("Table2: Quota Common Parts per Owner", 20, 20);
+          var headersQuotas = [
+            {id:"owner",name:"owner",prompt:"owner",width: 40,align: "center",padding: 0},
+            {id:"name",name:"name",prompt:"name",width: 50,align: "center",padding: 0},
+            {id:"communication",name:"communication",prompt:"communication",width: 110,align: "center",padding: 0},
+            {id:"amount",name:"amount",prompt:"amount",width: 35,align: "right",padding: 0}
+          ];
 
-          data.push({type:"Total",name:" ",communication:" ",amount:totalCommonExpenses.toString()});
-          doc.table(5, 5, data, headers);
+
+
 
           doc.save();
           /*
           var fileRef = refCopropertyFiles.child("Periodic").child("Q2021_TR1");  
           fileRef.put(doc.output("blob"));
           */
+        }).catch(function(error) {
+            M.toast({html:"Error during periodic report generation:" + error}); 
         });
-        
       }
     </script>
 </body>
