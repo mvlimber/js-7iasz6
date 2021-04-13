@@ -2962,13 +2962,34 @@
           });
           dataExpenses.push({type:"Total",name:" ",communication:" ",amount:totalCommonExpenses.toString()});
           doc.table(20, 30, dataExpenses, headersExpenses);
+          doc.line(20, 280, 200, 280);
+          doc.setFontSize(12);
+          doc.text("Periodic Report Azur 01/04/2021 - 30/09/2021                                             Page 2/5", 20, 285);
+          doc.setFontSize(16);
           doc.addPage();
           doc.text("Table2: Quota Common Parts per Owner", 20, 20);
           var headersQuotas = [
-            {id:"owner",name:"owner",prompt:"owner",width: 40,align: "center",padding: 0},
-            {id:"name",name:"name",prompt:"name",width: 50,align: "center",padding: 0},
-            {id:"communication",name:"communication",prompt:"communication",width: 110,align: "center",padding: 0},
-            {id:"amount",name:"amount",prompt:"amount",width: 35,align: "right",padding: 0}
+            {id:"owner",name:"owner",prompt:"owner",width: 50,align: "center",padding: 0},
+            {id:"property",name:"property",prompt:"property",width: 30,align: "center",padding: 0},
+            {id:"quota",name:"quota",prompt:"quota",width: 30,align: "center",padding: 0},
+            {id:"proportion_period",name:"proportion period",prompt:"proportion_period",width: 30,align: "right",padding: 0},
+            {id:"quota_period",name:"quota period",prompt:"quota_period",width: 30,align: "right",padding: 0},
+          ];
+          var headersConsumption = [
+            {id:"property",name:"property",prompt:"property",width: 30,align: "center",padding: 0},
+            {id:"owner",name:"owner",prompt:"owner",width: 50,align: "center",padding: 0},
+            {id:"type",name:"type",prompt:"type",width: 40,align: "center",padding: 0},
+            {id:"last_reading",name:"last_reading",prompt:"last_reading",width: 40,align: "right",padding: 0},
+            {id:"new_reading",name:"new_reading",prompt:"new_reading",width: 40,align: "right",padding: 0},
+            {id:"difference",name:"difference",prompt:"difference",width: 40,align: "right",padding: 0},
+            {id:"cost",name:"cost",prompt:"cost",width: 35,align: "right",padding: 0}
+          ];
+          var headersChargees = [
+            {id:"owner",name:"owner",prompt:"owner",width: 50,align: "center",padding: 0},
+            {id:"property",name:"property",prompt:"property",width: 30,align: "center",padding: 0},
+            {id:"quota",name:"quota",prompt:"quota",width: 30,align: "center",padding: 0},
+            {id:"proportion_period",name:"proportion period",prompt:"proportion_period",width: 30,align: "right",padding: 0},
+            {id:"quota_period",name:"quota period",prompt:"quota_period",width: 30,align: "right",padding: 0},
           ];
 
 
