@@ -2923,13 +2923,14 @@
       };
 
       function downloadQuarter(){
+        var totalCommon = 0;
+        vat totalQuota = 0;
         var headerCommon = [
           {id:"type",name:"type",prompt:"type",width: 40,align: "center",padding: 0},
           {id:"name",name:"name",prompt:"name",width: 50,align: "center",padding: 0},
           {id:"communication",name:"communication",prompt:"communication",width: 110,align: "center",padding: 0},
           {id:"amount",name:"amount",prompt:"amount",width: 35,align: "right",padding: 0},
         ];
-        var totalCommon = 0;
         var dataCommon = [];
         var headerConsumption = [
           {id:"property",name:"property",prompt:"property",width: 30,align: "center",padding: 0},
@@ -2947,9 +2948,9 @@
           {id:"owner",name:"owner",prompt:"owner",width: 50,align: "center",padding: 0},
           {id:"property",name:"property",prompt:"property",width: 30,align: "center",padding: 0},
           {id:"quota",name:"quota",prompt:"quota",width: 30,align: "center",padding: 0},
-          {id:"proportion_period",name:"proportion period",prompt:"proportion_period",width: 30,align: "right",padding: 0},
+          {id:"period",name:"period",prompt:"period",width: 30,align: "right",padding: 0},
           {id:"quota_period",name:"quota period",prompt:"quota_period",width: 30,align: "right",padding: 0},
-          {id:"common_charges",name:"common charges",prompt:"common_charges",width: 30,align: "right",padding: 0},
+          {id:"common",name:"common charges",prompt:"common",width: 30,align: "right",padding: 0},
           {id:"private_charges",name:"private charges",prompt:"private_charges",width: 30,align: "right",padding: 0},
           {id:"cold_water",name:"cold water",prompt:"cold_water",width: 30,align: "right",padding: 0},
           {id:"hot_water",name:"hot water",prompt:"hot_water",width: 30,align: "right",padding: 0},
@@ -2968,7 +2969,12 @@
           dataCommon.push({type:"Total",name:" ",communication:" ",amount:totalCommon.toString()});
           refCoproperty.collection("Properties").orderBy("code").get().then(function(mapPrFS){
             mapPrFS.forEach(function(prFS){
+              var prData = prFS.data();
+              var ownerName = memberName(prData.owner);
+              dataCharges.push({ownerId:prData.owner, owner:ownerName, property:prData.code, quota:prData.quota, period:"100%", quota_period:prData.quota});
+              totalQuota = totalQuota + parseFloat(prData.quota);
 
+              
             });
             window.jsPDF = window.jspdf.jsPDF;
             var doc = new jsPDF({ putOnlyUsedFonts: true, orientation: "portrait" });
