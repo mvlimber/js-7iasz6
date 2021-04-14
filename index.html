@@ -1976,8 +1976,10 @@
     <!--   Members scripts start here -->
     <script>
       function memberName(memberId){
+        var x;
         refCoproperty.collection("Members").doc(memberId).get().then(function(memberFS){
-          return memberFS.data().lastName+" "+membermemberFS.data().firstName;
+          x = memberFS.data().lastName+" "+membermemberFS.data().firstName;
+          return x;
         });
       };
       
@@ -2924,12 +2926,12 @@
 
       function downloadQuarter(){
         var totalCommon = 0;
-        vat totalQuota = 0;
+        var totalQuota = 0;
         var headerCommon = [
           {id:"type",name:"type",prompt:"type",width: 40,align: "center",padding: 0},
           {id:"name",name:"name",prompt:"name",width: 50,align: "center",padding: 0},
           {id:"communication",name:"communication",prompt:"communication",width: 110,align: "center",padding: 0},
-          {id:"amount",name:"amount",prompt:"amount",width: 35,align: "right",padding: 0},
+          {id:"amount",name:"amount",prompt:"amount",width: 35,align: "right",padding: 0}
         ];
         var dataCommon = [];
         var headerConsumption = [
@@ -2939,7 +2941,7 @@
           {id:"last_reading",name:"last_reading",prompt:"last_reading",width: 40,align: "right",padding: 0},
           {id:"new_reading",name:"new_reading",prompt:"new_reading",width: 40,align: "right",padding: 0},
           {id:"difference",name:"difference",prompt:"difference",width: 40,align: "right",padding: 0},
-          {id:"cost",name:"cost",prompt:"cost",width: 35,align: "right",padding: 0},
+          {id:"cost",name:"cost",prompt:"cost",width: 35,align: "right",padding: 0}
         ];
         var dataColdWater = [];
         var dataHotWater = [];
@@ -2955,10 +2957,10 @@
           {id:"cold_water",name:"cold water",prompt:"cold_water",width: 30,align: "right",padding: 0},
           {id:"hot_water",name:"hot water",prompt:"hot_water",width: 30,align: "right",padding: 0},
           {id:"heating",name:"heating",prompt:"heating",width: 30,align: "right",padding: 0},
-          {id:"Total",name:"Total",prompt:"Total",width: 30,align: "right",padding: 0},
+          {id:"Total",name:"Total",prompt:"Total",width: 30,align: "right",padding: 0}
         ];
-        var dataCharges= [];
-
+        var dataCharges = [];
+        
         refCoproperty.collection("Transactions").orderBy("type").get().then(function(mapTrFS){
           mapTrFS.forEach(function(trFS){
             var trData = trFS.data();
@@ -2974,56 +2976,8 @@
               dataCharges.push({ownerId:prData.owner, owner:ownerName, property:prData.code, quota:prData.quota, period:"100%", quota_period:prData.quota});
               totalQuota = totalQuota + parseFloat(prData.quota);
 
-              
             });
-            window.jsPDF = window.jspdf.jsPDF;
-            var doc = new jsPDF({ putOnlyUsedFonts: true, orientation: "portrait" });
-            doc.setTextColor("green");
-            doc.setFontSize(32);
-            doc.text("MyCondos", 60, 20);
-            doc.setTextColor("black");
-            doc.setFontSize(24);
-            doc.setFont("bold");
-            doc.text("Periodic Report of Charges", 40, 40);
-            doc.setFontSize(16);
-            doc.text("Condomynium:", 20, 50);
-            doc.setFont("normal");
-            doc.text("Name:", 30, 60);
-            doc.text("Azur", 80, 60);
-            doc.text("Address:", 30, 70);
-            doc.text("Avenue de l'Héliport 1, B-1000 Brussels", 80, 70);
-            doc.text("Administrator:", 30, 80);
-            doc.text("Marc Van Limberghen", 80, 80);
-            
-            doc.setFont("bold");doc.text("Period:", 20, 100);doc.setFont("normal");
-            doc.text("  01/04/2021 - 30/06/2021", 20, 110);
-            
-            doc.setFont("bold");doc.text("List of tables:", 20, 130);doc.setFont("normal");
-            doc.text("  Table1: Charges Common Parts", 40, 140);
-            doc.text("  Table2: Quota Common Parts per Owner", 40, 150);
-            doc.text("  Table3: Consumptions Utilities", 40, 160);
-            doc.text("  Table4: Charges per Owner", 40, 170);
-            doc.line(20, 280, 200, 280);
-            doc.setFontSize(12);
-            doc.text("Periodic Report Azur 01/04/2021 - 30/09/2021                                             Page 1/5", 20, 285);
-            doc.setFontSize(16);
-            doc.addPage();
-            doc.text("Table1: Charges Common Parts", 20, 20);
-          
-        
-            doc.table(20, 30, dataExpenses, headerExpenses);
-            doc.line(20, 280, 200, 280);
-            doc.setFontSize(12);
-            doc.text("Periodic Report Azur 01/04/2021 - 30/09/2021                                             Page 2/5", 20, 285);
-            doc.setFontSize(16);
-            doc.addPage();
-            doc.text("Table2: Quota Common Parts per Owner", 20, 20);
-            doc.save();
-            /*
-            var fileRef = refCopropertyFiles.child("Periodic").child("Q2021_TR1");  
-            fileRef.put(doc.output("blob"));
-            */
-
+           
           }).catch(function(error) {
               M.toast({html:"Error during properties upload:" + error}); 
           });
