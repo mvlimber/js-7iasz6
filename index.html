@@ -600,7 +600,11 @@
                 </div>
                 <div class="input-field col s12 m4">
                   <input id="meterReading_id" type="text" readonly>
-                  <label for="meterReading_id">ID meter</label>
+                  <label for="meterReading_id">ID Meter</label>
+                </div>
+                <div class="input-field col s12 m4">
+                  <input id="meterReading_lastReading" type="text" readonly>
+                  <label for="meterReading_lastReading">Last Reading</label>
                 </div>
               </form>
                 <h6><b>Please enter Meter Reading here below:</b></h6>
@@ -1872,6 +1876,7 @@
         document.getElementById("meterReading_property").value = propertyData.code;
         document.getElementById("meterReading_type").value = readingData.type;
         document.getElementById("meterReading_id").value = readingData.meter;
+        document.getElementById("meterReading_lastReading").value = readingData.lastReading;
         document.getElementById("meterReading_reading").value = readingData.reading;
         document.getElementById("meterReading_date").value = readingData.date;
         emptyHTMLSet(document.getElementById("meterReading_picture"));
@@ -2984,7 +2989,7 @@
             {id:"difference",name:"difference",prompt:"difference",width: 40,align: "right",padding: 0},
             {id:"cost",name:"cost",prompt:"cost",width: 35,align: "right",padding: 0}
           ];
-          var headersChargees = [
+          var headersCharges = [
             {id:"owner",name:"owner",prompt:"owner",width: 50,align: "center",padding: 0},
             {id:"property",name:"property",prompt:"property",width: 30,align: "center",padding: 0},
             {id:"quota",name:"quota",prompt:"quota",width: 30,align: "center",padding: 0},
