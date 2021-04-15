@@ -2924,7 +2924,9 @@
         
       };
 
-      
+      function checkId(argFS,id) {
+        return argFS.id == id;
+      };
 
       function downloadQuarter(){
         var totalCommon = 0;
@@ -2976,74 +2978,77 @@
             totalCommon = totalCommon + parseFloat(trData.amount);
           });
           dataCommon.push({type:"Total",name:" ",communication:" ",amount:totalCommon.toString()});
-          refCoproperty.collection("Properties").orderBy("code").get().then(function(mapPrFS){
-            mapPrFS.forEach(function(prFS){
-              var prData = prFS.data();
-              totalQuota = totalQuota + parseFloat(prData.quota);
-              refCoproperty.collection("Members").doc(prData.owner).get().then(function(memberFS){
-                var x = memberFS.data().lastName+" "+memberFS.data().firstName;
-                dataCharges.push({owner:"zotte", property:prData.code, quota:prData.quota, period:"100%", quota_period:prData.quota});
-                /*dataCharges.push({ownerId:prData.owner, owner:ownerName, property:prData.code, quota:prData.quota, period:"100%", quota_period:prData.quota});*/
+          refCoproperty.collection("Members").get().then(function(mapMemberFS) {
+            refCoproperty.collection("Properties").orderBy("code").get().then(function(mapPrFS){
+              mapPrFS.forEach(function(prFS){
+                var prData = prFS.data();
+                totalQuota = totalQuota + parseFloat(prData.quota);
+                /*refCoproperty.collection("Members").doc(prData.owner).get().then(function(memberFS){
+                  var x = memberFS.data().lastName+" "+memberFS.data().firstName;
+                  dataCharges.push({owner:"zotte", property:prData.code, quota:prData.quota, period:"100%", quota_period:prData.quota});
+                  dataCharges.push({ownerId:prData.owner, owner:ownerName, property:prData.code, quota:prData.quota, period:"100%", quota_period:prData.quota});*/
               });
-            });
-            dataCharges.push({owner:"Total", property:" ", quota:" ", period:" ", quota_period:totalQuota.toString()});
-            if (coldWater) {pages = pages + 1;};
-            if (hotWater) {pages = pages + 1;};
-            if (heating) {pages = pages + 1;};
+            
+            
+              dataCharges.push({owner:"Total", property:" ", quota:" ", period:" ", quota_period:totalQuota.toString()});
+              if (coldWater) {pages = pages + 1;};
+              if (hotWater) {pages = pages + 1;};
+              if (heating) {pages = pages + 1;};
 
-            window.jsPDF = window.jspdf.jsPDF;
-            var doc = new jsPDF({ putOnlyUsedFonts: true, orientation: "portrait" });
-            doc.setTextColor("green"); doc.setFontSize(32);
-            doc.text("MyCondos", 60, 20);
-            doc.setTextColor("black"); doc.setFontSize(24); 
-            doc.text("Periodic Report of Charges", 40, 40);
-            doc.setFontSize(16);
-            doc.text("Condomynium:", 20, 50);
-            doc.setFont("normal");
-            doc.text("Name:", 30, 60);doc.text("Azur", 80, 60);
-            doc.text("Address:", 30, 70);doc.text("Avenue de l'Héliport 1, B-1000 Brussels", 80, 70);
-            doc.text("Administrator:", 30, 80);doc.text("Marc Van Limberghen", 80, 80);
+              window.jsPDF = window.jspdf.jsPDF;
+              var doc = new jsPDF({ putOnlyUsedFonts: true, orientation: "portrait" });
+              doc.setTextColor("green"); doc.setFontSize(32);
+              doc.text("MyCondos", 60, 20);
+              doc.setTextColor("black"); doc.setFontSize(24); 
+              doc.text("Periodic Report of Charges", 40, 40);
+              doc.setFontSize(16);
+              doc.text("Condomynium:", 20, 50);
+              doc.setFont("normal");
+              doc.text("Name:", 30, 60);doc.text("Azur", 80, 60);
+              doc.text("Address:", 30, 70);doc.text("Avenue de l'Héliport 1, B-1000 Brussels", 80, 70);
+              doc.text("Administrator:", 30, 80);doc.text("Marc Van Limberghen", 80, 80);
+              
+              doc.text("Period:", 20, 100);doc.setFont("normal");doc.text("  01/04/2021 - 30/06/2021", 20, 110);
+              
+              doc.text("List of tables:", 20, 130);doc.setFont("normal");
+              doc.text("  Table 1: Charges Common Parts", 40, 140);
+              doc.text("  Table 2: Private Charges", 40, 150);
+              doc.text("  Table 3: Total Charges per Owner", 40, 170);
+              doc.line(20, 280, 200, 280);
+              doc.setFontSize(12);
+              doc.text("Periodic Report Azur 01/04/2021 - 30/09/2021                                             Page 1/"+pages, 20, 285);
+              doc.setFontSize(16);
+              doc.addPage();
+              doc.text("Table 1: Charges Common Parts", 20, 20);
             
-            doc.text("Period:", 20, 100);doc.setFont("normal");doc.text("  01/04/2021 - 30/06/2021", 20, 110);
-            
-            doc.text("List of tables:", 20, 130);doc.setFont("normal");
-            doc.text("  Table 1: Charges Common Parts", 40, 140);
-            doc.text("  Table 2: Private Charges", 40, 150);
-            doc.text("  Table 3: Total Charges per Owner", 40, 170);
-            doc.line(20, 280, 200, 280);
-            doc.setFontSize(12);
-            doc.text("Periodic Report Azur 01/04/2021 - 30/09/2021                                             Page 1/"+pages, 20, 285);
-            doc.setFontSize(16);
-            doc.addPage();
-            doc.text("Table 1: Charges Common Parts", 20, 20);
-          
-            doc.table(20, 30, dataCommon, headerCommon);
-            doc.line(20, 280, 200, 280);doc.setFontSize(12);
-            doc.text("Periodic Report Azur 01/04/2021 - 30/09/2021                                             Page 2/"+pages, 20, 285);
-            doc.setFontSize(16);
-            doc.addPage();
-            doc.text("Table 2: Private Charges", 20, 20);
-            doc.line(20, 280, 200, 280);doc.setFontSize(12);
-            doc.text("Periodic Report Azur 01/04/2021 - 30/09/2021                                             Page 3/"+pages, 20, 285);
-            doc.setFontSize(16);
-            doc.addPage("a4", "landscape");
-            doc.text("Table 3: Total Charges per Owner", 20, 20);
-            doc.table(20, 30, dataCharges, headerCharges);
-            doc.line(20, 280, 300, 280);doc.setFontSize(12);
-            doc.text("Periodic Report Azur 01/04/2021 - 30/09/2021                                                          Page 4/"+pages, 20, 285);
-            
-            doc.save();
-            /*
-            var fileRef = refCopropertyFiles.child("Periodic").child("Q2021_TR1");  
-            fileRef.put(doc.output("blob"));
-            */
-           
-          }).catch(function(error) {
-              M.toast({html:"Error during properties upload:" + error});
+              doc.table(20, 30, dataCommon, headerCommon);
+              doc.line(20, 280, 200, 280);doc.setFontSize(12);
+              doc.text("Periodic Report Azur 01/04/2021 - 30/09/2021                                             Page 2/"+pages, 20, 285);
+              doc.setFontSize(16);
+              doc.addPage();
+              doc.text("Table 2: Private Charges", 20, 20);
+              doc.line(20, 280, 200, 280);doc.setFontSize(12);
+              doc.text("Periodic Report Azur 01/04/2021 - 30/09/2021                                             Page 3/"+pages, 20, 285);
+              doc.setFontSize(16);
+              doc.addPage("a4", "landscape");
+              doc.text("Table 3: Total Charges per Owner", 20, 20);
+              doc.table(20, 30, dataCharges, headerCharges);
+              doc.line(20, 280, 300, 280);doc.setFontSize(12);
+              doc.text("Periodic Report Azur 01/04/2021 - 30/09/2021                                                          Page 4/"+pages, 20, 285);
+              
+              doc.save();
+              /*
+              var fileRef = refCopropertyFiles.child("Periodic").child("Q2021_TR1");  
+              fileRef.put(doc.output("blob"));
+              */
+             }).catch(function(error) {
+                M.toast({html:"Error during properties upload:" + error});
+             });
           });
         }).catch(function(error) {
             M.toast({html:"Error during expenses upload:" + error});
         });
+        
       }
     </script>
 </body>
