@@ -2924,9 +2924,15 @@
         
       };
 
+      
+
       function downloadQuarter(){
         var totalCommon = 0;
         var totalQuota = 0;
+        var coldWater = false;
+        var hotWater = false;
+        var heating = false;
+        
         var headerCommon = [
           {id:"type",name:"type",prompt:"type",width: 40,align: "center",padding: 0},
           {id:"name",name:"name",prompt:"name",width: 50,align: "center",padding: 0},
@@ -2952,11 +2958,11 @@
           {id:"quota",name:"quota",prompt:"quota",width: 30,align: "center",padding: 0},
           {id:"period",name:"period",prompt:"period",width: 30,align: "right",padding: 0},
           {id:"quota_period",name:"quota period",prompt:"quota_period",width: 30,align: "right",padding: 0},
-          {id:"common",name:"common charges",prompt:"common",width: 30,align: "right",padding: 0},
-          {id:"private_charges",name:"private charges",prompt:"private_charges",width: 30,align: "right",padding: 0},
-          {id:"cold_water",name:"cold water",prompt:"cold_water",width: 30,align: "right",padding: 0},
-          {id:"hot_water",name:"hot water",prompt:"hot_water",width: 30,align: "right",padding: 0},
-          {id:"heating",name:"heating",prompt:"heating",width: 30,align: "right",padding: 0},
+          {id:"common",name:"common charges",prompt:"common",width: 33,align: "right",padding: 0},
+          {id:"private",name:"private charges",prompt:"private",width: 35,align: "right",padding: 0},
+          {id:"cold_water",name:"cold water",prompt:"cold_water",width: 35,align: "right",padding: 0},
+          {id:"hot_water",name:"hot water",prompt:"hot_water",width: 35,align: "right",padding: 0},
+          {id:"heating",name:"heating",prompt:"heating",width: 35,align: "right",padding: 0},
           {id:"Total",name:"Total",prompt:"Total",width: 30,align: "right",padding: 0}
         ];
         var dataCharges = [];
@@ -2979,10 +2985,10 @@
             });
            
           }).catch(function(error) {
-              M.toast({html:"Error during properties upload:" + error}); 
+              M.toast({html:"Error during properties upload:" + error});
           });
         }).catch(function(error) {
-            M.toast({html:"Error during expenses upload:" + error}); 
+            M.toast({html:"Error during expenses upload:" + error});
         });
       }
     </script>
