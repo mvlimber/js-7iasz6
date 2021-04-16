@@ -2955,12 +2955,12 @@
         var headerCharges = [
           {id:"owner",name:"owner",prompt:"owner",width: 50,align: "center",padding: 0},
           {id:"property",name:"property",prompt:"property",width: 30,align: "center",padding: 0},
-          {id:"quota",name:"quota",prompt:"quota",width: 30,align: "center",padding: 0},
+          {id:"quota",name:"quota",prompt:"quota",width: 25,align: "center",padding: 0},
           {id:"period",name:"period",prompt:"period",width: 30,align: "right",padding: 0},
           {id:"quota_period",name:"quota_period",prompt:"quota_period",width: 30,align: "right",padding: 0},
-          /*
-          {id:"common",name:"common_charges",prompt:"common",width: 33,align: "right",padding: 0},
-          {id:"private",name:"private_charges",prompt:"private",width: 35,align: "right",padding: 0},
+          
+          {id:"common",name:"common",prompt:"common",width: 33,align: "right",padding: 0},
+          /*{id:"private",name:"private_charges",prompt:"private",width: 35,align: "right",padding: 0},
           {id:"cold_water",name:"cold_water",prompt:"cold_water",width: 35,align: "right",padding: 0},
           {id:"hot_water",name:"hot_water",prompt:"hot_water",width: 35,align: "right",padding: 0},
           {id:"heating",name:"heating",prompt:"heating",width: 35,align: "right",padding: 0},
@@ -2991,9 +2991,14 @@
                 
                 dataCharges.push({ownerId:prData.owner, owner:idMemberMap[prData.owner], property:prData.code, quota:prData.quota, period:"100%", quota_period:prData.quota});
               });
+              var totalCommonTableCharges = 0;
+              dataCharges.forEach(function(charge){
+                charge.common = (totalCommon * parseFloat(charge.quota_period) / totalQuota).toFixed(2);
+                totalCommonTableCharges = totalCommonTableCharges + parseFloat(charge.common);
+              });
             
             
-              dataCharges.push({owner:"Total", property:" ", quota:" ", period:" ", quota_period:totalQuota.toString()});
+              dataCharges.push({owner:"Total", property:" ", quota:" ", period:" ", quota_period:totalQuota.toString(), common:totalCommonTableCharges.toString()});
               if (coldWater) {pages = pages + 1;};
               if (hotWater) {pages = pages + 1;};
               if (heating) {pages = pages + 1;};
