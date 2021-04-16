@@ -2924,9 +2924,7 @@
         
       };
 
-      function checkId(argFS,id) {
-        return argFS.id == id;
-      };
+      
 
       function downloadQuarter(){
         var totalCommon = 0;
@@ -2978,15 +2976,20 @@
             totalCommon = totalCommon + parseFloat(trData.amount);
           });
           dataCommon.push({type:"Total",name:" ",communication:" ",amount:totalCommon.toString()});
-          refCoproperty.collection("Members").get().then(function(mapMemberFS) {
+          refCoproperty.collection("Members").get().then(function(membersFS) {
+            var idMemberMap = [];
+            membersFS.forEach(function(memberFS){
+              idMemberMap[memberFS.id] = memberFS.data().lastName + " " + memberFS.data().firstName;
+            });
             refCoproperty.collection("Properties").orderBy("code").get().then(function(mapPrFS){
               mapPrFS.forEach(function(prFS){
                 var prData = prFS.data();
                 totalQuota = totalQuota + parseFloat(prData.quota);
                 /*refCoproperty.collection("Members").doc(prData.owner).get().then(function(memberFS){
-                  var x = memberFS.data().lastName+" "+memberFS.data().firstName;
-                  dataCharges.push({owner:"zotte", property:prData.code, quota:prData.quota, period:"100%", quota_period:prData.quota});
-                  dataCharges.push({ownerId:prData.owner, owner:ownerName, property:prData.code, quota:prData.quota, period:"100%", quota_period:prData.quota});*/
+                  var x = memberFS.data().lastName+" "+memberFS.data().firstName;*/
+                  /*dataCharges.push({owner:"zotte", property:prData.code, quota:prData.quota, period:"100%", quota_period:prData.quota});*/
+                
+                dataCharges.push({ownerId:prData.owner, owner:idMemberMap[prData.owner], property:prData.code, quota:prData.quota, period:"100%", quota_period:prData.quota});
               });
             
             
