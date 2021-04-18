@@ -2960,7 +2960,8 @@
           {id:"property",name:"property",prompt:"property",width: 30,align: "center",padding: 0},
           {id:"quota",name:"quota",prompt:"quota",width: 25,align: "center",padding: 0},
           {id:"period",name:"period",prompt:"period",width: 30,align: "right",padding: 0},
-          {id:"quota_period",name:"quota_period",prompt:"quota period",width: 30,align: "right",padding: 0}
+          {id:"quota_period",name:"quota_period",prompt:"quota period",width: 30,align: "right",padding: 0},
+          {id:"amount",name:"amount",prompt:"amount",width: 30,align: "right",padding: 0}
         ];
         var dataQuota = [];
         var headerCharges = [
@@ -3011,7 +3012,7 @@
                   if (count) {
                     /* create line subtotal for consumtion and quota last owner */
                     dataConsumption.push(owner:OwnerName, property:"SubTotal", meter:" ",type:" ", last_reading:" ", reading:" ", difference:" ", water: subtotalWater.toString(), heating:subtotalHeating.toString() );
-                    dataQuota.push(owner:OwnerName, property:"SubTotal", quote:" ", period:" ", quota_period: " ", amount:subtotalCommon.toString());
+                    dataQuota.push(owner:OwnerName, property:"SubTotal", quota:" ", period:" ", quota_period: " ", amount:subtotalCommon.toString());
                   };
                   var subtotalCharges = subtotalCommon + subtotalWater + subtotalHeating;
                   totalCharges = totalCharges + subtotalCharges;
@@ -3024,9 +3025,16 @@
                 ownerId = prData.owner;
                 ownerName = idMemberMap[prData.owner];
                 count = 1;
+                var commonQuotaString = (totalCommon * prData.quota / totalQuota).toFixed(2);
+                dataQuota.push(owner:OwnerName, property:prData.code, quota:prData.quota, period:"100% ", quota_period: prData.quota, amount:commonQuotaString);
+                subtotalCommon = subtotalCommon + parseFloat(commonQuotaString);
+                NU HIER ALLE METERS VAN DE PROPERTY INLEZEN EN TELKENS EEN LIJN CONSUMPTIE MAKEN
+                dataConsumption.push(owner:OwnerName, property:prData.code, meter:" ",type:" ", last_reading:" ", reading:" ", difference:" ", water: subtotalWater.toString(), heating:subtotalHeating.toString() );
+                dataQuota.push(owner:OwnerName, property:"SubTotal", quote:" ", period:" ", quota_period: " ", amount:subtotalCommon.toString());
+                
+                
                 subtotalWater = subtotalWater + 
                 subtotalHeating = subtotalHeating +
-                subTotalQuota = subTotalQuota + 
                 totalQuota = totalQuota + parseFloat(prData.quota);
                 
                 dataCharges.push({ownerId:prData.owner, owner:idMemberMap[prData.owner], property:prData.code, quota:prData.quota, period:"100%", quota_period:prData.quota});
