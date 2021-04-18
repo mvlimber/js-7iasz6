@@ -2994,14 +2994,14 @@
             membersFS.forEach(function(memberFS){
               idMemberMap[memberFS.id] = memberFS.data().lastName + " " + memberFS.data().firstName;
             });
-            refCoproperty.collection("Properties").orderBy("code").get().then(function(mapPrFS){
+            refCoproperty.collection("Properties").orderBy("owner").get().then(function(mapPrFS){
               mapPrFS.forEach(function(prFS){
                 var prData = prFS.data();
                 totalQuota = totalQuota + parseFloat(prData.quota);
                 /*refCoproperty.collection("Members").doc(prData.owner).get().then(function(memberFS){
                   var x = memberFS.data().lastName+" "+memberFS.data().firstName;*/
                   /*dataCharges.push({owner:"zotte", property:prData.code, quota:prData.quota, period:"100%", quota_period:prData.quota});*/
-                
+                dataConsumption.push();
                 dataCharges.push({ownerId:prData.owner, owner:idMemberMap[prData.owner], property:prData.code, quota:prData.quota, period:"100%", quota_period:prData.quota});
               });
               var totalCommonTableCharges = 0;
@@ -3041,19 +3041,19 @@
               doc.text("Page 1", 175, 285);
               doc.setFontSize(16);
               doc.addPage();
-              doc.text("Water:", 20, 20);
+              doc.text("Water: total expenses for building", 20, 20);
               doc.setFontSize(12);
               doc.table(20, 30, dataWater, headerCommon);
               doc.setFontSize(16);
-              doc.text("Heating:", 20, 154);
+              doc.text("Heating: total expenses for building", 20, 154);
               doc.setFontSize(12);
               doc.table(20, 164, dataHeating, headerCommon);
               doc.line(20, 280, 200, 280);
               doc.text("Periodic Report Azur 01/04/2021 - 30/09/2021",20, 285);
               doc.text("Page 2", 175, 285);
               doc.setFontSize(16);
-              doc.addPage();
-              doc.text("Table 2: Private Charges", 20, 20);
+              doc.addPage("a4", "landscape");
+              doc.text("Water and Heating: expenses per owner", 20, 20);
               doc.line(20, 280, 200, 280);doc.setFontSize(12);
               doc.text("Periodic Report Azur 01/04/2021 - 30/09/2021                                             Page 3", 20, 285);
               doc.setFontSize(16);
