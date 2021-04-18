@@ -3000,23 +3000,33 @@
             var ownerName ="";
             var subtotalWater = 0;
             var subtotalheating = 0;
+            var subtotalCommon = 0;
             var count = 0;
             refCoproperty.collection("Properties").orderBy("owner").get().then(function(propertiesFS){
+              propertiesFS.forEach(function(prFS){totalQuota = totalQuota + prFS.data().quota;};
               propertiesFS.forEach(function(prFS){
                 var prData = prFS.data();
                 if (ownerId && !(ownerId == prData.owner){
+                  /* totals for previous owner */
                   if (count) {
-                    /* make subtotals consumtion and quota_period last owner before adding new owner*/
+                    /* create line subtotal for consumtion and quota last owner */
                     dataConsumption.push(owner:OwnerName, property:"SubTotal", meter:" ",type:" ", last_reading:" ", reading:" ", difference:" ", water: subtotalWater.toString(), heating:subtotalHeating.toString() );
-                    dataQuota.push(owner:OwnerName, property:"SubTotal", quote:" ", period:" ", quota_period: subtotalQuota.toString(), amount:(subtotalQuota.toString()))
+                    dataQuota.push(owner:OwnerName, property:"SubTotal", quote:" ", period:" ", quota_period: " ", amount:subtotalCommon.toString());
                   };
-                  dataCharges.push({owner:OwnerName, property:prData.code, quota:prData.quota, period:"100%", quota_period:prData.quota});
+                  var subtotalCharges = subtotalCommon + subtotalWater + subtotalHeating;
+                  totalCharges = totalCharges + subtotalCharges;
+                  dataCharges.push({owner:OwnerName, common:subtotalCommon.toString(), private:" ", water:subtotalWater.toString(), heating:subtotalHeating.toString(),total:subtotalCharges.toString() });
+                  subtotalCommon = 0;
+                  subtotalWater = 0;
+                  subtotalCharges = 0;
                 };
+                /* add up for current owner */
                 ownerId = prData.owner;
                 ownerName = idMemberMap[prData.owner];
                 count = 1;
-                subtotalWater = 
-                subtotalHeating = 
+                subtotalWater = subtotalWater + 
+                subtotalHeating = subtotalHeating +
+                subTotalQuota = subTotalQuota + 
                 totalQuota = totalQuota + parseFloat(prData.quota);
                 
                 dataCharges.push({ownerId:prData.owner, owner:idMemberMap[prData.owner], property:prData.code, quota:prData.quota, period:"100%", quota_period:prData.quota});
