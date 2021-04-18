@@ -2971,9 +2971,9 @@
         ];
         var dataCharges = [];
         
-        refCoproperty.collection("Transactions").orderBy("type").get().then(function(mapTrFS){
-          mapTrFS.forEach(function(trFS){
-            var trData = trFS.data();
+        refCoproperty.collection("Transactions").orderBy("type").get().then(function(transactionsFS){
+          transactionsFS.forEach(function(transactionFS){
+            var trData = transactionFS.data();
             if (!trData.communication) {trData.communication=" "};
             dataCommon.push(trData);
             totalCommon = totalCommon + parseFloat(trData.amount);
