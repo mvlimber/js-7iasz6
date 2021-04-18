@@ -2955,17 +2955,19 @@
           {id:"heating",name:"heating",prompt:"heating",width: 35,align: "right",padding: 0}
         ];
         var dataConsumption = [];
-        var headerCharges = [
+        var headerQuota =[
           {id:"owner",name:"owner",prompt:"owner",width: 50,align: "center",padding: 0},
           {id:"property",name:"property",prompt:"property",width: 30,align: "center",padding: 0},
           {id:"quota",name:"quota",prompt:"quota",width: 25,align: "center",padding: 0},
           {id:"period",name:"period",prompt:"period",width: 30,align: "right",padding: 0},
-          {id:"quota_period",name:"quota_period",prompt:"quota period",width: 30,align: "right",padding: 0},
-          
+          {id:"quota_period",name:"quota_period",prompt:"quota period",width: 30,align: "right",padding: 0}
+        ];
+        var dataQuota = [];
+        var headerCharges = [
+          {id:"owner",name:"owner",prompt:"owner",width: 50,align: "center",padding: 0},
           {id:"common",name:"common",prompt:"common",width: 33,align: "right",padding: 0},
-          /*{id:"private",name:"private_charges",prompt:"private",width: 35,align: "right",padding: 0},
-          {id:"cold_water",name:"cold_water",prompt:"cold_water",width: 35,align: "right",padding: 0},
-          {id:"hot_water",name:"hot_water",prompt:"hot_water",width: 35,align: "right",padding: 0},
+          {id:"private",name:"private_charges",prompt:"private",width: 35,align: "right",padding: 0},
+          {id:"water",name:"water",prompt:"water",width: 35,align: "right",padding: 0},
           {id:"heating",name:"heating",prompt:"heating",width: 35,align: "right",padding: 0},
           {id:"Total",name:"Total",prompt:"Total",width: 30,align: "right",padding: 0}*/
         ];
@@ -2994,16 +2996,33 @@
             membersFS.forEach(function(memberFS){
               idMemberMap[memberFS.id] = memberFS.data().lastName + " " + memberFS.data().firstName;
             });
-            refCoproperty.collection("Properties").orderBy("owner").get().then(function(mapPrFS){
-              mapPrFS.forEach(function(prFS){
+            var ownerId ="";
+            var ownerName ="";
+            var subtotalWater = 0;
+            var subtotalheating = 0;
+            var count = 0;
+            refCoproperty.collection("Properties").orderBy("owner").get().then(function(propertiesFS){
+              propertiesFS.forEach(function(prFS){
                 var prData = prFS.data();
+                if (ownerId && !(ownerId == prData.owner){
+                  if (count) {
+                    /* make subtotals consumtion and quota_period last owner before adding new owner*/
+                    dataConsumption.push(owner:OwnerName, property:"SubTotal", meter:" ",type:" ", last_reading:" ", reading:" ", difference:" ", water: subtotalWater.toString(), heating:subtotalHeating.toString() );
+                    dataQuota.push(owner:OwnerName, property:"SubTotal", quote:" ", period:" ", quota_period: subtotalQuota.toString(), amount:(subtotalQuota.toString()))
+                  };
+                  dataCharges.push({owner:OwnerName, property:prData.code, quota:prData.quota, period:"100%", quota_period:prData.quota});
+                };
+                ownerId = prData.owner;
+                ownerName = idMemberMap[prData.owner];
+                count = 1;
+                subtotalWater = 
+                subtotalHeating = 
                 totalQuota = totalQuota + parseFloat(prData.quota);
-                /*refCoproperty.collection("Members").doc(prData.owner).get().then(function(memberFS){
-                  var x = memberFS.data().lastName+" "+memberFS.data().firstName;*/
-                  /*dataCharges.push({owner:"zotte", property:prData.code, quota:prData.quota, period:"100%", quota_period:prData.quota});*/
-                dataConsumption.push();
+                
                 dataCharges.push({ownerId:prData.owner, owner:idMemberMap[prData.owner], property:prData.code, quota:prData.quota, period:"100%", quota_period:prData.quota});
               });
+              make subtotal last one
+                
               var totalCommonTableCharges = 0;
               dataCharges.forEach(function(charge){
                 charge.common = (totalCommon * parseFloat(charge.quota_period) / totalQuota).toFixed(2);
@@ -3032,9 +3051,10 @@
               doc.text("Water:", 30, 145);doc.text("total expenses for building", 80, 145);
               doc.text("Heating:", 30, 155);doc.text("total expenses for building", 80, 155);
               doc.text("Water and Heating:", 30, 165);doc.text("expenses per owner", 80, 165);
-              doc.text("Common parts:", 30, 175);doc.text("total expenses for building", 80, 175);
-              doc.text("Private expenses:", 30, 185);doc.text("expenses per owner", 80, 185);
-              doc.text("Total Charges:", 30, 195);doc.text("expenses per owner", 80, 195);
+              doc.text("Common charges:", 30, 175);doc.text("total expenses for building", 80, 175);
+              doc.text("Quota common charges:", 30, 185);doc.text("quota per owner", 80, 185);
+              doc.text("Private expenses:", 30, 195);doc.text("expenses per owner", 80, 195);
+              doc.text("Total Charges:", 30, 215);doc.text("expenses per owner", 80, 215);
               doc.line(20, 280, 200, 280);
               doc.setFontSize(12);
               doc.text("Periodic Report Azur 01/04/2021 - 30/09/2021",20, 285);
