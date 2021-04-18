@@ -2928,12 +2928,12 @@
 
       function downloadQuarter(){
         var totalCommon = 0;
+        var totalWater = 0;
+        var totalHeating = 0;
         var totalQuota = 0;
         var coldWater = false;
         var hotWater = false;
         var heating = false;
-        var totalWater = 0;
-        var totalHeating = 0;
         var headerCommon = [
           {id:"type",name:"type",prompt:"type",width: 40,align: "center",padding: 0},
           {id:"name",name:"name",prompt:"name",width: 50,align: "center",padding: 0},
@@ -2941,6 +2941,8 @@
           {id:"amount",name:"amount",prompt:"amount",width: 35,align: "right",padding: 0}
         ];
         var dataCommon = [];
+        var dataWater = [];
+        var dataHeating = [];
         var headerConsumption = [
           {id:"owner",name:"owner",prompt:"owner",width: 30,align: "center",padding: 0},
           {id:"property",name:"property",prompt:"property",width: 30,align: "center",padding: 0},
@@ -2952,9 +2954,7 @@
           {id:"water",name:"water",prompt:"water",width: 35,align: "right",padding: 0},
           {id:"heating",name:"heating",prompt:"heating",width: 35,align: "right",padding: 0}
         ];
-        var dataColdWater = [];
-        var dataHotWater = [];
-        var dataHeating = [];
+        var dataConsumption = [];
         var headerCharges = [
           {id:"owner",name:"owner",prompt:"owner",width: 50,align: "center",padding: 0},
           {id:"property",name:"property",prompt:"property",width: 30,align: "center",padding: 0},
@@ -2975,8 +2975,16 @@
           transactionsFS.forEach(function(transactionFS){
             var trData = transactionFS.data();
             if (!trData.communication) {trData.communication=" "};
-            dataCommon.push(trData);
-            totalCommon = totalCommon + parseFloat(trData.amount);
+            if (trData.type == "Water"){
+              dataWater.push(trData);
+              totalWater = totalWater + parseFloat(trData.amount);
+            } else if (trData.type == "Heating"){
+              dataHeating.push(trData);
+              totalHeating = totalHeating + parseFloat(trData.amount);
+            } else {
+              dataCommon.push(trData);
+              totalCommon = totalCommon + parseFloat(trData.amount);
+            };
           });
           dataCommon.push({type:"Total",name:" ",communication:" ",amount:totalCommon.toString()});
           refCoproperty.collection("Members").get().then(function(membersFS) {
@@ -3023,7 +3031,7 @@
               doc.text("Heating:", 30, 155);doc.text("total expenses for building", 80, 155);
               doc.text("Water and Heating:", 30, 165);doc.text("expenses per owner", 80, 165);
               doc.text("Common parts:", 30, 175);doc.text("total expenses for building", 80, 175);
-              doc.text("Individual expenses:", 30, 185);doc.text("expenses per owner", 80, 185);
+              doc.text("Private expenses:", 30, 185);doc.text("expenses per owner", 80, 185);
               doc.text("Total Charges:", 30, 195);doc.text("expenses per owner", 80, 195);
               doc.line(20, 280, 200, 280);
               doc.setFontSize(12);
