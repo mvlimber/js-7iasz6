@@ -3003,7 +3003,7 @@
           dataWater.push({type:"Total",name:" ",communication:" ",amount:totalWater.toString()});
           dataHeating.push({type:"Total",name:" ",communication:" ",amount:totalHeating.toString()});
           dataCommon.push({type:"Total",name:" ",communication:" ",amount:totalCommon.toString()});
-          refCoproperty.collection("Members").get().then(function(membersFS) {
+          refCoproperty.collection("Members").get().then(function(membersFS) { 
             var idMemberMap = [];
             membersFS.forEach(function(memberFS){
               idMemberMap[memberFS.id] = memberFS.data().lastName + " " + memberFS.data().firstName;
@@ -3030,6 +3030,7 @@
                   dataCharges.push({owner:OwnerName, common:subtotalCommon.toString(), private:" ", water:subtotalWater.toString(), heating:subtotalHeating.toString(),total:subtotalCharges.toString() });
                   subtotalCommon = 0;
                   subtotalWater = 0;
+                  subtotalHeating = 0;
                   subtotalCharges = 0;
                 };
                 /* add up for current owner */
@@ -3039,7 +3040,6 @@
                 var commonQuotaString = (totalCommon * prData.quota / totalQuota).toFixed(2);
                 dataQuota.push(owner:OwnerName, property:prData.code, quota:prData.quota, period:"100% ", quota_period: prData.quota, amount:commonQuotaString);
                 subtotalCommon = subtotalCommon + parseFloat(commonQuotaString);
-                NU HIER ALLE METERS VAN DE PROPERTY INLEZEN EN TELKENS EEN LIJN CONSUMPTIE MAKEN
                 refCoproperty.collection("Properties").doc(prFS.id).collection("Meters").get().then(function(metersFS){
                   metersFS.forEach(function(meterFS){
                     var meterData = meterFS.data();
@@ -3049,27 +3049,23 @@
                     if (meterData.type = "Cold Water") {
                       amountWaterString = (buildingWater * difference / buildingWaterDifference).toFixed(2);
                       amountHeatingString = " ";
+                      subtotalWater = subtotalWater + parseFloat(amountWaterString);
                     } else if (meterData.type = "Heating") {
                       amountWaterString = " ";
                       amountHeatingString = (buildingPureHeating * difference / totalHeatingDifference).toFixed(2);
+                      subtotalHeating = subtotalHeating + parseFloat(amountHeatingString);
                     } else {
                       amountWaterString = (buildingWater * difference / buildingWaterDifference).toFixed(2);
                       amountHeatingString = (buildingHotwater * difference / totalHotWaterDifference).toFixed(2);
+                      subtotalWater = subtotalWater + parseFloat(amountWaterString);
+                      subtotalHeating = subtotalHeating + parseFloat(amountHeatingString);
                     };
                     dataConsumption.push(owner:OwnerName, property:prData.code, meter:meterData.meter,type:meterData.type, last_reading:meterData.lastReading, reading:meterData.reading, difference:difference.toString(), water: amountWaterString, heating:amountHeatingString);
                   });
                 });
-                dataConsumption.push(owner:OwnerName, property:prData.code, meter:" ",type:" ", last_reading:" ", reading:" ", difference:" ", water: subtotalWater.toString(), heating:subtotalHeating.toString() );
-                
-                
-                
-                subtotalWater = subtotalWater + 
-                subtotalHeating = subtotalHeating +
-                totalQuota = totalQuota + parseFloat(prData.quota);
-                
                 dataCharges.push({ownerId:prData.owner, owner:idMemberMap[prData.owner], property:prData.code, quota:prData.quota, period:"100%", quota_period:prData.quota});
               });
-              make subtotal last one
+              !!!!!make subtotal last one
                 
               var totalCommonTableCharges = 0;
               dataCharges.forEach(function(charge){
@@ -3077,7 +3073,7 @@
                 totalCommonTableCharges = totalCommonTableCharges + parseFloat(charge.common);
               });
             
-            
+              !!!!hier nog total puschen voor elke table indien gepast
               dataCharges.push({owner:"Total", property:" ", quota:" ", period:" ", quota_period:totalQuota.toString(), common:totalCommonTableCharges.toString()});
 
               window.jsPDF = window.jspdf.jsPDF;
