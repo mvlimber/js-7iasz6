@@ -2927,9 +2927,18 @@
       
 
       function downloadQuarter(){
-        var totalCommon = 0;
+        var buildingWaterDifference = 150;  /* Nog in te lezen uit db */
+        var buildingWater = 0
+        var buildingHeating = 0;
+          var buildingPureHeating = 0;
+          var buildingHotWater = 0;
+        var buildingCommon = 0;
+        
         var totalWater = 0;
+        var totalHeatingDifference = 150; /* Nog in te lezen uit db via som van alle */
+        var totalHotWaterDifference = 150; /* Nog in te lezen uit db via som van alle */
         var totalHeating = 0;
+        var totalCommon = 0;
         var totalQuota = 0;
         var coldWater = false;
         var hotWater = false;
@@ -2980,15 +2989,17 @@
             if (!trData.communication) {trData.communication=" "};
             if (trData.type == "Water"){
               dataWater.push(trData);
-              totalWater = totalWater + parseFloat(trData.amount);
+              buildingWater = buildingWater + parseFloat(trData.amount);
             } else if (trData.type == "Heating"){
               dataHeating.push(trData);
-              totalHeating = totalHeating + parseFloat(trData.amount);
+              buildingHeating = buildingHeating + parseFloat(trData.amount);
             } else {
               dataCommon.push(trData);
-              totalCommon = totalCommon + parseFloat(trData.amount);
+              buildingCommon = buildingCommon + parseFloat(trData.amount);
             };
           });
+          buildingPureHeating = buildingHeating / 2;  /* Nog te zien of we deze factor aanhouden en ook nog aan tapassen indien geen heating*/
+          buildingHotWater = buildingHeating / 2;  /* Nog te zien of wedeze factor aanhouden en ook nog aan tapassen indien geen water*/
           dataWater.push({type:"Total",name:" ",communication:" ",amount:totalWater.toString()});
           dataHeating.push({type:"Total",name:" ",communication:" ",amount:totalHeating.toString()});
           dataCommon.push({type:"Total",name:" ",communication:" ",amount:totalCommon.toString()});
@@ -3029,8 +3040,27 @@
                 dataQuota.push(owner:OwnerName, property:prData.code, quota:prData.quota, period:"100% ", quota_period: prData.quota, amount:commonQuotaString);
                 subtotalCommon = subtotalCommon + parseFloat(commonQuotaString);
                 NU HIER ALLE METERS VAN DE PROPERTY INLEZEN EN TELKENS EEN LIJN CONSUMPTIE MAKEN
+                refCoproperty.collection("Properties").doc(prFS.id).collection("Meters").get().then(function(metersFS){
+                  metersFS.forEach(function(meterFS){
+                    var meterData = meterFS.data();
+                    var difference = parseFloat(meterData.reading) - parseFloat(meterData.lastReading);
+                    var amountWater = 0;
+                    var amountHeating = 0;
+                    if (meterData.type = "Cold Water") {
+                      amountWaterString = (buildingWater * difference / buildingWaterDifference).toFixed(2);
+                      amountHeatingString = " ";
+                    } else if (meterData.type = "Heating") {
+                      amountWaterString = " ";
+                      amountHeatingString = (buildingPureHeating * difference / totalHeatingDifference).toFixed(2);
+                    } else {
+                      amountWaterString = (buildingWater * difference / buildingWaterDifference).toFixed(2);
+                      amountHeatingString = (buildingHotwater * difference / totalHotWaterDifference).toFixed(2);
+                    };
+                    dataConsumption.push(owner:OwnerName, property:prData.code, meter:meterData.meter,type:meterData.type, last_reading:meterData.lastReading, reading:meterData.reading, difference:difference.toString(), water: amountWaterString, heating:amountHeatingString);
+                  });
+                });
                 dataConsumption.push(owner:OwnerName, property:prData.code, meter:" ",type:" ", last_reading:" ", reading:" ", difference:" ", water: subtotalWater.toString(), heating:subtotalHeating.toString() );
-                dataQuota.push(owner:OwnerName, property:"SubTotal", quote:" ", period:" ", quota_period: " ", amount:subtotalCommon.toString());
+                
                 
                 
                 subtotalWater = subtotalWater + 
