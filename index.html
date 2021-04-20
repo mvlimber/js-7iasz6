@@ -2924,10 +2924,8 @@
         
       };
 
-      
-
       function downloadQuarter(){
-        var buildingWaterDifference = 150;  /* Nog in te lezen uit db */
+        var buildingWaterDifference = 150;  
         var buildingWater = 0
         var buildingHeating = 0;
           var buildingPureHeating = 0;
@@ -2935,8 +2933,8 @@
         var buildingCommon = 0;
         
         var totalWater = 0;
-        var totalHeatingDifference = 150; /* Nog in te lezen uit db via som van alle */
-        var totalHotWaterDifference = 150; /* Nog in te lezen uit db via som van alle */
+        var totalHeatingDifference = 0; 
+        var totalHotWaterDifference = 0; 
         var totalHeating = 0;
         var totalCommon = 0;
         var totalQuota = 0;
@@ -2979,7 +2977,7 @@
           {id:"private",name:"private_charges",prompt:"private",width: 35,align: "right",padding: 0},
           {id:"water",name:"water",prompt:"water",width: 35,align: "right",padding: 0},
           {id:"heating",name:"heating",prompt:"heating",width: 35,align: "right",padding: 0},
-          {id:"Total",name:"Total",prompt:"Total",width: 30,align: "right",padding: 0}*/
+          {id:"Total",name:"Total",prompt:"Total",width: 30,align: "right",padding: 0}
         ];
         var dataCharges = [];
         
@@ -2998,84 +2996,39 @@
               buildingCommon = buildingCommon + parseFloat(trData.amount);
             };
           });
-          buildingPureHeating = buildingHeating / 2;  /* Nog te zien of we deze factor aanhouden en ook nog aan tapassen indien geen heating*/
-          buildingHotWater = buildingHeating / 2;  /* Nog te zien of wedeze factor aanhouden en ook nog aan tapassen indien geen water*/
+          
           dataWater.push({type:"Total",name:" ",communication:" ",amount:totalWater.toString()});
           dataHeating.push({type:"Total",name:" ",communication:" ",amount:totalHeating.toString()});
           dataCommon.push({type:"Total",name:" ",communication:" ",amount:totalCommon.toString()});
+          
           refCoproperty.collection("Members").get().then(function(membersFS) { 
             var idMemberMap = [];
             membersFS.forEach(function(memberFS){
               idMemberMap[memberFS.id] = memberFS.data().lastName + " " + memberFS.data().firstName;
             });
-            var ownerId ="";
-            var ownerName ="";
-            var subtotalWater = 0;
-            var subtotalheating = 0;
-            var subtotalCommon = 0;
-            var count = 0;
+            
             refCoproperty.collection("Properties").orderBy("owner").get().then(function(propertiesFS){
-              propertiesFS.forEach(function(prFS){totalQuota = totalQuota + prFS.data().quota;};
-              propertiesFS.forEach(function(prFS){
+              /*propertiesFS.forEach(function(prFS){
+                
                 var prData = prFS.data();
-                if (ownerId && !(ownerId == prData.owner){
-                  /* totals for previous owner */
-                  if (count) {
-                    /* create line subtotal for consumtion and quota last owner */
-                    dataConsumption.push(owner:OwnerName, property:"SubTotal", meter:" ",type:" ", last_reading:" ", reading:" ", difference:" ", water: subtotalWater.toString(), heating:subtotalHeating.toString() );
-                    dataQuota.push(owner:OwnerName, property:"SubTotal", quota:" ", period:" ", quota_period: " ", amount:subtotalCommon.toString());
-                  };
-                  var subtotalCharges = subtotalCommon + subtotalWater + subtotalHeating;
-                  totalCharges = totalCharges + subtotalCharges;
-                  dataCharges.push({owner:OwnerName, common:subtotalCommon.toString(), private:" ", water:subtotalWater.toString(), heating:subtotalHeating.toString(),total:subtotalCharges.toString() });
-                  subtotalCommon = 0;
-                  subtotalWater = 0;
-                  subtotalHeating = 0;
-                  subtotalCharges = 0;
-                };
-                /* add up for current owner */
-                ownerId = prData.owner;
-                ownerName = idMemberMap[prData.owner];
-                count = 1;
-                var commonQuotaString = (totalCommon * prData.quota / totalQuota).toFixed(2);
-                dataQuota.push(owner:OwnerName, property:prData.code, quota:prData.quota, period:"100% ", quota_period: prData.quota, amount:commonQuotaString);
-                subtotalCommon = subtotalCommon + parseFloat(commonQuotaString);
+                var ownerId = prData.owner;
+                var ownerName = idMemberMap[ownerId];
+                dataQuota.push({ownerId:ownerId, owner:OwnerName, property:prData.code, quota:prData.quota, period:"100%", quota_period: prData.quota, amount:" "}); 
+                totalQuota = totalQuota + parseInt(prData.quota); 
                 refCoproperty.collection("Properties").doc(prFS.id).collection("Meters").get().then(function(metersFS){
                   metersFS.forEach(function(meterFS){
                     var meterData = meterFS.data();
                     var difference = parseFloat(meterData.reading) - parseFloat(meterData.lastReading);
-                    var amountWater = 0;
-                    var amountHeating = 0;
-                    if (meterData.type = "Cold Water") {
-                      amountWaterString = (buildingWater * difference / buildingWaterDifference).toFixed(2);
-                      amountHeatingString = " ";
-                      subtotalWater = subtotalWater + parseFloat(amountWaterString);
-                    } else if (meterData.type = "Heating") {
-                      amountWaterString = " ";
-                      amountHeatingString = (buildingPureHeating * difference / totalHeatingDifference).toFixed(2);
-                      subtotalHeating = subtotalHeating + parseFloat(amountHeatingString);
-                    } else {
-                      amountWaterString = (buildingWater * difference / buildingWaterDifference).toFixed(2);
-                      amountHeatingString = (buildingHotwater * difference / totalHotWaterDifference).toFixed(2);
-                      subtotalWater = subtotalWater + parseFloat(amountWaterString);
-                      subtotalHeating = subtotalHeating + parseFloat(amountHeatingString);
+                    if (meterData.type == "Heating") {
+                      totalHeatingDifference = totalHeatingDifference + difference;
+                    } else if (meterData.type == "Hot Water"){
+                      totalHotWaterDifference = totalHotWaterDifference + difference;
                     };
-                    dataConsumption.push(owner:OwnerName, property:prData.code, meter:meterData.meter,type:meterData.type, last_reading:meterData.lastReading, reading:meterData.reading, difference:difference.toString(), water: amountWaterString, heating:amountHeatingString);
+                    dataConsumption.push({ownerId:ownerId, owner:OwnerName, property:prData.code, meter:meterData.meter,type:meterData.type, last_reading:meterData.lastReading, reading:meterData.reading, difference:difference.toString(), water: " ", heating:" "});
                   });
                 });
-                dataCharges.push({ownerId:prData.owner, owner:idMemberMap[prData.owner], property:prData.code, quota:prData.quota, period:"100%", quota_period:prData.quota});
               });
-              !!!!!make subtotal last one
-                
-              var totalCommonTableCharges = 0;
-              dataCharges.forEach(function(charge){
-                charge.common = (totalCommon * parseFloat(charge.quota_period) / totalQuota).toFixed(2);
-                totalCommonTableCharges = totalCommonTableCharges + parseFloat(charge.common);
-              });
-            
-              !!!!hier nog total puschen voor elke table indien gepast
-              dataCharges.push({owner:"Total", property:" ", quota:" ", period:" ", quota_period:totalQuota.toString(), common:totalCommonTableCharges.toString()});
-
+              */
               window.jsPDF = window.jspdf.jsPDF;
               var doc = new jsPDF({ putOnlyUsedFonts: true, orientation: "portrait" });
               doc.setTextColor("green"); doc.setFontSize(32);
