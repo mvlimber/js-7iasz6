@@ -354,7 +354,7 @@
                             <option>Insurance</option>
                             <option>Water</option>
                             <option>Electricity</option>
-                            <option>Gaz</option>
+                            <option>Heating</option>
                             <option>Services</option>
                             <option>Equipment</option>
                             <option>Other</option>
@@ -464,7 +464,7 @@
                             <option>Insurance</option>
                             <option>Water</option>
                             <option>Electricity</option>
-                            <option>Gaz</option>
+                            <option>Heating</option>
                             <option>Services</option>
                             <option>Equipment</option>
                             <option>Other</option>
@@ -2951,15 +2951,16 @@
         var dataWater = [];
         var dataHeating = [];
         var headerConsumption = [
-          {id:"owner",name:"owner",prompt:"owner",width: 30,align: "center",padding: 0},
-          {id:"property",name:"property",prompt:"property",width: 30,align: "center",padding: 0},
-          {id:"meter",name:"meter",prompt:"type",width: 40,align: "center",padding: 0},
+          {id:"owner",name:"owner",prompt:"owner",width: 80,align: "center",padding: 0},
+          {id:"property",name:"property",prompt:"property",width: 80,align: "center",padding: 0},
+          /*
+          {id:"meter",name:"meter",prompt:"meter",width: 40,align: "center",padding: 0},
           {id:"type",name:"type",prompt:"type",width: 40,align: "center",padding: 0},
-          {id:"last_reading",name:"last_reading",prompt:"last_reading",width: 40,align: "right",padding: 0},
-          {id:"reading",name:"reading",prompt:"reading",width: 40,align: "right",padding: 0},
+          {id:"last_reading",name:"last_reading",prompt:"last_reading",width: 40,align: "center",padding: 0},
+          {id:"reading",name:"reading",prompt:"reading",width: 40,align: "center",padding: 0},
           {id:"difference",name:"difference",prompt:"difference",width: 40,align: "right",padding: 0},
           {id:"water",name:"water",prompt:"water",width: 35,align: "right",padding: 0},
-          {id:"heating",name:"heating",prompt:"heating",width: 35,align: "right",padding: 0}
+          {id:"heating",name:"heating",prompt:"heating",width: 35,align: "right",padding: 0}*/
         ];
         var dataConsumption = [];
         var headerQuota =[
@@ -3008,27 +3009,28 @@
             });
             
             refCoproperty.collection("Properties").orderBy("owner").get().then(function(propertiesFS){
-              /*propertiesFS.forEach(function(prFS){
-                
+              propertiesFS.forEach(function(prFS){
                 var prData = prFS.data();
-                var ownerId = prData.owner;
-                var ownerName = idMemberMap[ownerId];
-                dataQuota.push({ownerId:ownerId, owner:OwnerName, property:prData.code, quota:prData.quota, period:"100%", quota_period: prData.quota, amount:" "}); 
+                var ownerIdV = prData.owner;
+                var ownerName = idMemberMap[ownerIdV];
+                dataQuota.push({ownerId:ownerIdV, owner:ownerName, property:prData.code, quota:prData.quota, period:"100%", quota_period: prData.quota, amount:" "}); 
                 totalQuota = totalQuota + parseInt(prData.quota); 
                 refCoproperty.collection("Properties").doc(prFS.id).collection("Meters").get().then(function(metersFS){
                   metersFS.forEach(function(meterFS){
                     var meterData = meterFS.data();
-                    var difference = parseFloat(meterData.reading) - parseFloat(meterData.lastReading);
+                    var differenceV = parseFloat(meterData.reading) - parseFloat(meterData.lastReading);
                     if (meterData.type == "Heating") {
-                      totalHeatingDifference = totalHeatingDifference + difference;
+                      totalHeatingDifference = totalHeatingDifference + differenceV;
                     } else if (meterData.type == "Hot Water"){
-                      totalHotWaterDifference = totalHotWaterDifference + difference;
+                      totalHotWaterDifference = totalHotWaterDifference + differenceV;
                     };
-                    dataConsumption.push({ownerId:ownerId, owner:OwnerName, property:prData.code, meter:meterData.meter,type:meterData.type, last_reading:meterData.lastReading, reading:meterData.reading, difference:difference.toString(), water: " ", heating:" "});
+                    console.log("consumtion for meter " + ownerName + " "+ prData.code+ " " + differenceV.toString());
+                    dataConsumption.push({owner:ownerName,property:prData.code});
+                    /*dataConsumption.push({owner:ownerName, property:prData.code, meter:meterData.meter, type:meterData.type, last_reading:meterData.lastReading, reading:meterData.reading, difference:differenceV.toString(), water: " ", heating:" "});*/
                   });
                 });
               });
-              */
+              
               window.jsPDF = window.jspdf.jsPDF;
               var doc = new jsPDF({ putOnlyUsedFonts: true, orientation: "portrait" });
               doc.setTextColor("green"); doc.setFontSize(32);
@@ -3038,20 +3040,20 @@
               doc.setFontSize(16);
               doc.text("Condomynium:", 20, 55);
               doc.setFont("normal");
-              doc.text("Name:", 30, 65);doc.text("Azur", 80, 65);
-              doc.text("Address:", 30, 75);doc.text("Avenue de l'Héliport 1, B-1000 Brussels", 80, 75);
-              doc.text("Administrator:", 30, 85);doc.text("Marc Van Limberghen", 80, 85);
+              doc.text("Name:", 30, 65);doc.text("Azur", 90, 65);
+              doc.text("Address:", 30, 75);doc.text("Avenue de l'Héliport 1, B-1000 Brussels", 90, 75);
+              doc.text("Administrator:", 30, 85);doc.text("Marc Van Limberghen", 90, 85);
               
-              doc.text("Period:", 20, 105);doc.setFont("normal");doc.text("01/04/2021 - 30/06/2021", 80, 105);
+              doc.text("Period:", 20, 105);doc.setFont("normal");doc.text("01/04/2021 - 30/06/2021", 90, 105);
               
               doc.text("List of tables:", 20, 135);doc.setFont("normal");
-              doc.text("Water:", 30, 145);doc.text("total expenses for building", 80, 145);
-              doc.text("Heating:", 30, 155);doc.text("total expenses for building", 80, 155);
-              doc.text("Water and Heating:", 30, 165);doc.text("expenses per owner", 80, 165);
-              doc.text("Common charges:", 30, 175);doc.text("total expenses for building", 80, 175);
-              doc.text("Quota common charges:", 30, 185);doc.text("quota per owner", 80, 185);
-              doc.text("Private expenses:", 30, 195);doc.text("expenses per owner", 80, 195);
-              doc.text("Total Charges:", 30, 215);doc.text("expenses per owner", 80, 215);
+              doc.text("Water:", 30, 145);doc.text("total expenses for building", 90, 145);
+              doc.text("Heating:", 30, 155);doc.text("total expenses for building", 90, 155);
+              doc.text("Water and Heating:", 30, 165);doc.text("expenses per owner", 90, 165);
+              doc.text("Common charges:", 30, 175);doc.text("total expenses for building", 90, 175);
+              doc.text("Quota common charges:", 30, 185);doc.text("quota per owner", 90, 185);
+              doc.text("Private expenses:", 30, 195);doc.text("expenses per owner", 90, 195);
+              doc.text("Total Charges:", 30, 215);doc.text("expenses per owner", 90, 215);
               doc.line(20, 280, 200, 280);
               doc.setFontSize(12);
               doc.text("Periodic Report Azur 01/04/2021 - 30/09/2021",20, 285);
@@ -3069,8 +3071,11 @@
               doc.text("Periodic Report Azur 01/04/2021 - 30/09/2021",20, 285);
               doc.text("Page 2", 175, 285);
               doc.setFontSize(16);
-              doc.addPage("a4", "landscape");
+              doc.addPage();
               doc.text("Water and Heating: expenses per owner", 20, 20);
+              doc.setFontSize(12);
+              doc.table(20, 30, dataConsumption, headerConsumption);
+              /*
               doc.line(20, 280, 200, 280);doc.setFontSize(12);
               doc.text("Periodic Report Azur 01/04/2021 - 30/09/2021                                             Page 3", 20, 285);
               doc.setFontSize(16);
@@ -3079,7 +3084,7 @@
               doc.table(20, 30, dataCharges, headerCharges);
               doc.line(20, 280, 300, 280);doc.setFontSize(12);
               doc.text("Periodic Report Azur 01/04/2021 - 30/09/2021                                                          Page 4", 20, 285);
-              
+              */
               doc.save();
               /*
               var fileRef = refCopropertyFiles.child("Periodic").child("Q2021_TR1");  
