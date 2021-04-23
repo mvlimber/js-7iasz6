@@ -2942,7 +2942,7 @@
         var hotWater = false;
         var heating = false;
         var headerCommon = [
-          {id:"type",name:"type",prompt:"type",width: 40,align: "center",padding: 0},
+          {id:"type",name:"type",prompt:"type",width: 50,align: "center",padding: 0},
           {id:"name",name:"name",prompt:"name",width: 50,align: "center",padding: 0},
           {id:"communication",name:"communication",prompt:"communication",width: 110,align: "center",padding: 0},
           {id:"amount",name:"amount",prompt:"amount",width: 35,align: "right",padding: 0}
@@ -2963,12 +2963,12 @@
         ];
         var dataConsumption = [];
         var headerQuota =[
-          {id:"owner",name:"owner",prompt:"owner",width: 50,align: "center",padding: 0},
+          {id:"owner",name:"owner",prompt:"owner",width: 70,align: "center",padding: 0},
           {id:"property",name:"property",prompt:"property",width: 30,align: "center",padding: 0},
           {id:"quota",name:"quota",prompt:"quota",width: 25,align: "center",padding: 0},
-          {id:"period",name:"period",prompt:"period",width: 30,align: "right",padding: 0},
-          {id:"quota_period",name:"quota_period",prompt:"quota period",width: 30,align: "right",padding: 0},
-          {id:"amount",name:"amount",prompt:"amount",width: 30,align: "right",padding: 0}
+          {id:"period",name:"period",prompt:"period",width: 30,align: "center",padding: 0},
+          {id:"quota_period",name:"quota_period",prompt:"quota period",width: 30,align: "center",padding: 0},
+          {id:"amount",name:"amount",prompt:"amount",width: 40,align: "right",padding: 0}
         ];
         var dataQuota = [];
         var headerCharges = [
@@ -3024,7 +3024,7 @@
                     dataConsumption.push({ownerId:ownerIdV, owner:ownerName, property:prData.code, meter:meterData.meter, type:meterData.type, last_reading:meterData.lastReading, reading:meterData.reading, difference:differenceV.toString(), water: " ", heating:" "});
                   });
                   
-                  writePDF(headerCommon, dataWater, dataHeating, dataCommon, headerConsumption, dataConsumption, headerQuota, makeSubtotals(dataQuota,totalQuota) );
+                  writePDF(headerCommon, dataWater, dataHeating, dataCommon, headerConsumption, dataConsumption, headerQuota, makeSubtotals(dataQuota,totalQuota, buildingCommon) );
                 });
               });
              }).catch(function(error) {
@@ -3035,13 +3035,37 @@
             M.toast({html:"Error during expenses upload:" + error});
         });
 
-        functions makeSubtotals (dataQuota,totalQuota) {
-          var result;
+        function makeSubtotals (dataQuota,totalQuota, buildingCommon) {
+          var result = [];
           var currentOwnerId = "";
-          var 
+          var count =0;
+          subtotalAmount = 0;
           dataQuota.forEach(function(arrayEl) {
-            if (arrayEl.ownerId == currentOwnerId)
-          })
+            var amount;
+            if ((!currentOwnerId) || (arrayEl.ownerId == currentOwnerId)) {
+              count = count + 1;
+              var amountString = (buildingCommon * parseInt(arrayEl.quota) / totalQuota).toFixed(2);
+              arrayEl.amount = amountString;
+              result.push(arrayEl);
+              amount = Number(amountString);
+              subtotalAmount = subtotalAmount + amount;
+            } else {
+              if (count > 1) {
+                result.push({ownerId:currentOwnerId, owner:"Total", property:"", quota:"", period:"", quota_period: "", amount:subtotalAmount.toFixed(2)});
+              };
+              result.push({ownerId:" ", owner:"", property:"", quota:"", period:"", quota_period: "", amount:""});
+              count = 0;
+              subtotalAmount = 0;
+              var amountString = (buildingCommon * parseInt(arrayEl.quota) / totalQuota).toFixed(2);
+              arrayEl.amount = amountString;
+              result.push(arrayEl);
+              amount = Number(amountString);
+              subtotalAmount = subtotalAmount + amount;
+            };
+            currentOwnerId = arrayEl.ownerId;
+            totalCommon = totalCommon + amount;   
+          });
+          return result;
         };
         
         function writePDF (headerCommon, dataWater, dataHeating, dataCommon, headerConsumption,dataConsumption,  headerQuota, dataQuota){
