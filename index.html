@@ -3023,7 +3023,8 @@
                     };
                     dataConsumption.push({ownerId:ownerIdV, owner:ownerName, property:prData.code, meter:meterData.meter, type:meterData.type, last_reading:meterData.lastReading, reading:meterData.reading, difference:differenceV.toString(), water: " ", heating:" "});
                   });
-                  writePDF(headerCommon, dataWater, dataHeating, dataCommon, headerConsumption, dataConsumption, headerQuota, dataQuota );
+                  
+                  writePDF(headerCommon, dataWater, dataHeating, dataCommon, headerConsumption, dataConsumption, headerQuota, makeSubtotals(dataQuota,totalQuota) );
                 });
               });
              }).catch(function(error) {
@@ -3034,6 +3035,15 @@
             M.toast({html:"Error during expenses upload:" + error});
         });
 
+        functions makeSubtotals (dataQuota,totalQuota) {
+          var result;
+          var currentOwnerId = "";
+          var 
+          dataQuota.forEach(function(arrayEl) {
+            if (arrayEl.ownerId == currentOwnerId)
+          })
+        };
+        
         function writePDF (headerCommon, dataWater, dataHeating, dataCommon, headerConsumption,dataConsumption,  headerQuota, dataQuota){
           window.jsPDF = window.jspdf.jsPDF;
           var doc = new jsPDF({ putOnlyUsedFonts: true, orientation: "portrait" });
