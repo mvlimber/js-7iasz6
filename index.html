@@ -3049,7 +3049,7 @@
               amount = Number(amountString);
               subtotalAmount = subtotalAmount + amount;
               subtotalAmountString = subtotalAmount.toFixed(2);
-              dataCharges[currentOwnerId] = {ownerId:currentOwnerId, owner:arrayEl.owner, common:subtotalAmountString, private:" ", water:" ", heating:" ",Total:subtotalAmountString};
+              dataCharges[arrayEl.ownerId] = {ownerId:arrayEl.ownerId, owner:arrayEl.owner, common:subtotalAmountString, private:" ", water:" ", heating:" ",Total:subtotalAmountString};
           };
           dataQuota.forEach(function(arrayEl) {
             if ((!currentOwnerId) || (arrayEl.ownerId == currentOwnerId)) {
@@ -3090,7 +3090,7 @@
             amount = Number(amountString);
             subtotalAmount = subtotalAmount + amount;
             subtotalAmountString = subtotalAmount.toFixed(2);
-            dataCharges[currentOwnerId] = {ownerId:currentOwnerId, owner:arrayEl.owner, common:subtotalAmountString, private:" ", water:" ", heating:" ",Total:subtotalAmountString};
+            dataCharges[arrayEl.ownerId] = {ownerId:arrayEl.ownerId, owner:arrayEl.owner, common:subtotalAmountString, private:" ", water:" ", heating:" ",Total:subtotalAmountString};
           };
           dataQuota.forEach(function(arrayEl) {
             var amount;
