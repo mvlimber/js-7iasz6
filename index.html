@@ -2928,8 +2928,6 @@
         var buildingWaterDifference = 150;  
         var buildingWater = 0
         var buildingHeating = 0;
-          var buildingPureHeating = 0;
-          var buildingHotWater = 0;
         var buildingCommon = 0;
         
         var totalHeatingDifference = 0; 
@@ -3033,8 +3031,6 @@
             M.toast({html:"Error during expenses upload:" + error});
         });
         
-          
-
         function makeSubtotals (dataQuota,totalQuota, buildingCommon, dataCharges) {
           var result = [];
           var totalCommon = 0;
@@ -3091,8 +3087,7 @@
           var count =0;
           var subtotalAmountWater = 0;
           var subtotalAmountHeating = 0;
-          var subtotalAmountWaterString;
-          var subtotalAmountHeatingString;
+
           function writeData(arrayEl){
             var amountWaterString=" ";
             var amountHeatingString=" ";
@@ -3110,22 +3105,21 @@
             amountWater = Number(amountWaterString);
             amountHeating = Number(amountHeatingString);  
             subtotalAmountWater = subtotalAmountWater + amountWater;
-            subtotalAmountWaterString = subtotalAmountWater.toFixed(2);
-            subtotalAmountHeating = subtotalAmountHeating + amountWater;
-            subtotalAmountHeatingString = subtotalAmountHeating.toFixed(2);
+            subtotalAmountHeating = subtotalAmountHeating + amountHeating;
             var dataChargesEl = dataCharges[arrayEl.ownerId];
             dataChargesEl.water = amountWaterString;
             dataChargesEl.heating = amountHeatingString;
           };
+
           dataConsumption.forEach(function(arrayEl) {
             if ((!currentOwnerId) || (arrayEl.ownerId == currentOwnerId)) {
               count = count + 1;
               writeData(arrayEl);
             } else {
               if (count > 1) {
-                result.push({ownerId:currentOwnerId, owner:"Total", property:"", meter:"", type:"", last_reading: "", reading: "", difference: "",water:subtotalAmountWaterString, heating:subtotalAmountHeatingString});
+                result.push({ownerId:currentOwnerId, owner:"Total", property:"", meter:"", type:"", last_reading:"", reading:"", difference:"", water:subtotalAmountWater.toFixed(2), heating:subtotalAmountHeating.toFixed(2)});
               };
-              result.push({ownerId:" ", owner:"", property:"", meter:"", type:"", last_reading: "", reading: "", difference: "",water:"", heating:""});
+              result.push({ownerId:" ", owner:"", property:"", meter:"", type:"", last_reading:"", reading:"", difference:"",water:"", heating:""});
               count = 0;
               subtotalAmountWater = 0;
               subtotalAmountHeating = 0;
