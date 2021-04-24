@@ -3067,7 +3067,8 @@
             currentOwnerId = arrayEl.ownerId;
             totalCommon = totalCommon + amount;   
           });
-          /* nog total common wegschrijven */
+          result.push({ownerId:" ", owner:"", property:"", quota:"", period:"", quota_period: "", amount:""});
+          result.push({ownerId:" ", owner:"Total", property:" ", quota:totalQuota.toString(), period:" ", quota_period: " ", amount:totalCommon.toFixed(2)});
           return result;
         };
 
