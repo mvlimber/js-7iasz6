@@ -2972,8 +2972,8 @@
         ];
         var dataQuota = [];
         var headerCharges = [
-          {id:"owner",name:"owner",prompt:"owner",width: 50,align: "center",padding: 0},
-          {id:"common",name:"common",prompt:"common charged",width: 33,align: "right",padding: 0},
+          {id:"owner",name:"owner",prompt:"owner",width: 70,align: "center",padding: 0},
+          {id:"common",name:"common",prompt:"common charges",width: 33,align: "right",padding: 0},
           {id:"private",name:"private",prompt:"private charges",width: 35,align: "right",padding: 0},
           {id:"water",name:"water",prompt:"water",width: 35,align: "right",padding: 0},
           {id:"heating",name:"heating",prompt:"heating",width: 35,align: "right",padding: 0},
@@ -3024,7 +3024,7 @@
                     dataConsumption.push({ownerId:ownerIdV, owner:ownerName, property:prData.code, meter:meterData.meter, type:meterData.type, last_reading:meterData.lastReading, reading:meterData.reading, difference:differenceV.toString(), water: " ", heating:" "});
                   });
                   var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon);
-                  writePDF(headerCommon, dataWater, dataHeating, dataCommon, headerConsumption, dataConsumption, headerQuota, totalledQuotaData, headerCharges, dataCharges);
+                  writePDF(headerCommon, dataWater, dataHeating, dataCommon, headerConsumption, dataConsumption, headerQuota, totalledQuotaData, headerCharges, Object.values(dataCharges));
                 });
               });
              }).catch(function(error) {
@@ -3050,8 +3050,8 @@
               amount = Number(amountString);
               subtotalAmount = subtotalAmount + amount;
               subtotalAmountString = subtotalAmount.toFixed(2);
-              dataCharges.push( {ownerId:currentOwnerId, owner:arrayEl.owner, common:subtotalAmountString, private:" ", water:" ", heating:" ",Total:subtotalAmountString});
-              /*dataCharges[currentOwnerId] = {ownerId:currentOwnerId, owner:arrayEl.owner, common:subtotalAmountString, private:" ", water:" ", heating:" ",Total:subtotalAmountString};*/
+              /*dataCharges.push( {ownerId:currentOwnerId, owner:arrayEl.owner, common:subtotalAmountString, private:" ", water:" ", heating:" ",Total:subtotalAmountString});*/
+              dataCharges[currentOwnerId] = {ownerId:currentOwnerId, owner:arrayEl.owner, common:subtotalAmountString, private:" ", water:" ", heating:" ",Total:subtotalAmountString};
           };
           dataQuota.forEach(function(arrayEl) {
             var amount;
