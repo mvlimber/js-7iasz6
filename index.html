@@ -2923,7 +2923,7 @@
         document.getElementById("logo-container").innerHTML = "MyCondos: Settings";
         
       };
-      var dataCharges = [];
+      
       function downloadQuarter(){
         var buildingWaterDifference = 150;  
         var buildingWater = 0
@@ -2932,11 +2932,8 @@
           var buildingHotWater = 0;
         var buildingCommon = 0;
         
-        var totalWater = 0;
         var totalHeatingDifference = 0; 
         var totalHotWaterDifference = 0; 
-        var totalHeating = 0;
-        var totalCommon = 0;
         var totalQuota = 0;
         var coldWater = false;
         var hotWater = false;
@@ -2979,7 +2976,7 @@
           {id:"heating",name:"heating",prompt:"heating",width: 35,align: "right",padding: 0},
           {id:"Total",name:"Total",prompt:"Total",width: 30,align: "right",padding: 0}
         ];
-        /*var dataCharges = [];*/
+        var dataCharges = [];
         
         refCoproperty.collection("Transactions").orderBy("type").get().then(function(transactionsFS){
           transactionsFS.forEach(function(transactionFS){
@@ -3023,7 +3020,7 @@
                     };
                     dataConsumption.push({ownerId:ownerIdV, owner:ownerName, property:prData.code, meter:meterData.meter, type:meterData.type, last_reading:meterData.lastReading, reading:meterData.reading, difference:differenceV.toString(), water: " ", heating:" "});
                   });
-                  var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon);
+                  var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon, dataCharges);
                   writePDF(headerCommon, dataWater, dataHeating, dataCommon, headerConsumption, dataConsumption, headerQuota, totalledQuotaData, headerCharges, Object.values(dataCharges));
                 });
               });
@@ -3037,12 +3034,14 @@
         
           
 
-        function makeSubtotals (dataQuota,totalQuota, buildingCommon) {
+        function makeSubtotals (dataQuota,totalQuota, buildingCommon, dataCharges) {
           var result = [];
+          var totalCommon = 0;
           var currentOwnerId = "";
           var count =0;
           var subtotalAmount = 0;
           var subtotalAmountString;
+          var amount = 0;;
           function writeData(arrayEl){
             var amountString = (buildingCommon * parseInt(arrayEl.quota) / totalQuota).toFixed(2);
               arrayEl.amount = amountString;
@@ -3050,11 +3049,9 @@
               amount = Number(amountString);
               subtotalAmount = subtotalAmount + amount;
               subtotalAmountString = subtotalAmount.toFixed(2);
-              /*dataCharges.push( {ownerId:currentOwnerId, owner:arrayEl.owner, common:subtotalAmountString, private:" ", water:" ", heating:" ",Total:subtotalAmountString});*/
               dataCharges[currentOwnerId] = {ownerId:currentOwnerId, owner:arrayEl.owner, common:subtotalAmountString, private:" ", water:" ", heating:" ",Total:subtotalAmountString};
           };
           dataQuota.forEach(function(arrayEl) {
-            var amount;
             if ((!currentOwnerId) || (arrayEl.ownerId == currentOwnerId)) {
               count = count + 1;
               writeData(arrayEl);
@@ -3070,6 +3067,50 @@
             currentOwnerId = arrayEl.ownerId;
             totalCommon = totalCommon + amount;   
           });
+          /* nog total common wegschrijven */
+          return result;
+        };
+
+        function makeSubtotalsConsumption (dataConsumption,buildingWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataCharges) {
+          var result = [];
+          var totalWater = 0;
+          var totalHeating = 0;
+          var amountWater = 0;
+          var amountHeating = 0;
+          var currentOwnerId = "";
+          var count =0;
+          var subtotalAmountWater = 0;
+          var subtotalAmountHeating = 0;
+          var subtotalAmountWaterString;
+          var subtotalAmountHeatingString;
+          function writeData(arrayEl){
+            var amountString = (buildingCommon * parseInt(arrayEl.quota) / totalQuota).toFixed(2);
+            arrayEl.amount = amountString;
+            result.push(arrayEl);
+            amount = Number(amountString);
+            subtotalAmount = subtotalAmount + amount;
+            subtotalAmountString = subtotalAmount.toFixed(2);
+            dataCharges[currentOwnerId] = {ownerId:currentOwnerId, owner:arrayEl.owner, common:subtotalAmountString, private:" ", water:" ", heating:" ",Total:subtotalAmountString};
+          };
+          dataQuota.forEach(function(arrayEl) {
+            var amount;
+            if ((!currentOwnerId) || (arrayEl.ownerId == currentOwnerId)) {
+              count = count + 1;
+              writeData(arrayEl);
+            } else {
+              if (count > 1) {
+                result.push({ownerId:currentOwnerId, owner:"Total", property:"", meter:"", type:"", last_reading: "", reading: "", difference: "",water:subtotalAmountWaterString, heating:subtotalAmountHeatingString});
+              };
+              result.push({ownerId:" ", owner:"", property:"", meter:"", type:"", last_reading: "", reading: "", difference: "",water:"", heating:""});
+              count = 0;
+              subtotalAmount = 0;
+              writeData(arrayEl);
+            };
+            currentOwnerId = arrayEl.ownerId;
+            totalWater = totalWater + amountWater;  
+            totalWater = totalHeating + amountHeating;  
+          });
+          /* nog total common wegschrijven */
           return result;
         };
         
