@@ -2923,7 +2923,7 @@
         document.getElementById("logo-container").innerHTML = "MyCondos: Settings";
         
       };
-
+      var dataCharges = [];
       function downloadQuarter(){
         var buildingWaterDifference = 150;  
         var buildingWater = 0
@@ -2973,13 +2973,13 @@
         var dataQuota = [];
         var headerCharges = [
           {id:"owner",name:"owner",prompt:"owner",width: 50,align: "center",padding: 0},
-          {id:"common",name:"common",prompt:"common",width: 33,align: "right",padding: 0},
-          {id:"private",name:"private_charges",prompt:"private",width: 35,align: "right",padding: 0},
+          {id:"common",name:"common",prompt:"common charged",width: 33,align: "right",padding: 0},
+          {id:"private",name:"private",prompt:"private charges",width: 35,align: "right",padding: 0},
           {id:"water",name:"water",prompt:"water",width: 35,align: "right",padding: 0},
           {id:"heating",name:"heating",prompt:"heating",width: 35,align: "right",padding: 0},
           {id:"Total",name:"Total",prompt:"Total",width: 30,align: "right",padding: 0}
         ];
-        var dataCharges = [];
+        /*var dataCharges = [];*/
         
         refCoproperty.collection("Transactions").orderBy("type").get().then(function(transactionsFS){
           transactionsFS.forEach(function(transactionFS){
@@ -3023,8 +3023,8 @@
                     };
                     dataConsumption.push({ownerId:ownerIdV, owner:ownerName, property:prData.code, meter:meterData.meter, type:meterData.type, last_reading:meterData.lastReading, reading:meterData.reading, difference:differenceV.toString(), water: " ", heating:" "});
                   });
-                  var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon, dataCharges);
-                  writePDF(headerCommon, dataWater, dataHeating, dataCommon, headerConsumption, dataConsumption, headerQuota, totalledQuotaData, Object.values(dataCharges));
+                  var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon);
+                  writePDF(headerCommon, dataWater, dataHeating, dataCommon, headerConsumption, dataConsumption, headerQuota, totalledQuotaData, headerCharges, dataCharges);
                 });
               });
              }).catch(function(error) {
@@ -3037,7 +3037,7 @@
         
           
 
-        function makeSubtotals (dataQuota,totalQuota, buildingCommon, dataCharges) {
+        function makeSubtotals (dataQuota,totalQuota, buildingCommon) {
           var result = [];
           var currentOwnerId = "";
           var count =0;
@@ -3050,7 +3050,8 @@
               amount = Number(amountString);
               subtotalAmount = subtotalAmount + amount;
               subtotalAmountString = subtotalAmount.toFixed(2);
-              dataCharges[currentOwnerId] = {ownerId:currentOwnerId, owner:arrayEl.owner, common:subtotalAmountString, private:" ", water:" ", heating:" ",Total:subtotalAmountString};
+              dataCharges.push( {ownerId:currentOwnerId, owner:arrayEl.owner, common:subtotalAmountString, private:" ", water:" ", heating:" ",Total:subtotalAmountString});
+              /*dataCharges[currentOwnerId] = {ownerId:currentOwnerId, owner:arrayEl.owner, common:subtotalAmountString, private:" ", water:" ", heating:" ",Total:subtotalAmountString};*/
           };
           dataQuota.forEach(function(arrayEl) {
             var amount;
@@ -3072,7 +3073,8 @@
           return result;
         };
         
-        function writePDF (headerCommon, dataWater, dataHeating, dataCommon, headerConsumption,dataConsumption,  headerQuota, dataQuota){
+
+        function writePDF (headerCommon, dataWater, dataHeating, dataCommon, headerConsumption,dataConsumption,  headerQuota, dataQuota, headerCharges, tableCharges){
           window.jsPDF = window.jspdf.jsPDF;
           var doc = new jsPDF({ putOnlyUsedFonts: true, orientation: "portrait" });
           doc.setTextColor("green"); doc.setFontSize(32);
@@ -3136,6 +3138,15 @@
           doc.line(20, 280, 200, 280);
           doc.text("Periodic Report Azur 01/04/2021 - 30/09/2021",20, 285);
           doc.text("Page 5", 185, 285);
+          doc.setFontSize(16);
+          doc.addPage("a4", "landscape");
+          doc.text("Total charges: expenses per owner", 15, 20);
+          doc.setFontSize(12);
+          doc.table(20, 30, tableCharges, headerCharges);
+          doc.line(20, 180, 285, 180);
+          doc.text("Periodic Report Azur 01/04/2021 - 30/09/2021",20, 185);
+          doc.text("Page 6", 265, 185);
+          
           /*
           doc.line(20, 280, 200, 280);doc.setFontSize(12);
           doc.text("Periodic Report Azur 01/04/2021 - 30/09/2021                                             Page 3", 20, 285);
