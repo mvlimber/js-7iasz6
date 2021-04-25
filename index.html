@@ -2932,6 +2932,7 @@
         
         var totalHeatingDifference = 0; 
         var totalHotWaterDifference = 0; 
+        var waterCommonParts = 0;
         var totalQuota = 0;
         var coldWater = false;
         var hotWater = false;
@@ -2993,7 +2994,7 @@
           });
           dataWater.push({type:"Total",name:" ",communication:" ",amount:buildingWater.toString()});
           dataHeating.push({type:"Total",name:" ",communication:" ",amount:buildingHeating.toString()});
-          dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toFixed(2)});
+          
           
           refCoproperty.collection("Members").get().then(function(membersFS) { 
             var idMemberMap = [];
@@ -3001,6 +3002,7 @@
               idMemberMap[memberFS.id] = memberFS.data().lastName + " " + memberFS.data().firstName;
             });
             refCoproperty.collection("Properties").orderBy("owner").get().then(function(propertiesFS){
+              var iteratorCount = 0;
               propertiesFS.forEach(function(prFS){
                 var prData = prFS.data();
                 var ownerIdV = prData.owner;
@@ -3018,9 +3020,15 @@
                     };
                     dataConsumption.push({ownerId:ownerIdV, owner:ownerName, property:prData.code, meter:meterData.meter, type:meterData.type, last_reading:meterData.lastReading, reading:meterData.reading, difference:differenceV.toString(), water: " ", heating:" "});
                   });
-                  var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon, dataCharges);
-                  var totalledConsumptionData = makeSubtotalsConsumption (dataConsumption,buildingWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataCharges);
-                  writePDF(headerCommon, dataWater, dataHeating, dataCommon, headerConsumption, totalledConsumptionData, headerQuota, totalledQuotaData, headerCharges, Object.values(dataCharges));
+                  iteratorCount = iteratorCount + 1;
+                  if (iteratorCount == propertiesFS.docs.length) {
+                    var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon, dataCharges);
+                    var totalledConsumptionData = makeSubtotalsConsumption (dataConsumption,buildingWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataCharges);
+                    dataCommon.push({type:"Water",name:" ",communication:"Water for common parts",amount:waterCommonParts.toFixed(2)});
+                    buildingCommon = buildingCommon + waterCommonParts;
+                    dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toFixed(2)});
+                    writePDF(headerCommon, dataWater, dataHeating, dataCommon, headerConsumption, totalledConsumptionData, headerQuota, totalledQuotaData, headerCharges, Object.values(dataCharges));
+                  };
                 });
               });
              }).catch(function(error) {
@@ -3141,7 +3149,7 @@
               };
           result.push({ownerId:" ", owner:"", property:"", meter:"", type:"", last_reading:"", reading:"", difference:"",water:"", heating:""});
           result.push({ownerId:" ", owner:"Total building", property:"", meter:"", type:"", last_reading:"", reading:"", difference:"", water:totalWater.toFixed(2), heating:totalHeating.toFixed(2)});
-          
+          waterCommonParts = buildingWater - totalWater;
           return result;
         };
         
