@@ -3176,7 +3176,6 @@
           return result;
         };
         
-
         function writePDF (headerCommon, dataWater, dataHeating, dataCommon, headerConsumption,dataConsumption,  headerQuota, dataQuota, headerCharges, tableCharges){
           const rowsLandscape =15;
           const rowsPortrait =24;
@@ -3199,6 +3198,11 @@
             doc.text(footerText,32, 195);
             doc.text("Page " + currentPage + "/" + numPages, 265, 195);
             currentPage = currentPage + 1;
+          };
+          function printTablePortrait(title, table) {
+            for (i = 0; i < Math.ceil(table.length/rowsPortrait); i++) {
+
+            };
           };
           var doc = new jsPDF({ putOnlyUsedFonts: true, orientation: "portrait" });
           doc.setTextColor("green"); doc.setFontSize(32);
