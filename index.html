@@ -3052,10 +3052,10 @@
                   });
                   iteratorCount = iteratorCount + 1;
                   if (iteratorCount == propertiesFS.docs.length) {
-                    var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon, dataCharges);
                     var totalledConsumptionData = makeSubtotalsConsumption (dataConsumption,buildingWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataCharges);
                     dataCommon.push({type:"Water",name:" ",communication:"Water for common parts",amount:waterCommonParts.toFixed(2)});
                     buildingCommon = buildingCommon + waterCommonParts;
+                    var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon, dataCharges);
                     dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toFixed(2)});
                     writePDF(headerCommon, dataWater, dataHeating, dataCommon, headerConsumption, totalledConsumptionData, headerQuota, totalledQuotaData, headerCharges, Object.values(dataCharges));
                   };
@@ -3084,7 +3084,9 @@
             amount = Number(amountString);
             subtotalAmount = subtotalAmount + amount;
             subtotalAmountString = subtotalAmount.toFixed(2);
-            dataCharges[arrayEl.ownerId] = {ownerId:arrayEl.ownerId, owner:arrayEl.owner, common:subtotalAmountString, private:" ", water:" ", heating:" ",Total:subtotalAmountString};
+            var dataChargesEl = dataCharges[arrayEl.ownerId];
+            dataChargesEl.common = subtotalAmountString;
+            dataChargesEl.Total = (subtotalAmount + Number(dataChargesEl.water) + Number(dataChargesEl.heating)).toFixed(2);
           };
           dataQuota.forEach(function(arrayEl) {
             if ((!currentOwnerId) || (arrayEl.ownerId == currentOwnerId)) {
@@ -3151,9 +3153,7 @@
             subtotalAmountHeating = subtotalAmountHeating + amountHeating;
             subtotalAmountWaterString = subtotalAmountWater.toFixed(2);
             subtotalAmountHeatingString = subtotalAmountHeating.toFixed(2);
-            var dataChargesEl = dataCharges[arrayEl.ownerId];
-            dataChargesEl.water = subtotalAmountWaterString;
-            dataChargesEl.heating = subtotalAmountHeatingString;
+            dataCharges[arrayEl.ownerId] = {ownerId:arrayEl.ownerId, owner:arrayEl.owner, common:" ", private:" ", water:subtotalAmountWaterString, heating:subtotalAmountWaterString,Total:" "};
           };
 
           dataConsumption.forEach(function(arrayEl) {
