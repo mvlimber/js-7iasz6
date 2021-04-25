@@ -3186,7 +3186,7 @@
           const rowsPortrait =24;
           const numPages = 1 + Math.ceil(dataWater.length/rowsPortrait) + Math.ceil(dataHeating.length/rowsPortrait) + Math.ceil(dataConsumption.length/rowsLandscape) + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsPortrait) + Math.ceil(tableCharges.length/rowsLandscape);
           window.jsPDF = window.jspdf.jsPDF;
-          const footerText = "Charges Report Azur 01/01/2020 - 31/12/2020";
+          const footerText = "Charges Report Azur 01/01/2021 - 31/12/2021";
           var currentPage = 1;
           function printFooterPortrait () {
             doc.line(15, 280, 200, 280);
@@ -3236,7 +3236,7 @@
           doc.setFontSize(16);
           doc.text("Period:", 15, 105);
           doc.setFontSize(14);
-          doc.text("01/01/2020 - 31/12/2020", 90, 105);
+          doc.text("01/01/2021 - 31/12/2021", 90, 105);
           doc.setFontSize(16);
           doc.text("List of tables:", 15, 135);doc.setFont("normal");
           doc.setFontSize(14);
