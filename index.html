@@ -2952,7 +2952,7 @@
           {id:"meter",name:"meter",prompt:"meter",width: 40,align: "center",padding: 0},
           {id:"type",name:"type",prompt:"type",width: 40,align: "center",padding: 0},
           {id:"last_reading",name:"last_reading",prompt:"last reading",width: 35,align: "center",padding: 0},
-          {id:"reading",name:"reading",prompt:"reading",width: 35,align: "center",padding: 0},
+          {id:"reading",name:"reading",prompt:"new reading",width: 35,align: "center",padding: 0},
           {id:"difference",name:"difference",prompt:"difference",width: 30,align: "right",padding: 0},
           {id:"water",name:"water",prompt:"water",width: 35,align: "right",padding: 0},
           {id:"heating",name:"heating",prompt:"heating",width: 35,align: "right",padding: 0}
@@ -3194,9 +3194,9 @@
           doc.text("Page 1", 185, 285);
           doc.setFontSize(16);
           doc.addPage();
-          doc.text("Water: total for building", 15, 20);
+          doc.text("Water: total for building", 15, 15);
           doc.setFontSize(12);
-          doc.table(15, 30, dataWater, headerCommon,{fontSize:10});
+          doc.table(15, 20, dataWater, headerCommon,{fontSize:10});
           doc.setFontSize(16);
           doc.text("Heating: total for building", 15, 154);
           doc.setFontSize(12);
@@ -3206,30 +3206,30 @@
           doc.text("Page 2", 185, 285);
           doc.setFontSize(16);
           doc.addPage("a4", "landscape");
-          doc.text("Water and Heating: expenses per owner", 15, 20);
+          doc.text("Water and Heating: expenses per owner", 15, 15);
           doc.setFontSize(12);
-          doc.table(15, 30, dataConsumption, headerConsumption, {fontSize:10});
+          doc.table(15, 20, dataConsumption, headerConsumption, {fontSize:10});
           doc.line(15, 180, 285, 180);
           doc.text("Periodic Report Azur 01/04/2021 - 30/09/2021",15, 185);
           doc.text("Page 3", 265, 185);
           doc.setFontSize(16);
           doc.addPage("a4", "portrait");
-          doc.text("Common charges: total for building", 15, 20);
-          doc.table(15, 30, dataCommon, headerCommon,{fontSize:10});
+          doc.text("Common charges: total for building", 15, 15);
+          doc.table(15, 20, dataCommon, headerCommon,{fontSize:10});
           doc.line(15, 280, 200, 280);
           doc.text("Periodic Report Azur 01/04/2021 - 30/09/2021",15, 285);
           doc.text("Page 4", 185, 285);
           doc.setFontSize(16);
           doc.addPage();
-          doc.text("Common charges: quota per owner", 15, 20);
-          doc.table(15, 30, dataQuota, headerQuota,{fontSize:10});
+          doc.text("Common charges: quota per owner", 15, 15);
+          doc.table(15, 20, dataQuota, headerQuota,{fontSize:10});
           doc.line(15, 280, 200, 280);
           doc.text("Periodic Report Azur 01/04/2021 - 30/09/2021",15, 285);
           doc.text("Page 5", 185, 285);
           doc.setFontSize(16);
           doc.addPage("a4", "landscape");
-          doc.text("Total charges: total charges per owner", 15, 20);
-          doc.table(15, 30, tableCharges, headerCharges,{fontSize:10});
+          doc.text("Total charges: total charges per owner", 15, 15);
+          doc.table(15, 20, tableCharges, headerCharges,{fontSize:10});
           doc.line(15, 180, 285, 180);
           doc.text("Periodic Report Azur 01/04/2021 - 30/09/2021",15, 185);
           doc.text("Page 6", 265, 185);
