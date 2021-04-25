@@ -3151,7 +3151,7 @@
             subtotalAmountHeating = subtotalAmountHeating + amountHeating;
             subtotalAmountWaterString = subtotalAmountWater.toFixed(2);
             subtotalAmountHeatingString = subtotalAmountHeating.toFixed(2);
-            dataCharges[arrayEl.ownerId] = {ownerId:arrayEl.ownerId, owner:arrayEl.owner, common:" ", private:" ", water:subtotalAmountWaterString, heating:subtotalAmountWaterString,Total:" "};
+            dataCharges[arrayEl.ownerId] = {ownerId:arrayEl.ownerId, owner:arrayEl.owner, common:" ", private:" ", water:subtotalAmountWaterString, heating:subtotalAmountHeatingString,Total:" "};
           };
 
           dataConsumption.forEach(function(arrayEl) {
