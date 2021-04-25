@@ -2965,9 +2965,9 @@
         var hotWater = false;
         var heating = false;
         var headerCommon = [
-          {id:"type",name:"type",prompt:"type",width: 50,align: "center",padding: 0},
-          {id:"name",name:"name",prompt:"name",width: 50,align: "center",padding: 0},
-          {id:"communication",name:"communication",prompt:"communication",width: 110,align: "center",padding: 0},
+          {id:"type",name:"type",prompt:"type",width: 30,align: "center",padding: 0},
+          {id:"name",name:"name",prompt:"name",width: 60,align: "center",padding: 0},
+          {id:"communication",name:"communication",prompt:"communication",width: 120,align: "center",padding: 0},
           {id:"amount",name:"amount",prompt:"amount",width: 35,align: "right",padding: 0}
         ];
         var dataCommon = [];
@@ -3007,7 +3007,12 @@
         refCoproperty.collection("Transactions").orderBy("type").get().then(function(transactionsFS){
           transactionsFS.forEach(function(transactionFS){
             var trData = transactionFS.data();
-            if (!trData.communication) {trData.communication=" "};
+            if (!trData.communication) {
+              trData.communication=" ";
+            } else {
+              trData.communication=trData.communication.substr(0,57);
+            };
+            trData.name=trData.name.substr(0,25);
             if (trData.type == "Water"){
               dataWater.push(trData);
               buildingWater = buildingWater + parseFloat(trData.amount);
