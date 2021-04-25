@@ -160,8 +160,8 @@
             onclick="loadMembers()">Members</a></li>
         <li class="tab side text-teal"><a class="waves-effect" href="#Properties" style="font-size:22px"
             onclick="loadProperties()">Properties</a></li>
-        <li class="tab side text-teal"><a class="waves-effect" href="#Settings" style="font-size:22px"
-            onclick="loadSettings()">Settings</a></li>
+        <!-- <li class="tab side text-teal"><a class="waves-effect" href="#Settings" style="font-size:22px"
+            onclick="loadSettings()">Settings</a></li>  -->
       </ul>
 
       <script>
@@ -297,20 +297,15 @@
             <tbody>
               <tr>
                 <td>
-                  <button style="border:none;background-color:Transparent" onclick="showThisURL1('https://firebasestorage.googleapis.com/v0/b/slimmeeigendomdb.appspot.com/o/Azur_2020_Q4_MarcVanLimberghen.pdf?alt=media&token=37d2a067-5b93-4a59-85a2-9bf3c4ef4d41')"><font color=" #0000FF">2020_Q4_MVLimberghen</font></button>
+                  <button style="border:none;background-color:Transparent" onclick="showThisURL2()"><font color=" #0000FF">Charges 2020</font></button>
                 </td>
-                <td>Individual Quarterly Report</td>
+                <td>Charges Report</td>
                 <td>Sat Jan 02 2021</td>
-              </tr>
-              <tr>
-                <td>
-                  <button style="border:none;background-color:Transparent" onclick="showThisURL2()"><font color=" #0000FF">2020_Q3_MVLimberghen</font></button>
-                </td>
-                <td>Individual Quarterly Report</td>
-                <td>Sat Oct 03 2020</td>
               </tr>
             </tbody>
           </table>
+          <br>
+          <button style="float: right" class="btn-small waves-light" onclick="downloadQuarter()"><i class="material-icons right">add</i>Download New Charges Report</button>
           <br><br>
           <h6 style="font-size:20px "><b>Reports uploaded by users</b></h6>
           <table class="striped">
@@ -1249,7 +1244,9 @@
       };
 
       function showThisURL2() {
-      window.open("https://firebasestorage.googleapis.com/v0/b/slimmeeigendomdb.appspot.com/o/Azur_2020_Q3_MarcVanLimberghen.pdf?alt=media&token=90074a5b-36b0-49c3-ba80-f24f361ade70", "_blank");
+      window.open
+      ("https://firebasestorage.googleapis.com/v0/b/slimmeeigendomdb.appspot.com/o/Charges_2020.pdf?alt=media&token=f821ecf8-58f6-45bf-85ba-8dd7499aa8df", "_blank");
+      
       };
 
       
