@@ -3026,13 +3026,29 @@
                     dataConsumption.push({ownerId:ownerIdV, owner:ownerName, property:"123", meter:"123", type:"123", last_reading:"123", reading:"123", difference:"123", water: " ", heating:" "});
                     dataConsumption.push({ownerId:ownerIdV, owner:ownerName, property:"123", meter:"123", type:"123", last_reading:"123", reading:"123", difference:"123", water: " ", heating:" "});
                     dataConsumption.push({ownerId:ownerIdV, owner:ownerName, property:"123", meter:"123", type:"123", last_reading:"123", reading:"123", difference:"123", water: " ", heating:" "});
-                    dataConsumption.push({ownerId:ownerIdV, owner:ownerName, property:"123", meter:"123", type:"123", last_reading:"123", reading:"123", difference:"123", water: " ", heating:" "});
-                    dataConsumption.push({ownerId:ownerIdV, owner:ownerName, property:"123", meter:"123", type:"123", last_reading:"123", reading:"123", difference:"123", water: " ", heating:" "});
-                    dataConsumption.push({ownerId:ownerIdV, owner:ownerName, property:"123", meter:"123", type:"123", last_reading:"123", reading:"123", difference:"123", water: " ", heating:" "});
                     var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon, dataCharges);
                     var totalledConsumptionData = makeSubtotalsConsumption (dataConsumption,buildingWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataCharges);
                     dataCommon.push({type:"Water",name:" ",communication:"Water for common parts",amount:waterCommonParts.toFixed(2)});
                     buildingCommon = buildingCommon + waterCommonParts;
+                    dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toFixed(2)});
+                    dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toFixed(2)});
+                    dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toFixed(2)});
+                    dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toFixed(2)});
+                    dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toFixed(2)});
+                    dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toFixed(2)});
+                    dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toFixed(2)});
+                    dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toFixed(2)});
+                    dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toFixed(2)});
+                    dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toFixed(2)});
+                    dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toFixed(2)});
+                    dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toFixed(2)});
+                    dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toFixed(2)});
+                    dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toFixed(2)});
+                    dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toFixed(2)});
+                    dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toFixed(2)});
+                    dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toFixed(2)});
+                    dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toFixed(2)});
+                    dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toFixed(2)});
                     dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toFixed(2)});
                     writePDF(headerCommon, dataWater, dataHeating, dataCommon, headerConsumption, totalledConsumptionData, headerQuota, totalledQuotaData, headerCharges, Object.values(dataCharges));
                   };
@@ -3162,7 +3178,18 @@
         
 
         function writePDF (headerCommon, dataWater, dataHeating, dataCommon, headerConsumption,dataConsumption,  headerQuota, dataQuota, headerCharges, tableCharges){
+          const rowsLandscape =15;
+          const rowsPortrait =24;
+          const numPages = 1 + Math.ceil(dataWater.length/rowsPortrait) + Math.ceil(dataHeating.length/rowsPortrait) + Math.ceil(dataConsumption.length/rowsLandscape) + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsPortrait) + Math.ceil(tableCharges.length/rowsLandscape);
           window.jsPDF = window.jspdf.jsPDF;
+          const footerText = "Charges Report Azur 01/01/2020 - 31/12/2020";
+          var currentPage = 1;
+          function printFooterPortrait () {
+            doc.line(15, 280, 200, 280);
+            doc.setFontSize(10);
+            doc.text(footerText,15, 285);
+            doc.text("Page " + currentPage + "/" + numPages, 175, 285);
+          };
           var doc = new jsPDF({ putOnlyUsedFonts: true, orientation: "portrait" });
           doc.setTextColor("green"); doc.setFontSize(32);
           doc.text("MyCondos", 60, 20);
@@ -3202,36 +3229,36 @@
           doc.setFontSize(12);
           doc.table(15, 164, dataHeating, headerCommon,{fontSize:10});
           doc.line(15, 280, 200, 280);
-          doc.text("Periodic Report Azur 01/04/2021 - 30/09/2021",15, 285);
+          doc.text(footerText,15, 285);
           doc.text("Page 2", 185, 285);
           doc.setFontSize(16);
           doc.addPage("a4", "landscape");
           doc.text("Water and Heating: expenses per owner", 15, 15);
           doc.setFontSize(12);
           doc.table(15, 20, dataConsumption, headerConsumption, {fontSize:10});
-          doc.line(15, 180, 285, 180);
-          doc.text("Periodic Report Azur 01/04/2021 - 30/09/2021",15, 185);
-          doc.text("Page 3", 265, 185);
+          doc.line(15, 190, 285, 190);
+          doc.text(footerText,15, 195);
+          doc.text("Page 3", 265, 195);
           doc.setFontSize(16);
           doc.addPage("a4", "portrait");
           doc.text("Common charges: total for building", 15, 15);
           doc.table(15, 20, dataCommon, headerCommon,{fontSize:10});
           doc.line(15, 280, 200, 280);
-          doc.text("Periodic Report Azur 01/04/2021 - 30/09/2021",15, 285);
+          doc.text(footerText,15, 285);
           doc.text("Page 4", 185, 285);
           doc.setFontSize(16);
           doc.addPage();
           doc.text("Common charges: quota per owner", 15, 15);
           doc.table(15, 20, dataQuota, headerQuota,{fontSize:10});
           doc.line(15, 280, 200, 280);
-          doc.text("Periodic Report Azur 01/04/2021 - 30/09/2021",15, 285);
+          doc.text(footerText,15, 285);
           doc.text("Page 5", 185, 285);
           doc.setFontSize(16);
           doc.addPage("a4", "landscape");
           doc.text("Total charges: total charges per owner", 15, 15);
           doc.table(15, 20, tableCharges, headerCharges,{fontSize:10});
           doc.line(15, 180, 285, 180);
-          doc.text("Periodic Report Azur 01/04/2021 - 30/09/2021",15, 185);
+          doc.text(footerText,15, 185);
           doc.text("Page 6", 265, 185);
           
           /*
