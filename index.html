@@ -3031,7 +3031,7 @@
           refCoproperty.collection("Members").get().then(function(membersFS) { 
             var idMemberMap = [];
             membersFS.forEach(function(memberFS){
-              idMemberMap[memberFS.id] = memberFS.data().lastName + " " + memberFS.data().firstName;
+              idMemberMap[memberFS.id] = (memberFS.data().lastName + " " + memberFS.data().firstName).substr(0,25);
             });
             refCoproperty.collection("Properties").orderBy("owner").get().then(function(propertiesFS){
               var iteratorCount = 0;
