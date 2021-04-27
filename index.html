@@ -305,7 +305,9 @@
             </tbody>
           </table>
           <br>
-          <button style="float: right" class="btn-small waves-light" onclick="downloadQuarter()"><i class="material-icons right">add</i>Download New Charges Report</button>
+          <div id="Reports_Generate" class="displayHidden">
+            <button style="float: right" class="btn-small waves-light" onclick="downloadQuarter()"><i class="material-icons right">add</i>Download New Charges Report</button>
+          </div>
           <br><br>
           <h6 style="font-size:20px "><b>Reports uploaded by users</b></h6>
           <table class="striped">
@@ -1135,6 +1137,9 @@
       </div>
     </main>
     <script>
+      var currentUserEmail;
+      var currentUserRole;
+      const roleAdministrator = 1;
       function showPasswordSet() {
       document.getElementById("loginPanel").setAttribute("class","displayHidden");
       document.getElementById("setPasswordPanel").setAttribute("class","displayBlock");
@@ -1174,7 +1179,16 @@
             firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
               .then(function() {
                   firebase.auth().signInWithEmailAndPassword(email, password)
-                    .then(function(user){openApplication();
+                    .then(function(user){
+                      currentUserEmail= email;
+                      refCoproperty.collection("Members").where("email", "==" ,currentUserEmail).get().then(function(memberFS){
+                        if (memberFS.data().role) {
+                          currentUserRole = roleAdministrator;
+                        }
+                      }).catch(function(error) {
+                        M.toast({html:"Error loading user " + error });
+                      }); 
+                      openApplication();
                     })
                     .catch(function(error) {
                       M.toast({html:"Invalid email or password"});
