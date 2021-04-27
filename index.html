@@ -1181,14 +1181,19 @@
                   firebase.auth().signInWithEmailAndPassword(email, password)
                     .then(function(user){
                       currentUserEmail= email;
-                      refCoproperty.collection("Members").where("email", "==" ,currentUserEmail).get().then(function(memberFS){
-                        if (memberFS.data().role) {
+                      document.getElementById("Reports_Generate").setAttribute("class","displayBlock");
+                      openApplication();
+                      /*
+                      refCoproperty.collection("Members").where("email", "==" ,currentUserEmail).get().then(function(membersFS){
+                        if (membersFS.docs[0].data().role) {
                           currentUserRole = roleAdministrator;
-                        }
+                          document.getElementById("Reports_Generate").setAttribute("class","displayBlock");
+                        };
+                        openApplication();
                       }).catch(function(error) {
                         M.toast({html:"Error loading user " + error });
                       }); 
-                      openApplication();
+                      */
                     })
                     .catch(function(error) {
                       M.toast({html:"Invalid email or password"});
@@ -1213,10 +1218,6 @@
       document.getElementById("resetPasswordPanel").setAttribute("class","displayHidden");
       document.getElementById("loginPanel").setAttribute("class","displayBlock"); 
     };
-    function showLogin() {
-      setTimeout(function(){}, 2000);  
-      backToLogin();
-    };
     
     function validatePasswordSetEntries() {
         var valid= true;
@@ -1231,23 +1232,50 @@
     function passwordSet(){
       if (validatePasswordSetEntries()) {
         var email = document.getElementById("passwordSet_email").value;
+        var docUserRef = firestore.collection("Users").doc(email);
+        docUserRef.get().then(function(user){
+          if (user.exists)  {
             firebase.auth().sendPasswordResetEmail(email).then(function() {
                 M.toast({html:"Please follow instructions sent by mail"});
-                showLogin();
-              }).catch(function(error) {
-                M.toast({html:"Unknown email: Please contact your administrator"});
-              });
+                setTimeout(function(){backToLoginFromSetPW();}, 6000);
+            }).catch(function(error) {
+              M.toast({html:"Error sending password reset mail" + error});
+            });
+          } else {M.toast({html:"Unknown email: Please contact your administrator"});
+          };
+        }).catch(function(error) {
+            M.toast({html:"Unknown email: Please contact your administrator"});
+        });
       };
     };
+    
+    function validatePasswordResetEntries() {
+        var valid= true;
+        if (!document.getElementById("passwordReset_email").checkValidity()) {
+          M.toast({html:"Please enter your email"});
+          valid=false;
+        };
+        return valid;
+    };
+    
+    
     function passwordReset(){
-      if (validatePasswordSetEntries()) {
+      if (validatePasswordResetEntries()) {
         var email = document.getElementById("passwordReset_email").value;
+        var docUserRef = firestore.collection("Users").doc(email);
+        docUserRef.get().then(function(user){
+          if (user.exists)  {
             firebase.auth().sendPasswordResetEmail(email).then(function() {
                 M.toast({html:"Please follow instructions sent by mail"});
-                showLogin();
-              }).catch(function(error) {
-                M.toast({html:"Unknown email: Please contact your administrator"});
-              });
+                setTimeout(function(){backToLoginFromResetPW();}, 6000);
+            }).catch(function(error) {
+              M.toast({html:"Error sending password reset mail" + error});
+            });
+          } else {M.toast({html:"Unknown email: Please contact your administrator"});
+          };
+        }).catch(function(error) {
+            M.toast({html:"Unknown email: Please contact your administrator"});
+        });
       };
     };
     </script>
