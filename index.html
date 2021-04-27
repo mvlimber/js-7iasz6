@@ -1181,9 +1181,6 @@
                   firebase.auth().signInWithEmailAndPassword(email, password)
                     .then(function(user){
                       currentUserEmail= email;
-                      document.getElementById("Reports_Generate").setAttribute("class","displayBlock");
-                      openApplication();
-                      /*
                       refCoproperty.collection("Members").where("email", "==" ,currentUserEmail).get().then(function(membersFS){
                         if (membersFS.docs[0].data().role) {
                           currentUserRole = roleAdministrator;
@@ -1191,9 +1188,8 @@
                         };
                         openApplication();
                       }).catch(function(error) {
-                        M.toast({html:"Error loading user " + error });
+                        M.toast({html:"You are not registered as an active user: Please contact your administrator"});
                       }); 
-                      */
                     })
                     .catch(function(error) {
                       M.toast({html:"Invalid email or password"});
