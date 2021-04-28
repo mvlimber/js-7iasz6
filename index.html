@@ -903,8 +903,9 @@
                 <div class="displayHidden" id="previousOwnersButton">
                   <button style="float:right;margin-left: 20px;margin-bottom: 3px" data-target="previousOwners" class="btn-small waves-light modal-trigger" onclick="showPreviousOwnersTable()">Previous Owners</button>
                 </div>
-                <button style="float:right;margin-bottom: 3px" data-target="newOwner" class="btn-small waves-light modal-trigger" onclick="newOwner()">New Owner<i class="material-icons right">add</i></button>
-
+                <div id="Properties_OwnersAdd" class="displayHidden">
+                  <button style="float:right;margin-bottom: 3px" data-target="newOwner" class="btn-small waves-light modal-trigger" onclick="newOwner()">New Owner<i class="material-icons right">add</i></button>
+                </div>
               </div>
             </div>
             <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
@@ -915,12 +916,14 @@
                   </tbody>
                 </table>
               </div>
-              <div class="input-field col s12 m4">
-                <select id="property_occupant_add" onchange="enableOccupantAdd()">
-                </select>
-              </div>
-              <div class="input-field col s12 m4">
-                <button id="buttonOccupantAdd" class="btn-small waves-light disabled" onclick="addOccupant()">Add as Occupant<i class="material-icons right">add</i></button>
+              <div id="Properties_OccupantsAdd" class="displayHidden">
+                <div class="input-field col s12 m4">
+                  <select id="property_occupant_add" onchange="enableOccupantAdd()">
+                  </select>
+                </div>
+                <div class="input-field col s12 m4">
+                  <button id="buttonOccupantAdd" class="btn-small waves-light disabled" onclick="addOccupant()">Add as Occupant<i class="material-icons right">add</i></button>
+                </div>
               </div>
             </div>
 
@@ -1155,7 +1158,7 @@
     <script>
       var currentUserEmail;
       var currentUserRole;
-      const roleAdministrator = 1;
+      var roleAdministrator = 1;
       function showPasswordSet() {
       document.getElementById("loginPanel").setAttribute("class","displayHidden");
       document.getElementById("setPasswordPanel").setAttribute("class","displayBlock");
@@ -1210,7 +1213,8 @@
                           document.getElementById("Properties_Add").setAttribute("class","displayBlock");
                           document.getElementById("Properties_Edit").setAttribute("class","displayBlock");
                           document.getElementById("Properties_MetersAdd").setAttribute("class","displayBlock");
-                          document.getElementById("Properties_Add").setAttribute("class","displayBlock");
+                          document.getElementById("Properties_OwnersAdd").setAttribute("class","displayBlock");
+                          document.getElementById("Properties_OccupantsAdd").setAttribute("class","displayBlock");
                         };
                         openApplication();
                       }).catch(function(error) {
@@ -1382,7 +1386,6 @@
         cellContent.setAttribute('data-target','fileShow');
         refCopropertyFiles.child("Reports").child(objectFS.id).getDownloadURL().then(function(url) {
           
-        /*cellContent.setAttribute('onclick','showReport('+JSON.stringify(objectFS.id)+')');*/
         cellContent.setAttribute('onclick','showReport('+JSON.stringify(url)+')');
         cellContent.innerHTML = "<font color='#0000FF'>" + object.fileName + "</font>";
         var cell = document.createElement('td');
@@ -1398,21 +1401,21 @@
         cell = document.createElement('td');
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell); 
-        
-        cellContent = document.createElement('button');
-        cellContent.setAttribute('class','modal-trigger btn-small waves-light red');
-        cellContent.setAttribute("data-target", "reportRemove");
-        cellContent.setAttribute('onclick','popupRemoveReport('+JSON.stringify(objectFS.id)+','+JSON.stringify(object.fileName)+')');
-        var cellButtonIcon = document.createElement('i');
-        cellButtonIcon.setAttribute('class','material-icons right');
-        cellButtonIcon.innerHTML="delete";           
-        cellContent.appendChild(cellButtonIcon);
-        cellContent.innerHTML = "Remove";
+        if (currentUserRole == roleAdministrator) {
+          cellContent = document.createElement('button');
+          cellContent.setAttribute('class','modal-trigger btn-small waves-light red');
+          cellContent.setAttribute("data-target", "reportRemove");
+          cellContent.setAttribute('onclick','popupRemoveReport('+JSON.stringify(objectFS.id)+','+JSON.stringify(object.fileName)+')');
+          var cellButtonIcon = document.createElement('i');
+          cellButtonIcon.setAttribute('class','material-icons right');
+          cellButtonIcon.innerHTML="delete";           
+          cellContent.appendChild(cellButtonIcon);
+          cellContent.innerHTML = "Remove";
 
-        cell = document.createElement('td');
-        cell.appendChild(cellContent);
-        objectsRow.appendChild(cell);    
-        
+          cell = document.createElement('td');
+          cell.appendChild(cellContent);
+          objectsRow.appendChild(cell);    
+        };
         reportsTable.appendChild (objectsRow);
         });
       };
@@ -1773,21 +1776,21 @@
         cell = document.createElement('td');
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);  
-        
-        cellContent = document.createElement('button');
-        cellContent.setAttribute('class','modal-trigger btn-small waves-light red');
-        cellContent.setAttribute("data-target", "transactionEvidenceRemove");
-        cellContent.setAttribute('onclick','popupRemoveTransactionEvidence('+JSON.stringify(objectFS.id)+','+JSON.stringify(object.fileName)+')');
-        var cellButtonIcon = document.createElement('i');
-        cellButtonIcon.setAttribute('class','material-icons right');
-        cellButtonIcon.innerHTML="delete";           
-        cellContent.appendChild(cellButtonIcon);
-        cellContent.innerHTML = "Remove";
+        if (currentUserRole == roleAdministrator) {
+          cellContent = document.createElement('button');
+          cellContent.setAttribute('class','modal-trigger btn-small waves-light red');
+          cellContent.setAttribute("data-target", "transactionEvidenceRemove");
+          cellContent.setAttribute('onclick','popupRemoveTransactionEvidence('+JSON.stringify(objectFS.id)+','+JSON.stringify(object.fileName)+')');
+          var cellButtonIcon = document.createElement('i');
+          cellButtonIcon.setAttribute('class','material-icons right');
+          cellButtonIcon.innerHTML="delete";           
+          cellContent.appendChild(cellButtonIcon);
+          cellContent.innerHTML = "Remove";
 
-        cell = document.createElement('td');
-        cell.appendChild(cellContent);
-        objectsRow.appendChild(cell);    
-        
+          cell = document.createElement('td');
+          cell.appendChild(cellContent);
+          objectsRow.appendChild(cell);    
+        };
         transactionEvidenceTable.appendChild (objectsRow);
         });
       };
@@ -2516,21 +2519,21 @@
           var cellContent = memberLink(member);
           cell.appendChild(cellContent);
           objectsRow.appendChild(cell); 
-
-          cell = document.createElement('td');
-          cellContent = document.createElement('a'); 
-          cellContent.setAttribute('style',"float: right");
-          cellContent.setAttribute('class','waves-light btn-small red');
-          cellContent.setAttribute('onclick','removeOccupant('+JSON.stringify(property)+',' +JSON.stringify(occupant.id)+')');
-          objectsRow.setAttribute("id", occupant.id)
-          cellButtonIcon = document.createElement('i');
-          cellButtonIcon.setAttribute('class','material-icons right');
-          cellButtonIcon.innerHTML="delete";           
-          cellContent.appendChild(cell);
-          cellContent.innerHTML = "Remove Occupant";
-          cell.appendChild(cellContent);
-          objectsRow.appendChild(cell); 
-
+          if (currentUserRole == roleAdministrator) {
+            cell = document.createElement('td');
+            cellContent = document.createElement('a'); 
+            cellContent.setAttribute('style',"float: right");
+            cellContent.setAttribute('class','waves-light btn-small red');
+            cellContent.setAttribute('onclick','removeOccupant('+JSON.stringify(property)+',' +JSON.stringify(occupant.id)+')');
+            objectsRow.setAttribute("id", occupant.id)
+            cellButtonIcon = document.createElement('i');
+            cellButtonIcon.setAttribute('class','material-icons right');
+            cellButtonIcon.innerHTML="delete";           
+            cellContent.appendChild(cell);
+            cellContent.innerHTML = "Remove Occupant";
+            cell.appendChild(cellContent);
+            objectsRow.appendChild(cell); 
+          };
           occupantsTable.appendChild (objectsRow);
         }).catch (function(error) {
           M.toast({html:"Error occurred during displaying occupant:" + error}); 
