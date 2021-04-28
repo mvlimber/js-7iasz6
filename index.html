@@ -322,7 +322,9 @@
             </tbody>
           </table>
           <br>
-          <button style="float: right" data-target="reportAdd" class="btn-small waves-light modal-trigger" onclick="emptyReportFields()"><i class="material-icons right">add</i>New Report</button>
+          <div id="Reports_Add" class="displayHidden">
+            <button style="float: right" data-target="reportAdd" class="btn-small waves-light modal-trigger" onclick="emptyReportFields()"><i class="material-icons right">add</i>New Report</button>
+          </div>
         </div>
         <!------------------------------------------------------------------------------------------------------>
         <div id="Transactions" class="col s12">
@@ -347,8 +349,9 @@
           </table>
           <div class="displayHidden" <h6> <b>Total Amount is </b><b id="totalAmount"></b></h6>
           </div>
-          <button style="float: right" data-target="transactionAdd" class="btn-small waves-light modal-trigger" onclick="resetSelectedTransaction()"><i class="material-icons right">add</i>New transaction</button>
-
+          <div id="Transactions_Add" class="displayHidden">
+            <button style="float: right" data-target="transactionAdd" class="btn-small waves-light modal-trigger" onclick="resetSelectedTransaction()"><i class="material-icons right">add</i>New transaction</button>
+          </div>
           <div id="transactionAdd" class="modal">
             <div class="modal-content">
               <a style="float: right"
@@ -439,10 +442,12 @@
                     <label for="transaction_communication">Communication</label>
                   </div>
                 </form>
-                <button style="float: right;margin-bottom: 3px" data-target="transactionWrite" class="btn-small waves-light modal-trigger" onclick="editTransaction(selectedTransactionId, selectedTransactionObject)">Edit<i class="material-icons right">edit</i></button>
+                <div id="Transactions_Edit" class="displayHidden">
+                  <button style="float: right;margin-bottom: 3px" data-target="transactionWrite" class="btn-small waves-light modal-trigger" onclick="editTransaction(selectedTransactionId, selectedTransactionObject)">Edit<i class="material-icons right">edit</i></button>
+                </div>
               </div>
               <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
-                <h6 style="font-size:20px ">Please add evidence here</h6>
+                <h6 style="font-size:20px ">Transaction Evidence</h6>
                 <table class="striped">
                   <thead>
                     <tr>
@@ -454,7 +459,9 @@
                   </tbody>
                 </table>
                 <br>
-                <button style="float: right;margin-bottom: 3px" data-target="transactionEvidenceAdd" class="btn-small waves-light modal-trigger" onclick="emptyTransactionEvidenceFields()"><i class="material-icons right">add</i>New Evidence</button>
+                <div id="Transactions_EvidenceAdd" class="displayHidden">
+                  <button style="float: right;margin-bottom: 3px" data-target="transactionEvidenceAdd" class="btn-small waves-light modal-trigger" onclick="emptyTransactionEvidenceFields()"><i class="material-icons right">add</i>New Evidence</button>
+                </div>
               </div>
               <a style="float: right;margin-bottom: 3px"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
@@ -691,7 +698,9 @@
             </tbody>
           </table>
           <br>
-          <button style="float: right" data-target="memberWrite" class="btn-small waves-light modal-trigger" onclick="resetSelectedMember()"><i class="material-icons right">add</i>New Member</button>
+          <div id="Members_Add" class="displayHidden">
+            <button style="float: right" data-target="memberWrite" class="btn-small waves-light modal-trigger" onclick="resetSelectedMember()"><i class="material-icons right">add</i>New Member</button>
+          </div>
         </div>
         <!--- shared views ------------------------------------------------------------------------------------>
         <div id="memberView" class="modal">
@@ -750,7 +759,9 @@
                   <input  id="member_bus" type="number" readonly >
                   <label for="member_bus">Bus</label>
                 </div>
-                <button style="float: right;margin-bottom: 3px" data-target="memberWrite" class="btn-small waves-light modal-trigger" onclick="setSelectedMember(selectedMemberId, selectedMemberObject,editMode)">Edit<i class="material-icons right">edit</i></button>
+                <div id="Members_Edit" class="displayHidden">
+                  <button style="float: right;margin-bottom: 3px" data-target="memberWrite" class="btn-small waves-light modal-trigger" onclick="setSelectedMember(selectedMemberId, selectedMemberObject,editMode)">Edit<i class="material-icons right">edit</i></button>
+                </div>
               </form>
             </div>
             <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
@@ -862,7 +873,9 @@
                   <input id="property_cellar" type="text" readonly>
                   <label for="property_cellar">Cellar</label>
                 </div>
-                <button style="float: right;margin-bottom: 3px" data-target="propertyWrite" class="btn-small waves-light modal-trigger" onclick="setEditPropertyEntries()">Edit<i class="material-icons right">edit</i></button>
+                <div id="Properties_Edit" class="displayHidden">
+                  <button style="float: right;margin-bottom: 3px" data-target="propertyWrite" class="btn-small waves-light modal-trigger" onclick="setEditPropertyEntries()">Edit<i class="material-icons right">edit</i></button>
+                </div>
               </form>
             </div>
             <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
@@ -878,7 +891,9 @@
                   </tbody>
                 </table>
               </div>
-              <button style="float: right;margin-bottom: 3px" class="btn-small waves-light modal-trigger" data-target="meterWrite" onclick="addMeter()">Add Meter<i class="material-icons right">add</i></button>
+              <div id="Properties_MetersAdd" class="displayHidden">
+                <button style="float: right;margin-bottom: 3px" class="btn-small waves-light modal-trigger" data-target="meterWrite" onclick="addMeter()">Add Meter<i class="material-icons right">add</i></button>
+              </div>
             </div>
             <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
               <div>
@@ -930,8 +945,9 @@
             </tbody>
           </table>
           <h6><b id="totalQuotas"></b></h6>
-          <button style="float: right" data-target="propertyAdd" class="btn-small waves-light modal-trigger" onclick="resetSelectedProperty()"><i class="material-icons right">add</i>New Property</button>
-
+          <div id="Properties_Add" class="displayHidden">
+            <button style="float: right" data-target="propertyAdd" class="btn-small waves-light modal-trigger" onclick="resetSelectedProperty()"><i class="material-icons right">add</i>New Property</button>
+          </div>
 
           <div id="meterWrite" class="modal">
             <div class="modal-content">
@@ -1185,6 +1201,16 @@
                         if (membersFS.docs[0].data().role) {
                           currentUserRole = roleAdministrator;
                           document.getElementById("Reports_Generate").setAttribute("class","displayBlock");
+                          document.getElementById("Reports_Add").setAttribute("class","displayBlock");
+                          document.getElementById("Transactions_Add").setAttribute("class","displayBlock");
+                          document.getElementById("Transactions_Edit").setAttribute("class","displayBlock");
+                          document.getElementById("Transactions_EvidenceAdd").setAttribute("class","displayBlock");
+                          document.getElementById("Members_Add").setAttribute("class","displayBlock");
+                          document.getElementById("Members_Edit").setAttribute("class","displayBlock");
+                          document.getElementById("Properties_Add").setAttribute("class","displayBlock");
+                          document.getElementById("Properties_Edit").setAttribute("class","displayBlock");
+                          document.getElementById("Properties_MetersAdd").setAttribute("class","displayBlock");
+                          document.getElementById("Properties_Add").setAttribute("class","displayBlock");
                         };
                         openApplication();
                       }).catch(function(error) {
@@ -1235,7 +1261,7 @@
                 M.toast({html:"Please follow instructions sent by mail"});
                 setTimeout(function(){backToLoginFromSetPW();}, 6000);
             }).catch(function(error) {
-              M.toast({html:"Error sending password reset mail" + error});
+              M.toast({html:"Error sending mail to set password set" + error});
             });
           } else {M.toast({html:"Unknown email: Please contact your administrator"});
           };
