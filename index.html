@@ -711,7 +711,7 @@
                   <div class="input-field col s12 m6">
                     <div class="input-field">
                       <input id="meterReading_reading" type="text" readonly>
-                      <label for="meterReading_reading">Reading<b></label>
+                      <label for="meterReading_reading">Reading</label>
                     </div>
                     <div class="input-field ">
                       <input id="meterReading_date" type="text" readonly>
@@ -1204,8 +1204,22 @@
       </div>
     </main>
     <script>
-      var currentUserEmail;
-      var currentUserRole;
+      var currentUser = {
+        email: "",
+        role: "",
+        id:"",
+        properties: null,
+        owns: function(propertyId){
+          if (!properties) {
+            refCoproperty.collection("Properties").where("owner","==",this.id).get().then(function(propertiesFS){
+              propertiesFS.forEach(function (propertyFS){
+                this.properties.push(propertyFS.id);
+              });
+            });
+          };
+          return this.properties.includes(propertyId);
+        }
+      };
       var roleAdministrator = 1;
       function showPasswordSet() {
       document.getElementById("loginPanel").setAttribute("class","displayHidden");
@@ -1247,10 +1261,11 @@
               .then(function() {
                   firebase.auth().signInWithEmailAndPassword(email, password)
                     .then(function(user){
-                      currentUserEmail= email;
-                      refCoproperty.collection("Members").where("email", "==" ,currentUserEmail).get().then(function(membersFS){
+                      
+                      refCoproperty.collection("Members").where("email", "==" ,email).get().then(function(membersFS){ currentUser.email = email;
+                        currentUser.id = membersFS.id;
                         if (membersFS.docs[0].data().role) {
-                          currentUserRole = roleAdministrator;
+                          currentUser.role = roleAdministrator;
                           document.getElementById("Reports_Generate").setAttribute("class","displayBlock");
                           document.getElementById("Reports_Add").setAttribute("class","displayBlock");
                           document.getElementById("Transactions_Add").setAttribute("class","displayBlock");
@@ -1449,7 +1464,7 @@
         cell = document.createElement('td');
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell); 
-        if (currentUserRole == roleAdministrator) {
+        if (currentUser.role == roleAdministrator) {
           cellContent = document.createElement('button');
           cellContent.setAttribute('class','modal-trigger btn-small waves-light red');
           cellContent.setAttribute("data-target", "reportRemove");
@@ -1824,7 +1839,7 @@
         cell = document.createElement('td');
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);  
-        if (currentUserRole == roleAdministrator) {
+        if (currentUser.role == roleAdministrator) {
           cellContent = document.createElement('button');
           cellContent.setAttribute('class','modal-trigger btn-small waves-light red');
           cellContent.setAttribute("data-target", "transactionEvidenceRemove");
@@ -1942,7 +1957,7 @@
         
         var meterData = meterFS.data();
         var cellContent = document.createElement('button');
-        if (currentUserRole == roleAdministrator) {
+        if (currentUser.role == roleAdministrator) {
           cellContent.setAttribute("data-target", "meterReadingWrite");
           cellContent.setAttribute('onclick','setSelectedMeterReading_edit('+JSON.stringify(propertyFS.id)+','+JSON.stringify(propertyFS.data())+','+JSON.stringify(meterFS.id)+','+JSON.stringify(meterFS.data())+')');
         } else {
@@ -2600,7 +2615,7 @@
           var cellContent = memberLink(member);
           cell.appendChild(cellContent);
           objectsRow.appendChild(cell); 
-          if (currentUserRole == roleAdministrator) {
+          if (currentUser.role == roleAdministrator) {
             cell = document.createElement('td');
             cellContent = document.createElement('a'); 
             cellContent.setAttribute('style',"float: right");
