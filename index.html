@@ -1210,14 +1210,17 @@
         id:"",
         properties: null,
         owns: function(propertyId){
-          if (!properties) {
+          if (!this.properties) {
+            this.properties = [];
             refCoproperty.collection("Properties").where("owner","==",this.id).get().then(function(propertiesFS){
               propertiesFS.forEach(function (propertyFS){
                 this.properties.push(propertyFS.id);
               });
+              return this.properties.includes(propertyId);
             });
-          };
+          } else {
           return this.properties.includes(propertyId);
+          };
         }
       };
       var roleAdministrator = 1;
@@ -1263,7 +1266,7 @@
                     .then(function(user){
                       
                       refCoproperty.collection("Members").where("email", "==" ,email).get().then(function(membersFS){ currentUser.email = email;
-                        currentUser.id = membersFS.id;
+                        currentUser.id = membersFS.docs[0].id;
                         if (membersFS.docs[0].data().role) {
                           currentUser.role = roleAdministrator;
                           document.getElementById("Reports_Generate").setAttribute("class","displayBlock");
@@ -1957,7 +1960,7 @@
         
         var meterData = meterFS.data();
         var cellContent = document.createElement('button');
-        if (currentUser.role == roleAdministrator) {
+        if ((currentUser.role == roleAdministrator) || (currentUser.owns(propertyFS.id))) {
           cellContent.setAttribute("data-target", "meterReadingWrite");
           cellContent.setAttribute('onclick','setSelectedMeterReading_edit('+JSON.stringify(propertyFS.id)+','+JSON.stringify(propertyFS.data())+','+JSON.stringify(meterFS.id)+','+JSON.stringify(meterFS.data())+')');
         } else {
