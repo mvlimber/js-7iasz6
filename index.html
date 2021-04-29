@@ -726,11 +726,8 @@
                   </div>
                 </div>
               </div>
-
-
-              <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeMeterReading()">Submit<i class="material-icons right">send</i></button>
               <a style="float: right;margin-bottom: 3px"
-                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>Close</a>
             </div>
           </div>
 
@@ -2062,18 +2059,19 @@
         document.getElementById("meterReading_reading").value = readingData.reading;
         document.getElementById("meterReading_date").value = readingData.date;
         emptyHTMLSet(document.getElementById("meterReading_picture"));
-        emptyHTMLSet(document.getElementById("meterReading_picture_show_edit"));
+        emptyHTMLSet(document.getElementById("meterReading_picture_show"));
         if (readingData.picture) {
           refCopropertyFiles.child(selectedReadingPropertyId).child("Meters").child(selectedReadingId).getDownloadURL().then(function(url) {
             var imgEl = document.createElement("img");
             imgEl.setAttribute("width","400");
             imgEl.setAttribute("height","300");
             imgEl.setAttribute("src",url);
-            document.getElementById("meterReading_picture_show_edit").appendChild(imgEl);
+            document.getElementById("meterReading_picture_show").appendChild(imgEl);
+            document.getElementById("meterReading_picture_frame").setAttribute("class","displayBlock");
             picturePresent= "Y";
           });
         } else {
-          document.getElementById("meterReading_picture_frame_edit").setAttribute("class","displayHidden");
+          document.getElementById("meterReading_picture_frame").setAttribute("class","displayHidden");
           picturePresent= "";
         };
         M.updateTextFields();
@@ -2081,7 +2079,7 @@
 
       function removePicture(){
         document.getElementById("meterReading_picture_form").setAttribute("class","displayBlock");
-        document.getElementById("meterReading_picture_frame").setAttribute("class","displayHidden");
+        document.getElementById("meterReading_picture_frame_edit").setAttribute("class","displayHidden");
         document.getElementById("meterReading_picture_file").value = "";
         document.getElementById("meterReading_picture_text").value = "";
         picturePresent = "";
@@ -2090,11 +2088,11 @@
       
       function validateMeterReading(){
         var valid= true;
-        if (!document.getElementById("meterReading_reading").checkValidity()) {
+        if (!document.getElementById("meterReading_reading_edit").checkValidity()) {
           M.toast({html:"Please enter valid reading"});
           valid=false;
         };
-        if (!document.getElementById("meterReading_date").checkValidity()) {
+        if (!document.getElementById("meterReading_date_edit").checkValidity()) {
           M.toast({html:"Please enter Reading Date"});
           valid=false;
         };
@@ -2120,8 +2118,8 @@
           if (pictureFileText) { 
             // A new picture has been attached
             var entries = {
-              reading: document.getElementById("meterReading_reading").value,
-              date: document.getElementById("meterReading_date").value,
+              reading: document.getElementById("meterReading_reading_edit").value,
+              date: document.getElementById("meterReading_date_edit").value,
               picture: "Y",
             };
             refCoproperty.collection("Properties").doc(selectedReadingPropertyId).collection("Meters").doc(selectedReadingId).update(entries).then(function() {
@@ -2136,8 +2134,8 @@
           } else {
             // No new picture attached: either existing picture or no picture or pictuture was removed
             var entries = {
-              reading: document.getElementById("meterReading_reading").value,
-              date: document.getElementById("meterReading_date").value,
+              reading: document.getElementById("meterReading_reading_edit").value,
+              date: document.getElementById("meterReading_date_edit").value,
               picture: picturePresent,
             };
             refCoproperty.collection("Properties").doc(selectedReadingPropertyId).collection("Meters").doc(selectedReadingId).update(entries).then(function(docref) {
