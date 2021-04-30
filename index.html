@@ -1204,22 +1204,27 @@
       </div>
     </main>
     <script>
+      var currentUserProperties;
       var currentUser = {
         email: "",
         role: "",
         id:"",
-        properties: null,
         owns: function(propertyId){
-          if (!this.properties) {
-            this.properties = [];
+          var x = [];
+          if (!currentUserProperties) {
+            currentUserProperties = [];
             refCoproperty.collection("Properties").where("owner","==",this.id).get().then(function(propertiesFS){
               propertiesFS.forEach(function (propertyFS){
-                this.properties.push(propertyFS.id);
+                console.log("properties is " + currentUserProperties);
+                currentUserProperties.push(propertyFS.id);
+                console.log("properties is " + currentUserProperties);
               });
-              return this.properties.includes(propertyId);
+              console.log("properties is " + currentUserProperties);
+              console.log("propertyid is is " + propertyId);
+              return currentUserProperties.includes(propertyId);
             });
           } else {
-          return this.properties.includes(propertyId);
+          return currentUserProperties.includes(propertyId);
           };
         }
       };
@@ -1960,7 +1965,7 @@
         
         var meterData = meterFS.data();
         var cellContent = document.createElement('button');
-        if ((currentUser.role == roleAdministrator) || (currentUser.owns(propertyFS.id))) {
+        if (currentUser.role == roleAdministrator || currentUser.id == propertyFS.data().owner) {
           cellContent.setAttribute("data-target", "meterReadingWrite");
           cellContent.setAttribute('onclick','setSelectedMeterReading_edit('+JSON.stringify(propertyFS.id)+','+JSON.stringify(propertyFS.data())+','+JSON.stringify(meterFS.id)+','+JSON.stringify(meterFS.data())+')');
         } else {
