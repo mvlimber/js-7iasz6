@@ -378,28 +378,28 @@
                 <div class="input-field col s12 m6">
                   <input id="transaction_name_add" type="text" class="validate" maxlength="50" required required="true">
                   <label for="transaction_name_add">Counterparty<b><font color='red'>*</font></b></label>
-                  <span class="helper-text" data-error="maximum 50 characters" ></span>
+                  <span class="helper-text" data-error="Maximum 50 characters"></span>
                 </div>
                 <div class="input-field col s12 m6">
-                  <input id="transaction_amount_add" type="number" class="validate" min="-99999" max="99999" step="0.01" required required="true">
+                  <input id="transaction_amount_add" type="number" class="validate" min="0" max="999999" step="0.01" required required="true">
                   <label for="transaction_amount_add">Amount<b><font color='red'>*</font></b></label>
-                  <span class="helper-text" data-error="positive or negative amount with max 2 decimals and max 5 digits" ></span>
+                  <span class="helper-text" data-error="Positive amount of max 999999 with max 2 decimals. Example: 1234.56">Amount with max 2 decimals. Example: 1234.56</span>
                 </div>
                 <div class="input-field col s12 m6">
                   <input id="transaction_date_add" type="text" class="datepicker validate"  required required="true">
                   <label for="transaction_date_add">Transaction Date<b><font color='red'>*</font></b></label>
-                  <span class="helper-text" data-error="required field" ></span>
+                  <span class="helper-text" data-error="Required field" ></span>
                 </div>
                 <div class="input-field col s12 m2">
                   <input id="transaction_account_add" type="text" maxlength="17" class="validate"
                     pattern="^BE\d{14}$|^BE\d{2}\s\d{4}\s\d{4}\s\d{4}$">
                   <label for="transaction_account_add">Account</label>
-                  <span class="helper-text" data-error="BE followed by 14 digits, blancs for printing format allowed"></span>
+                  <span class="helper-text" data-error="BE followed by 14 digits, blancs for printing format allowed. Example: BE40 9799 2578 3625">BE followed by max 14 digits, blancs allowed. Example: BE40 9799 2578 3625</span>
                 </div>
                 <div class="input-field col s12 m6">
                   <input id="transaction_communication_add" type="text" class="validate" maxlength="80" >
                   <label for="transaction_communication_add">Communication</label>
-                  <span class="helper-text" data-error="maximum 80 characters"></span>
+                  <span class="helper-text" data-error="Maximum 80 characters"></span>
                 </div>
               </form>
               <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="addTransaction()">Save and go to adding evidence<i class="material-icons right">send</i></button>
@@ -499,9 +499,9 @@
                     <span class="helper-text" data-error="maximum 50 characters" ></span>
                   </div>
                   <div class="input-field col s12 m6">
-                    <input id="transaction_amount_edit" type="number" class="validate" min="-99999" max="99999" step="0.01" required required="true">
+                    <input id="transaction_amount_edit" type="number" class="validate" min="0" max="999999" step="0.01" required required="true">
                     <label for="transaction_amount_edit">Amount<b><font color='red'>*</font></b></label>
-                    <span class="helper-text" data-error="positive or negative amount with max 2 decimals and max 5 digits" ></span>
+                    <span class="helper-text" data-error="Positive amount of max 999999 with max 2 decimals. Example: 1234.56">Amount with max 2 decimals. Example: 1234.56</span>
                   </div>
                   <div class="input-field col s12 m6">
                     <input id="transaction_date_edit" type="text" class="datepicker validate"  required required="true">
@@ -512,7 +512,7 @@
                     <input id="transaction_account_edit" type="text" maxlength="24" class="validate"
                     pattern="^BE\d{14}$|^BE\d{2}\s\d{4}\s\d{4}\s\d{4}$">
                     <label for="transaction_account_edit">Account</label>
-                    <span class="helper-text" data-error="BE followed by 14 digits, blancs for printing format allowed" ></span>
+                    <span class="helper-text" data-error="BE followed by 14 digits, blancs for printing format allowed. Example: BE40 9799 2578 3625">BE followed by max 14 digits, blancs allowed. Example: BE40 9799 2578 3625</span>
                   </div>
                   <div class="input-field col s12 m8">
                     <input id="transaction_communication_edit" type="text" class="validate" maxlength="80" >
@@ -647,6 +647,7 @@
                       <label for="meterReading_reading_edit">Reading<b><font color='red'>*</font></b></label>
                       <span class="helper-text" data-error="Include decimals but ignore separator if present. Max 10 digits. Example: 06614639">Include decimals but ignore separator if present. Example: 06614639</span>
                     </div>
+                    <br>
                     <div class="input-field ">
                       <input id="meterReading_date_edit" type="text" class="datepicker validate" required required="true">
                       <label for="meterReading_date_edit">Reading Date<b><font color='red'>*</font></b></label>
@@ -1633,9 +1634,9 @@
           cell.appendChild(cellContent);
           objectsRow.appendChild(cell); 
 
-          totalAmount = totalAmount + Number(object.amount);
-          console.log("amount is nu" + totalAmount);
-          cellContent = document.createTextNode(object.amount);
+          var amount = Number(object.amount);
+          totalAmount = totalAmount + amount;
+          cellContent = document.createTextNode(amount.toFixed(2));
           cell = document.createElement('td');
           cell.setAttribute("style", "text-align: right"); 
           cell.appendChild(cellContent);
@@ -2250,7 +2251,7 @@
       };
 
       function updateMember(member){
-        refCoproperty.collection("Members").doc(selectedMemberId).set(member)
+        refCoproperty.collection("Members").doc(selectedMemberId).update(member)
           .then(function(docref) {
             refreshMembers();
             setSelectedMember(selectedMemberId,getMemberEntries(),"");
