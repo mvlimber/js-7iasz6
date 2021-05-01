@@ -3155,8 +3155,8 @@
         var headerCommon = [
           {id:"type",name:"type",prompt:"type",width: 30,align: "center",padding: 0},
           {id:"name",name:"name",prompt:"name",width: 60,align: "center",padding: 0},
-          {id:"communication",name:"communication",prompt:"communication",width: 120,align: "center",padding: 0},
-          {id:"amount",name:"amount",prompt:"amount",width: 35,align: "right",padding: 0}
+          {id:"communication",name:"communication",prompt:"communication",width: 117,align: "center",padding: 0},
+          {id:"amount",name:"amount",prompt:"amount",width: 38,align: "right",padding: 0}
         ];
         var dataCommon = [];
         var dataWater = [];
@@ -3198,22 +3198,24 @@
             if (!trData.communication) {
               trData.communication=" ";
             } else {
-              trData.communication=trData.communication.substr(0,57);
+              trData.communication=trData.communication.substr(0,54);
             };
             trData.name=trData.name.substr(0,25);
+            var amount = Number(trData.amount);
+            trData.amount = amount.toLocaleString("nl-BE",currencyStyle);
             if (trData.type == "Water"){
               dataWater.push(trData);
-              buildingWater = buildingWater + parseFloat(trData.amount);
+              buildingWater = buildingWater + amount;
             } else if (trData.type == "Heating"){
               dataHeating.push(trData);
-              buildingHeating = buildingHeating + parseFloat(trData.amount);
+              buildingHeating = buildingHeating + amount;
             } else {
               dataCommon.push(trData);
-              buildingCommon = buildingCommon + parseFloat(trData.amount);
+              buildingCommon = buildingCommon + amount;
             };
           });
-          dataWater.push({type:"Total",name:" ",communication:" ",amount:buildingWater.toString()});
-          dataHeating.push({type:"Total",name:" ",communication:" ",amount:buildingHeating.toString()});
+          dataWater.push({type:"Total",name:" ",communication:" ",amount:buildingWater.toLocaleString("nl-BE",currencyStyle)});
+          dataHeating.push({type:"Total",name:" ",communication:" ",amount:buildingHeating.toLocaleString("nl-BE",currencyStyle)});
           
           
           refCoproperty.collection("Members").get().then(function(membersFS) { 
