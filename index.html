@@ -391,7 +391,7 @@
                   <span class="helper-text" data-error="Required field" ></span>
                 </div>
                 <div class="input-field col s12 m2">
-                  <input id="transaction_account_add" type="text" maxlength="17" class="validate"
+                  <input id="transaction_account_add" type="text" maxlength="19" class="validate"
                     pattern="^BE\d{14}$|^BE\d{2}\s\d{4}\s\d{4}\s\d{4}$">
                   <label for="transaction_account_add">Account</label>
                   <span class="helper-text" data-error="BE followed by 14 digits, blancs for printing format allowed. Example: BE40 9799 2578 3625">BE followed by max 14 digits, blancs allowed. Example: BE40 9799 2578 3625</span>
@@ -426,7 +426,7 @@
                     <label for="transaction_name">Counterparty</label>
                   </div>
                   <div class="input-field col s12 m6">
-                    <input id="transaction_amount" type="number" readonly>
+                    <input id="transaction_amount" type="text" readonly>
                     <label for="transaction_amount">Amount</label>
                   </div>
                   <div class="input-field col s12 m6">
@@ -509,7 +509,7 @@
                     <span class="helper-text" data-error="required field" ></span>
                   </div>
                   <div class="input-field col s12 m4">
-                    <input id="transaction_account_edit" type="text" maxlength="24" class="validate"
+                    <input id="transaction_account_edit" type="text" maxlength="19" class="validate"
                     pattern="^BE\d{14}$|^BE\d{2}\s\d{4}\s\d{4}\s\d{4}$">
                     <label for="transaction_account_edit">Account</label>
                     <span class="helper-text" data-error="BE followed by 14 digits, blancs for printing format allowed. Example: BE40 9799 2578 3625">BE followed by max 14 digits, blancs allowed. Example: BE40 9799 2578 3625</span>
@@ -1211,6 +1211,10 @@
       </div>
     </main>
     <script>
+      var currencyStyle = {
+        style: "currency",
+        currency: "EUR"
+      };
       var currentUserProperties;
       var currentUser = {
         email: "",
@@ -1636,7 +1640,7 @@
 
           var amount = Number(object.amount);
           totalAmount = totalAmount + amount;
-          cellContent = document.createTextNode(amount.toFixed(2));
+          cellContent = document.createTextNode(amount.toLocaleString("nl-BE", currencyStyle));
           cell = document.createElement('td');
           cell.setAttribute("style", "text-align: right"); 
           cell.appendChild(cellContent);
@@ -1791,7 +1795,7 @@
       document.getElementById("transaction_type").value=object.type;
       document.getElementById("transaction_account").value=object.account;
       document.getElementById("transaction_name").value=object.name;
-      document.getElementById("transaction_amount").value=object.amount;
+      document.getElementById("transaction_amount").value=Number(object.amount).toLocaleString("nl-BE", currencyStyle);
       document.getElementById("transaction_date").value=object.date;
       document.getElementById("transaction_communication").value=object.communication;
       refreshTransactionEvidence()
