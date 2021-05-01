@@ -852,42 +852,46 @@
               </div>
               <div class="input-field col s12 m6">
                 <i class="material-icons prefix">phone</i>
-                <input id="member_phoneHome_edit" type="tel" pattern="[+]?([0-9]|[ ])*" class="validate">
+                <input id="member_phoneHome_edit" type="tel" pattern="([0-9]|[ ])*" maxlength="30" class="validate">
                 <label for="member_phoneHome_edit">Telephone Home</label>
-                <span class="helper-text" data-error="only + , digits and spaces allowed" ></span>
+                <span class="helper-text" data-error="Only digits or spaces. Example: 0032 2 456 789" >Only digits or spaces. Example: 0032 2 456 789</span>
               </div>
               <div class="input-field col s12 m6">
                 <i class="material-icons prefix">phone</i>
-                <input id="member_phoneMobile_edit" type="tel" pattern="[+]?([0-9]|[ ])*" class="validate">
+                <input id="member_phoneMobile_edit" type="tel" pattern="([0-9]|[ ])*" maxlength="30" class="validate">
                 <label for="member_phoneMobile_edit">Mobile</label>
-                <span class="helper-text" data-error="only + , digits and spaces allowed" ></span>
+                <span class="helper-text" data-error="Only digits or spaces. Example: 0032 476 123 456" >Only digits or spaces. Example: 0032 476 123 456</span>
               </div>
               <p> Principal residence (only to be completed if not in co-property)</p>
               <div class="input-field col s12 m4">
-                <input  id="member_country_edit" type="text" class="validate" maxlength="30" >
+                <input  id="member_country_edit" type="text" class="validate" maxlength="50" >
                 <label for="member_country_edit" >Country</label>
+                <span class="helper-text" data-error="Max 50 characters" ></span>
               </div>
               <div class="input-field col s6 m2">
-                <input  id="member_zip_edit" type="number" class="validate" min="0" max="99999">
+                <input  id="member_zip_edit" type="text" class="validate" min="0" maxlength="10">
                 <label for="member_zip_edit" >Zip</label>
-                <span class="helper-text" data-error="please enter digits only" ></span>
+                <span class="helper-text" data-error="Max 10 characters" ></span>
               </div>
               <div class="input-field col s6 m6">
-                <input  id="member_town_edit" type="text" class="validate" maxlength="30" >
+                <input  id="member_town_edit" type="text" class="validate" maxlength="50" >
                 <label for="member_town_edit">Town</label>
+                <span class="helper-text" data-error="Max 50 characters"></span>
               </div>
               <div class="input-field col s12 m8">
-                <input  id="member_street_edit" type="text" class="validate" maxlength="30" >
+                <input  id="member_street_edit" type="text" class="validate" maxlength="50" >
                 <label for="member_street_edit">Street</label>
+                <span class="helper-text" data-error="Max 50 characters"></span>
               </div>
               <div class="input-field col s6 m2">
                 <input  id="member_houseNumber_edit" type="text" class="validate" maxlength="10" >
                 <label for="member_houseNumber_edit">Number</label>
+                <span class="helper-text" data-error="Max 10 characters. Example 26A">Max 10 characters. Example 26A</span>
               </div>
               <div class="input-field col s6 m2">
-                <input  id="member_bus_edit" type="number" class="validate" min="0" max="99" >
+                <input  id="member_bus_edit" type="text" class="validate" maxlength="3" >
                 <label for="member_bus_edit">Bus</label>
-                <span class="helper-text" data-error="please enter digits only" ></span>
+                <span class="helper-text" data-error="Max 3 characters. Example 12" >Max 3 characters. Example 12</span>
               </div>
             </form>
             <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeMember()">Submit<i class="material-icons right">send</i></button>
@@ -1018,7 +1022,7 @@
                 <div class="input-field col s12 m4">
                   <input id="meter_id" type="text" maxlength="10" class="validate" required aria-required="true" pattern="([A-Z]|[0-9]){4,10}">
                   <label for="meter_id">ID meter<b><font color='red'>*</font></b></label>
-                  <span class="helper-text" data-error="4 to 10 digts or capital letters" ></span>
+                  <span class="helper-text" data-error="4 to 10 digts or capital letters. Example 99DB517508">4 to 10 digts or capital letters. Example 99DB517508</span>
                 </div>
                 <div class="input-field col s12 m4">
                   <select id="meter_status" required aria-required="true">
