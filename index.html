@@ -1062,14 +1062,14 @@
               <h5> New Property</h5>
               <form class="col s12">
                 <div class="input-field col s6 m6">
-                  <input id="property_code_add" type="text" maxlength="5" class="validate" required aria-required="true">
+                  <input id="property_code_add" type="text" pattern="([A-Z]|[0-9]){1,4}" class="validate" required aria-required="true">
                   <label for="property_code_add">Code<b><font color='red'>*</font></b></label>
-                  <span class="helper-text" data-error="please enter a string of max 4 characters" ></span>
+                  <span class="helper-text" data-error="Max 4 capitals or numbers. Example: A1">Max 4 capitals or numbers. Example: A1</span>
                 </div>
                 <div class="input-field col s6 m6">
-                  <input id="property_quota_add" type="number" class="validate" min="0" max="9999" required aria-required="true">
+                  <input id="property_quota_add" type="number" class="validate" min="0" max="999" required aria-required="true">
                   <label for="property_quota_add">Quota<b><font color='red'>*</font></b></label>
-                  <span class="helper-text" data-error="please enter a number of max 4 digits"></span>
+                  <span class="helper-text" data-error="A number of max 3 digits. Example: 22">A number of max 3 digits. Example: 22</span>
                 </div>
                 <div class="row">
                   <div class="input-field col s6 m6">
@@ -1104,7 +1104,7 @@
                 </div>
                 <div class="input-field col s6 m6">
                   <input id="property_cellar_add" type="text" maxlength="10" class="validate">
-                  <label for="property_cellar_add">Cellar (for info only)</label>
+                  <label for="property_cellar_add">Cellar(s)</label>
                 </div>
               </form>
               <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="addProperty()">Submit<i class="material-icons right">send</i></button>
@@ -1168,14 +1168,14 @@
               <h5> Edit property data</h5>
               <form class="col s12">
                 <div class="input-field col s6 m6">
-                  <input id="property_code_edit" type="text" maxlength="5" class="validate" required aria-required="true">
+                  <input id="property_code_edit" type="text" pattern="([A-Z]|[0-9]){1,4}" class="validate" required aria-required="true">
                   <label for="property_code_edit">Code<b><font color='red'>*</font></b></label>
-                  <span class="helper-text" data-error="please enter a string of max 4 characters" ></span>
+                  <span class="helper-text" data-error="Max 4 capitals or numbers. Example: A1">Max 4 capitals or numbers. Example: A1</span>
                 </div>
                 <div class="input-field col s6 m6">
-                  <input id="property_quota_edit" type="number" class="validate" min="0" max="9999" required aria-required="true">
+                  <input id="property_quota_edit" type="number" class="validate" min="0" max="999" required aria-required="true">
                   <label for="property_quota_edit">Quota<b><font color='red'>*</font></b></label>
-                  <span class="helper-text" data-error="please enter a number of max 4 digits"></span>
+                  <span class="helper-text" data-error="A number of max 3 digits. Example: 22">A number of max 3 digits. Example: 22</span>
                 </div>
                 <div class="row">
                   <div class="input-field col s6 m6">
@@ -1188,7 +1188,8 @@
                   </div>
                   <div class="input-field col s6 m6">
                     <input id="property_cellar_edit" type="text" maxlength="10" class="validate">
-                    <label for="property_cellar_edit">Cellar</label>
+                    <label for="property_cellar_edit">Cellar(s)</label>
+                    <span class="helper-text" data-error="please enter a string of max 10 digits">Max 10 digits. Example: C1,C2</span>
                   </div>
                 </div>
               </form>
@@ -1285,7 +1286,6 @@
                           document.getElementById("Properties_Edit").setAttribute("class","displayBlock");
                           document.getElementById("Properties_MetersAdd").setAttribute("class","displayBlock");
                           document.getElementById("Properties_OwnersAdd").setAttribute("class","displayBlock");
-                          document.getElementById("Properties_OccupantsAdd").setAttribute("class","displayBlock");
                         };
                         openApplication();
                       }).catch(function(error) {
@@ -2616,19 +2616,19 @@
       var occupantsTable = document.getElementById("property_occupants");
       var metersTable = document.getElementById("property_meters");
         
-      function displayOccupant(property,occupant){
+      function displayOccupant(propertyId,occupant){
         refCoproperty.collection("Members").doc(occupant.data().occupant).get().then(function(member) {
           var objectsRow= document.createElement('tr');
           var cell = document.createElement('td');
           var cellContent = memberLink(member);
           cell.appendChild(cellContent);
           objectsRow.appendChild(cell); 
-          if (currentUser.role == roleAdministrator) {
+          if (currentUser.role == roleAdministrator || currentUser.id == selectedPropertyObject.owner) {
             cell = document.createElement('td');
             cellContent = document.createElement('a'); 
             cellContent.setAttribute('style',"float: right");
             cellContent.setAttribute('class','waves-light btn-small red');
-            cellContent.setAttribute('onclick','removeOccupant('+JSON.stringify(property)+',' +JSON.stringify(occupant.id)+')');
+            cellContent.setAttribute('onclick','removeOccupant('+JSON.stringify(propertyId)+',' +JSON.stringify(occupant.id)+')');
             objectsRow.setAttribute("id", occupant.id)
             cellButtonIcon = document.createElement('i');
             cellButtonIcon.setAttribute('class','material-icons right');
@@ -2726,14 +2726,16 @@
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);
 
-        cell = document.createElement('td');
-        cellContent = document.createElement('button'); 
-        cellContent.setAttribute('class','waves-light btn-small modal-trigger');
-        cellContent.setAttribute("data-target", "meterWrite");
-        cellContent.setAttribute('onclick','editMeter('+JSON.stringify(meterFS.id)+',' +JSON.stringify(meterData)+')');
-        cellContent.innerHTML = "Edit";
-        cell.appendChild(cellContent);
-        objectsRow.appendChild(cell); 
+        if (currentUser.role == roleAdministrator) {
+          cell = document.createElement('td');
+          cellContent = document.createElement('button'); 
+          cellContent.setAttribute('class','waves-light btn-small modal-trigger');
+          cellContent.setAttribute("data-target", "meterWrite");
+          cellContent.setAttribute('onclick','editMeter('+JSON.stringify(meterFS.id)+',' +JSON.stringify(meterData)+')');
+          cellContent.innerHTML = "Edit";
+          cell.appendChild(cellContent);
+          objectsRow.appendChild(cell); 
+        };
 
         metersTable.appendChild (objectsRow);
       };
@@ -2856,7 +2858,12 @@
       function setSelectedProperty(id,object) {
         selectedPropertyId=id;
         selectedPropertyObject=object;
-        document.getElementById("buttonOccupantAdd").setAttribute("class","btn-small waves-light disabled");
+        if (currentUser.role == roleAdministrator || currentUser.id == selectedPropertyObject.owner){
+          document.getElementById("Properties_OccupantsAdd").setAttribute("class","displayBlock");
+          document.getElementById("buttonOccupantAdd").setAttribute("class","btn-small waves-light disabled");
+        } else {
+          document.getElementById("Properties_OccupantsAdd").setAttribute("class","displayHidden");
+        };
         document.getElementById("property_code").value=object.code;
         document.getElementById("property_quota").value=object.quota;
         document.getElementById("property_type").value=object.type;
