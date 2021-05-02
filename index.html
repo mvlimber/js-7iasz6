@@ -863,7 +863,9 @@
                 <label for="member_phoneMobile_edit">Mobile</label>
                 <span class="helper-text" data-error="Only digits or spaces, max 30. Example: +32 476 123 456" >Only digits or spaces. Example: +32 476 123 456</span>
               </div>
-              <p> Principal residence (only to be completed if not in co-property)</p>
+              <div class="col s12 m12">
+              <button style="float: left" class="btn-small waves-light" type="button" onclick="insertAdrressCoproperty()">Copy adress condomynium<i class="material-icons right">content_copy</i></button>
+              </div>
               <div class="input-field col s12 m4">
                 <input  id="member_country_edit" type="text" class="validate" maxlength="50" >
                 <label for="member_country_edit" >Country</label>
@@ -924,7 +926,7 @@
                 </div>
                 <div class="input-field col s6 m6">
                   <input id="property_cellar" type="text" readonly>
-                  <label for="property_cellar">Cellar</label>
+                  <label for="property_cellar">Cellar(s)</label>
                 </div>
                 <div id="Properties_Edit" class="displayHidden">
                   <button style="float: right;margin-bottom: 3px" data-target="propertyWrite" class="btn-small waves-light modal-trigger" onclick="setEditPropertyEntries()">Edit<i class="material-icons right">edit</i></button>
@@ -2182,6 +2184,18 @@
     </script>
     <!--   Members scripts start here -->
     <script>
+      function insertAdrressCoproperty(){
+        refCoproperty.get().then(function(copropertyFS){
+          var object = copropertyFS.data();
+          document.getElementById("member_country_edit").value=object.country;
+          document.getElementById("member_zip_edit").value=object.zip;
+          document.getElementById("member_town_edit").value=object.town;
+          document.getElementById("member_street_edit").value=object.street;
+          document.getElementById("member_houseNumber_edit").value=object.houseNumber;
+          /*M.updateTextFields();*/
+        });
+      };
+      
       function memberName(memberId){
         var x;
         refCoproperty.collection("Members").doc(memberId).get().then(function(memberFS){
@@ -2573,7 +2587,7 @@
       };
 
       function updateProperty(property){
-        refCoproperty.collection("Properties").doc(selectedPropertyId).set(property)
+        refCoproperty.collection("Properties").doc(selectedPropertyId).update(property)
           .then(function(docref) {
             refreshProperties();
             selectedPropertyObject.code=property.code;
@@ -2583,7 +2597,7 @@
             document.getElementById("property_code").value=property.code;
             document.getElementById("property_quota").value=property.quota;
             document.getElementById("property_type").value=property.type;
-            document.getElementById("property_cellar").valuetype=property.cellar;
+            document.getElementById("property_cellar").value=property.cellar;
             M.Modal.getInstance(document.getElementById("propertyWrite")).close();
           }).catch(function(error) {
             M.toast({html:"Error occurred updating this member:" + error}); 
@@ -2876,7 +2890,7 @@
         document.getElementById("property_code").value=object.code;
         document.getElementById("property_quota").value=object.quota;
         document.getElementById("property_type").value=object.type;
-        document.getElementById("property_cellar").valuetype=object.cellar;
+        document.getElementById("property_cellar").value=object.cellar;
         var ownerEl = document.getElementById("property_owner");
         refCoproperty.collection("Members").doc(object.owner).get().then(function(member) {
               ownerEl.setAttribute('onclick','setSelectedMember('+JSON.stringify(member.id)+','+JSON.stringify(member.data())+',"")');
