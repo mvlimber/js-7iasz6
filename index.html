@@ -347,7 +347,7 @@
             <tbody id="transactionsTable">
             </tbody>
           </table>
-          <div class="displayHidden" <h6> <b>Total Amount is </b><b id="totalAmount"></b></h6>
+          <div class="displayHidden" <h6> <b>Total amount is </b><b id="totalAmount"></b></h6>
           </div>
           <div id="Transactions_Add" class="displayHidden">
             <button style="float: right" data-target="transactionAdd" class="btn-small waves-light modal-trigger" onclick="resetSelectedTransaction()"><i class="material-icons right">add</i>New transaction</button>
@@ -872,7 +872,7 @@
               <div class="input-field col s6 m2">
                 <input  id="member_zip_edit" type="text" class="validate" min="0" maxlength="10">
                 <label for="member_zip_edit" >Zip</label>
-                <span class="helper-text" data-error="Max 10 characters"></span>
+                <span class="helper-text" data-error="Max 10 characters. For Belgium 4 digits. Example Belgium: 1730">"Max 10 characters. Example Belgium: 1730"</span>
               </div>
               <div class="input-field col s6 m6">
                 <input  id="member_town_edit" type="text" class="validate" maxlength="50" >
@@ -1412,7 +1412,7 @@
     const tabsContainer = document.querySelector(".tabs");
     M.Tabs.init(tabsContainer,options);
     elems = document.querySelectorAll('.datepicker');
-    instances = M.Datepicker.init(elems);
+    instances = M.Datepicker.init(elems, {maxDate: new Date()});
 
     
     elems = document.querySelectorAll('.modal');
@@ -1639,7 +1639,7 @@
           objectsRow.appendChild(cell); 
 
           var amount = Number(object.amount);
-          totalAmount = totalAmount + amount;
+          /* totalAmount = totalAmount + amount;*/
           cellContent = document.createTextNode(amount.toLocaleString("nl-BE", currencyStyle));
           cell = document.createElement('td');
           cell.setAttribute("style", "text-align: right"); 
@@ -1659,13 +1659,12 @@
           
         function refreshTransactions(){
           emptyHTMLSet(transactionsTable);
-          totalAmount = 0;
+          /*totalAmount = 0;*/
           refCoproperty.collection("Transactions").orderBy("date","desc").get().then(function(objectsFSArray){
               objectsFSArray.forEach(function(objectFS){
                 loadTransaction(objectFS);
-                document.getElementById("totalAmount").innerHTML = totalAmount;
               });
-              
+              /* document.getElementById("totalAmount").innerHTML = totalAmount.toLocaleString("nl-BE", currencyStyle);*/
             });
         };
 
