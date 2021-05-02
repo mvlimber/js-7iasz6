@@ -3343,11 +3343,11 @@
               amountWaterString = (buildingWater * parseInt(arrayEl.difference) / buildingWaterDifference).toFixed(2);
               amountHeatingString = (buildingHotWaterHeating * parseInt(arrayEl.difference) / totalHotWaterDifference).toFixed(2);
             };
-            arrayEl.water = amountWaterString;
-            arrayEl.heating = amountHeatingString;
-            result.push(arrayEl);
             amountWater = Number(amountWaterString);
             amountHeating = Number(amountHeatingString);  
+            arrayEl.water = amountWater.toLocaleString("nl-BE",currencyStyle);
+            arrayEl.heating = amountHeating.toLocaleString("nl-BE",currencyStyle);
+            result.push(arrayEl);
             subtotalAmountWater = subtotalAmountWater + amountWater;
             subtotalAmountHeating = subtotalAmountHeating + amountHeating;
             subtotalAmountWaterCurrency = subtotalAmountWater.toLocaleString("nl-BE",currencyStyle);
