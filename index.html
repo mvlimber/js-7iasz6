@@ -1967,7 +1967,7 @@
       var meterReadingsTable = document.getElementById("meterReadingsTable");
       var meterReadingsLoaded = false;
 
-      function loadMeterReading(propertyFS, meterFS, readingId, readingData){
+      function loadMeterReading(propertyFS, meterFS){
         var objectsRow= document.createElement('tr');
         var cellContent = propertyLink(propertyFS);
         var cell = document.createElement('td');
@@ -1977,12 +1977,8 @@
         var meterData = meterFS.data();
         var cellContent = document.createElement('button');
         if (currentUser.role == roleAdministrator || currentUser.id == propertyFS.data().owner) {
-          if (readingId) {
-            cellContent.setAttribute("data-target", "meterReadingWrite");
+          cellContent.setAttribute("data-target", "meterReadingWrite");
             cellContent.setAttribute('onclick','setSelectedMeterReading_edit('+JSON.stringify(propertyFS.id)+','+JSON.stringify(propertyFS.data())+','+JSON.stringify(meterFS.id)+','+JSON.stringify(meterFS.data())+','+JSON.stringify(readingId)+','+JSON.stringify(readingData)+')');
-          } else {
-!!!!!! hier aanvullen: we hebben 2 parameters readingId, readingData toegevoegd
-          };
         } else {
           cellContent.setAttribute("data-target", "meterReadingRead");
           cellContent.setAttribute('onclick','setSelectedMeterReading_readonly('+JSON.stringify(propertyFS.id)+','+JSON.stringify(propertyFS.data())+','+JSON.stringify(meterFS.id)+','+JSON.stringify(meterFS.data())+')');
