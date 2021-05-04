@@ -1414,7 +1414,7 @@
     const tabsContainer = document.querySelector(".tabs");
     M.Tabs.init(tabsContainer,options);
     elems = document.querySelectorAll('.datepicker');
-    instances = M.Datepicker.init(elems, {maxDate: new Date()});
+    instances = M.Datepicker.init(elems, {maxDate: new Date(),format: 'yyyy/mm/dd'});
 
     
     elems = document.querySelectorAll('.modal');
