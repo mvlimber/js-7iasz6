@@ -1978,10 +1978,10 @@
         var cellContent = document.createElement('button');
         if (currentUser.role == roleAdministrator || currentUser.id == propertyFS.data().owner) {
           cellContent.setAttribute("data-target", "meterReadingWrite");
-            cellContent.setAttribute('onclick','setSelectedMeterReading_edit('+JSON.stringify(propertyFS.id)+','+JSON.stringify(propertyFS.data())+','+JSON.stringify(meterFS.id)+','+JSON.stringify(meterFS.data())+','+JSON.stringify(readingId)+','+JSON.stringify(readingData)+')');
+            cellContent.setAttribute('onclick','setSelectedMeterReading_edit('+JSON.stringify(propertyFS.id)+','+JSON.stringify(propertyFS.data())+','+JSON.stringify(meterFS.id)+','+JSON.stringify(meterFS.data())+')');
         } else {
           cellContent.setAttribute("data-target", "meterReadingRead");
-          cellContent.setAttribute('onclick','setSelectedMeterReading_readonly('+JSON.stringify(propertyFS.id)+','+JSON.stringify(propertyFS.data())+','+JSON.stringify(meterFS.id)+','+JSON.stringify(meterFS.data())+')');
+          cellContent.setAttribute('onclick','setSelectedMeterReading_readonly('+JSON.stringify(propertyFS.id)+','+JSON.stringify(propertyFS.data())+')');
         };
         cellContent.setAttribute('class','btn-small waves-light modal-trigger');
         cellContent.innerHTML = meterData.type;
@@ -2057,9 +2057,9 @@
         document.getElementById("meterReading_property_edit").value = propertyData.code;
         document.getElementById("meterReading_type_edit").value = readingData.type;
         document.getElementById("meterReading_id_edit").value = readingData.meter;
-        document.getElementById("meterReading_lastReading_edit").value = readingData.lastReading;
-        document.getElementById("meterReading_reading_edit").value = readingData.reading;
-        document.getElementById("meterReading_date_edit").value = readingData.date;
+        document.getElementById("meterReading_lastReading_edit").value = readingData.readings[1].reading;
+        document.getElementById("meterReading_reading_edit").value = readingData.readings[0].reading;
+        document.getElementById("meterReading_date_edit").value = readingData.readings[0].date;
         emptyHTMLSet(document.getElementById("meterReading_picture"));
         emptyHTMLSet(document.getElementById("meterReading_picture_show_edit"));
         if (readingData.picture) {
@@ -2089,9 +2089,9 @@
         document.getElementById("meterReading_property").value = propertyData.code;
         document.getElementById("meterReading_type").value = readingData.type;
         document.getElementById("meterReading_id").value = readingData.meter;
-        document.getElementById("meterReading_lastReading").value = readingData.lastReading;
-        document.getElementById("meterReading_reading").value = readingData.reading;
-        document.getElementById("meterReading_date").value = readingData.date;
+        document.getElementById("meterReading_lastReading").value = readingData.readings[1].reading;
+        document.getElementById("meterReading_reading").value = readingData.readings[0].reading;
+        document.getElementById("meterReading_date").value = readings[0].date;
         emptyHTMLSet(document.getElementById("meterReading_picture"));
         emptyHTMLSet(document.getElementById("meterReading_picture_show"));
         if (readingData.picture) {
@@ -3247,7 +3247,8 @@
                 refCoproperty.collection("Properties").doc(prFS.id).collection("Meters").get().then(function(metersFS){
                   metersFS.forEach(function(meterFS){
                     var meterData = meterFS.data();
-                    var differenceV = parseFloat(meterData.reading) - parseFloat(meterData.lastReading);
+                    /*var differenceV = parseFloat(meterData.reading) - parseFloat(meterData.lastReading);*/
+                    var differenceV = parseFloat(meterData.readings[0].reading) - parseFloat(meterData.readings[1].reading);
                     if (meterData.type == "Heating") {
                       totalHeatingDifference = totalHeatingDifference + differenceV;
                     } else if (meterData.type == "Hot Water"){
