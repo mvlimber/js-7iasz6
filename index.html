@@ -1989,7 +1989,7 @@
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);  
 
-        if (meterData.reading) {
+        if (meterData.readings[0].reading) {
            cellContent = document.createElement("i");
            cellContent.setAttribute("class","material-icons  green ");
            cellContent.innerHTML = "done";
@@ -2003,7 +2003,7 @@
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);  
 
-        if (meterData.picture) {
+        if (meterData.readings[0].picture) {
            /*cellContent = document.createTextNode("&#10060;");*/
            cellContent = document.createElement("i");
            cellContent.setAttribute("class","material-icons  green ");
@@ -2064,8 +2064,8 @@
         document.getElementById("meterReading_date_edit").value = readingData.readings[0].date;
         emptyHTMLSet(document.getElementById("meterReading_picture"));
         emptyHTMLSet(document.getElementById("meterReading_picture_show_edit"));
-        if (readingData.picture) {
-          refCopropertyFiles.child(selectedReadingPropertyId).child("Meters").child(selectedReadingId).getDownloadURL().then(function(url) {
+        if (readingData.readings[0].picture) {
+          refCopropertyFiles.child(selectedReadingPropertyId).child("Meters").child(selectedReadingId).child((readingData.readings[0].counter).toString()).getDownloadURL().then(function(url) {
             var imgEl = document.createElement("img");
             imgEl.setAttribute("width","400");
             imgEl.setAttribute("height","300");
@@ -2073,14 +2073,14 @@
             document.getElementById("meterReading_picture_show_edit").appendChild(imgEl);
             document.getElementById("meterReading_picture_frame_edit").setAttribute("class","displayBlock");
             document.getElementById("meterReading_picture_form").setAttribute("class","displayHidden");
-            picturePresent= "Y";
+            picturePresent= true;
           });
         } else {
           document.getElementById("meterReading_picture_form").setAttribute("class","displayBlock");
           document.getElementById("meterReading_picture_frame_edit").setAttribute("class","displayHidden");
           document.getElementById("meterReading_picture_file").value = "";
           document.getElementById("meterReading_picture_text").value = "";
-          picturePresent= "";
+          picturePresent= false;
         };
         M.updateTextFields();
       };
@@ -2096,8 +2096,8 @@
         document.getElementById("meterReading_date").value = readings[0].date;
         emptyHTMLSet(document.getElementById("meterReading_picture"));
         emptyHTMLSet(document.getElementById("meterReading_picture_show"));
-        if (readingData.picture) {
-          refCopropertyFiles.child(selectedReadingPropertyId).child("Meters").child(selectedReadingId).getDownloadURL().then(function(url) {
+        if (readingData.readings[0].picture) {
+          refCopropertyFiles.child(selectedReadingPropertyId).child("Meters").child(selectedReadingId).child((readingData.readings[0].counter).toString()).getDownloadURL().then(function(url) {
             var imgEl = document.createElement("img");
             imgEl.setAttribute("width","400");
             imgEl.setAttribute("height","300");
