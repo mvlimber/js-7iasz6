@@ -2151,7 +2151,7 @@
       function writeMeterReading(){
         var pictureFileText = document.getElementById("meterReading_picture_text").value;
         if (validateMeterReading()) {
-          var thisReading = selectedReadingData.readings[0],
+          var thisReading = selectedReadingData.readings[0];
           thisReading.reading = document.getElementById("meterReading_reading_edit").value;
           thisReading.date = document.getElementById("meterReading_date_edit").value;
           if (pictureFileText) { 
@@ -2159,7 +2159,7 @@
             thisReading.picture= true;
             refCoproperty.collection("Properties").doc(selectedReadingPropertyId).collection("Meters").doc(selectedReadingId).update({readings:selectedReadingData.readings}).then(function() {
               var pictureFile = document.getElementById('meterReading_picture_file').files[0];
-              var fileRef = refCopropertyFiles.child(selectedReadingPropertyId).child("Meters").child(selectedReadingId);  
+              var fileRef = refCopropertyFiles.child(selectedReadingPropertyId).child("Meters").child(selectedReadingId).child((thisReading.counter).toString());  
               fileRef.put(pictureFile).then (function (){});
               refreshMeterReadings();
               M.Modal.getInstance(document.getElementById("meterReadingWrite")).close();
