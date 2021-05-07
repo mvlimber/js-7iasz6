@@ -2049,11 +2049,13 @@
       };
 
       var selectedReadingId;
+      var selectedReadingData;
       var selectedReadingPropertyId;
       var picturePresent;
       function setSelectedMeterReading_edit(propertyId, propertyData,readingID, readingData){
         selectedReadingId = readingID;
         selectedReadingPropertyId = propertyId;
+        selectedReadingData = readingData;
         document.getElementById("meterReading_property_edit").value = propertyData.code;
         document.getElementById("meterReading_type_edit").value = readingData.type;
         document.getElementById("meterReading_id_edit").value = readingData.meter;
@@ -2149,14 +2151,13 @@
       function writeMeterReading(){
         var pictureFileText = document.getElementById("meterReading_picture_text").value;
         if (validateMeterReading()) {
+          var thisReading = selectedReadingData.readings[0],
+          thisReading.reading = document.getElementById("meterReading_reading_edit").value;
+          thisReading.date = document.getElementById("meterReading_date_edit").value;
           if (pictureFileText) { 
             // A new picture has been attached
-            var entries = {
-              reading: document.getElementById("meterReading_reading_edit").value,
-              date: document.getElementById("meterReading_date_edit").value,
-              picture: "Y",
-            };
-            refCoproperty.collection("Properties").doc(selectedReadingPropertyId).collection("Meters").doc(selectedReadingId).update(entries).then(function() {
+            thisReading.picture= true;
+            refCoproperty.collection("Properties").doc(selectedReadingPropertyId).collection("Meters").doc(selectedReadingId).update({readings:selectedReadingData.readings}).then(function() {
               var pictureFile = document.getElementById('meterReading_picture_file').files[0];
               var fileRef = refCopropertyFiles.child(selectedReadingPropertyId).child("Meters").child(selectedReadingId);  
               fileRef.put(pictureFile).then (function (){});
@@ -2167,12 +2168,8 @@
             });
           } else {
             // No new picture attached: either existing picture or no picture or pictuture was removed
-            var entries = {
-              reading: document.getElementById("meterReading_reading_edit").value,
-              date: document.getElementById("meterReading_date_edit").value,
-              picture: picturePresent,
-            };
-            refCoproperty.collection("Properties").doc(selectedReadingPropertyId).collection("Meters").doc(selectedReadingId).update(entries).then(function(docref) {
+            thisReading.picture= picturePresent;
+            refCoproperty.collection("Properties").doc(selectedReadingPropertyId).collection("Meters").doc(selectedReadingId).update({readings:selectedReadingData.readings}).then(function(docref) {
               refreshMeterReadings();
               M.Modal.getInstance(document.getElementById("meterReadingWrite")).close();
             }).catch(function(error) {
