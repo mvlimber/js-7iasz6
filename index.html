@@ -3150,7 +3150,7 @@
       };
       
       function downloadQuarter(){
-        var buildingWaterDifference = 220;  
+        var buildingWaterDifference = 300;  
         var buildingWater = 0
         var buildingHeating = 0;
         var buildingCommon = 0;
@@ -3245,13 +3245,15 @@
                   metersFS.forEach(function(meterFS){
                     var meterData = meterFS.data();
                     /*var differenceV = parseFloat(meterData.reading) - parseFloat(meterData.lastReading);*/
-                    var differenceV = parseFloat(meterData.readings[0].reading) - parseFloat(meterData.readings[1].reading);
+                    var lastReading = meterData.readings[1].reading;
+                    var newReading = meterData.readings[0].reading;
+                    var differenceV = parseFloat(newReading) - parseFloat(lastReading);
                     if (meterData.type == "Heating") {
                       totalHeatingDifference = totalHeatingDifference + differenceV;
                     } else if (meterData.type == "Hot Water"){
                       totalHotWaterDifference = totalHotWaterDifference + differenceV;
                     };
-                    dataConsumption.push({ownerId:ownerIdV, owner:ownerName, property:prData.code, meter:meterData.meter, type:meterData.type, last_reading:meterData.lastReading, reading:meterData.reading, difference:differenceV.toString(), water: " ", heating:" "});
+                    dataConsumption.push({ownerId:ownerIdV, owner:ownerName, property:prData.code, meter:meterData.meter, type:meterData.type, last_reading:lastReading, reading:newReading, difference:differenceV.toString(), water: " ", heating:" "});
                   });
                   iteratorCount = iteratorCount + 1;
                   if (iteratorCount == propertiesFS.docs.length) {
