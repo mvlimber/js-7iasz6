@@ -1242,6 +1242,9 @@
         }
       };
       var roleAdministrator = 1;
+      var currentCoproperty = {
+        lastCloseDate : "2021/05/08"
+      };
       function showPasswordSet() {
       document.getElementById("loginPanel").setAttribute("class","displayHidden");
       document.getElementById("setPasswordPanel").setAttribute("class","displayBlock");
@@ -1975,6 +1978,11 @@
         objectsRow.appendChild(cell);
         
         var meterData = meterFS.data();
+        if (meterData.readings[0].date.localCompare(currentCoproperty.lastCloseDate) < 1) {
+          /* newest reading is in closed period: fake empty record */
+          meterData.readings.push
+!!!HIER VERDER INVULLEN !!!
+        };
         var cellContent = document.createElement('button');
         if (currentUser.role == roleAdministrator || currentUser.id == propertyFS.data().owner) {
           cellContent.setAttribute("data-target", "meterReadingWrite");
