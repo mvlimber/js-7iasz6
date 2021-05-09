@@ -1243,7 +1243,7 @@
       };
       var roleAdministrator = 1;
       var currentCoproperty = {
-        lastCloseDate : "2021/05/08"
+        lastCloseDate : "2021/05/04"
       };
       function showPasswordSet() {
       document.getElementById("loginPanel").setAttribute("class","displayHidden");
@@ -1978,15 +1978,19 @@
         objectsRow.appendChild(cell);
         
         var meterData = meterFS.data();
-        if (meterData.readings[0].date.localCompare(currentCoproperty.lastCloseDate) < 1) {
+        if (meterData.readings[0].date.localeCompare(currentCoproperty.lastCloseDate) < 1) {
           /* newest reading is in closed period: fake empty record */
-          meterData.readings.push
-!!!HIER VERDER INVULLEN !!!
+          meterData.readings.unshift({
+            counter : meterData.readings[0].counter + 1,
+            picture : false,
+            reading : "",
+            date: "",
+          });
         };
         var cellContent = document.createElement('button');
         if (currentUser.role == roleAdministrator || currentUser.id == propertyFS.data().owner) {
           cellContent.setAttribute("data-target", "meterReadingWrite");
-            cellContent.setAttribute('onclick','setSelectedMeterReading_edit('+JSON.stringify(propertyFS.id)+','+JSON.stringify(propertyFS.data())+','+JSON.stringify(meterFS.id)+','+JSON.stringify(meterFS.data())+')');
+            cellContent.setAttribute('onclick','setSelectedMeterReading_edit('+JSON.stringify(propertyFS.id)+','+JSON.stringify(propertyFS.data())+','+JSON.stringify(meterFS.id)+','+JSON.stringify(meterData)+')');
         } else {
           cellContent.setAttribute("data-target", "meterReadingRead");
           cellContent.setAttribute('onclick','setSelectedMeterReading_readonly('+JSON.stringify(propertyFS.id)+','+JSON.stringify(propertyFS.data())+')');
@@ -2026,7 +2030,7 @@
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);  
 
-        cellContent = document.createTextNode(meterData.date);
+        cellContent = document.createTextNode(meterData.readings[0].date);
         cell = document.createElement('td');
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);
