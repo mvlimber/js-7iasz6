@@ -649,7 +649,7 @@
                     </div>
                     <br>
                     <div class="input-field ">
-                      <input id="meterReading_date_edit" type="text" class="datepicker validate" required required="true">
+                      <input id="meterReading_date_edit" type="date" class="datepicker validate" required required="true">
                       <label for="meterReading_date_edit">Reading Date<b><font color='red'>*</font></b></label>
                       <span class="helper-text" data-error="required field" ></span>
                     </div>
@@ -1243,7 +1243,7 @@
       };
       var roleAdministrator = 1;
       var currentCoproperty = {
-        lastCloseDate : "2021/01/02"
+        lastCloseDate : "2021-01-02"
       };
       function showPasswordSet() {
       document.getElementById("loginPanel").setAttribute("class","displayHidden");
@@ -1417,7 +1417,7 @@
     const tabsContainer = document.querySelector(".tabs");
     M.Tabs.init(tabsContainer,options);
     elems = document.querySelectorAll('.datepicker');
-    instances = M.Datepicker.init(elems, {maxDate: new Date(),format: 'yyyy/mm/dd'});
+    instances = M.Datepicker.init(elems, {maxDate: new Date(),format: 'yyyy-mm-dd'});
 
     
     elems = document.querySelectorAll('.modal');
