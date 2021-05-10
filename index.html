@@ -297,6 +297,12 @@
                     <input id="chargesReport_closeDate" type="date" required required="true">
                     <label for="chargesReport_closeDate">Accountancy close date<b><font color='red'>*</font></b></label>
                   </div>
+                  <div class="input-field col s6 m6">
+                    <select id="chargesReport_metersIncluded" required aria-required="true">
+                    <option value="" disabled selected>Indicate if meter readings should be included</option>
+                    <option>Yes</option>
+                    <option>No</option>
+                  </select>
                 </form>
               </div>
             </div>
@@ -1279,12 +1285,13 @@
       };
       var roleAdministrator = 1;
       var currentCoproperty = {
-        lastCloseDate : "2021-01-02"
+        closeDateTransactions : "2021-01-02",
+        closeDateMeters : "2021-01-02"
       };
 
       function checkBookDate (bookDate){
         /* applied both for transactions and for meter readings */
-        if (bookDate.localeCompare(currentCoproperty.lastCloseDate) < 1) { return false;} 
+        if (bookDate.localeCompare(currentCoproperty.closeDateTransactions) < 1) { return false;} 
         else { return true;};
       };
 
@@ -1658,7 +1665,8 @@
 
     function prepareChargesReport() {
       if (validateChargesReportAdd()) {
-        generateChargesReport();
+        var metersIn = (document.getElementById("chargesReport_metersIncluded").value == "Yes");
+        generateChargesReport(document.getElementById("chargesReport_closeDate").value, metersIn);
       };
     };
 
@@ -2065,7 +2073,7 @@
         objectsRow.appendChild(cell);
         
         var meterData = meterFS.data();
-        if (meterData.readings[0].date.localeCompare(currentCoproperty.lastCloseDate) < 1) {
+        if (meterData.readings[0].date.localeCompare(currentCoproperty.closeDateMeters) < 1) {
           /* newest reading is in closed period: fake empty record */
           meterData.readings.unshift({
             counter : meterData.readings[0].counter + 1,
@@ -3251,7 +3259,7 @@
         
       };
       
-      function generateChargesReport(){
+      function generateChargesReport(closeDateTransactions, metersIncluded){
         var buildingWaterDifference = 300;  
         var buildingWater = 0
         var buildingHeating = 0;
@@ -3304,9 +3312,25 @@
         ];
         var dataCharges = [];
         
-        refCoproperty.collection("Transactions").orderBy("type").get().then(function(transactionsFS){
-          transactionsFS.forEach(function(transactionFS){
-            var trData = transactionFS.data();
+        refCoproperty.collection("Transactions").where("bookDate", ">", currentCoproperty.closeDateTransactions).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){transactionsFS.forEach(function(transactionFS){
+          var trData = transactionFS.data();
+          if ((trData.type !== "Water") && (trData.type !== "Heating")) {
+            if (!trData.communication) {
+              trData.communication=" ";
+            } else {
+              trData.communication=trData.communication.substr(0,54);
+            };
+            trData.name=trData.name.substr(0,25);
+            var amount = Number(trData.amount);
+            trData.amount = amount.toLocaleString("nl-BE",currencyStyle);
+            
+            dataCommon.push(trData);
+            buildingCommon = buildingCommon + amount;
+          };
+        });
+        refCoproperty.collection("Transactions").where("bookDate", ">", currentCoproperty.closeDateMeters).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){transactionsFS.forEach(function(transactionFS){
+          var trData = transactionFS.data();
+          if ((trData.type == "Water") || (trData.type !== "Heating")) {
             if (!trData.communication) {
               trData.communication=" ";
             } else {
@@ -3318,60 +3342,58 @@
             if (trData.type == "Water"){
               dataWater.push(trData);
               buildingWater = buildingWater + amount;
-            } else if (trData.type == "Heating"){
+            } else {
               dataHeating.push(trData);
               buildingHeating = buildingHeating + amount;
-            } else {
-              dataCommon.push(trData);
-              buildingCommon = buildingCommon + amount;
-            };
+            } ;
+          };
+        });
+        dataWater.push({type:"Total",name:" ",communication:" ",amount:buildingWater.toLocaleString("nl-BE",currencyStyle)});
+        dataHeating.push({type:"Total",name:" ",communication:" ",amount:buildingHeating.toLocaleString("nl-BE",currencyStyle)});
+        
+        
+        refCoproperty.collection("Members").get().then(function(membersFS) { 
+          var idMemberMap = [];
+          membersFS.forEach(function(memberFS){
+            idMemberMap[memberFS.id] = (memberFS.data().lastName + " " + memberFS.data().firstName).substr(0,25);
           });
-          dataWater.push({type:"Total",name:" ",communication:" ",amount:buildingWater.toLocaleString("nl-BE",currencyStyle)});
-          dataHeating.push({type:"Total",name:" ",communication:" ",amount:buildingHeating.toLocaleString("nl-BE",currencyStyle)});
-          
-          
-          refCoproperty.collection("Members").get().then(function(membersFS) { 
-            var idMemberMap = [];
-            membersFS.forEach(function(memberFS){
-              idMemberMap[memberFS.id] = (memberFS.data().lastName + " " + memberFS.data().firstName).substr(0,25);
-            });
-            refCoproperty.collection("Properties").orderBy("owner").get().then(function(propertiesFS){
-              var iteratorCount = 0;
-              propertiesFS.forEach(function(prFS){
-                var prData = prFS.data();
-                var ownerIdV = prData.owner;
-                var ownerName = idMemberMap[ownerIdV];
-                dataQuota.push({ownerId:ownerIdV, owner:ownerName, property:prData.code, quota:prData.quota, period:"100%", quota_period: prData.quota, amount:" "}); 
-                totalQuota = totalQuota + parseInt(prData.quota); 
-                refCoproperty.collection("Properties").doc(prFS.id).collection("Meters").get().then(function(metersFS){
-                  metersFS.forEach(function(meterFS){
-                    var meterData = meterFS.data();
-                    /*var differenceV = parseFloat(meterData.reading) - parseFloat(meterData.lastReading);*/
-                    var lastReading = meterData.readings[1].reading;
-                    var newReading = meterData.readings[0].reading;
-                    var differenceV = parseFloat(newReading) - parseFloat(lastReading);
-                    if (meterData.type == "Heating") {
-                      totalHeatingDifference = totalHeatingDifference + differenceV;
-                    } else if (meterData.type == "Hot Water"){
-                      totalHotWaterDifference = totalHotWaterDifference + differenceV;
-                    };
-                    dataConsumption.push({ownerId:ownerIdV, owner:ownerName, property:prData.code, meter:meterData.meter, type:meterData.type, last_reading:lastReading, reading:newReading, difference:differenceV.toString(), water: " ", heating:" "});
-                  });
-                  iteratorCount = iteratorCount + 1;
-                  if (iteratorCount == propertiesFS.docs.length) {
-                    var totalledConsumptionData = makeSubtotalsConsumption (dataConsumption,buildingWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataCharges);
-                    dataCommon.push({type:"Water",name:" ",communication:"Water for common parts",amount:waterCommonParts.toLocaleString("nl-BE",currencyStyle)});
-                    buildingCommon = buildingCommon + waterCommonParts;
-                    var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon, dataCharges);
-                    dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toLocaleString("nl-BE",currencyStyle)});
-                    var dataChargesCurrency = putChargesCurrency(Object.values(dataCharges));
-                    writePDF(headerCommon, dataWater, dataHeating, dataCommon, headerConsumption, totalledConsumptionData, headerQuota, totalledQuotaData, headerCharges, dataChargesCurrency);
+          refCoproperty.collection("Properties").orderBy("owner").get().then(function(propertiesFS){
+            var iteratorCount = 0;
+            propertiesFS.forEach(function(prFS){
+              var prData = prFS.data();
+              var ownerIdV = prData.owner;
+              var ownerName = idMemberMap[ownerIdV];
+              dataQuota.push({ownerId:ownerIdV, owner:ownerName, property:prData.code, quota:prData.quota, period:"100%", quota_period: prData.quota, amount:" "}); 
+              totalQuota = totalQuota + parseInt(prData.quota); 
+              refCoproperty.collection("Properties").doc(prFS.id).collection("Meters").get().then(function(metersFS){
+                metersFS.forEach(function(meterFS){
+                  var meterData = meterFS.data();
+                  /*var differenceV = parseFloat(meterData.reading) - parseFloat(meterData.lastReading);*/
+                  var lastReading = meterData.readings[1].reading;
+                  var newReading = meterData.readings[0].reading;
+                  var differenceV = parseFloat(newReading) - parseFloat(lastReading);
+                  if (meterData.type == "Heating") {
+                    totalHeatingDifference = totalHeatingDifference + differenceV;
+                  } else if (meterData.type == "Hot Water"){
+                    totalHotWaterDifference = totalHotWaterDifference + differenceV;
                   };
+                  dataConsumption.push({ownerId:ownerIdV, owner:ownerName, property:prData.code, meter:meterData.meter, type:meterData.type, last_reading:lastReading, reading:newReading, difference:differenceV.toString(), water: " ", heating:" "});
                 });
+                iteratorCount = iteratorCount + 1;
+                if (iteratorCount == propertiesFS.docs.length) {
+                  var totalledConsumptionData = makeSubtotalsConsumption (dataConsumption,buildingWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataCharges);
+                  dataCommon.push({type:"Water",name:" ",communication:"Water for common parts",amount:waterCommonParts.toLocaleString("nl-BE",currencyStyle)});
+                  buildingCommon = buildingCommon + waterCommonParts;
+                  var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon, dataCharges);
+                  dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toLocaleString("nl-BE",currencyStyle)});
+                  var dataChargesCurrency = putChargesCurrency(Object.values(dataCharges));
+                  writePDF(headerCommon, dataWater, dataHeating, dataCommon, headerConsumption, totalledConsumptionData, headerQuota, totalledQuotaData, headerCharges, dataChargesCurrency);
+                };
               });
-             }).catch(function(error) {
-                M.toast({html:"Error during properties upload:" + error});
-             });
+            });
+            }).catch(function(error) {
+              M.toast({html:"Error during properties upload:" + error});
+            });
           });
         }).catch(function(error) {
             M.toast({html:"Error during expenses upload:" + error});
