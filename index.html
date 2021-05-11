@@ -303,6 +303,7 @@
                     <option>Yes</option>
                     <option>No</option>
                     </select>
+                    <label>Include Meter Readings<b><font color='red'>*</font></b></label>
                   </div>
                 </form>
               </div>
@@ -3361,6 +3362,7 @@
             });
             refCoproperty.collection("Properties").orderBy("owner").get().then(function(propertiesFS){
               var iteratorCount = 0;
+              var stop = false;
               propertiesFS.forEach(function(prFS){
                 var prData = prFS.data();
                 var ownerIdV = prData.owner;
@@ -3373,8 +3375,8 @@
                       var meterData = meterFS.data();
                       var readingDate = meterData.readings[0].date;
                       if ((!checkBookDate(readingDate))|| (readingDate.localeCompare(closeDateTransactions)>0)) {
-                        M.toast({html:"following meter reading is missing or out of period: " + meterdata.meter});
-                        return false;
+                        M.toast({html:"following meter reading is missing or out of period: " + meterData.meter});
+                        stop = true;
                       };
                       /*var differenceV = parseFloat(meterData.reading) - parseFloat(meterData.lastReading);*/
                       var lastReading = meterData.readings[1].reading;
@@ -3388,15 +3390,17 @@
                       dataConsumption.push({ownerId:ownerIdV, owner:ownerName, property:prData.code, meter:meterData.meter, type:meterData.type, last_reading:lastReading, reading:newReading, difference:differenceV.toString(), water: " ", heating:" "});
                     });
                   };
-                  iteratorCount = iteratorCount + 1;
-                  if (iteratorCount == propertiesFS.docs.length) {
-                    var totalledConsumptionData = makeSubtotalsConsumption (dataConsumption,buildingWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataCharges);
-                    dataCommon.push({type:"Water",name:" ",communication:"Water for common parts",amount:waterCommonParts.toLocaleString("nl-BE",currencyStyle)});
-                    buildingCommon = buildingCommon + waterCommonParts;
-                    var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon, dataCharges);
-                    dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toLocaleString("nl-BE",currencyStyle)});
-                    var dataChargesCurrency = putChargesCurrency(Object.values(dataCharges));
-                    writePDF(headerCommon, dataWater, dataHeating, dataCommon, headerConsumption, totalledConsumptionData, headerQuota, totalledQuotaData, headerCharges, dataChargesCurrency);
+                  if (!stop) {
+                    iteratorCount = iteratorCount + 1;
+                    if (iteratorCount == propertiesFS.docs.length) {
+                      var totalledConsumptionData = makeSubtotalsConsumption (dataConsumption,buildingWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataCharges);
+                      dataCommon.push({type:"Water",name:" ",communication:"Water for common parts",amount:waterCommonParts.toLocaleString("nl-BE",currencyStyle)});
+                      buildingCommon = buildingCommon + waterCommonParts;
+                      var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon, dataCharges);
+                      dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toLocaleString("nl-BE",currencyStyle)});
+                      var dataChargesCurrency = putChargesCurrency(Object.values(dataCharges));
+                      writePDF(headerCommon, dataWater, dataHeating, dataCommon, headerConsumption, totalledConsumptionData, headerQuota, totalledQuotaData, headerCharges, dataChargesCurrency);
+                    };
                   };
                 });
               });
