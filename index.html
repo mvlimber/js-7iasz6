@@ -297,12 +297,13 @@
                     <input id="chargesReport_closeDate" type="date" required required="true">
                     <label for="chargesReport_closeDate">Accountancy close date<b><font color='red'>*</font></b></label>
                   </div>
-                  <div class="input-field col s6 m6">
+                  <div class="input-field col s12 m6">
                     <select id="chargesReport_metersIncluded" required aria-required="true">
                     <option value="" disabled selected>Indicate if meter readings should be included</option>
                     <option>Yes</option>
                     <option>No</option>
-                  </select>
+                    </select>
+                  </div>
                 </form>
               </div>
             </div>
@@ -3313,8 +3314,9 @@
         var dataCharges = [];
         
         var closeDateToStartFrom;
-        if (metersIncluded) {closeDateToStartFrom = currentCoproperty.closeDateMeters}
-        else {closeDateToStartFrom = currentCoproperty.closeDateTransactions};
+        if (metersIncluded) {closeDateToStartFrom = currentCoproperty.closeDateMeters;
+        } else {closeDateToStartFrom = currentCoproperty.closeDateTransactions;
+        };
         refCoproperty.collection("Transactions").where("bookDate", ">", closeDateToStartFrom).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){
           transactionsFS.forEach(function(transactionFS){
             var trData = transactionFS.data();
