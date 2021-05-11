@@ -3371,11 +3371,11 @@
                   if (metersIncluded){
                     metersFS.forEach(function(meterFS){
                       var meterData = meterFS.data();
-                      var readingDate = meterdata.readings[0].date;
-                      if (!checkBookDate(readingDate))|| (readingdate.localeCompare(closeDateTransactions)>0) {
+                      var readingDate = meterData.readings[0].date;
+                      if ((!checkBookDate(readingDate))|| (readingDate.localeCompare(closeDateTransactions)>0)) {
                         M.toast({html:"following meter reading is missing or out of period: " + meterdata.meter});
                         return false;
-                      }
+                      };
                       /*var differenceV = parseFloat(meterData.reading) - parseFloat(meterData.lastReading);*/
                       var lastReading = meterData.readings[1].reading;
                       var newReading = meterData.readings[0].reading;
