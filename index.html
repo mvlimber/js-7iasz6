@@ -1289,8 +1289,8 @@
       };
       var roleAdministrator = 1;
       var currentCoproperty = {
-        closeDateTransactions : "2021-01-02",
-        closeDateMeters : "2021-01-02"
+        closeDateTransactions : "2020-12-31",
+        closeDateMeters : "2020-12-31"
       };
 
       function checkBookDate (bookDate){
@@ -1765,7 +1765,7 @@
 
       function popupChargesReportRemoved(chargesReportId) {
         refCoproperty.collection("ChargesReports").doc(chargesReportId).delete().then(function(){
-          refCopropertyFiles.collection("ChargesReports").child(chargesReportId + '.pdf').delete().then({}});
+          refCopropertyFiles.collection("ChargesReports").child(chargesReportId + '.pdf').delete().then({});
           refreshChargesReports();
           M.toast({html:"Charges report removed: correct your data and generate a new charges report anytime"});
         }).catch(function(error) {
@@ -3500,7 +3500,7 @@
                       var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon, dataCharges);
                       dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toLocaleString("nl-BE",currencyStyle)});
                       var dataChargesCurrency = putChargesCurrency(Object.values(dataCharges));
-                      writePDF(headerCommon, dataWater, dataHeating, dataCommon, headerConsumption, totalledConsumptionData, headerQuota, totalledQuotaData, headerCharges, dataChargesCurrency);
+                      writePDF(closeDateTransactions, metersIncluded, headerCommon, dataWater, dataHeating, dataCommon, headerConsumption, totalledConsumptionData, headerQuota, totalledQuotaData, headerCharges, dataChargesCurrency);
                     };
                   };
                 });
@@ -3633,7 +3633,7 @@
           return result;
         };
         
-        function writePDF (headerCommon, dataWater, dataHeating, dataCommon, headerConsumption,dataConsumption,  headerQuota, dataQuota, headerCharges, tableCharges){
+        function writePDF (closeDateTransactions, metersIncludedHere, headerCommon, dataWater, dataHeating, dataCommon, headerConsumption,dataConsumption,  headerQuota, dataQuota, headerCharges, tableCharges){
           const rowsLandscape =15;
           const rowsPortrait =24;
           const numPages = 1 + Math.ceil(dataWater.length/rowsPortrait) + Math.ceil(dataHeating.length/rowsPortrait) + Math.ceil(dataConsumption.length/rowsLandscape) + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsPortrait) + Math.ceil(tableCharges.length/rowsLandscape);
@@ -3707,12 +3707,18 @@
           printTablePortrait("Common charges: quota per owner", dataQuota, headerQuota);
           printTableLandscape("Total charges: total charges per owner", tableCharges, headerCharges);
           
-          doc.save();
-          return true;
-          /*
-          var fileRef = refCopropertyFiles.child("Periodic").child("Q2021_TR1");  
-          fileRef.put(doc.output("blob"));
-          */
+          /*doc.save();*/
+          
+          var startDateHere = new Date("2020-12-31");
+          startDateHere.setDate(startDateHere.getDate() + 1);
+          refCoproperty.collection("ChargesReports").add({startDate: startDateHere, endDate: closeDateTransactions, metersIncluded: metersIncludedHere, confirmed: false }).then (function (chargesReportFS){
+            var fileRef = refCopropertyFiles.child("ChargesReports").child(chargesReportFS);  
+            fileRef.put(doc.output("blob"));
+            return true;
+          }).catch(function(error) {
+              M.toast({html:"Error saving charges report:" + error});
+          });
+
         };
         
       }
