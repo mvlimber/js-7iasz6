@@ -322,21 +322,23 @@
             <thead>
               <tr>
                 <th>Period</th>
-                <th>Creation Date</th>
+                <th>Meter readings included?</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="chargesReportsTable">
+            </tbody>
+            <!-- <tbody>
               <tr>
                 <td>
                   <button style="border:none;background-color:Transparent" onclick="showThisURL2()"><font color=" #0000FF">2020-01-01 to 2020-12-31</font></button>
                 </td>
                 <td>Sat Jan 02 2021</td>
               </tr>
-            </tbody>
+            </tbody>  -->
           </table>
           <br>
           <div id="Reports_Generate" class="displayHidden">
-            <button style="float: right" data-target="chargesReportAdd" class="btn-small waves-light modal-trigger"><i class="material-icons right">add</i>Generate New Charges Report</button>
+            <button style="float: right" data-target="chargesReportAdd" class="btn-small waves-light modal-trigger" onclick="emptyFieldsChargesReportAdd()"><i class="material-icons right">add</i>Generate New Charges Report</button>
           </div>
           <br><br>
           <h6 style="font-size:20px "><b>Reports uploaded by users</b></h6>
@@ -1571,6 +1573,7 @@
       function loadReports() {
       hideMenu();
       document.getElementById("logo-container").innerHTML = "MyCondos: Reports";
+      loadChargesReports();
       if (!reportsLoaded) {
             refreshReports();
             reportsLoaded = true;
@@ -1653,6 +1656,14 @@
         });
       };
 
+    function emptyFieldsChargesReportAdd() {
+      document.getElementById("chargesReport_closeDate").value = "";
+      document.getElementById("chargesReport_metersIncluded").value = "";
+      var elems = document.querySelectorAll('select');
+      M.FormSelect.init(elems);
+      M.updateTextFields();
+    };
+    
     function validateChargesReportAdd() {
       var valid = true
       if (!document.getElementById("chargesReport_closeDate").checkValidity()) {
@@ -1671,6 +1682,85 @@
         generateChargesReport(document.getElementById("chargesReport_closeDate").value, metersIn);
       };
     };
+
+    function loadChargesReport (objectFS){
+        var object = objectFS.data();
+        if ((!object.confirmed) && (currentUser.role !== roleAdministrator)) {return};
+        var objectsRow= document.createElement('tr');
+        
+        var cellContent = document.createElement("button");
+        cellContent.setAttribute('style','border:none;background-color:Transparent');
+        cellContent.setAttribute('class','modal-trigger');
+        cellContent.setAttribute('data-target','fileShow');
+        refCopropertyFiles.child("ChargesReports").child(objectFS.id).getDownloadURL().then(function(url) {
+          
+        cellContent.setAttribute('onclick','showReport('+JSON.stringify(url)+')');
+        cellContent.innerHTML = "<font color='#0000FF'>" + object.startDate + " to " +object.endDate + "</font>";
+        var cell = document.createElement('td');
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell);
+        
+        if (object.metersIncluded) {cellContent = document.createTextNode("Yes");}
+        else {cellContent = document.createTextNode("No");};
+        cell = document.createElement('td');
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell);  
+        
+        if (!object.confirmed) {
+          cellContent = document.createElement('button');
+          cellContent.setAttribute('class','btn-small waves-light');
+          cellContent.setAttribute('onclick','popupChargesReportConfirmed()');
+          var cellButtonIcon = document.createElement('i');
+          cellButtonIcon.setAttribute('class','material-icons right');
+          cellButtonIcon.innerHTML="verified_user";           
+          cellContent.appendChild(cellButtonIcon);
+          cellContent.innerHTML = "Confirm";
+
+          cell = document.createElement('td');
+          cell.appendChild(cellContent);
+          objectsRow.appendChild(cell);  
+
+          cellContent = document.createElement('button');
+          cellContent.setAttribute('class','btn-small waves-light red');
+          cellContent.setAttribute('onclick','popupChargesReportRemoved()');
+          var cellButtonIcon = document.createElement('i');
+          cellButtonIcon.setAttribute('class','material-icons right');
+          cellButtonIcon.innerHTML="delete";           
+          cellContent.appendChild(cellButtonIcon);
+          cellContent.innerHTML = "Remove";
+
+          cell = document.createElement('td');
+          cell.appendChild(cellContent);
+          objectsRow.appendChild(cell);    
+        };
+        chargesReportsTable.appendChild (objectsRow);
+        });
+      };
+
+      function refreshChargesReports(){
+        emptyHTMLSet(chargesReportsTable);
+        refCoproperty.collection("ChargesReports").orderBy("endDate","desc").get().then(function(objectsFSArray){
+            objectsFSArray.forEach(function(objectFS){
+              loadReport(objectFS);
+            })
+          });
+      };
+
+      var chargesReportsLoaded = false;
+      function loadChargesReports() {
+      if (!chargesReportsLoaded) {
+            refreshChargesReports();
+            chargesReportsLoaded = true;
+          };
+      };
+
+      function popupChargesReportConfirmed() {
+        M.toast({html:"Charges report now visible to owners"});
+      };
+
+      function popupChargesReportRemoved() {
+        M.toast({html:"Charges report remowed: you can generate a new one anytime after your coreections"});
+      };
 
     </script>
     <!--   Transaction scripts start here -->
