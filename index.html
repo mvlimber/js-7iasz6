@@ -1692,7 +1692,7 @@
         cellContent.setAttribute('style','border:none;background-color:Transparent');
         cellContent.setAttribute('class','modal-trigger');
         cellContent.setAttribute('data-target','fileShow');
-        refCopropertyFiles.child("ChargesReports").child(objectFS.id).getDownloadURL().then(function(url) {
+        refCopropertyFiles.child("ChargesReports").child(objectFS.id + ".pdf").getDownloadURL().then(function(url) {
           
         cellContent.setAttribute('onclick','showReport('+JSON.stringify(url)+')');
         cellContent.innerHTML = "<font color='#0000FF'>" + object.startDate + " to " +object.endDate + "</font>";
