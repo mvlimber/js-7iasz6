@@ -1680,6 +1680,8 @@
       if (validateChargesReportAdd()) {
         var metersIn = (document.getElementById("chargesReport_metersIncluded").value == "Yes");
         generateChargesReport(document.getElementById("chargesReport_closeDate").value, metersIn);
+        refreshChargesReports();
+
       };
     };
 
@@ -1692,7 +1694,7 @@
         cellContent.setAttribute('style','border:none;background-color:Transparent');
         cellContent.setAttribute('class','modal-trigger');
         cellContent.setAttribute('data-target','fileShow');
-        refCopropertyFiles.child("ChargesReports").child(objectFS.id + ".pdf").getDownloadURL().then(function(url) {
+        refCopropertyFiles.child("ChargesReports").child(objectFS.id).getDownloadURL().then(function(url) {
           
         cellContent.setAttribute('onclick','showReport('+JSON.stringify(url)+')');
         cellContent.innerHTML = "<font color='#0000FF'>" + object.startDate + " to " +object.endDate + "</font>";
@@ -1765,7 +1767,7 @@
 
       function popupChargesReportRemoved(chargesReportId) {
         refCoproperty.collection("ChargesReports").doc(chargesReportId).delete().then(function(){
-          refCopropertyFiles.collection("ChargesReports").child(chargesReportId + '.pdf').delete().then({});
+          refCopropertyFiles.child("ChargesReports").child(chargesReportId).delete().then({});
           refreshChargesReports();
           M.toast({html:"Charges report removed: correct your data and generate a new charges report anytime"});
         }).catch(function(error) {
@@ -3359,7 +3361,6 @@
       function loadSettings() {
         hideMenu();
         document.getElementById("logo-container").innerHTML = "MyCondos: Settings";
-        
       };
       
       function generateChargesReport(closeDateTransactions, metersIncluded){
@@ -3512,216 +3513,225 @@
         }).catch(function(error) {
             M.toast({html:"Error during expenses upload:" + error});
         });
-        
-        function putChargesCurrency(dataChargesValues){
-          dataChargesValues.forEach(function(arrayEl) {
-            arrayEl.Total = (arrayEl.common + arrayEl.water + arrayEl.heating).toLocaleString("nl-BE",currencyStyle);
-            arrayEl.common = arrayEl.common.toLocaleString("nl-BE",currencyStyle);
-            arrayEl.water = arrayEl.water.toLocaleString("nl-BE",currencyStyle);
-            arrayEl.heating = arrayEl.heating.toLocaleString("nl-BE",currencyStyle);
-          });
-          return dataChargesValues;
+      };  
+
+      function putChargesCurrency(dataChargesValues){
+        dataChargesValues.forEach(function(arrayEl) {
+          arrayEl.Total = (arrayEl.common + arrayEl.water + arrayEl.heating).toLocaleString("nl-BE",currencyStyle);
+          arrayEl.common = arrayEl.common.toLocaleString("nl-BE",currencyStyle);
+          arrayEl.water = arrayEl.water.toLocaleString("nl-BE",currencyStyle);
+          arrayEl.heating = arrayEl.heating.toLocaleString("nl-BE",currencyStyle);
+        });
+        return dataChargesValues;
+      };
+      
+      function makeSubtotals (dataQuota,totalQuota, buildingCommon, dataCharges) {
+        var result = [];
+        var totalCommon = 0;
+        var currentOwnerId = "";
+        var count =0;
+        var subtotalAmount = 0;
+        var amount = 0;;
+        function writeData(arrayEl){
+          var amountString = (buildingCommon * parseInt(arrayEl.quota) / totalQuota).toFixed(2);
+          amount = Number(amountString);
+          arrayEl.amount = amount.toLocaleString("nl-BE",currencyStyle);
+          result.push(arrayEl);
+          subtotalAmount = subtotalAmount + amount;
+          dataCharges[arrayEl.ownerId].common = subtotalAmount;
         };
-        
-        function makeSubtotals (dataQuota,totalQuota, buildingCommon, dataCharges) {
-          var result = [];
-          var totalCommon = 0;
-          var currentOwnerId = "";
-          var count =0;
-          var subtotalAmount = 0;
-          var amount = 0;;
-          function writeData(arrayEl){
-            var amountString = (buildingCommon * parseInt(arrayEl.quota) / totalQuota).toFixed(2);
-            amount = Number(amountString);
-            arrayEl.amount = amount.toLocaleString("nl-BE",currencyStyle);
-            result.push(arrayEl);
-            subtotalAmount = subtotalAmount + amount;
-            dataCharges[arrayEl.ownerId].common = subtotalAmount;
-          };
-          dataQuota.forEach(function(arrayEl) {
-            if ((!currentOwnerId) || (arrayEl.ownerId == currentOwnerId)) {
-              count = count + 1;
-              writeData(arrayEl);
-            } else {
-              if (count > 1) {
-                result.push({ownerId:currentOwnerId, owner:"Total", property:"", quota:"", period:"", quota_period: "", amount:subtotalAmount.toLocaleString("nl-BE",currencyStyle)});
-              };
-              result.push({ownerId:" ", owner:"", property:"", quota:"", period:"", quota_period: "", amount:""});
-              count = 0;
-              subtotalAmount = 0;
-              writeData(arrayEl);
-            };
-            currentOwnerId = arrayEl.ownerId;
-            totalCommon = totalCommon + amount;   
-          });
-          if (count > 1) {
-                result.push({ownerId:currentOwnerId, owner:"Total", property:"", quota:"", period:"", quota_period: "", amount:subtotalAmount.toLocaleString("nl-BE",currencyStyle)});
-              };
-          result.push({ownerId:" ", owner:"", property:"", quota:"", period:"", quota_period: "", amount:""});
-          result.push({ownerId:" ", owner:"Total building", property:" ", quota:totalQuota.toString(), period:" ", quota_period: " ", amount:totalCommon.toLocaleString("nl-BE",currencyStyle)});
-          return result;
-        };
-        
-        function makeSubtotalsConsumption (dataConsumption,buildingWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataCharges) {
-          var result = [];
-          var buildingPureHeating;
-          var buildingHotWaterHeating;
-          if (totalHeatingDifference) {
-            buildingPureHeating = buildingHeating/2;
-            buildingHotWaterHeating = buildingHeating/2;
+        dataQuota.forEach(function(arrayEl) {
+          if ((!currentOwnerId) || (arrayEl.ownerId == currentOwnerId)) {
+            count = count + 1;
+            writeData(arrayEl);
           } else {
-            buildingPureHeating = buildingHeating;
-          };
-          var totalWater = 0;
-          var totalHeating = 0;
-          var amountWater = 0;
-          var amountHeating = 0;
-          var currentOwnerId = "";
-          var count =0;
-          var subtotalAmountWater = 0;
-          var subtotalAmountHeating = 0;
-          var subtotalAmountWaterCurrency = "";
-          var subtotalAmountHeatingCurrency = "";
-
-          function writeData(arrayEl){
-            var amountWaterString=" ";
-            var amountHeatingString=" ";
-            if (arrayEl.type == "Cold Water"){
-              amountWaterString = (buildingWater * parseInt(arrayEl.difference) / buildingWaterDifference).toFixed(2);
-            } else if (arrayEl.type == "Heating") {
-              amountHeatingString = (buildingPureHeating * parseInt(arrayEl.difference) / totalHeatingDifference).toFixed(2);
-            } else {
-              amountWaterString = (buildingWater * parseInt(arrayEl.difference) / buildingWaterDifference).toFixed(2);
-              amountHeatingString = (buildingHotWaterHeating * parseInt(arrayEl.difference) / totalHotWaterDifference).toFixed(2);
+            if (count > 1) {
+              result.push({ownerId:currentOwnerId, owner:"Total", property:"", quota:"", period:"", quota_period: "", amount:subtotalAmount.toLocaleString("nl-BE",currencyStyle)});
             };
-            amountWater = Number(amountWaterString);
-            amountHeating = Number(amountHeatingString);  
-            arrayEl.water = amountWater.toLocaleString("nl-BE",currencyStyle);
-            arrayEl.heating = amountHeating.toLocaleString("nl-BE",currencyStyle);
-            result.push(arrayEl);
-            subtotalAmountWater = subtotalAmountWater + amountWater;
-            subtotalAmountHeating = subtotalAmountHeating + amountHeating;
-            subtotalAmountWaterCurrency = subtotalAmountWater.toLocaleString("nl-BE",currencyStyle);
-            subtotalAmountHeatingCurrency = subtotalAmountHeating.toLocaleString("nl-BE",currencyStyle);
-            dataCharges[arrayEl.ownerId] = {ownerId:arrayEl.ownerId, owner:arrayEl.owner, common:" ", private:" ", water:subtotalAmountWater, heating:subtotalAmountHeating,Total:" "};
+            result.push({ownerId:" ", owner:"", property:"", quota:"", period:"", quota_period: "", amount:""});
+            count = 0;
+            subtotalAmount = 0;
+            writeData(arrayEl);
           };
-
-          dataConsumption.forEach(function(arrayEl) {
-            if ((!currentOwnerId) || (arrayEl.ownerId == currentOwnerId)) {
-              count = count + 1;
-              writeData(arrayEl);
-            } else {
-              if (count > 1) {
-                result.push({ownerId:currentOwnerId, owner:"Total", property:"", meter:"", type:"", last_reading:"", reading:"", difference:"", water:subtotalAmountWaterCurrency, heating:subtotalAmountHeatingCurrency});
-              };
-              result.push({ownerId:" ", owner:"", property:"", meter:"", type:"", last_reading:"", reading:"", difference:"",water:"", heating:""});
-              count = 0;
-              subtotalAmountWater = 0;
-              subtotalAmountHeating = 0;
-              writeData(arrayEl);
+          currentOwnerId = arrayEl.ownerId;
+          totalCommon = totalCommon + amount;   
+        });
+        if (count > 1) {
+              result.push({ownerId:currentOwnerId, owner:"Total", property:"", quota:"", period:"", quota_period: "", amount:subtotalAmount.toLocaleString("nl-BE",currencyStyle)});
             };
-            currentOwnerId = arrayEl.ownerId;
-            totalWater = totalWater + amountWater;  
-            totalHeating = totalHeating + amountHeating;  
-          });
-          if (count > 1) {
-                result.push({ownerId:currentOwnerId, owner:"Total", property:"", meter:"", type:"", last_reading:"", reading:"", difference:"", water:subtotalAmountWaterCurrency, heating:subtotalAmountHeatingCurrency});
-              };
-          result.push({ownerId:" ", owner:"", property:"", meter:"", type:"", last_reading:"", reading:"", difference:"",water:"", heating:""});
-          result.push({ownerId:" ", owner:"Total building", property:"", meter:"", type:"", last_reading:"", reading:"", difference:"", water:totalWater.toLocaleString("nl-BE",currencyStyle), heating:totalHeating.toLocaleString("nl-BE",currencyStyle)});
-          waterCommonParts = buildingWater - totalWater;
-          return result;
-        };
+        result.push({ownerId:" ", owner:"", property:"", quota:"", period:"", quota_period: "", amount:""});
+        result.push({ownerId:" ", owner:"Total building", property:" ", quota:totalQuota.toString(), period:" ", quota_period: " ", amount:totalCommon.toLocaleString("nl-BE",currencyStyle)});
+        return result;
+      };
+      
         
-        function writePDF (closeDateTransactions, metersIncludedHere, headerCommon, dataWater, dataHeating, dataCommon, headerConsumption,dataConsumption,  headerQuota, dataQuota, headerCharges, tableCharges){
-          const rowsLandscape =15;
-          const rowsPortrait =24;
-          const numPages = 1 + Math.ceil(dataWater.length/rowsPortrait) + Math.ceil(dataHeating.length/rowsPortrait) + Math.ceil(dataConsumption.length/rowsLandscape) + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsPortrait) + Math.ceil(tableCharges.length/rowsLandscape);
-          window.jsPDF = window.jspdf.jsPDF;
-          const footerText = "Charges Report Azur 01/01/2021 - 31/12/2021";
-          var currentPage = 1;
-          function printFooterPortrait () {
-            doc.line(15, 280, 200, 280);
-            doc.setFontSize(10);
-            doc.setTextColor("green");doc.text("MyCondos" ,15, 285);doc.setTextColor("black");
-            doc.text(footerText,32, 285);
-            doc.text("Page " + currentPage + "/" + numPages, 185, 285);
-            currentPage = currentPage + 1;
+      function makeSubtotalsConsumption (dataConsumption,buildingWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataCharges) {
+        var result = [];
+        var buildingPureHeating;
+        var buildingHotWaterHeating;
+        if (totalHeatingDifference) {
+          buildingPureHeating = buildingHeating/2;
+          buildingHotWaterHeating = buildingHeating/2;
+        } else {
+          buildingPureHeating = buildingHeating;
+        };
+        var totalWater = 0;
+        var totalHeating = 0;
+        var amountWater = 0;
+        var amountHeating = 0;
+        var currentOwnerId = "";
+        var count =0;
+        var subtotalAmountWater = 0;
+        var subtotalAmountHeating = 0;
+        var subtotalAmountWaterCurrency = "";
+        var subtotalAmountHeatingCurrency = "";
+
+        function writeData(arrayEl){
+          var amountWaterString=" ";
+          var amountHeatingString=" ";
+          if (arrayEl.type == "Cold Water"){
+            amountWaterString = (buildingWater * parseInt(arrayEl.difference) / buildingWaterDifference).toFixed(2);
+          } else if (arrayEl.type == "Heating") {
+            amountHeatingString = (buildingPureHeating * parseInt(arrayEl.difference) / totalHeatingDifference).toFixed(2);
+          } else {
+            amountWaterString = (buildingWater * parseInt(arrayEl.difference) / buildingWaterDifference).toFixed(2);
+            amountHeatingString = (buildingHotWaterHeating * parseInt(arrayEl.difference) / totalHotWaterDifference).toFixed(2);
           };
-          function printFooterLandscape () {
-            doc.line(15, 190, 280, 190);
-            doc.setFontSize(10);
-            doc.setTextColor("green");doc.text("MyCondos" ,15, 195);doc.setTextColor("black");
-            doc.text(footerText,32, 195);
-            doc.text("Page " + currentPage + "/" + numPages, 265, 195);
-            currentPage = currentPage + 1;
-          };
-          function printTablePortrait(title, table, header) {
-            for (i = 0; i < Math.ceil(table.length/rowsPortrait); i= i + 1) {
-              doc.addPage("a4", "portrait");
-              doc.setFontSize(16);
-              doc.text(title, 15, 15);
-              doc.table(15, 20, table.slice(i*rowsPortrait, (i+1)*rowsPortrait), header,{fontSize:10});
-              printFooterPortrait ();
+          amountWater = Number(amountWaterString);
+          amountHeating = Number(amountHeatingString);  
+          arrayEl.water = amountWater.toLocaleString("nl-BE",currencyStyle);
+          arrayEl.heating = amountHeating.toLocaleString("nl-BE",currencyStyle);
+          result.push(arrayEl);
+          subtotalAmountWater = subtotalAmountWater + amountWater;
+          subtotalAmountHeating = subtotalAmountHeating + amountHeating;
+          subtotalAmountWaterCurrency = subtotalAmountWater.toLocaleString("nl-BE",currencyStyle);
+          subtotalAmountHeatingCurrency = subtotalAmountHeating.toLocaleString("nl-BE",currencyStyle);
+          dataCharges[arrayEl.ownerId] = {ownerId:arrayEl.ownerId, owner:arrayEl.owner, common:" ", private:" ", water:subtotalAmountWater, heating:subtotalAmountHeating,Total:" "};
+        };
+
+        dataConsumption.forEach(function(arrayEl) {
+          if ((!currentOwnerId) || (arrayEl.ownerId == currentOwnerId)) {
+            count = count + 1;
+            writeData(arrayEl);
+          } else {
+            if (count > 1) {
+              result.push({ownerId:currentOwnerId, owner:"Total", property:"", meter:"", type:"", last_reading:"", reading:"", difference:"", water:subtotalAmountWaterCurrency, heating:subtotalAmountHeatingCurrency});
             };
+            result.push({ownerId:" ", owner:"", property:"", meter:"", type:"", last_reading:"", reading:"", difference:"",water:"", heating:""});
+            count = 0;
+            subtotalAmountWater = 0;
+            subtotalAmountHeating = 0;
+            writeData(arrayEl);
           };
-          function printTableLandscape(title, table, header) {
-            for (i = 0; i < Math.ceil(table.length/rowsLandscape); i= i + 1) {
-              doc.addPage("a4", "landscape");
-              doc.setFontSize(16);
-              doc.text(title, 15, 15);
-              doc.table(15, 20, table.slice(i*rowsLandscape, (i+1)*rowsLandscape), header,{fontSize:10});
-              printFooterLandscape ();
+          currentOwnerId = arrayEl.ownerId;
+          totalWater = totalWater + amountWater;  
+          totalHeating = totalHeating + amountHeating;  
+        });
+        if (count > 1) {
+              result.push({ownerId:currentOwnerId, owner:"Total", property:"", meter:"", type:"", last_reading:"", reading:"", difference:"", water:subtotalAmountWaterCurrency, heating:subtotalAmountHeatingCurrency});
             };
+        result.push({ownerId:" ", owner:"", property:"", meter:"", type:"", last_reading:"", reading:"", difference:"",water:"", heating:""});
+        result.push({ownerId:" ", owner:"Total building", property:"", meter:"", type:"", last_reading:"", reading:"", difference:"", water:totalWater.toLocaleString("nl-BE",currencyStyle), heating:totalHeating.toLocaleString("nl-BE",currencyStyle)});
+        waterCommonParts = buildingWater - totalWater;
+        return result;
+      };
+    
+        
+      function writePDF (closeDateTransactions, metersIncludedHere, headerCommon, dataWater, dataHeating, dataCommon, headerConsumption,dataConsumption,  headerQuota, dataQuota, headerCharges, tableCharges){
+        const rowsLandscape =15;
+        const rowsPortrait =24;
+        const numPages = 1 + Math.ceil(dataWater.length/rowsPortrait) + Math.ceil(dataHeating.length/rowsPortrait) + Math.ceil(dataConsumption.length/rowsLandscape) + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsPortrait) + Math.ceil(tableCharges.length/rowsLandscape);
+        window.jsPDF = window.jspdf.jsPDF;
+        const footerText = "Charges Report Azur 01/01/2021 - 31/12/2021";
+        var currentPage = 1;
+        function printFooterPortrait () {
+          doc.line(15, 280, 200, 280);
+          doc.setFontSize(10);
+          doc.setTextColor("green");doc.text("MyCondos" ,15, 285);doc.setTextColor("black");
+          doc.text(footerText,32, 285);
+          doc.text("Page " + currentPage + "/" + numPages, 185, 285);
+          currentPage = currentPage + 1;
+        };
+        function printFooterLandscape () {
+          doc.line(15, 190, 280, 190);
+          doc.setFontSize(10);
+          doc.setTextColor("green");doc.text("MyCondos" ,15, 195);doc.setTextColor("black");
+          doc.text(footerText,32, 195);
+          doc.text("Page " + currentPage + "/" + numPages, 265, 195);
+          currentPage = currentPage + 1;
+        };
+        function printTablePortrait(title, table, header) {
+          for (i = 0; i < Math.ceil(table.length/rowsPortrait); i= i + 1) {
+            doc.addPage("a4", "portrait");
+            doc.setFontSize(16);
+            doc.text(title, 15, 15);
+            doc.table(15, 20, table.slice(i*rowsPortrait, (i+1)*rowsPortrait), header,{fontSize:10});
+            printFooterPortrait ();
           };
-          var doc = new jsPDF({ putOnlyUsedFonts: true, orientation: "portrait" });
-          doc.setTextColor("green"); doc.setFontSize(32);
-          doc.text("MyCondos", 60, 20);
-          doc.setTextColor("black"); doc.setFontSize(24); 
-          doc.text("Report of Charges", 40, 40);
-          doc.setFontSize(16);
-          doc.text("Condomynium:", 15, 55);
-          doc.setFontSize(14);
-          doc.text("Name:", 30, 65);doc.text("Azur", 90, 65);
-          doc.text("Address:", 30, 75);doc.text("Avenue de l'Héliport 1, B-1000 Brussels", 90, 75);
-          doc.text("Administrator:", 30, 85);doc.text("Marc Van Limberghen", 90, 85);
-          doc.setFontSize(16);
-          doc.text("Period:", 15, 105);
-          doc.setFontSize(14);
-          doc.text("01/01/2021 - 31/12/2021", 90, 105);
-          doc.setFontSize(16);
-          doc.text("List of tables:", 15, 135);doc.setFont("normal");
-          doc.setFontSize(14);
-          doc.text("Water:", 30, 145);doc.text("total for building", 90, 145);
-          doc.text("Heating:", 30, 155);doc.text("total for building", 90, 155);
-          doc.text("Water and Heating:", 30, 165);doc.text("expenses per owner", 90, 165);
-          doc.text("Common charges:", 30, 175);doc.text("total for building", 90, 175);
-          doc.text("Common charges:", 30, 185);doc.text("quota per owner", 90, 185);
-          doc.text("Private expenses:", 30, 195);doc.text("expenses per owner", 90, 195);
-          doc.text("Total Charges:", 30, 215);doc.text("total charges per owner", 90, 215);
-          printFooterPortrait();
-          printTablePortrait("Water: total for building", dataWater, headerCommon);
-          printTablePortrait("Heating: total for building", dataHeating, headerCommon);
-          printTableLandscape("Water and Heating: expenses per owner", dataConsumption, headerConsumption);
-          printTablePortrait("Common charges: total for building", dataCommon, headerCommon);
-          printTablePortrait("Common charges: quota per owner", dataQuota, headerQuota);
-          printTableLandscape("Total charges: total charges per owner", tableCharges, headerCharges);
-          
-          /*doc.save();*/
-          
-          var startDateHere = new Date("2020-12-31");
-          startDateHere.setDate(startDateHere.getDate() + 1);
-          refCoproperty.collection("ChargesReports").add({startDate: startDateHere, endDate: closeDateTransactions, metersIncluded: metersIncludedHere, confirmed: false }).then (function (chargesReportFS){
-            var fileRef = refCopropertyFiles.child("ChargesReports").child(chargesReportFS);  
-            fileRef.put(doc.output("blob"));
-            return true;
+        };
+        function printTableLandscape(title, table, header) {
+          for (i = 0; i < Math.ceil(table.length/rowsLandscape); i= i + 1) {
+            doc.addPage("a4", "landscape");
+            doc.setFontSize(16);
+            doc.text(title, 15, 15);
+            doc.table(15, 20, table.slice(i*rowsLandscape, (i+1)*rowsLandscape), header,{fontSize:10});
+            printFooterLandscape ();
+          };
+        };
+        var doc = new jsPDF({ putOnlyUsedFonts: true, orientation: "portrait" });
+        doc.setTextColor("green"); doc.setFontSize(32);
+        doc.text("MyCondos", 60, 20);
+        doc.setTextColor("black"); doc.setFontSize(24); 
+        doc.text("Report of Charges", 40, 40);
+        doc.setFontSize(16);
+        doc.text("Condomynium:", 15, 55);
+        doc.setFontSize(14);
+        doc.text("Name:", 30, 65);doc.text("Azur", 90, 65);
+        doc.text("Address:", 30, 75);doc.text("Avenue de l'Héliport 1, B-1000 Brussels", 90, 75);
+        doc.text("Administrator:", 30, 85);doc.text("Marc Van Limberghen", 90, 85);
+        doc.setFontSize(16);
+        doc.text("Period:", 15, 105);
+        doc.setFontSize(14);
+        doc.text("01/01/2021 - 31/12/2021", 90, 105);
+        doc.setFontSize(16);
+        doc.text("List of tables:", 15, 135);doc.setFont("normal");
+        doc.setFontSize(14);
+        doc.text("Water:", 30, 145);doc.text("total for building", 90, 145);
+        doc.text("Heating:", 30, 155);doc.text("total for building", 90, 155);
+        doc.text("Water and Heating:", 30, 165);doc.text("expenses per owner", 90, 165);
+        doc.text("Common charges:", 30, 175);doc.text("total for building", 90, 175);
+        doc.text("Common charges:", 30, 185);doc.text("quota per owner", 90, 185);
+        doc.text("Private expenses:", 30, 195);doc.text("expenses per owner", 90, 195);
+        doc.text("Total Charges:", 30, 215);doc.text("total charges per owner", 90, 215);
+        printFooterPortrait();
+        printTablePortrait("Water: total for building", dataWater, headerCommon);
+        printTablePortrait("Heating: total for building", dataHeating, headerCommon);
+        printTableLandscape("Water and Heating: expenses per owner", dataConsumption, headerConsumption);
+        printTablePortrait("Common charges: total for building", dataCommon, headerCommon);
+        printTablePortrait("Common charges: quota per owner", dataQuota, headerQuota);
+        printTableLandscape("Total charges: total charges per owner", tableCharges, headerCharges);
+        
+        /*
+        doc.save();
+        return true;
+        */
+        
+        var startDateHere = new Date("2020-12-31");
+        startDateHere.setDate(startDateHere.getDate() + 1);
+        console.log("startdatehere is ", startDateHere);
+        refCoproperty.collection("ChargesReports").add({startDate: "2021-01-01", endDate: closeDateTransactions, metersIncluded: metersIncludedHere, confirmed: false }).then (function (chargesReportFS){
+          var fileRef = refCopropertyFiles.child("ChargesReports").child(chargesReportFS.id);  
+          fileRef.put(doc.output("blob")).then(function(snapshot) {
+              console.log('Uploaded a blob or file!');
           }).catch(function(error) {
-              M.toast({html:"Error saving charges report:" + error});
+                M.toast({html:"Error writing report file in store:" + error});
           });
-
-        };
+          
+        }).catch(function(error) {
+            M.toast({html:"Error saving charges report:" + error});
+        });
+      };
         
-      }
     </script>
 </body>
 
