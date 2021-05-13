@@ -1709,7 +1709,7 @@
         if (!object.confirmed) {
           cellContent = document.createElement('button');
           cellContent.setAttribute('class','btn-small waves-light');
-          cellContent.setAttribute('onclick','popupChargesReportConfirmed()');
+          cellContent.setAttribute('onclick','popupChargesReportConfirmed('+JSON.stringify(objectFS.id)+')');
           var cellButtonIcon = document.createElement('i');
           cellButtonIcon.setAttribute('class','material-icons right');
           cellButtonIcon.innerHTML="verified_user";           
@@ -1722,7 +1722,7 @@
 
           cellContent = document.createElement('button');
           cellContent.setAttribute('class','btn-small waves-light red');
-          cellContent.setAttribute('onclick','popupChargesReportRemoved()');
+          cellContent.setAttribute('onclick','popupChargesReportRemoved('+JSON.stringify(objectFS.id)+')');
           var cellButtonIcon = document.createElement('i');
           cellButtonIcon.setAttribute('class','material-icons right');
           cellButtonIcon.innerHTML="delete";           
@@ -1754,12 +1754,23 @@
           };
       };
 
-      function popupChargesReportConfirmed() {
-        M.toast({html:"Charges report now visible to owners"});
+      function popupChargesReportConfirmed(chargesReportId) {
+        refCoproperty.collection("ChargesReports").doc(chargesReportId).update({confirmed:true}).then(function(){
+          refreshChargesReports();
+          M.toast({html:"Charges report now visible to owners"});
+        }).catch(function(error) {
+          console.error("Error confirming charges report: ", error);
+        });
       };
 
-      function popupChargesReportRemoved() {
-        M.toast({html:"Charges report remowed: you can generate a new one anytime after your coreections"});
+      function popupChargesReportRemoved(chargesReportId) {
+        refCoproperty.collection("ChargesReports").doc(chargesReportId).delete().then(function(){
+          refCopropertyFiles.collection("ChargesReports").child(chargesReportId + '.pdf').delete().then({}});
+          refreshChargesReports();
+          M.toast({html:"Charges report removed: correct your data and generate a new charges report anytime"});
+        }).catch(function(error) {
+          console.error("Error removing charges report: ", error);
+        });
       };
 
     </script>
