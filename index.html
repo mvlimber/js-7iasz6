@@ -1741,7 +1741,7 @@
         emptyHTMLSet(chargesReportsTable);
         refCoproperty.collection("ChargesReports").orderBy("endDate","desc").get().then(function(objectsFSArray){
             objectsFSArray.forEach(function(objectFS){
-              loadReport(objectFS);
+              loadChargesReport(objectFS);
             })
           });
       };
