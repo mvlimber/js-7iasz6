@@ -309,7 +309,7 @@
               </div>
             </div>
             <div class="modal-footer">
-              <h6 style="float: right;margin-left: 20px">Please confirm the generated report after review</h6>
+              <h6 style="float: right;margin-left: 20px">Generating the report might take a few minites. Please confirm the generated report after review</h6>
               <br><br>
               <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="prepareChargesReport()">Submit<i class="material-icons right">send</i></button>
               <a style="float: right"
@@ -1282,8 +1282,12 @@
       };
       var roleAdministrator = 1;
       var currentCoproperty = {
-        closeDateTransactions : "2020-12-31",
-        closeDateMeters : "2020-12-31"
+        name: "Azur",
+        street: "Helihavenlaan",
+        housenumber: "1",
+        zip: "1000",
+        town: "Brussels",
+        initialStartDate : "2020-12-31",
       };
 
       function checkBookDate (bookDate){
@@ -3412,10 +3416,14 @@
           {id:"Total",name:"Total",prompt:"Total",width: 50,align: "right",padding: 0}
         ];
         var dataCharges = [];
+        refCoproperty.collection("ChargesReports").orderBy("endDate", "desc").limit(1).get().then (function(chargesReportsFS){
+          var previousCloseDate;
+          if  (chargesReportsFS.docs.length > 0) {previousCloseDate= chargesReportsFS.docs[0].enddate;}
+          else {previousCloseDate= currentCoproperty.initialStartDate;}
         
         var closeDateToStartFrom;
-        if (metersIncluded) {closeDateToStartFrom = currentCoproperty.closeDateMeters;
-        } else {closeDateToStartFrom = currentCoproperty.closeDateTransactions;
+        if (metersIncluded) {closeDateToStartFrom = previousCloseDate;
+        } else {closeDateToStartFrom = previousCloseDate;
         };
         refCoproperty.collection("Transactions").where("bookDate", ">", closeDateToStartFrom).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){
           transactionsFS.forEach(function(transactionFS){
@@ -3498,7 +3506,7 @@
                       var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon, dataCharges);
                       dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toLocaleString("nl-BE",currencyStyle)});
                       var dataChargesCurrency = putChargesCurrency(Object.values(dataCharges));
-                      writePDF(closeDateTransactions, metersIncluded, headerCommon, dataWater, dataHeating, dataCommon, headerConsumption, totalledConsumptionData, headerQuota, totalledQuotaData, headerCharges, dataChargesCurrency);
+                      writePDF(previousCloseDate, closeDateTransactions, metersIncluded, headerCommon, dataWater, dataHeating, dataCommon, headerConsumption, totalledConsumptionData, headerQuota, totalledQuotaData, headerCharges, dataChargesCurrency);
                     };
                   };
                 });
@@ -3509,6 +3517,7 @@
           });
         }).catch(function(error) {
             M.toast({html:"Error during expenses upload:" + error});
+        });
         });
       };  
 
@@ -3634,16 +3643,17 @@
       };
     
         
-      function writePDF (closeDateTransactions, metersIncludedHere, headerCommon, dataWater, dataHeating, dataCommon, headerConsumption,dataConsumption,  headerQuota, dataQuota, headerCharges, tableCharges){
+      function writePDF (previousCloseDate, closeDateTransactions, metersIncludedHere, headerCommon, dataWater, dataHeating, dataCommon, headerConsumption,dataConsumption,  headerQuota, dataQuota, headerCharges, tableCharges){
         const rowsLandscape =15;
         const rowsPortrait =24;
         const numPages = 1 + Math.ceil(dataWater.length/rowsPortrait) + Math.ceil(dataHeating.length/rowsPortrait) + Math.ceil(dataConsumption.length/rowsLandscape) + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsPortrait) + Math.ceil(tableCharges.length/rowsLandscape);
         window.jsPDF = window.jspdf.jsPDF;
-        const footerText = "Charges Report Azur 01/01/2021 - 31/12/2021";
         var currentPage = 1;
-        var startDateHere = new Date("2020-12-31");
+        
+        var startDateHere = new Date(previousCloseDate);
         startDateHere.setDate(startDateHere.getDate() + 1);
         var startDateString = startDateHere.substr(0,9);
+        const footerText = "Charges Report " + currentCoproperty.name + " " + startDateString + " to " + closeDateTransactions;
         
         function printFooterPortrait () {
           doc.line(15, 280, 200, 280);
@@ -3687,13 +3697,13 @@
         doc.setFontSize(16);
         doc.text("Condomynium:", 15, 55);
         doc.setFontSize(14);
-        doc.text("Name:", 30, 65);doc.text("Azur", 90, 65);
-        doc.text("Address:", 30, 75);doc.text("Avenue de l'Héliport 1, B-1000 Brussels", 90, 75);
+        doc.text("Name:", 30, 65);doc.text(currentCoproperty.name, 90, 65);
+        doc.text("Address:", 30, 75);doc.text(currentCoproperty.street + " " + currentCoproperty.houseNumber + ", "+ currentCoproperty.zip + " " + currentCoproperty.town, 90, 75);
         doc.text("Administrator:", 30, 85);doc.text("Marc Van Limberghen", 90, 85);
         doc.setFontSize(16);
         doc.text("Period:", 15, 105);
         doc.setFontSize(14);
-        doc.text("01/01/2021 - 31/12/2021", 90, 105);
+        doc.text(startDateString + " to " + closeDateTransactions, 90, 105);
         doc.setFontSize(16);
         doc.text("List of tables:", 15, 135);doc.setFont("normal");
         doc.setFontSize(14);
