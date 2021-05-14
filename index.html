@@ -327,18 +327,11 @@
             </thead>
             <tbody id="chargesReportsTable">
             </tbody>
-            <!-- <tbody>
-              <tr>
-                <td>
-                  <button style="border:none;background-color:Transparent" onclick="showThisURL2()"><font color=" #0000FF">2020-01-01 to 2020-12-31</font></button>
-                </td>
-                <td>Sat Jan 02 2021</td>
-              </tr>
-            </tbody>  -->
+            
           </table>
           <br>
           <div id="Reports_Generate" class="displayHidden">
-            <button style="float: right" data-target="chargesReportAdd" class="btn-small waves-light modal-trigger" onclick="emptyFieldsChargesReportAdd()"><i class="material-icons right">add</i>Generate New Charges Report</button>
+            <button id="ChargesReport_Generate" style="float: right" data-target="chargesReportAdd" class="btn-small waves-light modal-trigger" onclick="emptyFieldsChargesReportAdd()"><i class="material-icons right">add</i>Generate New Charges Report</button>
           </div>
           <br><br>
           <h6 style="font-size:20px "><b>Reports uploaded by users</b></h6>
@@ -1680,7 +1673,7 @@
       if (validateChargesReportAdd()) {
         var metersIn = (document.getElementById("chargesReport_metersIncluded").value == "Yes");
         generateChargesReport(document.getElementById("chargesReport_closeDate").value, metersIn);
-        refreshChargesReports();
+        
 
       };
     };
@@ -1733,7 +1726,9 @@
 
           cell = document.createElement('td');
           cell.appendChild(cellContent);
-          objectsRow.appendChild(cell);    
+          objectsRow.appendChild(cell);   
+
+          document.getElementById("ChargesReport_Generate").setAttribute("class", "btn-small waves-light modal-trigger disabled"); 
         };
         chargesReportsTable.appendChild (objectsRow);
         });
@@ -1759,6 +1754,7 @@
       function popupChargesReportConfirmed(chargesReportId) {
         refCoproperty.collection("ChargesReports").doc(chargesReportId).update({confirmed:true}).then(function(){
           refreshChargesReports();
+          document.getElementById("ChargesReport_Generate").setAttribute("class", "btn-small waves-light modal-trigger");
           M.toast({html:"Charges report now visible to owners"});
         }).catch(function(error) {
           console.error("Error confirming charges report: ", error);
@@ -1769,6 +1765,7 @@
         refCoproperty.collection("ChargesReports").doc(chargesReportId).delete().then(function(){
           refCopropertyFiles.child("ChargesReports").child(chargesReportId).delete().then({});
           refreshChargesReports();
+          document.getElementById("ChargesReport_Generate").setAttribute("class", "btn-small waves-light modal-trigger");
           M.toast({html:"Charges report removed: correct your data and generate a new charges report anytime"});
         }).catch(function(error) {
           console.error("Error removing charges report: ", error);
@@ -3722,7 +3719,8 @@
         refCoproperty.collection("ChargesReports").add({startDate: "2021-01-01", endDate: closeDateTransactions, metersIncluded: metersIncludedHere, confirmed: false }).then (function (chargesReportFS){
           var fileRef = refCopropertyFiles.child("ChargesReports").child(chargesReportFS.id);  
           fileRef.put(doc.output("blob")).then(function(snapshot) {
-              console.log('Uploaded a blob or file!');
+              refreshChargesReports();
+              M.Modal.getInstance(document.getElementById("chargesReportAdd")).close();
           }).catch(function(error) {
                 M.toast({html:"Error writing report file in store:" + error});
           });
