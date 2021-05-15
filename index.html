@@ -309,7 +309,8 @@
               </div>
             </div>
             <div class="modal-footer">
-              <h6 style="float: right;margin-left: 20px">Generating the report might take a few minites. Please confirm the generated report after review</h6>
+              <h6 style="float: right;margin-left: 20px">Generating the report might take a few minites. Please confirm
+                the generated report after review</h6>
               <br><br>
               <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="prepareChargesReport()">Submit<i class="material-icons right">send</i></button>
               <a style="float: right"
@@ -327,7 +328,7 @@
             </thead>
             <tbody id="chargesReportsTable">
             </tbody>
-            
+
           </table>
           <br>
           <div id="Reports_Generate" class="displayHidden">
@@ -903,7 +904,7 @@
                 <span class="helper-text" data-error="Only digits or spaces, max 30. Example: +32 476 123 456" >Only digits or spaces. Example: +32 476 123 456</span>
               </div>
               <div class="col s12 m12">
-              <button style="float: left" class="btn-small waves-light" type="button" onclick="insertAdrressCoproperty()">Copy adress condomynium<i class="material-icons right">content_copy</i></button>
+                <button style="float: left" class="btn-small waves-light" type="button" onclick="insertAdrressCoproperty()">Copy adress condomynium<i class="material-icons right">content_copy</i></button>
               </div>
               <div class="input-field col s12 m4">
                 <input  id="member_country_edit" type="text" class="validate" maxlength="50" >
@@ -1292,8 +1293,12 @@
 
       function checkBookDate (bookDate){
         /* applied both for transactions and for meter readings */
-        if (bookDate.localeCompare(currentCoproperty.closeDateTransactions) < 1) { return false;} 
-        else { return true;};
+        refCoproperty.collection("ChargesReports").orderBy("endDate", "desc").limit(1).get().then (function(chargesReportsFS){
+          var lastCloseDate;
+          if  (chargesReportsFS.docs.length > 0) {lastCloseDate= chargesReportsFS.docs[0].enddate;}
+          else {lastCloseDate= currentCoproperty.initialStartDate;};
+          if (bookDate.localeCompare(lastCloseDate) < 1) { return {test:false, closeDate: lastCloseDate};} 
+          else { return {test:true, closeDate: lastCloseDate};};
       };
 
       function showPasswordSet() {
@@ -1666,9 +1671,12 @@
       if (!document.getElementById("chargesReport_closeDate").checkValidity()) {
         M.toast({html:"Please enter accountancy close date"});
         valid=false;
-      } else if (!checkBookDate(document.getElementById("chargesReport_closeDate").value)) {
-        M.toast({html:"Accountancy close date muste be later than last close date"});
-        valid=false;
+      } else {
+        var checkdate = checkBookDate(document.getElementById("chargesReport_closeDate").value);
+        if (!checkdate.test) {
+          M.toast({html:"Accountancy close date must be later than last close date being " + checkdate.closedate});
+          valid=false;
+        };
       };
       return valid;
     };
