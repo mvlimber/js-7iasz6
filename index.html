@@ -1307,8 +1307,22 @@
     };
 
     function openApplication() {
-      document.getElementById("loginPanel").setAttribute("class","displayHidden");
-      document.getElementById("applicationPanel").setAttribute("class","displayBlock");
+      refCoproperty.collection("ChargesReports").orderBy("endDate", "desc").limit(1).get().then (function(chargesReportsFS){
+        refCoproperty.get().then(function(copropertyFS){
+          currentCoproperty = copropertyFS.data();
+          if  (chargesReportsFS.docs.length > 0) {lastCloseDate= chargesReportsFS.docs[0].endDate;}
+          else {lastCloseDate = currentCoproperty.initialStartDate;};
+        
+          emptyHTMLSet(document.getElementById("Home_CopropertyName"));
+          var textN = document.createTextNode(currentCoproperty.name);
+          document.getElementById("Home_CopropertyName").appendChild(textN);
+          textN = document.createTextNode(currentCoproperty.street + " " + currentCoproperty.houseNumber + ", "+ currentCoproperty.zip + " " + currentCoproperty.town);
+          document.getElementById("Home_CopropertyAddress").appendChild(textN);
+          homeLoaded = true;
+          document.getElementById("loginPanel").setAttribute("class","displayHidden");
+          document.getElementById("applicationPanel").setAttribute("class","displayBlock");
+        });
+      });
     };
     
     function login(){
@@ -1476,18 +1490,14 @@
       var currentCoproperty;
       
       function refreshHome(){
-        refCoproperty.collection("ChargesReports").orderBy("endDate", "desc").limit(1).get().then (function(chargesReportsFS){
-          if  (chargesReportsFS.docs.length > 0) {lastCloseDate= chargesReportsFS.docs[0].endDate;}
-          else {lastCloseDate = currentCoproperty.initialStartDate;};
-          refCoproperty.get().then(function(copropertyFS){
-            currentCoproperty = copropertyFS.data();
-            
-            emptyHTMLSet(document.getElementById("Home_CopropertyName"));
-            var textN = document.createTextNode(currentCoproperty.name);
-            document.getElementById("Home_CopropertyName").appendChild(textN);
-            textN = document.createTextNode(currentCoproperty.street + " " + currentCoproperty.houseNumber + ", "+ currentCoproperty.zip + " " + currentCoproperty.town);
-            document.getElementById("Home_CopropertyAddress").appendChild(textN);
-          });
+      refCoproperty.get().then(function(copropertyFS){
+        currentCoproperty = copropertyFS.data();
+        
+        emptyHTMLSet(document.getElementById("Home_CopropertyName"));
+        var textN = document.createTextNode(currentCoproperty.name);
+        document.getElementById("Home_CopropertyName").appendChild(textN);
+        textN = document.createTextNode(currentCoproperty.street + " " + currentCoproperty.houseNumber + ", "+ currentCoproperty.zip + " " + currentCoproperty.town);
+        document.getElementById("Home_CopropertyAddress").appendChild(textN);
         });
       };
       
