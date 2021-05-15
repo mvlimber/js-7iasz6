@@ -1282,24 +1282,6 @@
         }
       };
       var roleAdministrator = 1;
-      var currentCoproperty = {
-        name: "Azur",
-        street: "Helihavenlaan",
-        housenumber: "1",
-        zip: "1000",
-        town: "Brussels",
-        initialStartDate : "2020-12-31",
-      };
-
-      function checkBookDate (bookDate){
-        /* applied both for transactions and for meter readings */
-        refCoproperty.collection("ChargesReports").orderBy("endDate", "desc").limit(1).get().then (function(chargesReportsFS){
-          var lastCloseDate;
-          if  (chargesReportsFS.docs.length > 0) {lastCloseDate= chargesReportsFS.docs[0].enddate;}
-          else {lastCloseDate= currentCoproperty.initialStartDate;};
-          if (bookDate.localeCompare(lastCloseDate) < 1) { return {test:false, closeDate: lastCloseDate};} 
-          else { return {test:true, closeDate: lastCloseDate};};
-      };
 
       function showPasswordSet() {
       document.getElementById("loginPanel").setAttribute("class","displayHidden");
@@ -1449,19 +1431,8 @@
     </script>
     <!--   Application scripts starts here -->
     <script>
-      function showThisURL1(url) {
-      window.open(url, "_blank");
-      };
-
-      function showThisURL2() {
-      window.open
-      ("https://firebasestorage.googleapis.com/v0/b/slimmeeigendomdb.appspot.com/o/Charges_2020.pdf?alt=media&token=43ae298c-1748-490c-8a5d-6c047815c2ee", "_blank");
-
-      };
-
       
-
-      const options = {
+    const options = {
         duration: 300,
         onShow: null,
         swipeable: false,
@@ -1501,10 +1472,31 @@
     </script>
     <!--   Home scripts start here -->
     <script>
+      var lastCloseDate;
+      var currentCoproperty = {
+        name: "Azur",
+        street: "Helihavenlaan",
+        housenumber: "1",
+        zip: "1000",
+        town: "Brussels",
+        initialStartDate : "2020-12-31",
+      };
+      
       function loadHome() {
-        hideMenu();
-        document.getElementById("logo-container").innerHTML = "MyCondos: Home";
-      }
+        refCoproperty.collection("ChargesReports").orderBy("endDate", "desc").limit(1).get().then (function(chargesReportsFS){
+          if  (chargesReportsFS.docs.length > 0) {lastCloseDate= chargesReportsFS.docs[0].enddate;}
+          else {lastCloseDate = currentCoproperty.initialStartDate;};
+          hideMenu();
+          document.getElementById("logo-container").innerHTML = "MyCondos: Home";
+        });
+      };
+
+      function checkBookDate (bookDate){
+        /* applied both for transactions and for meter readings */
+        if (bookDate.localeCompare(lastCloseDate) < 1) { return {test:false, closeDate:lastCloseDate};} 
+        else { return {test:true, closeDate:lastCloseDate};};
+      };
+
     </script>
     <!--   Reports scripts start here -->
     <script>
@@ -1666,27 +1658,27 @@
       M.updateTextFields();
     };
     
-    function validateChargesReportAdd() {
-      var valid = true
-      if (!document.getElementById("chargesReport_closeDate").checkValidity()) {
-        M.toast({html:"Please enter accountancy close date"});
-        valid=false;
-      } else {
-        var checkdate = checkBookDate(document.getElementById("chargesReport_closeDate").value);
-        if (!checkdate.test) {
-          M.toast({html:"Accountancy close date must be later than last close date being " + checkdate.closedate});
-          valid=false;
-        };
-      };
-      return valid;
-    };
-
+    
     function prepareChargesReport() {
+      var checkDate;
+      function validateChargesReportAdd() {
+        var valid = true
+        if (!document.getElementById("chargesReport_closeDate").checkValidity()) {
+          M.toast({html:"Please enter accountancy close date"});
+          valid=false;
+        } else {
+          checkDate = checkBookDate(document.getElementById("chargesReport_closeDate").value);
+          if (!checkDate.test) {
+            M.toast({html:"Accountancy close date must be later than last close date being " + checkDate.closeDate});
+            valid=false;
+          };
+        };
+        return valid;
+      };
+
       if (validateChargesReportAdd()) {
         var metersIn = (document.getElementById("chargesReport_metersIncluded").value == "Yes");
-        generateChargesReport(document.getElementById("chargesReport_closeDate").value, metersIn);
-        
-
+        generateChargesReport(checkDate.closeDate, document.getElementById("chargesReport_closeDate").value, metersIn);
       };
     };
 
@@ -3372,7 +3364,7 @@
         document.getElementById("logo-container").innerHTML = "MyCondos: Settings";
       };
       
-      function generateChargesReport(closeDateTransactions, metersIncluded){
+      function generateChargesReport(lastClosedate, closeDateTransactions, metersIncluded){
         var buildingWaterDifference = 300;  
         var buildingWater = 0
         var buildingHeating = 0;
@@ -3424,14 +3416,9 @@
           {id:"Total",name:"Total",prompt:"Total",width: 50,align: "right",padding: 0}
         ];
         var dataCharges = [];
-        refCoproperty.collection("ChargesReports").orderBy("endDate", "desc").limit(1).get().then (function(chargesReportsFS){
-          var previousCloseDate;
-          if  (chargesReportsFS.docs.length > 0) {previousCloseDate= chargesReportsFS.docs[0].enddate;}
-          else {previousCloseDate= currentCoproperty.initialStartDate;}
-        
         var closeDateToStartFrom;
-        if (metersIncluded) {closeDateToStartFrom = previousCloseDate;
-        } else {closeDateToStartFrom = previousCloseDate;
+        if (metersIncluded) {closeDateToStartFrom = lastCloseDate;
+        } else {closeDateToStartFrom = lastCloseDate;
         };
         refCoproperty.collection("Transactions").where("bookDate", ">", closeDateToStartFrom).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){
           transactionsFS.forEach(function(transactionFS){
@@ -3525,7 +3512,6 @@
           });
         }).catch(function(error) {
             M.toast({html:"Error during expenses upload:" + error});
-        });
         });
       };  
 
