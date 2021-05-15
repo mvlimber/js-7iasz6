@@ -1133,28 +1133,13 @@
                     <label for="property_owner_add">Owner<b><font color='red'>*</font></b></label>
                   </div>
                 </div>
-                <div class="input-field col s6 m4">
-                  <input id="property_meterColdWater_add" type="text" class="validate" pattern="([A-Z]|[0-9]){4,10}">
-                  <label for="property_meterColdWater_add">ID Cold water meter</label>
-                  <span class="helper-text" data-error="4 to 10 digts or capital letters. Example 99DB517508">4 to 10 digts or capital letters. Example 99DB517508</span>
-                </div>
-                <div class="input-field col s6 m4">
-                  <input id="property_meterHotWater_add" type="text" class="validate" pattern="([A-Z]|[0-9]){4,10}">
-                  <label for="property_meterHotWater_add">ID Hot water meter</label>
-                  <span class="helper-text" data-error="4 to 10 digts or capital letters. Example 99DB517508">4 to 10 digts or capital letters. Example 99DB517508</span>
-                </div>
-                <div class="input-field col s6 m4">
-                  <input id="property_meterHeating_add" type="text" class="validate" pattern="([A-Z]|[0-9]){4,10}">
-                  <label for="property_meterHeating_add">ID Central heating meter</label>
-                  <span class="helper-text" data-error="4 to 10 digts or capital letters. Example 99DB517508">4 to 10 digts or capital letters. Example 99DB517508</span>
-                </div>
                 <div class="input-field col s6 m6">
                   <input id="property_cellar_add" type="text" maxlength="10" class="validate">
                   <label for="property_cellar_add">Cellar(s)</label>
                   <span class="helper-text" data-error="A string of max 10 digits: Example: C1, C2">A string of max 10 digits: Example: C1,C2</span>
                 </div>
               </form>
-              <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="addProperty()">Submit<i class="material-icons right">send</i></button>
+              <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="addProperty()">Save and complete by adding meters<i class="material-icons right">send</i></button>
               <a style="float: right;margin-bottom: 3px"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
             </div>
@@ -2765,50 +2750,11 @@
             if (existingList.docs.length > 0) {
               M.toast({html:"Error: property with this code already exists"}); 
             } else {
-              var po = {
-                code : entries.code,
-                quota: entries.quota,
-                type: entries.type,
-                owner: entries.owner,
-                cellar: entries.cellar,
-              };
-              refCoproperty.collection("Properties").add(po).then(function(idNewP) {
-                  var meter;
-                  if (entries.meterColdWater){
-                    meter = {
-                      type: "Cold Water",
-                      meter: entries.meterColdWater,
-                      status: "Active",
-                      reading:"",
-                      date:"",
-                      picture:"",
-                    };
-                    refCoproperty.collection("Properties").doc(idNewP.id).collection("Meters").add(meter).then(function(docrefCW) {});
-                  };              
-                  if (entries.meterHotWater){
-                    meter = {
-                      type: "Hot Water",
-                      meter: entries.meterHotWater,
-                      status: "Active",
-                      reading:"",
-                      date:"",
-                      picture:"",
-                    };
-                    refCoproperty.collection("Properties").doc(idNewP.id).collection("Meters").add(meter).then(function(docrefCW) {});
-                  };
-                  if (entries.meterHeating){
-                    meter = {
-                      type: "Heating",
-                      meter: entries.meterHeating,
-                      status: "Active",
-                      reading:"",
-                      date:"",
-                      picture:"",
-                    };
-                    refCoproperty.collection("Properties").doc(idNewP.id).collection("Meters").add(meter).then(function(docrefCW) {});
-                  };          
+              refCoproperty.collection("Properties").add(entries).then(function(idNewP) {
                   refreshProperties();
+                  setSelectedProperty(idNewP, entries);
                   M.Modal.getInstance(document.getElementById("propertyAdd")).close();
+                  M.Modal.getInstance(document.getElementById("propertyEdit")).open();
                 }).catch(function(error) {
                   M.toast({html:"Error occurred adding this property:" + error}); 
                 });
@@ -3085,11 +3031,7 @@
       function displayMeters(property) {
         emptyHTMLSet(metersTable);
         refCoproperty.collection("Properties").doc(property).collection("Meters").get().then( function (querySnapshot) {
-          if (Boolean(querySnapshot)) {
-            querySnapshot.forEach(function(meterFS) {
-              displayMeter(meterFS);
-            });
-          };
+          querySnapshot.forEach(function(meterFS) {displayMeter(meterFS);});
         });  
       };
 
@@ -3151,9 +3093,6 @@
         document.getElementById("property_quota_add").value="";
         document.getElementById("property_type_add").value="";
         document.getElementById("property_cellar_add").value="";
-        document.getElementById("property_meterColdWater_add").value="";
-        document.getElementById("property_meterHotWater_add").value="";
-        document.getElementById("property_meterHeating_add").value="";
         document.getElementById("property_owner_add").value="";
         listMembers(document.getElementById("property_owner_add"),"");
         M.updateTextFields();
@@ -3176,18 +3115,6 @@
         };
         if (!document.getElementById("property_owner_add").checkValidity()) {
           M.toast({html:"Please select Owner"});
-          valid=false;
-        };
-        if (!document.getElementById("property_meterColdWater_add").checkValidity()) {
-          M.toast({html:"Please enter valid meter cold water"});
-          valid=false;
-        };
-        if (!document.getElementById("property_meterHotWater_add").checkValidity()) {
-          M.toast({html:"Please enter valid meter hot water"});
-          valid=false;
-        };
-        if (!document.getElementById("property_meterHeating_add").checkValidity()) {
-          M.toast({html:"Please enter valid meter central heating"});
           valid=false;
         };
         return valid;
@@ -3216,9 +3143,6 @@
               quota: document.getElementById("property_quota_add").value,
               type: document.getElementById("property_type_add").value,
               cellar: document.getElementById("property_cellar_add").value,
-              meterColdWater: document.getElementById("property_meterColdWater_add").value,
-              meterHotWater: document.getElementById("property_meterHotWater_add").value,
-              meterHeating: document.getElementById("property_meterHeating_add").value,
               owner: document.getElementById("property_owner_add").value,
             };
       };
