@@ -974,6 +974,19 @@
             </div>
             <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
               <div>
+                <h7>Owner: </h7>
+                <button id="property_owner" data-target="memberView" class="modal-trigger" style="border:none;background-color:Transparent"></button>
+
+                <div class="displayHidden" id="previousOwnersButton">
+                  <button style="float:right;margin-left: 20px;margin-bottom: 3px" data-target="previousOwners" class="btn-small waves-light modal-trigger" onclick="showPreviousOwnersTable()">Previous Owners</button>
+                </div>
+                <div id="Properties_OwnersAdd" class="displayHidden">
+                  <button style="float:right;margin-bottom: 3px" data-target="newOwner" class="btn-small waves-light modal-trigger" onclick="newOwner()">New Owner<i class="material-icons right">add</i></button>
+                </div>
+              </div>
+            </div>
+            <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
+              <div>
                 <h7>Meters</h7>
                 <table class="striped">
                   <thead>
@@ -989,19 +1002,7 @@
                 <button style="float: right;margin-bottom: 3px" class="btn-small waves-light modal-trigger" data-target="meterWrite" onclick="addMeter()">Add Meter<i class="material-icons right">add</i></button>
               </div>
             </div>
-            <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
-              <div>
-                <h7>Owner: </h7>
-                <button id="property_owner" data-target="memberView" class="modal-trigger" style="border:none;background-color:Transparent"></button>
-
-                <div class="displayHidden" id="previousOwnersButton">
-                  <button style="float:right;margin-left: 20px;margin-bottom: 3px" data-target="previousOwners" class="btn-small waves-light modal-trigger" onclick="showPreviousOwnersTable()">Previous Owners</button>
-                </div>
-                <div id="Properties_OwnersAdd" class="displayHidden">
-                  <button style="float:right;margin-bottom: 3px" data-target="newOwner" class="btn-small waves-light modal-trigger" onclick="newOwner()">New Owner<i class="material-icons right">add</i></button>
-                </div>
-              </div>
-            </div>
+            
             <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
               <div>
                 <h7>Occupants</h7>
@@ -1069,7 +1070,7 @@
                 <div class="input-field col s12 m4">
                   <select id="meter_status" required aria-required="true">
                     <option value="" disabled selected>Select the status</option>
-                    <option>Active</option>
+                    <option selected>Active</option>
                     <option>Removed</option>
                   </select>
                   <label for="meter_status">Status<b><font color='red'>*</font></b></label>
@@ -2750,10 +2751,14 @@
             if (existingList.docs.length > 0) {
               M.toast({html:"Error: property with this code already exists"}); 
             } else {
-              refCoproperty.collection("Properties").add(entries).then(function(idNewP) {
+              refCoproperty.collection("Properties").add(entries).then(function(pFS) {
+                  console.log("voor refreshProperties");
                   refreshProperties();
-                  setSelectedProperty(idNewP, entries);
+                  console.log("voor setSelectedProperty" + pFS.id + " met entries " + entries);
+                  setSelectedProperty(pFS.id, entries);
+                  console.log("voor close modal");
                   M.Modal.getInstance(document.getElementById("propertyAdd")).close();
+                  console.log("voor open modal");
                   M.Modal.getInstance(document.getElementById("propertyView")).open();
                 }).catch(function(error) {
                   M.toast({html:"Error occurred adding this property:" + error}); 
