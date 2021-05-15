@@ -218,11 +218,11 @@
               <table>
                 <tr>
                   <td>Name</td>
-                  <td>Azur</td>
+                  <td id="Home_CopropertyName"></td>
                 </tr>
                 <tr>
                   <td>Address</td>
-                  <td>Helihavenlaan 1-3, 1000, Brussels, Belgium</td>
+                  <td id="Home_CopropertyAddress"></td>
                 </tr>
                 <tr>
                   <td>Administrator</td>
@@ -1473,28 +1473,38 @@
     <!--   Home scripts start here -->
     <script>
       var lastCloseDate;
-      var currentCoproperty = {
-        name: "Azur",
-        street: "Helihavenlaan",
-        housenumber: "1",
-        zip: "1000",
-        town: "Brussels",
-        initialStartDate : "2020-12-31",
-      };
+      var currentCoproperty;
       
-      function loadHome() {
+      function refreshHome(){
         refCoproperty.collection("ChargesReports").orderBy("endDate", "desc").limit(1).get().then (function(chargesReportsFS){
-          if  (chargesReportsFS.docs.length > 0) {lastCloseDate= chargesReportsFS.docs[0].enddate;}
+          if  (chargesReportsFS.docs.length > 0) {lastCloseDate= chargesReportsFS.docs[0].endDate;}
           else {lastCloseDate = currentCoproperty.initialStartDate;};
-          hideMenu();
-          document.getElementById("logo-container").innerHTML = "MyCondos: Home";
+          refCoproperty.get().then(function(copropertyFS){
+            currentCoproperty = copropertyFS.data();
+            
+            emptyHTMLSet(document.getElementById("Home_CopropertyName"));
+            var textN = document.createTextNode(currentCoproperty.name);
+            document.getElementById("Home_CopropertyName").appendChild(textN);
+            textN = document.createTextNode(currentCoproperty.street + " " + currentCoproperty.houseNumber + ", "+ currentCoproperty.zip + " " + currentCoproperty.town);
+            document.getElementById("Home_CopropertyAddress").appendChild(textN);
+          });
         });
       };
-
+      
+      var homeLoaded = false;
+      function loadHome() {
+        hideMenu();
+        document.getElementById("logo-container").innerHTML = "MyCondos: Home";
+        if (!homeLoaded) {
+          refreshHome();
+          homeLoaded = true;
+        };
+      };
+    
       function checkBookDate (bookDate){
         /* applied both for transactions and for meter readings */
-        if (bookDate.localeCompare(lastCloseDate) < 1) { return {test:false, closeDate:lastCloseDate};} 
-        else { return {test:true, closeDate:lastCloseDate};};
+        if (bookDate.localeCompare(lastCloseDate) < 1) { return false} 
+        else { return true};
       };
 
     </script>
@@ -1658,27 +1668,25 @@
       M.updateTextFields();
     };
     
-    
-    function prepareChargesReport() {
-      var checkDate;
-      function validateChargesReportAdd() {
+    function validateChargesReportAdd() {
         var valid = true
         if (!document.getElementById("chargesReport_closeDate").checkValidity()) {
           M.toast({html:"Please enter accountancy close date"});
           valid=false;
         } else {
           checkDate = checkBookDate(document.getElementById("chargesReport_closeDate").value);
-          if (!checkDate.test) {
-            M.toast({html:"Accountancy close date must be later than last close date being " + checkDate.closeDate});
+          if (!checkBookDate(document.getElementById("chargesReport_closeDate").value)) {
+            M.toast({html:"Accountancy close date must be later than last close date being " + lastCloseDate});
             valid=false;
           };
         };
         return valid;
       };
 
+      function prepareChargesReport() {
       if (validateChargesReportAdd()) {
         var metersIn = (document.getElementById("chargesReport_metersIncluded").value == "Yes");
-        generateChargesReport(checkDate.closeDate, document.getElementById("chargesReport_closeDate").value, metersIn);
+        generateChargesReport(lastCloseDate, document.getElementById("chargesReport_closeDate").value, metersIn);
       };
     };
 
