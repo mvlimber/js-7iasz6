@@ -620,7 +620,6 @@
         </div>
         <!------------------------------------------------------------------------------------------------------>
         <div id="MeterReadings" class="col s12">
-          <h6 style="font-size:20px "><b>Please enter your meter readings near and latest June 30th</b></h6>
           <table class="striped">
             <thead>
               <tr>
@@ -1696,7 +1695,7 @@
       function prepareChargesReport() {
       if (validateChargesReportAdd()) {
         var metersIn = (document.getElementById("chargesReport_metersIncluded").value == "Yes");
-        generateChargesReport(lastCloseDate, document.getElementById("chargesReport_closeDate").value, metersIn);
+        generateChargesReport(document.getElementById("chargesReport_closeDate").value, metersIn);
       };
     };
 
@@ -1758,10 +1757,13 @@
 
       function refreshChargesReports(){
         emptyHTMLSet(chargesReportsTable);
-        refCoproperty.collection("ChargesReports").orderBy("endDate","desc").get().then(function(objectsFSArray){
-            objectsFSArray.forEach(function(objectFS){
+        refCoproperty.collection("ChargesReports").orderBy("endDate","desc").get().then(function(chargesReportsFS){
+            if  (chargesReportsFS.docs.length > 0) {lastCloseDate= chargesReportsFS.docs[0].endDate;}
+            else {lastCloseDate = currentCoproperty.initialStartDate;};
+            chargesReportsFS.forEach(function(objectFS){
               loadChargesReport(objectFS);
-            })
+            });
+            meterReadingsLoaded = false;
           });
       };
 
@@ -2197,7 +2199,7 @@
         objectsRow.appendChild(cell);
         
         var meterData = meterFS.data();
-        if (meterData.readings[0].date.localeCompare(currentCoproperty.closeDateMeters) < 1) {
+        if (meterData.readings[0].date.localeCompare(lastCloseDate) < 1) {
           /* newest reading is in closed period: fake empty record */
           meterData.readings.unshift({
             counter : meterData.readings[0].counter + 1,
@@ -3382,7 +3384,7 @@
         document.getElementById("logo-container").innerHTML = "MyCondos: Settings";
       };
       
-      function generateChargesReport(lastClosedate, closeDateTransactions, metersIncluded){
+      function generateChargesReport(closeDateTransactions, metersIncluded){
         var buildingWaterDifference = 300;  
         var buildingWater = 0
         var buildingHeating = 0;
@@ -3519,7 +3521,7 @@
                       var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon, dataCharges);
                       dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toLocaleString("nl-BE",currencyStyle)});
                       var dataChargesCurrency = putChargesCurrency(Object.values(dataCharges));
-                      writePDF(previousCloseDate, closeDateTransactions, metersIncluded, headerCommon, dataWater, dataHeating, dataCommon, headerConsumption, totalledConsumptionData, headerQuota, totalledQuotaData, headerCharges, dataChargesCurrency);
+                      writePDF(closeDateTransactions, metersIncluded, headerCommon, dataWater, dataHeating, dataCommon, headerConsumption, totalledConsumptionData, headerQuota, totalledQuotaData, headerCharges, dataChargesCurrency);
                     };
                   };
                 });
@@ -3655,16 +3657,16 @@
       };
     
         
-      function writePDF (previousCloseDate, closeDateTransactions, metersIncludedHere, headerCommon, dataWater, dataHeating, dataCommon, headerConsumption,dataConsumption,  headerQuota, dataQuota, headerCharges, tableCharges){
+      function writePDF (closeDateTransactions, metersIncludedHere, headerCommon, dataWater, dataHeating, dataCommon, headerConsumption,dataConsumption,  headerQuota, dataQuota, headerCharges, tableCharges){
         const rowsLandscape =15;
         const rowsPortrait =24;
         const numPages = 1 + Math.ceil(dataWater.length/rowsPortrait) + Math.ceil(dataHeating.length/rowsPortrait) + Math.ceil(dataConsumption.length/rowsLandscape) + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsPortrait) + Math.ceil(tableCharges.length/rowsLandscape);
         window.jsPDF = window.jspdf.jsPDF;
         var currentPage = 1;
         
-        var startDateHere = new Date(previousCloseDate);
+        var startDateHere = new Date(lastCloseDate);
         startDateHere.setDate(startDateHere.getDate() + 1);
-        var startDateString = startDateHere.substr(0,9);
+        var startDateString = startDateHere.toISOString().substr(0,10);
         const footerText = "Charges Report " + currentCoproperty.name + " " + startDateString + " to " + closeDateTransactions;
         
         function printFooterPortrait () {
