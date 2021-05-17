@@ -1062,18 +1062,24 @@
                   </select>
                   <label for="meter_type">Type<b><font color='red'>*</font></b></label>
                 </div>
-                <div class="input-field col s12 m4">
+                <div class="input-field col s12 m8">
                   <input id="meter_id" type="text" maxlength="10" class="validate" required aria-required="true" pattern="([A-Z]|[0-9]){4,10}">
                   <label for="meter_id">ID meter<b><font color='red'>*</font></b></label>
                   <span class="helper-text" data-error="4 to 10 digts or capital letters. Example 99DB517508">4 to 10 digts or capital letters. Example 99DB517508</span>
                 </div>
                 <div class="input-field col s12 m4">
                   <select id="meter_status" required aria-required="true">
-                    <option value="" disabled selected>Select the status</option>
                     <option selected>Active</option>
                     <option>Removed</option>
                   </select>
                   <label for="meter_status">Status<b><font color='red'>*</font></b></label>
+                </div>
+                <div id="meter_firstReadingPanel" class="displayHidden">
+                  <div class="input-field" col s12 m8>
+                    <input id="meter_firstReading" type="number" class="validate" max="9999999999" required required="true">
+                    <label for="meter_firstReading">Reading<b><font color='red'>*</font></b></label>
+                    <span class="helper-text" data-error="Include decimals but ignore separator if present. Max 10 digits. Example: 06614639">Include decimals but ignore separator if present. Example: 06614639</span>
+                  </div>
                 </div>
               </form>
               <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeMeter()">Submit<i class="material-icons right">send</i></button>
@@ -2820,6 +2826,7 @@
       var selectedPropertyObject;
       var selectedPropertyOccupants;
       var selectedMeterId;
+      var selectedMeterData;
       var occupantsTable = document.getElementById("property_occupants");
       var metersTable = document.getElementById("property_meters");
         
@@ -2854,21 +2861,58 @@
       
       function editMeter(meter, meterData){
         selectedMeterId = meter;
+        selectedMeterData = meterData;
         document.getElementById("meter_type").value=meterData.type;
         document.getElementById("meter_id").value=meterData.meter;
         document.getElementById("meter_status").value=meterData.status;
+        if (meterData.readings.length = 0) {
+          document.getElementById("meter_firstReading").value = "";
+          document.getElementById("meter_firstReadingPanel").setAttribute("class", "displayBlock");
+        } else if (meterData.readings.length = 1) {
+          document.getElementById("meter_firstReading").value = meterData.readings[0].reading;
+          document.getElementById("meter_firstReadingPanel").setAttribute("class", "displayBlock");
+        } else if (meterData.readings.length = 2) {
+          document.getElementById("meter_firstReading").value = meterData.readings[1].reading;
+          document.getElementById("meter_firstReadingPanel").setAttribute("class", "displayBlock");
+        } else {
+          document.getElementById("meter_firstReadingPanel").setAttribute("class", "displayHidden");
+        }
         var elems = document.querySelectorAll('select');
         M.FormSelect.init(elems);
         M.updateTextFields();
       };
 
+      function validateMeterEntries(){
+        var valid= true;
+        if (!document.getElementById("meter_type").checkValidity()) {
+          M.toast({html:"Please enter Type"});
+          valid=false;
+        };
+        if (!document.getElementById("meter_id").checkValidity()) {
+          M.toast({html:"Please enter valid Meter ID"});
+          valid=false;
+        };
+        if (!document.getElementById("meter_status").checkValidity()) {
+          M.toast({html:"Please enter Status"});
+          valid=false;
+        };
+        if (document.getElementById("meter_firstReadingPanel").getAttribute("class") == "displayBlock") {
+          if (!document.getElementById("meter_firstReading").checkValidity()) {
+            M.toast({html:"Please enter first reading"});
+            valid=false;
+          };
+        };
+        return valid;
+      };
+      
+      /*
       function geMeterEntries(){
         return {
           type: document.getElementById("meter_type").value,
           meter: document.getElementById("meter_id").value,
           status: document.getElementById("meter_status").value,
         };
-      };
+      };*/
       
       function writeMeter(){
         if (validateMeterEntries()) {
@@ -2877,6 +2921,13 @@
               type: document.getElementById("meter_type").value,
               meter: document.getElementById("meter_id").value,
               status: document.getElementById("meter_status").value,
+            };
+            if (selectedMeterData.readings.length = 1) {
+              meterData.readings[0].reading = getElementById("meter_firstReading").value;
+              entries.readings = meterData.readings;
+            } else if (selectedMeterData.readings.length = 2) {
+              meterData.readings[1].reading = getElementById("meter_firstReading").value;
+              entries.readings = meterData.readings;
             };
             refCoproperty.collection("Properties").doc(selectedPropertyId).collection("Meters").doc(selectedMeterId).update(entries).then(function(docrefmeter) {
               displayMeters(selectedPropertyId);
@@ -2890,9 +2941,12 @@
               type: document.getElementById("meter_type").value,
               meter: document.getElementById("meter_id").value,
               status: document.getElementById("meter_status").value,
-              reading:"",
-              date:"",
-              picture:"",
+              readings: {
+                date: currentCoproperty.initialStartDate,
+                picture: false;
+                reading: document.getElementById("meter_firstReading").value,
+                counter: 0, 
+              },
             };
             refCoproperty.collection("Properties").doc(selectedPropertyId).collection("Meters").add(entries).then(function(docrefmeter) {
               displayMeters(selectedPropertyId);
@@ -2909,6 +2963,7 @@
         document.getElementById("meter_type").value="";
         document.getElementById("meter_id").value="";
         document.getElementById("meter_status").value="";
+        document.getElementById("meter_firstReading").value="";
         var elems = document.querySelectorAll('select');
         M.FormSelect.init(elems);
         M.updateTextFields();
@@ -3016,22 +3071,6 @@
         listMembers(document.getElementById("property_occupant_add"),"");   
       };
 
-      function validateMeterEntries(){
-        var valid= true;
-        if (!document.getElementById("meter_type").checkValidity()) {
-          M.toast({html:"Please enter Type"});
-          valid=false;
-        };
-        if (!document.getElementById("meter_id").checkValidity()) {
-          M.toast({html:"Please enter valid Meter ID"});
-          valid=false;
-        };
-        if (!document.getElementById("meter_status").checkValidity()) {
-          M.toast({html:"Please enter Status"});
-          valid=false;
-        };
-        return valid;
-      };
       
       function displayMeters(property) {
         emptyHTMLSet(metersTable);
