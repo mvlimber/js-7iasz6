@@ -2865,18 +2865,18 @@
         document.getElementById("meter_type").value=meterData.type;
         document.getElementById("meter_id").value=meterData.meter;
         document.getElementById("meter_status").value=meterData.status;
-        if (meterData.readings.length = 0) {
+        if (meterData.readings.length == 0) {
           document.getElementById("meter_firstReading").value = "";
           document.getElementById("meter_firstReadingPanel").setAttribute("class", "displayBlock");
-        } else if (meterData.readings.length = 1) {
+        } else if (meterData.readings.length == 1) {
           document.getElementById("meter_firstReading").value = meterData.readings[0].reading;
           document.getElementById("meter_firstReadingPanel").setAttribute("class", "displayBlock");
-        } else if (meterData.readings.length = 2) {
+        } else if (meterData.readings.length == 2) {
           document.getElementById("meter_firstReading").value = meterData.readings[1].reading;
           document.getElementById("meter_firstReadingPanel").setAttribute("class", "displayBlock");
         } else {
           document.getElementById("meter_firstReadingPanel").setAttribute("class", "displayHidden");
-        }
+        };
         var elems = document.querySelectorAll('select');
         M.FormSelect.init(elems);
         M.updateTextFields();
@@ -2922,10 +2922,10 @@
               meter: document.getElementById("meter_id").value,
               status: document.getElementById("meter_status").value,
             };
-            if (selectedMeterData.readings.length = 1) {
+            if (selectedMeterData.readings.length == 1) {
               meterData.readings[0].reading = getElementById("meter_firstReading").value;
               entries.readings = meterData.readings;
-            } else if (selectedMeterData.readings.length = 2) {
+            } else if (selectedMeterData.readings.length == 2) {
               meterData.readings[1].reading = getElementById("meter_firstReading").value;
               entries.readings = meterData.readings;
             };
@@ -2943,10 +2943,10 @@
               status: document.getElementById("meter_status").value,
               readings: {
                 date: currentCoproperty.initialStartDate,
-                picture: false;
+                picture: false,
                 reading: document.getElementById("meter_firstReading").value,
-                counter: 0, 
-              },
+                counter: 0
+              }
             };
             refCoproperty.collection("Properties").doc(selectedPropertyId).collection("Meters").add(entries).then(function(docrefmeter) {
               displayMeters(selectedPropertyId);
@@ -2958,6 +2958,7 @@
           };
         };
       };
+
       function addMeter(property){
         selectedMeterId = "";
         document.getElementById("meter_type").value="";
