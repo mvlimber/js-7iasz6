@@ -827,13 +827,13 @@
                   <input  id="member_country" type="text" readonly >
                   <label for="member_country" >Country</label>
                 </div>
-                <div class="input-field col s12 m2">
-                  <input  id="member_zip" type="number" readonly>
-                  <label for="member_zip" >Zip</label>
-                </div>
                 <div class="input-field col s12 m6">
                   <input  id="member_town" type="text" readonly >
                   <label for="member_town">Town</label>
+                </div>
+                <div class="input-field col s12 m2">
+                  <input  id="member_zip" type="number" readonly>
+                  <label for="member_zip" >Zip</label>
                 </div>
                 <div class="input-field col s12 m4">
                   <input  id="member_street" type="text" readonly >
@@ -910,17 +910,17 @@
                 <label for="member_country_edit" >Country</label>
                 <span class="helper-text" data-error="Max 50 characters"></span>
               </div>
-              <div class="input-field col s6 m2">
-                <input  id="member_zip_edit" type="text" class="validate" min="0" maxlength="10">
-                <label for="member_zip_edit" >Zip</label>
-                <span class="helper-text" data-error="Max 10 characters. For Belgium 4 digits. Example Belgium: 1730">"Max 10 characters. Example Belgium: 1730"</span>
-              </div>
               <div class="input-field col s6 m6">
                 <input  id="member_town_edit" type="text" class="validate" maxlength="50" >
                 <label for="member_town_edit">Town</label>
                 <span class="helper-text" data-error="Max 50 characters"></span>
+              </div><div class="input-field col s6 m2">
+                <input  id="member_zip_edit" type="text" class="validate" min="0" maxlength="10">
+                <label for="member_zip_edit" >Zip</label>
+                <span class="helper-text" data-error="Max 10 characters. For Belgium 4 digits. Example Belgium: 1730">"Example Belgium: 1730"</span>
               </div>
-              <div class="input-field col s12 m8">
+              
+              <div class="input-field col s12 m4">
                 <input  id="member_street_edit" type="text" class="validate" maxlength="50" >
                 <label for="member_street_edit">Street</label>
                 <span class="helper-text" data-error="Max 50 characters"></span>
@@ -1062,7 +1062,7 @@
                   </select>
                   <label for="meter_type">Type<b><font color='red'>*</font></b></label>
                 </div>
-                <div class="input-field col s12 m8">
+                <div class="input-field col s12 m4">
                   <input id="meter_id" type="text" maxlength="10" class="validate" required aria-required="true" pattern="([A-Z]|[0-9]){4,10}">
                   <label for="meter_id">ID meter<b><font color='red'>*</font></b></label>
                   <span class="helper-text" data-error="4 to 10 digts or capital letters. Example 99DB517508">4 to 10 digts or capital letters. Example 99DB517508</span>
@@ -1074,13 +1074,12 @@
                   </select>
                   <label for="meter_status">Status<b><font color='red'>*</font></b></label>
                 </div>
-                <div id="meter_firstReadingPanel" class="displayHidden">
-                  <div class="input-field" col s12 m8>
+                  <div id="meter_firstReadingPanel" class="input-field col s12 m4" >
                     <input id="meter_firstReading" type="number" class="validate" max="9999999999" required required="true">
                     <label for="meter_firstReading">Reading<b><font color='red'>*</font></b></label>
                     <span class="helper-text" data-error="Include decimals but ignore separator if present. Max 10 digits. Example: 06614639">Include decimals but ignore separator if present. Example: 06614639</span>
                   </div>
-                </div>
+                
               </form>
               <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeMeter()">Submit<i class="material-icons right">send</i></button>
               <a style="float: right;margin-bottom: 3px"
@@ -2867,15 +2866,15 @@
         document.getElementById("meter_status").value=meterData.status;
         if (meterData.readings.length == 0) {
           document.getElementById("meter_firstReading").value = "";
-          document.getElementById("meter_firstReadingPanel").setAttribute("class", "displayBlock");
+          document.getElementById("meter_firstReadingPanel").setAttribute("class", "input-field col s12 m12 displayBlock");
         } else if (meterData.readings.length == 1) {
           document.getElementById("meter_firstReading").value = meterData.readings[0].reading;
-          document.getElementById("meter_firstReadingPanel").setAttribute("class", "displayBlock");
+          document.getElementById("meter_firstReadingPanel").setAttribute("class", "input-field col s12 m12 displayBlock");
         } else if (meterData.readings.length == 2) {
           document.getElementById("meter_firstReading").value = meterData.readings[1].reading;
-          document.getElementById("meter_firstReadingPanel").setAttribute("class", "displayBlock");
+          document.getElementById("meter_firstReadingPanel").setAttribute("class", "input-field col s12 m12 displayBlock");
         } else {
-          document.getElementById("meter_firstReadingPanel").setAttribute("class", "displayHidden");
+          document.getElementById("meter_firstReadingPanel").setAttribute("class", "input-field col s12 m12 displayBlock");
         };
         var elems = document.querySelectorAll('select');
         M.FormSelect.init(elems);
@@ -2965,6 +2964,7 @@
         document.getElementById("meter_id").value="";
         document.getElementById("meter_status").value="";
         document.getElementById("meter_firstReading").value="";
+        document.getElementById("meter_firstReadingPanel").setAttribute("class", "input-field col s12 m12 displayBlock");
         var elems = document.querySelectorAll('select');
         M.FormSelect.init(elems);
         M.updateTextFields();
