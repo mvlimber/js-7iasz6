@@ -2940,12 +2940,12 @@
               type: document.getElementById("meter_type").value,
               meter: document.getElementById("meter_id").value,
               status: document.getElementById("meter_status").value,
-              readings: {
+              readings: [{
                 date: currentCoproperty.initialStartDate,
                 picture: false,
                 reading: document.getElementById("meter_firstReading").value,
                 counter: 0
-              }
+              }]
             };
             refCoproperty.collection("Properties").doc(selectedPropertyId).collection("Meters").add(entries).then(function(docrefmeter) {
               displayMeters(selectedPropertyId);
