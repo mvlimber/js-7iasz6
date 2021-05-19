@@ -2922,11 +2922,11 @@
               status: document.getElementById("meter_status").value,
             };
             if (selectedMeterData.readings.length == 1) {
-              meterData.readings[0].reading = getElementById("meter_firstReading").value;
-              entries.readings = meterData.readings;
+              selectedMeterData.readings[0].reading = document.getElementById("meter_firstReading").value;
+              entries.readings = selectedMeterData.readings;
             } else if (selectedMeterData.readings.length == 2) {
-              meterData.readings[1].reading = getElementById("meter_firstReading").value;
-              entries.readings = meterData.readings;
+              selectedMeterData.readings[1].reading = document.getElementById("meter_firstReading").value;
+              entries.readings = selectedMeterData.readings;
             };
             refCoproperty.collection("Properties").doc(selectedPropertyId).collection("Meters").doc(selectedMeterId).update(entries).then(function(docrefmeter) {
               displayMeters(selectedPropertyId);
