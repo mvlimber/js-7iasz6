@@ -1028,26 +1028,8 @@
             class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>Close</a>
 
         </div>
-        <!------------------------------------------------------------------------------------------>
-        <div id="Properties" class="col s12">
-          <table class="striped">
-            <thead>
-              <tr>
-                <th>Code</th>
-                <th>Quota</th>
-                <th>Type</th>
-                <th>Owner</th>
-              </tr>
-            </thead>
-            <tbody id="propertiesTable">
-            </tbody>
-          </table>
-          <h6><b id="totalQuotas"></b></h6>
-          <div id="Properties_Add" class="displayHidden">
-            <button style="float: right" data-target="propertyAdd" class="btn-small waves-light modal-trigger" onclick="resetSelectedProperty()"><i class="material-icons right">add</i>New Property</button>
-          </div>
 
-          <div id="meterWrite" class="modal">
+        <div id="meterWrite" class="modal">
             <div class="modal-content">
               <a style="float: right"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Close</a>
@@ -1085,8 +1067,27 @@
               <a style="float: right;margin-bottom: 3px"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
             </div>
+        </div>
+        <!------------------------------------------------------------------------------------------>
+        <div id="Properties" class="col s12">
+          <table class="striped">
+            <thead>
+              <tr>
+                <th>Code</th>
+                <th>Quota</th>
+                <th>Type</th>
+                <th>Owner</th>
+              </tr>
+            </thead>
+            <tbody id="propertiesTable">
+            </tbody>
+          </table>
+          <h6><b id="totalQuotas"></b></h6>
+          <div id="Properties_Add" class="displayHidden">
+            <button style="float: right" data-target="propertyAdd" class="btn-small waves-light modal-trigger" onclick="resetSelectedProperty()"><i class="material-icons right">add</i>New Property</button>
           </div>
 
+          
           <div id="previousOwners" class="modal">
             <div class="modal-content">
               <a style="float: right"
@@ -2959,7 +2960,6 @@
               }).catch(function(error) {
                 M.toast({html:"Error occurred adding meter:" + error}); 
               });
-              
             }
             else {
               refFS.collection("Properties").doc(selectedPropertyId).collection("Meters").add(entries).then(function(docrefmeter) {
