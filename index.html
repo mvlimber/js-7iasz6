@@ -1237,9 +1237,19 @@
             </div>
           </div>
         </div>
-        <!-- <div id="Settings" class="col s12">
-          <button onclick="downloadQuarter()" class="button">Download Quarter</button>
-        </div>-->
+        <div id="Settings" class="col s12">
+          <h6>Meters common parts</h6>
+            <table class="striped">
+              <thead>
+                <th>Type</th>
+                <th>Meter ID</th>
+                <th>Status</th>
+              </thead>
+              <tbody id="coproperty_meters">
+              </tbody>
+            </table>
+            <button style="float: right;margin-bottom: 3px" class="btn-small waves-light modal-trigger" data-target="meterWrite" onclick="addCopropertyMeter()">Add Meter<i class="material-icons right">add</i></button>
+        </div>
       </div>
     </main>
     <script>
@@ -3366,7 +3376,7 @@
       };
 
       function addCopropertyMeter(){
-        
+
       }
       
       function generateChargesReport(closeDateTransactions, metersIncluded){
