@@ -2838,6 +2838,7 @@
       var selectedMeterData;
       var occupantsTable = document.getElementById("property_occupants");
       var metersTable = document.getElementById("property_meters");
+      var handlingCopropertyMeter = false;
         
       function displayOccupant(propertyId,occupant){
         refCoproperty.collection("Members").doc(occupant.data().occupant).get().then(function(member) {
@@ -3361,8 +3362,15 @@
     <!--   Settings scripts start here -->
     <script>
       var settingsLoaded = false;
+      var copropertyMetersTable = document.getElementById("coproperty_meters");
       
       function refreshSettings() {
+        emptyHTMLSet(copropertyMetersTable);
+        refCoproperty.collection("Meters").get().then( function (querySnapshot) {
+          if (Boolean(querySnapshot)) {
+            querySnapshot.forEach(function(meterFS) {displayMeter(meterFS);});
+          };
+        });  
 
       };
       
@@ -3376,7 +3384,8 @@
       };
 
       function addCopropertyMeter(){
-
+        addMeter();
+        handlingCopropertyMeter = true;
       }
       
       function generateChargesReport(closeDateTransactions, metersIncluded){
