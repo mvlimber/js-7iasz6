@@ -3350,10 +3350,24 @@
     </script>
     <!--   Settings scripts start here -->
     <script>
+      var settingsLoaded = false;
+      
+      function refreshSettings() {
+
+      };
+      
       function loadSettings() {
         hideMenu();
         document.getElementById("logo-container").innerHTML = "MyCondos: Settings";
+        if (!settingsLoaded) {
+          refreshSettings();
+          settingsLoaded = true;
+        };
       };
+
+      function addCopropertyMeter(){
+        
+      }
       
       function generateChargesReport(closeDateTransactions, metersIncluded){
         var buildingWaterDifference = 300;  
