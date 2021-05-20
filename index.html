@@ -2874,6 +2874,7 @@
       function editMeter(meter, meterData){
         selectedMeterId = meter;
         selectedMeterData = meterData;
+        handlingCopropertyMeter = false;
         document.getElementById("meter_type").value=meterData.type;
         document.getElementById("meter_id").value=meterData.meter;
         document.getElementById("meter_status").value=meterData.status;
@@ -2951,18 +2952,19 @@
                 counter: 0
               }]
             };
-            var refFS;
             if (handlingCopropertyMeter) {
-              refFS.collection("Meters").add(entries).then(function(docrefmeter) {
+              entries.coproperty = true;
+              refCoproperty.collection("Meters").add(entries).then(function(docrefmeter) {
                 meterReadingsLoaded = false;
                 refreshSettings();
+                handlingCopropertyMeter = false;
                 M.Modal.getInstance(document.getElementById("meterWrite")).close();
               }).catch(function(error) {
                 M.toast({html:"Error occurred adding meter:" + error}); 
               });
             }
             else {
-              refFS.collection("Properties").doc(selectedPropertyId).collection("Meters").add(entries).then(function(docrefmeter) {
+              refCoproperty.collection("Properties").doc(selectedPropertyId).collection("Meters").add(entries).then(function(docrefmeter) {
                 displayMeters(selectedPropertyId);
                 meterReadingsLoaded = false;
                 M.Modal.getInstance(document.getElementById("meterWrite")).close();
@@ -3015,8 +3017,8 @@
           cell.appendChild(cellContent);
           objectsRow.appendChild(cell); 
         };
-
-        metersTable.appendChild (objectsRow);
+        if (meterData.coproperty) {copropertyMetersTable.appendChild (objectsRow);}
+        else {metersTable.appendChild (objectsRow);};
       };
       
       
