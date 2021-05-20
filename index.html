@@ -2933,13 +2933,23 @@
               selectedMeterData.readings[1].reading = document.getElementById("meter_firstReading").value;
               entries.readings = selectedMeterData.readings;
             };
-            refCoproperty.collection("Properties").doc(selectedPropertyId).collection("Meters").doc(selectedMeterId).update(entries).then(function(docrefmeter) {
-              displayMeters(selectedPropertyId);
-              meterReadingsLoaded = false;
-              M.Modal.getInstance(document.getElementById("meterWrite")).close();
-            }).catch(function(error) {
-              M.toast({html:"Error occurred editing meter:" + error}); 
-            });
+            if (Boolean(selectedMeterData.coproperty)) {
+              refCoproperty.collection("Meters").doc(selectedMeterId).update(entries).then(function(docrefmeter) {
+                meterReadingsLoaded = false;
+                refreshSettings();
+                M.Modal.getInstance(document.getElementById("meterWrite")).close();
+              }).catch(function(error) {
+                M.toast({html:"Error occurred editing meter:" + error}); 
+              });
+            } else {
+              refCoproperty.collection("Properties").doc(selectedPropertyId).collection("Meters").doc(selectedMeterId).update(entries).then(function(docrefmeter) {
+                displayMeters(selectedPropertyId);
+                meterReadingsLoaded = false;
+                M.Modal.getInstance(document.getElementById("meterWrite")).close();
+              }).catch(function(error) {
+                M.toast({html:"Error occurred editing meter:" + error}); 
+              });
+            };
           } else {
             var entries = {
               type: document.getElementById("meter_type").value,
@@ -3017,7 +3027,7 @@
           cell.appendChild(cellContent);
           objectsRow.appendChild(cell); 
         };
-        if (meterData.coproperty) {copropertyMetersTable.appendChild (objectsRow);}
+        if (Boolean(meterData.coproperty)) {copropertyMetersTable.appendChild (objectsRow);}
         else {metersTable.appendChild (objectsRow);};
       };
       
