@@ -2916,15 +2916,6 @@
         return valid;
       };
       
-      /*
-      function geMeterEntries(){
-        return {
-          type: document.getElementById("meter_type").value,
-          meter: document.getElementById("meter_id").value,
-          status: document.getElementById("meter_status").value,
-        };
-      };*/
-      
       function writeMeter(){
         if (validateMeterEntries()) {
           if (selectedMeterId) {
@@ -2959,13 +2950,26 @@
                 counter: 0
               }]
             };
-            refCoproperty.collection("Properties").doc(selectedPropertyId).collection("Meters").add(entries).then(function(docrefmeter) {
-              displayMeters(selectedPropertyId);
-              meterReadingsLoaded = false;
-              M.Modal.getInstance(document.getElementById("meterWrite")).close();
-            }).catch(function(error) {
-              M.toast({html:"Error occurred adding meter:" + error}); 
-            });
+            var refFS;
+            if (handlingCopropertyMeter) {
+              refFS.collection("Meters").add(entries).then(function(docrefmeter) {
+                meterReadingsLoaded = false;
+                refreshSettings();
+                M.Modal.getInstance(document.getElementById("meterWrite")).close();
+              }).catch(function(error) {
+                M.toast({html:"Error occurred adding meter:" + error}); 
+              });
+              
+            }
+            else {
+              refFS.collection("Properties").doc(selectedPropertyId).collection("Meters").add(entries).then(function(docrefmeter) {
+                displayMeters(selectedPropertyId);
+                meterReadingsLoaded = false;
+                M.Modal.getInstance(document.getElementById("meterWrite")).close();
+              }).catch(function(error) {
+                M.toast({html:"Error occurred adding meter:" + error}); 
+              });
+            };
           };
         };
       };
