@@ -2232,7 +2232,7 @@
             cellContent.setAttribute('onclick','setSelectedMeterReading_edit('+JSON.stringify(idHere)+','+JSON.stringify(codeHere)+','+JSON.stringify(meterFS.id)+','+JSON.stringify(meterData)+')');
         } else {
           cellContent.setAttribute("data-target", "meterReadingRead");
-          cellContent.setAttribute('onclick','setSelectedMeterReading_readonly('+JSON.stringify(idHere)+','+JSON.stringify(codeHere)+')');
+          cellContent.setAttribute('onclick','setSelectedMeterReading_readonly('+JSON.stringify(idHere)+','+JSON.stringify(codeHere)+','+JSON.stringify(meterFS.id)+','+JSON.stringify(meterData)+')');
         };
         cellContent.setAttribute('class','btn-small waves-light modal-trigger');
         cellContent.innerHTML = meterData.type;
@@ -2349,7 +2349,7 @@
         document.getElementById("meterReading_id").value = readingData.meter;
         document.getElementById("meterReading_lastReading").value = readingData.readings[1].reading;
         document.getElementById("meterReading_reading").value = readingData.readings[0].reading;
-        document.getElementById("meterReading_date").value = readings[0].date;
+        document.getElementById("meterReading_date").value = readingData.readings[0].date;
         emptyHTMLSet(document.getElementById("meterReading_picture"));
         emptyHTMLSet(document.getElementById("meterReading_picture_show"));
         if (readingData.readings[0].picture) {
