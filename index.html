@@ -2217,7 +2217,7 @@
         var cellContent = document.createElement('button');
         var isOwner;
         if (propertyFS) {
-          isOwner = currentUser.id == propertyFS.data().owner;
+          isOwner = (currentUser.id == propertyFS.data().owner);
           idHere = propertyFS.id;
           codeHere = propertyFS.data().code}
         else {
@@ -2228,10 +2228,10 @@
 
         if (currentUser.role == roleAdministrator || isOwner) {
           cellContent.setAttribute("data-target", "meterReadingWrite");
-            cellContent.setAttribute('onclick','setSelectedMeterReading_edit('+JSON.stringify(propertyFS.id)+','+JSON.stringify(propertyFS.data())+','+JSON.stringify(meterFS.id)+','+JSON.stringify(meterData)+')');
+            cellContent.setAttribute('onclick','setSelectedMeterReading_edit('+JSON.stringify(idHere)+','+JSON.stringify(codeHere)+','+JSON.stringify(meterFS.id)+','+JSON.stringify(meterData)+')');
         } else {
           cellContent.setAttribute("data-target", "meterReadingRead");
-          cellContent.setAttribute('onclick','setSelectedMeterReading_readonly('+JSON.stringify(propertyFS.id)+','+JSON.stringify(propertyFS.data())+')');
+          cellContent.setAttribute('onclick','setSelectedMeterReading_readonly('+JSON.stringify(idHere)+','+JSON.stringify(codeHere)+')');
         };
         cellContent.setAttribute('class','btn-small waves-light modal-trigger');
         cellContent.innerHTML = meterData.type;
