@@ -3424,7 +3424,7 @@
         addMeter();
         handlingCopropertyMeter = true;
       }
-      
+      var waterCommonParts;
       function generateChargesReport(closeDateTransactions, metersIncluded){
         var buildingWaterDifference = 300;  
         var buildingWater = 0
@@ -3433,7 +3433,7 @@
         
         var totalHeatingDifference = 0; 
         var totalHotWaterDifference = 0; 
-        var waterCommonParts = 0;
+        waterCommonParts = 0;
         var totalQuota = 0;
         var coldWater = false;
         var hotWater = false;
