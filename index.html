@@ -1490,9 +1490,10 @@
     <script>
       var lastCloseDate;
       var currentCoproperty;
-      
+      var currentCopropertyId;
       function refreshHome(){
       refCoproperty.get().then(function(copropertyFS){
+        currentCopropertyId = copropertyFS.id;
         currentCoproperty = copropertyFS.data();
         
         emptyHTMLSet(document.getElementById("Home_CopropertyName"));
@@ -2196,7 +2197,9 @@
 
       function loadMeterReading(propertyFS, meterFS){
         var objectsRow= document.createElement('tr');
-        var cellContent = propertyLink(propertyFS);
+        var cellContent;
+        if (propertyFS) {cellContent = propertyLink(propertyFS);}
+        else {cellContent = document.createTextNode("Common Parts");};
         var cell = document.createElement('td');
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);
@@ -2212,7 +2215,18 @@
           });
         };
         var cellContent = document.createElement('button');
-        if (currentUser.role == roleAdministrator || currentUser.id == propertyFS.data().owner) {
+        var isOwner;
+        if (propertyFS) {
+          isOwner = currentUser.id == propertyFS.data().owner;
+          idHere = propertyFS.id;
+          codeHere = propertyFS.data().code}
+        else {
+          isOwner = false;
+          idHere =  currentCopropertyId;
+          codeHere = "Common Parts";
+        };
+
+        if (currentUser.role == roleAdministrator || isOwner) {
           cellContent.setAttribute("data-target", "meterReadingWrite");
             cellContent.setAttribute('onclick','setSelectedMeterReading_edit('+JSON.stringify(propertyFS.id)+','+JSON.stringify(propertyFS.data())+','+JSON.stringify(meterFS.id)+','+JSON.stringify(meterData)+')');
         } else {
@@ -2272,6 +2286,11 @@
               });
             });
           });  
+          refCoproperty.collection("Meters").orderBy("type").get().then(function(meterFSArray){
+            meterFSArray.forEach(function(meterFS){
+              if (meterFS.data().status.normalize() === "Active".normalize()) {loadMeterReading(null,meterFS);};
+            });
+          });
         });    
       };
       
@@ -2288,11 +2307,11 @@
       var selectedReadingData;
       var selectedReadingPropertyId;
       var picturePresent;
-      function setSelectedMeterReading_edit(propertyId, propertyData,readingID, readingData){
+      function setSelectedMeterReading_edit(propertyId, propertyCode,readingID, readingData){
         selectedReadingId = readingID;
         selectedReadingPropertyId = propertyId;
         selectedReadingData = readingData;
-        document.getElementById("meterReading_property_edit").value = propertyData.code;
+        document.getElementById("meterReading_property_edit").value = propertyCode;
         document.getElementById("meterReading_type_edit").value = readingData.type;
         document.getElementById("meterReading_id_edit").value = readingData.meter;
         document.getElementById("meterReading_lastReading_edit").value = readingData.readings[1].reading;
