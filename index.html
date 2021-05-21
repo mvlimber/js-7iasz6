@@ -3670,6 +3670,8 @@
           dataCharges[arrayEl.ownerId] = {ownerId:arrayEl.ownerId, owner:arrayEl.owner, common:" ", private:" ", water:subtotalAmountWater, heating:subtotalAmountHeating,Total:" "};
         };
 
+        /* Hier koud water difference inlezen beter hierboven om van de stop te genieten*/
+
         dataConsumption.forEach(function(arrayEl) {
           if ((!currentOwnerId) || (arrayEl.ownerId == currentOwnerId)) {
             count = count + 1;
