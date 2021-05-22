@@ -2413,10 +2413,13 @@
           var thisReading = selectedReadingData.readings[0];
           thisReading.reading = document.getElementById("meterReading_reading_edit").value;
           thisReading.date = document.getElementById("meterReading_date_edit").value;
+          var thisRefFS;
+          if (selectedReadingData.coproperty){thisRefFS = refCoproperty}
+          else {thisRefFS = refCoproperty.collection("Properties").doc(selectedReadingPropertyId)};
           if (pictureFileText) { 
             // A new picture has been attached
             thisReading.picture= true;
-            refCoproperty.collection("Properties").doc(selectedReadingPropertyId).collection("Meters").doc(selectedReadingId).update({readings:selectedReadingData.readings}).then(function() {
+            thisRefFS.collection("Meters").doc(selectedReadingId).update({readings:selectedReadingData.readings}).then(function() {
               var pictureFile = document.getElementById('meterReading_picture_file').files[0];
               var fileRef = refCopropertyFiles.child(selectedReadingPropertyId).child("Meters").child(selectedReadingId).child((thisReading.counter).toString());  
               fileRef.put(pictureFile).then (function (){});
@@ -2428,7 +2431,7 @@
           } else {
             // No new picture attached: either existing picture or no picture or pictuture was removed
             thisReading.picture= picturePresent;
-            refCoproperty.collection("Properties").doc(selectedReadingPropertyId).collection("Meters").doc(selectedReadingId).update({readings:selectedReadingData.readings}).then(function(docref) {
+            thisRefFS.collection("Meters").doc(selectedReadingId).update({readings:selectedReadingData.readings}).then(function(docref) {
               refreshMeterReadings();
               M.Modal.getInstance(document.getElementById("meterReadingWrite")).close();
             }).catch(function(error) {
