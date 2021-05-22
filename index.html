@@ -3569,8 +3569,7 @@
                   };
                   if (!stop) {
                     iteratorCount = iteratorCount + 1;
-                    if (iteratorCount == propertiesFS.docs.length) {
-                      
+                    if (iteratorCount == propertiesFS.docs.length) {                      
                       refCoproperty.collection("Meters").where("type", "==","Cold Water").get().then(function(metersFS){
                         meterData = metersFS.docs[0].data();
                         var readingDate = meterData.readings[0].date;
@@ -3578,12 +3577,11 @@
                           M.toast({html:"following meter reading is missing or out of period: " + meterData.meter});
                           stop = true;
                         };
+                        if (!stop) {
                         var lastReading = meterData.readings[1].reading;
                         var newReading = meterData.readings[0].reading;
-                        buildingWaterDifference = parseFloat(newReading) - parseFloat(lastReading);
+                        buildingWaterDifference = parseFloat(newReading) - parseFloat(lastReading);                     
                       
-                      
-                      if (!stop) {
                         var totalledConsumptionData = makeSubtotalsConsumption (dataConsumption,buildingWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataCharges);
                         dataCommon.push({type:"Water",name:" ",communication:"Water for common parts",amount:waterCommonParts.toLocaleString("nl-BE",currencyStyle)});
                         buildingCommon = buildingCommon + waterCommonParts;
