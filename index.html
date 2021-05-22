@@ -3553,14 +3553,10 @@
                         totalHotWaterDifference = totalHotWaterDifference + differenceV;
                       };
                       dataConsumption.push({ownerId:ownerIdV, owner:ownerName, property:prData.code, meter:meterData.meter, type:meterData.type, last_reading:lastReading, reading:newReading, difference:differenceV.toString(), water: " ", heating:" "});
-                    });
-                
+                    });    
                   };
                   if (!stop) {
                     iteratorCount = iteratorCount + 1;
-                    console.log("iteratorCount is " + iteratorCount);
-                    console.log("propertiesFS.docs.length is " + propertiesFS.docs.length);
-                    console.log(iteratorCount == propertiesFS.docs.length);
                     if (iteratorCount == propertiesFS.docs.length) {                      
                       refCoproperty.collection("Meters").where("type", "==","Cold Water").get().then(function(metersFS){
                         meterData = metersFS.docs[0].data();
