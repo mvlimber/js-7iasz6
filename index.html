@@ -3487,35 +3487,16 @@
         refCoproperty.collection("Transactions").where("bookDate", ">", closeDateToStartFrom).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){
           transactionsFS.forEach(function(transactionFS){
             var trData = transactionFS.data();
-            if ((trData.type !== "Water") && (trData.type !== "Heating")) {
-              /* common expenses are always reported */
-              if (!trData.communication) {
-                trData.communication=" ";
-              } else {
-                trData.communication=trData.communication.substr(0,54);
-              };
-              trData.name=trData.name.substr(0,25);
-              var amount = Number(trData.amount);
-              trData.amount = amount.toLocaleString("nl-BE",currencyStyle);
-              dataCommon.push(trData);
-              buildingCommon = buildingCommon + amount;
-            } else if (metersIncluded){
-              if (!trData.communication) {
-                trData.communication=" ";
-              } else {
-                trData.communication=trData.communication.substr(0,54);
-              };
-              trData.name=trData.name.substr(0,25);
-              var amount = Number(trData.amount);
-              trData.amount = amount.toLocaleString("nl-BE",currencyStyle);
-              if (trData.type == "Water"){
-                dataWater.push(trData);
-                buildingWater = buildingWater + amount;
-              } else {
-                dataHeating.push(trData);
-                buildingHeating = buildingHeating + amount;
-              };
+            if (!trData.communication) {
+              trData.communication=" ";
+            } else {
+              trData.communication=trData.communication.substr(0,54);
             };
+            trData.name=trData.name.substr(0,25);
+            var amount = Number(trData.amount);
+            trData.amount = amount.toLocaleString("nl-BE",currencyStyle);
+            dataCommon.push(trData);
+            buildingCommon = buildingCommon + amount;
           });
         
           dataWater.push({type:"Total",name:" ",communication:" ",amount:buildingWater.toLocaleString("nl-BE",currencyStyle)});
