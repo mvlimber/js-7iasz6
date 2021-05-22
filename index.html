@@ -3693,7 +3693,11 @@
       function writePDF (closeDateTransactions, metersIncludedHere, headerCommon, dataWater, dataHeating, dataCommon, headerConsumption,dataConsumption,  headerQuota, dataQuota, headerCharges, tableCharges){
         const rowsLandscape =15;
         const rowsPortrait =24;
-        const numPages = 1 + Math.ceil(dataWater.length/rowsPortrait) + Math.ceil(dataHeating.length/rowsPortrait) + Math.ceil(dataConsumption.length/rowsLandscape) + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsPortrait) + Math.ceil(tableCharges.length/rowsLandscape);
+        if (metersIncludedHere) {
+          const numPages = 1 + Math.ceil(dataWater.length/rowsPortrait) + Math.ceil(dataHeating.length/rowsPortrait) + Math.ceil(dataConsumption.length/rowsLandscape) + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsPortrait) + Math.ceil(tableCharges.length/rowsLandscape);
+        } else {
+          const numPages = 1 + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsPortrait) + Math.ceil(tableCharges.length/rowsLandscape);
+        };
         window.jsPDF = window.jspdf.jsPDF;
         var currentPage = 1;
         
