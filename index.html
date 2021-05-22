@@ -3554,20 +3554,13 @@
                       };
                       dataConsumption.push({ownerId:ownerIdV, owner:ownerName, property:prData.code, meter:meterData.meter, type:meterData.type, last_reading:lastReading, reading:newReading, difference:differenceV.toString(), water: " ", heating:" "});
                     });
-                    refCoproperty.collection("Meters").where("type", "==","Cold Water").get().then(function(metersFS){
-                      meterData = metersFS.docs[0].data();
-                      var readingDate = meterData.readings[0].date;
-                      if ((!checkBookDate(readingDate))|| (readingDate.localeCompare(closeDateTransactions)>0)) {
-                        M.toast({html:"following meter reading is missing or out of period: " + meterData.meter});
-                        stop = true;
-                      };
-                      var lastReading = meterData.readings[1].reading;
-                      var newReading = meterData.readings[0].reading;
-                      buildingWaterDifference = parseFloat(newReading) - parseFloat(lastReading);
-                    });
+                
                   };
                   if (!stop) {
                     iteratorCount = iteratorCount + 1;
+                    console.log("iteratorCount is " + iteratorCount);
+                    console.log("propertiesFS.docs.length is " + propertiesFS.docs.length);
+                    console.log(iteratorCount == propertiesFS.docs.length);
                     if (iteratorCount == propertiesFS.docs.length) {                      
                       refCoproperty.collection("Meters").where("type", "==","Cold Water").get().then(function(metersFS){
                         meterData = metersFS.docs[0].data();
