@@ -3544,7 +3544,6 @@
                         M.toast({html:"following meter reading is missing or out of period: " + meterData.meter});
                         stop = true;
                       };
-                      /*var differenceV = parseFloat(meterData.reading) - parseFloat(meterData.lastReading);*/
                       var lastReading = meterData.readings[1].reading;
                       var newReading = meterData.readings[0].reading;
                       var differenceV = parseFloat(newReading) - parseFloat(lastReading);
@@ -3574,22 +3573,19 @@
                         meterData = metersFS.docs[0].data();
                         var readingDate = meterData.readings[0].date;
                         if ((!checkBookDate(readingDate))|| (readingDate.localeCompare(closeDateTransactions)>0)) {
-                          M.toast({html:"following meter reading is missing or out of period: " + meterData.meter});
-                          stop = true;
+                          M.toast({html:"following meter reading is missing or out of period: " + meterData.meter});}
+                        else {
+                          var lastReading = meterData.readings[1].reading;
+                          var newReading = meterData.readings[0].reading;
+                          buildingWaterDifference = parseFloat(newReading) - parseFloat(lastReading);                                            
+                          var totalledConsumptionData = makeSubtotalsConsumption (dataConsumption,buildingWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataCharges);
+                          dataCommon.push({type:"Water",name:" ",communication:"Water for common parts",amount:waterCommonParts.toLocaleString("nl-BE",currencyStyle)});
+                          buildingCommon = buildingCommon + waterCommonParts;
+                          var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon, dataCharges);
+                          dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toLocaleString("nl-BE",currencyStyle)});
+                          var dataChargesCurrency = putChargesCurrency(Object.values(dataCharges));
+                          writePDF(closeDateTransactions, metersIncluded, headerCommon, dataWater, dataHeating, dataCommon, headerConsumption, totalledConsumptionData, headerQuota, totalledQuotaData, headerCharges, dataChargesCurrency);
                         };
-                        if (!stop) {
-                        var lastReading = meterData.readings[1].reading;
-                        var newReading = meterData.readings[0].reading;
-                        buildingWaterDifference = parseFloat(newReading) - parseFloat(lastReading);                     
-                      
-                        var totalledConsumptionData = makeSubtotalsConsumption (dataConsumption,buildingWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataCharges);
-                        dataCommon.push({type:"Water",name:" ",communication:"Water for common parts",amount:waterCommonParts.toLocaleString("nl-BE",currencyStyle)});
-                        buildingCommon = buildingCommon + waterCommonParts;
-                        var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon, dataCharges);
-                        dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toLocaleString("nl-BE",currencyStyle)});
-                        var dataChargesCurrency = putChargesCurrency(Object.values(dataCharges));
-                        writePDF(closeDateTransactions, metersIncluded, headerCommon, dataWater, dataHeating, dataCommon, headerConsumption, totalledConsumptionData, headerQuota, totalledQuotaData, headerCharges, dataChargesCurrency);
-                      };
                       });
                     };
                   };
