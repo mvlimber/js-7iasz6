@@ -3768,9 +3768,11 @@
         printFooterPortrait();
         printTablePortrait("Common charges: total for building", dataCommon, headerCommon);
         printTablePortrait("Common charges: quota per owner", dataQuota, headerQuota);
-        printTablePortrait("Water: total for building", dataWater, headerCommon);
-        printTablePortrait("Heating: total for building", dataHeating, headerCommon);
-        printTableLandscape("Water and Heating: expenses per owner", dataConsumption, headerConsumption);
+        if (metersIncludedHere){
+          printTablePortrait("Water: total for building", dataWater, headerCommon);
+          printTablePortrait("Heating: total for building", dataHeating, headerCommon);
+          printTableLandscape("Water and Heating: expenses per owner", dataConsumption, headerConsumption);
+        };
         printTableLandscape("Total charges: total charges per owner", tableCharges, headerCharges);
         
         refCoproperty.collection("ChargesReports").add({startDate: startDateString, endDate: closeDateTransactions, metersIncluded: metersIncludedHere, confirmed: false }).then (function (chargesReportFS){
