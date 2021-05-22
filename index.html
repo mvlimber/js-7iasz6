@@ -3756,9 +3756,9 @@
         doc.setFontSize(14);
         doc.text(startDateString + " to " + closeDateTransactions, 90, 105);
         if (metersIncludedHere){
-          
+          doc.text("including regularisation meter readings", 90, 115);
         } else {
-
+          doc.text("without regularisation meter readings", 90, 115);
         };
         doc.setFontSize(16);
         doc.text("List of tables:", 15, 135);doc.setFont("normal");
