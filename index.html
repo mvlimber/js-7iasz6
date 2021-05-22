@@ -3549,8 +3549,6 @@
                           var newReading = meterData.readings[0].reading;
                           buildingWaterDifference = parseFloat(newReading) - parseFloat(lastReading);                                            
                           var totalledConsumptionData = makeSubtotalsConsumption (dataConsumption,buildingWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataCharges);
-                          dataCommon.push({type:"Water",name:" ",communication:"Water for common parts",amount:waterCommonParts.toLocaleString("nl-BE",currencyStyle)});
-                          buildingCommon = buildingCommon + waterCommonParts;
                           var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon, dataCharges);
                           dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toLocaleString("nl-BE",currencyStyle)});
                           var dataChargesCurrency = putChargesCurrency(Object.values(dataCharges));
