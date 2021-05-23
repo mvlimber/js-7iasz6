@@ -3706,7 +3706,7 @@
           subtotalAmountHeating = subtotalAmountHeating + amountHeating;
           subtotalAmountWaterCurrency = subtotalAmountWater.toLocaleString("nl-BE",currencyStyle);
           subtotalAmountHeatingCurrency = subtotalAmountHeating.toLocaleString("nl-BE",currencyStyle);
-          dataCharges[arrayEl.ownerId] = {ownerId:arrayEl.ownerId, owner:arrayEl.owner, common:" ", private:" ", water:subtotalAmountWater, water_payed:" ", water_regu: " ", heating:subtotalAmountHeating, heating_payed:" ", heating_regu: " ",Total:" "};
+          dataCharges[arrayEl.ownerId] = {ownerId:arrayEl.ownerId, owner:arrayEl.owner, common:" ", private:" ", water:subtotalAmountWater, heating:subtotalAmountHeating, Total:" "};
         };
         
         dataConsumption.forEach(function(arrayEl) {
@@ -3715,9 +3715,9 @@
             writeData(arrayEl);
           } else {
             if (count > 1) {
-              result.push({ownerId:currentOwnerId, owner:"Total", property:"", meter:"", type:"", last_reading:"", reading:"", difference:"", water:subtotalAmountWaterCurrency, heating:subtotalAmountHeatingCurrency});
+              result.push({ownerId:currentOwnerId, owner:"Total", property:"", meter:"", type:"", last_reading:"", reading:"", difference:"", water:subtotalAmountWaterCurrency, water_payed:" ", water_regu: " ", heating:subtotalAmountHeatingCurrency, heating_payed:" ", heating_regu: " "});
             };
-            result.push({ownerId:" ", owner:"", property:"", meter:"", type:"", last_reading:"", reading:"", difference:"",water:"", heating:""});
+            result.push({ownerId:" ", owner:"", property:"", meter:"", type:"", last_reading:"", reading:"", difference:"",water:"", water_payed:" ", water_regu: " ", heating:"", heating_payed:" ", heating_regu: " "});
             count = 0;
             subtotalAmountWater = 0;
             subtotalAmountHeating = 0;
