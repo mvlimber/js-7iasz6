@@ -3513,14 +3513,19 @@
             buildingCommon = buildingCommon + reportTransaction(trData);
             dataCommon.push(trData);
           });
-          refCoproperty.collection("Transactions").where("bookDate", ">", lastReguDate).where("bookDate", "<=", closeDateTransactions).where("type", "==", "Water").orderBy("bookDate").get().then(function(transactionsFS){
-          transactionsFS.forEach(function(transactionFS){
-            var trData = transactionFS.data();
-            buildingWater = buildingWater + reportTransaction(trData);
-            dataWater.push(trData);
-          });
-          
+          refCoproperty.collection("Transactions").where("type", "==", "Water").where("bookDate", ">", lastReguDate).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){
+            transactionsFS.forEach(function(transactionFS){
+              var trData = transactionFS.data();
+              buildingWater = buildingWater + reportTransaction(trData);
+              dataWater.push(trData);
+            });      
           dataWater.push({type:"Total",name:" ",communication:" ",amount:buildingWater.toLocaleString("nl-BE",currencyStyle)});
+          refCoproperty.collection("Transactions").where("type", "==", "Water").where("bookDate", ">", lastReguDate).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){
+            transactionsFS.forEach(function(transactionFS){
+              var trData = transactionFS.data();
+              buildingWater = buildingWater + reportTransaction(trData);
+              dataWater.push(trData);
+            });      
           dataHeating.push({type:"Total",name:" ",communication:" ",amount:buildingHeating.toLocaleString("nl-BE",currencyStyle)});
           
           refCoproperty.collection("Members").get().then(function(membersFS) { 
@@ -3590,6 +3595,8 @@
             }).catch(function(error) {
               M.toast({html:"Error during properties upload:" + error});
             });
+          });
+          });
           });
         }).catch(function(error) {
             M.toast({html:"Error during expenses upload:" + error});
