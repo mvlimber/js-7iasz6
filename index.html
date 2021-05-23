@@ -3667,9 +3667,23 @@
       
       function calcConsumptionAmounts (dataConsumption, buildingWaterDifference,totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating) {
         dataConsumption.forEach(function(arrayEl) {
-          
+          if (arrayEl.type != "Heating") {
+            var amountWaterString = (buildingWater * parseInt(arrayEl.difference) / buildingWaterDifference).toFixed(2);
+            amountWater = Number(amountWaterString);
+            arrayEl.water = amountWater;
+          };
+          if (arrayEl.type != "Cold Water") {
+            var amountHeatingString = (buildingPureHeating * parseInt(arrayEl.difference) / totalHeatingDifference).toFixed(2);
+            amountHeating = Number(amountHeatingString); 
+            arrayEl.heating = amountHeating;
+          };
         };
       };
+
+      function calcConsumptionRegus (dataConsumption) {
+        /* per property */
+
+      }
 
       function makeSubtotalsConsumption (dataConsumption,buildingWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataCharges, totalQuota) {
         var result = [];
