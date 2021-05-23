@@ -3710,6 +3710,8 @@
             var amountWaterString = (buildingWater * parseInt(arrayEl.difference) / buildingWaterDifference).toFixed(2);
             amountWater = Number(amountWaterString);
             arrayEl.water = amountWater.toLocaleString("nl-BE",currencyStyle);
+            subtotalAmountWater = subtotalAmountWater + amountWater;
+            subtotalAmountWaterCurrency = subtotalAmountWater.toLocaleString("nl-BE",currencyStyle);
             var amountWaterPayed = buildingWater * arrayEl.quota / totalQuota;
             arrayEl.water_payed = amountWaterPayed.toLocaleString("nl-BE",currencyStyle);
             subtotalAmountWaterPayed = subtotalAmountWaterPayed + amountWaterPayed;
