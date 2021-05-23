@@ -3477,13 +3477,13 @@
           {id:"type",name:"type",prompt:"type",width: 28,align: "center",padding: 0},
           {id:"last_reading",name:"last_reading",prompt:"last reading",width: 28,align: "center",padding: 0},
           {id:"reading",name:"reading",prompt:"new reading",width: 28,align: "center",padding: 0},
-          {id:"difference",name:"difference",prompt:"difference",width: 25,align: "center",padding: 0},
+          {id:"difference",name:"difference",prompt:"difference",width: 23,align: "center",padding: 0},
           {id:"water",name:"water",prompt:"water consumed",width: 30,align: "center",padding: 0},
           {id:"water_payed",name:"water_payed",prompt:"water payed",width: 30,align: "center",padding: 0},
-          {id:"water_regu",name:"water_regu",prompt:"water regularisation",width: 22,align: "center",padding: 0},
+          {id:"water_regu",name:"water_regu",prompt:"water regularisation",width: 24,align: "center",padding: 0},
           {id:"heating",name:"heating",prompt:"heating consumed",width: 30,align: "center",padding: 0},
           {id:"heating_payed",name:"heating_payed",prompt:"heating  payed",width: 30,align: "center",padding: 0},
-          {id:"heating_regu",name:"heating_regu",prompt:"heating regularisation",width: 22,align: "center",padding: 0},
+          {id:"heating_regu",name:"heating_regu",prompt:"heating regularisation",width: 24,align: "center",padding: 0},
         ];
         var dataConsumption = [];
         var headerQuota =[
@@ -3499,9 +3499,9 @@
           {id:"owner",name:"owner",prompt:"owner",width: 80,align: "center",padding: 0},
           {id:"common",name:"common",prompt:"common charges",width: 50,align: "right",padding: 0},
           {id:"private",name:"private",prompt:"private charges",width: 50,align: "right",padding: 0},
-          {id:"water",name:"water",prompt:"regularisation water",width: 50,align: "right",padding: 0},
-          {id:"heating",name:"heating",prompt:"regularisation heating",width: 50,align: "right",padding: 0},
-          {id:"Total",name:"Total",prompt:"Total",width: 50,align: "right",padding: 0}
+          {id:"water",name:"water",prompt:"regularisation water",width: 53,align: "right",padding: 0},
+          {id:"heating",name:"heating",prompt:"regularisation heating",width: 53,align: "right",padding: 0},
+          {id:"Total",name:"Total",prompt:"Total",width: 46,align: "right",padding: 0}
         ];
         var headerChargesMetersExcluded = [
           {id:"owner",name:"owner",prompt:"owner",width: 80,align: "center",padding: 0},
@@ -3683,9 +3683,17 @@
         var currentOwnerId = "";
         var count =0;
         var subtotalAmountWater = 0;
+        var subtotalAmountWaterPayed = 0;
+        var subtotalAmountWaterRegu = 0;
         var subtotalAmountHeating = 0;
+        var subtotalAmountHeatingPayed = 0;
+        var subtotalAmountHeatingRegu = 0;
         var subtotalAmountWaterCurrency = "";
+        var subtotalAmountWaterPayedCurrency = "";
+        var subtotalAmountWaterReguCurrency = "";
         var subtotalAmountHeatingCurrency = "";
+        var subtotalAmountHeatingPayedCurrency = "";
+        var subtotalAmountHeatingReguCurrency = "";
 
         function writeData(arrayEl){
           var amountWaterString=" ";
@@ -3702,15 +3710,18 @@
           amountHeating = Number(amountHeatingString);  
           arrayEl.water = amountWater.toLocaleString("nl-BE",currencyStyle);
           arrayEl.heating = amountHeating.toLocaleString("nl-BE",currencyStyle);
-          var amountWaterPayed = buildingWater * arrayEl.quota / totalQuota;
-          arrayEl.water_payed = amountWaterPayed.toLocaleString("nl-BE",currencyStyle);
-          var amountWaterRegu = amountWater - amountWaterPayed;
-          arrayEl.water_regu = amountWaterRegu.toLocaleString("nl-BE",currencyStyle);
-          var amountHeatingPayed = buildingHeating * arrayEl.quota / totalQuota;
-          arrayEl.heating_payed = amountHeatingPayed.toLocaleString("nl-BE",currencyStyle);
-          var amountWaterRegu = amountHeating - amountHeatingPayed;
-          arrayEl.heating_regu = amountHeatingRegu.toLocaleString("nl-BE",currencyStyle);
-          
+          if (arrayEl.type != "Heating") {
+            var amountWaterPayed = buildingWater * arrayEl.quota / totalQuota;
+            arrayEl.water_payed = amountWaterPayed.toLocaleString("nl-BE",currencyStyle);
+            var amountWaterRegu = amountWater - amountWaterPayed;
+            arrayEl.water_regu = amountWaterRegu.toLocaleString("nl-BE",currencyStyle);
+          };
+          if (arrayEl.type != "Cold Water") {
+            var amountHeatingPayed = buildingHeating * arrayEl.quota / totalQuota;
+            arrayEl.heating_payed = amountHeatingPayed.toLocaleString("nl-BE",currencyStyle);
+            var amountHeatingRegu = amountHeating - amountHeatingPayed;
+            arrayEl.heating_regu = amountHeatingRegu.toLocaleString("nl-BE",currencyStyle);
+          };
           result.push(arrayEl);
           subtotalAmountWater = subtotalAmountWater + amountWater;
           subtotalAmountHeating = subtotalAmountHeating + amountHeating;
