@@ -3471,12 +3471,18 @@
           {id:"amount",name:"amount",prompt:"amount",width: 40,align: "right",padding: 0}
         ];
         var dataQuota = [];
-        var headerCharges = [
+        var headerChargesMetersIncluded = [
           {id:"owner",name:"owner",prompt:"owner",width: 80,align: "center",padding: 0},
           {id:"common",name:"common",prompt:"common charges",width: 50,align: "right",padding: 0},
           {id:"private",name:"private",prompt:"private charges",width: 50,align: "right",padding: 0},
           {id:"water",name:"water",prompt:"water",width: 50,align: "right",padding: 0},
           {id:"heating",name:"heating",prompt:"heating",width: 50,align: "right",padding: 0},
+          {id:"Total",name:"Total",prompt:"Total",width: 50,align: "right",padding: 0}
+        ];
+        var headerChargesMetersExcluded = [
+          {id:"owner",name:"owner",prompt:"owner",width: 80,align: "center",padding: 0},
+          {id:"common",name:"common",prompt:"common charges",width: 50,align: "right",padding: 0},
+          {id:"private",name:"private",prompt:"private charges",width: 50,align: "right",padding: 0},
           {id:"Total",name:"Total",prompt:"Total",width: 50,align: "right",padding: 0}
         ];
         var dataCharges = [];
@@ -3559,7 +3565,7 @@
                           var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon, dataCharges);                          
                           dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toLocaleString("nl-BE",currencyStyle)});
                           var dataChargesCurrency = putChargesCurrency(Object.values(dataCharges), metersIncluded);
-                          writePDF(closeDateTransactions, metersIncluded, headerCommon, dataWater, dataHeating, dataCommon, headerConsumption, totalledConsumptionData, headerQuota, totalledQuotaData, headerCharges, dataChargesCurrency);
+                          writePDF(closeDateTransactions, metersIncluded, headerCommon, dataWater, dataHeating, dataCommon, headerConsumption, totalledConsumptionData, headerQuota, totalledQuotaData, headerChargesMetersIncluded, headerChargesMetersIncluded, dataChargesCurrency);
                         };
                       });
                     };
@@ -3585,8 +3591,8 @@
           } else {
             arrayEl.Total = (arrayEl.common).toLocaleString("nl-BE",currencyStyle);
             arrayEl.common = arrayEl.common.toLocaleString("nl-BE",currencyStyle);
-            arrayEl.water = "";
-            arrayEl.heating = "";
+            arrayEl.water = " ";
+            arrayEl.heating = " ";
           }
         });
         return dataChargesValues;
@@ -3704,7 +3710,7 @@
       };
     
         
-      function writePDF (closeDateTransactions, metersIncludedHere, headerCommon, dataWater, dataHeating, dataCommon, headerConsumption,dataConsumption,  headerQuota, dataQuota, headerCharges, tableCharges){
+      function writePDF (closeDateTransactions, metersIncludedHere, headerCommon, dataWater, dataHeating, dataCommon, headerConsumption,dataConsumption,  headerQuota, dataQuota, headerChargesMetersIncluded, headerChargesMetersIncluded, tableCharges){
         const rowsLandscape =15;
         const rowsPortrait =24;
         var numPages;
@@ -3792,8 +3798,10 @@
           printTablePortrait("Water: total for building", dataWater, headerCommon);
           printTablePortrait("Heating: total for building", dataHeating, headerCommon);
           printTableLandscape("Water and Heating: expenses per owner", dataConsumption, headerConsumption);
+          printTableLandscape("Total charges: total charges per owner", tableCharges, headerChargesMetersIncluded);
+        } else {
+          printTableLandscape("Total charges: total charges per owner", tableCharges, headerChargesMetersExcluded);
         };
-        printTableLandscape("Total charges: total charges per owner", tableCharges, headerCharges);
         
         refCoproperty.collection("ChargesReports").add({startDate: startDateString, endDate: closeDateTransactions, metersIncluded: metersIncludedHere, confirmed: false }).then (function (chargesReportFS){
           var fileRef = refCopropertyFiles.child("ChargesReports").child(chargesReportFS.id);  
