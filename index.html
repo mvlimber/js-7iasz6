@@ -3499,8 +3499,8 @@
           {id:"owner",name:"owner",prompt:"owner",width: 80,align: "center",padding: 0},
           {id:"common",name:"common",prompt:"common charges",width: 50,align: "right",padding: 0},
           {id:"private",name:"private",prompt:"private charges",width: 50,align: "right",padding: 0},
-          {id:"water",name:"water",prompt:"regularisation water",width: 53,align: "right",padding: 0},
-          {id:"heating",name:"heating",prompt:"regularisation heating",width: 53,align: "right",padding: 0},
+          {id:"water",name:"water",prompt:"regularisation water",width: 55,align: "right",padding: 0},
+          {id:"heating",name:"heating",prompt:"regularisation heating",width: 55,align: "right",padding: 0},
           {id:"Total",name:"Total",prompt:"Total",width: 46,align: "right",padding: 0}
         ];
         var headerChargesMetersExcluded = [
@@ -3696,21 +3696,20 @@
         var subtotalAmountHeatingReguCurrency = "";
 
         function writeData(arrayEl){
-          var amountWaterString=" ";
           var amountHeatingString=" ";
           if (arrayEl.type == "Cold Water"){
-            amountWaterString = (buildingWater * parseInt(arrayEl.difference) / buildingWaterDifference).toFixed(2);
-          } else if (arrayEl.type == "Heating") {
+            else if (arrayEl.type == "Heating") {
             amountHeatingString = (buildingPureHeating * parseInt(arrayEl.difference) / totalHeatingDifference).toFixed(2);
           } else {
             amountWaterString = (buildingWater * parseInt(arrayEl.difference) / buildingWaterDifference).toFixed(2);
             amountHeatingString = (buildingHotWaterHeating * parseInt(arrayEl.difference) / totalHotWaterDifference).toFixed(2);
           };
-          amountWater = Number(amountWaterString);
           amountHeating = Number(amountHeatingString);  
-          arrayEl.water = amountWater.toLocaleString("nl-BE",currencyStyle);
           arrayEl.heating = amountHeating.toLocaleString("nl-BE",currencyStyle);
           if (arrayEl.type != "Heating") {
+            var amountWaterString = (buildingWater * parseInt(arrayEl.difference) / buildingWaterDifference).toFixed(2);
+            amountWater = Number(amountWaterString);
+            arrayEl.water = amountWater.toLocaleString("nl-BE",currencyStyle);
             var amountWaterPayed = buildingWater * arrayEl.quota / totalQuota;
             arrayEl.water_payed = amountWaterPayed.toLocaleString("nl-BE",currencyStyle);
             subtotalAmountWaterPayed = subtotalAmountWaterPayed + amountWaterPayed;
