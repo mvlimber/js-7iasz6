@@ -1490,6 +1490,7 @@
     <!--   Home scripts start here -->
     <script>
       var lastCloseDate;
+      var lastReguDate;
       var currentCoproperty;
       var currentCopropertyId;
       function refreshHome(){
@@ -1768,6 +1769,7 @@
               var i = 0;
               while ((i < chargesReportsFS.docs.length) && (!chargesReportsFS.docs[i].data().metersIncluded)) {i = i+1};
               if (chargesReportsFS.docs[i].data().metersIncluded) {lastReguDate = chargesReportsFS.docs[i].data().endDate}
+              else {lastReguDate = currentCoproperty.initialStartDate};
             }
             else {
               lastCloseDate = currentCoproperty.initialStartDate;
