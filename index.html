@@ -3727,7 +3727,7 @@
             subtotalAmountHeatingReguCurrency = subtotalAmountHeatingRegu.toLocaleString("nl-BE",currencyStyle);
           };
           result.push(arrayEl);
-          dataCharges[arrayEl.ownerId] = {ownerId:arrayEl.ownerId, owner:arrayEl.owner, common:" ", private:" ", water:subtotalAmountWater, heating:subtotalAmountHeating, Total:" "};
+          dataCharges[arrayEl.ownerId] = {ownerId:arrayEl.ownerId, owner:arrayEl.owner, common:" ", private:" ", water:subtotalAmountWaterRegu, heating:subtotalAmountHeatingRegu, Total:" "};
         };
         
         dataConsumption.forEach(function(arrayEl) {
