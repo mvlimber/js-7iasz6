@@ -3818,9 +3818,9 @@
         printTablePortrait("Common charges: total for building", dataCommon, headerCommon);
         printTablePortrait("Common charges: quota per owner", dataQuota, headerQuota);
         if (metersIncludedHere){
-          printTablePortrait("Water: total for building", dataWater, headerCommon);
-          printTablePortrait("Heating: total for building", dataHeating, headerCommon);
-          printTableLandscape("Water and Heating: expenses per owner", dataConsumption, headerConsumption);
+          printTablePortrait("Water: total for building since last regularisation", dataWater, headerCommon);
+          printTablePortrait("Heating: total for building since last regularisation", dataHeating, headerCommon);
+          printTableLandscape("Water and Heating: regularisation per owner and property", dataConsumption, headerConsumption);
           printTableLandscape("Total charges: total charges per owner", tableCharges, headerChargesMetersIncluded);
         } else {
           printTableLandscape("Total charges: total charges per owner", tableCharges, headerChargesMetersExcluded);
