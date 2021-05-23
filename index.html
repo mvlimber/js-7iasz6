@@ -3706,7 +3706,7 @@
           subtotalAmountHeating = subtotalAmountHeating + amountHeating;
           subtotalAmountWaterCurrency = subtotalAmountWater.toLocaleString("nl-BE",currencyStyle);
           subtotalAmountHeatingCurrency = subtotalAmountHeating.toLocaleString("nl-BE",currencyStyle);
-          dataCharges[arrayEl.ownerId] = {ownerId:arrayEl.ownerId, owner:arrayEl.owner, common:" ", private:" ", water:subtotalAmountWater, heating:subtotalAmountHeating,Total:" "};
+          dataCharges[arrayEl.ownerId] = {ownerId:arrayEl.ownerId, owner:arrayEl.owner, common:" ", private:" ", water:subtotalAmountWater, water_payed:" ", water_regu: " ", heating:subtotalAmountHeating, heating_payed:" ", heating_regu: " ",Total:" "};
         };
         
         dataConsumption.forEach(function(arrayEl) {
