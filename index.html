@@ -1763,8 +1763,16 @@
       function refreshChargesReports(){
         emptyHTMLSet(chargesReportsTable);
         refCoproperty.collection("ChargesReports").orderBy("endDate","desc").get().then(function(chargesReportsFS){
-            if  (chargesReportsFS.docs.length > 0) {lastCloseDate= chargesReportsFS.docs[0].endDate;}
-            else {lastCloseDate = currentCoproperty.initialStartDate;};
+            if  (chargesReportsFS.docs.length > 0) {
+              lastCloseDate= chargesReportsFS.docs[0].endDate;
+              var i = 0;
+              while ((i < chargesReportsFS.docs.length) && (!chargesReportsFS.docs[i].data().metersIncluded)) {i = i+1};
+              if (chargesReportsFS.docs[i].data().metersIncluded) {lastReguDate = chargesReportsFS.docs[i].data().endDate}
+            }
+            else {
+              lastCloseDate = currentCoproperty.initialStartDate;
+              lastReguDate = currentCoproperty.initialStartDate;
+            };
             chargesReportsFS.forEach(function(objectFS){
               loadChargesReport(objectFS);
             });
@@ -3475,8 +3483,8 @@
           {id:"owner",name:"owner",prompt:"owner",width: 80,align: "center",padding: 0},
           {id:"common",name:"common",prompt:"common charges",width: 50,align: "right",padding: 0},
           {id:"private",name:"private",prompt:"private charges",width: 50,align: "right",padding: 0},
-          {id:"water",name:"water",prompt:"water",width: 50,align: "right",padding: 0},
-          {id:"heating",name:"heating",prompt:"heating",width: 50,align: "right",padding: 0},
+          {id:"water",name:"water",prompt:"regularisation water",width: 50,align: "right",padding: 0},
+          {id:"heating",name:"heating",prompt:"regularisation heating",width: 50,align: "right",padding: 0},
           {id:"Total",name:"Total",prompt:"Total",width: 50,align: "right",padding: 0}
         ];
         var headerChargesMetersExcluded = [
