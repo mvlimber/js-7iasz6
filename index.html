@@ -3703,6 +3703,8 @@
           arrayEl.water = amountWater.toLocaleString("nl-BE",currencyStyle);
           arrayEl.heating = amountHeating.toLocaleString("nl-BE",currencyStyle);
           var amountWaterPayed = buildingWater * arrayEl.quota / totalQuota;
+          arrayEl.water_payed = amountWaterPayed.toLocaleString("nl-BE",currencyStyle);
+          
           result.push(arrayEl);
           subtotalAmountWater = subtotalAmountWater + amountWater;
           subtotalAmountHeating = subtotalAmountHeating + amountHeating;
