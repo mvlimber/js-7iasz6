@@ -3513,7 +3513,12 @@
             buildingCommon = buildingCommon + reportTransaction(trData);
             dataCommon.push(trData);
           });
-        
+          refCoproperty.collection("Transactions").where("bookDate", ">", lastReguDate).where("bookDate", "<=", closeDateTransactions).where("type", "==", "Water").orderBy("bookDate").get().then(function(transactionsFS){
+          transactionsFS.forEach(function(transactionFS){
+            var trData = transactionFS.data();
+            buildingCommon = buildingCommon + reportTransaction(trData);
+            dataCommon.push(trData);
+          });
           
           dataWater.push({type:"Total",name:" ",communication:" ",amount:buildingWater.toLocaleString("nl-BE",currencyStyle)});
           dataHeating.push({type:"Total",name:" ",communication:" ",amount:buildingHeating.toLocaleString("nl-BE",currencyStyle)});
