@@ -3480,10 +3480,10 @@
           {id:"difference",name:"difference",prompt:"difference",width: 25,align: "center",padding: 0},
           {id:"water",name:"water",prompt:"water consumed",width: 30,align: "center",padding: 0},
           {id:"water_payed",name:"water_payed",prompt:"water payed",width: 30,align: "center",padding: 0},
-          {id:"water_regu",name:"water_regu",prompt:"water regularisation",width: 20,align: "center",padding: 0},
+          {id:"water_regu",name:"water_regu",prompt:"water regularisation",width: 22,align: "center",padding: 0},
           {id:"heating",name:"heating",prompt:"heating consumed",width: 30,align: "center",padding: 0},
           {id:"heating_payed",name:"heating_payed",prompt:"heating  payed",width: 30,align: "center",padding: 0},
-          {id:"heating_regu",name:"heating_regu",prompt:"heating regularisation",width: 20,align: "center",padding: 0},
+          {id:"heating_regu",name:"heating_regu",prompt:"heating regularisation",width: 22,align: "center",padding: 0},
         ];
         var dataConsumption = [];
         var headerQuota =[
@@ -3546,7 +3546,8 @@
                 var ownerIdV = prData.owner;
                 var ownerName = idMemberMap[ownerIdV];
                 dataQuota.push({ownerId:ownerIdV, owner:ownerName, property:prData.code, quota:prData.quota, period:"100%", quota_period: prData.quota, amount:" "}); 
-                totalQuota = totalQuota + parseInt(prData.quota); 
+                var prQuota = parseInt(prData.quota);
+                totalQuota = totalQuota + prQuota; 
                 refCoproperty.collection("Properties").doc(prFS.id).collection("Meters").get().then(function(metersFS){
                   
                   metersFS.forEach(function(meterFS){
@@ -3569,7 +3570,7 @@
                         totalHotWaterDifference = totalHotWaterDifference + differenceV;
                       };
                     };
-                    dataConsumption.push({ownerId:ownerIdV, owner:ownerName.substr(0,15), property:prData.code, meter:meterData.meter, type:meterData.type, last_reading:lastReading, reading:newReading, difference:differenceV.toString(), water: 0, water_payed:" ", water_regu: " ", heating:0, heating_payed:" ", heating_regu: " "});
+                    dataConsumption.push({ownerId:ownerIdV, quota: prQuota, owner:ownerName.substr(0,15), property:prData.code, meter:meterData.meter, type:meterData.type, last_reading:lastReading, reading:newReading, difference:differenceV.toString(), water: 0, water_payed:" ", water_regu: " ", heating:0, heating_payed:" ", heating_regu: " "});
                   });    
                   
                   if (!stop) {
