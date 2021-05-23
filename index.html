@@ -3478,7 +3478,7 @@
           {id:"last_reading",name:"last_reading",prompt:"last reading",width: 35,align: "center",padding: 0},
           {id:"reading",name:"reading",prompt:"new reading",width: 35,align: "center",padding: 0},
           {id:"difference",name:"difference",prompt:"difference",width: 30,align: "center",padding: 0},
-          {id:"water",name:"water",prompt:"water consumed",width: 30,align: "right",padding: 0},
+          {id:"water",name:"water",prompt:"water consumed",width: 30,align: "center",padding: 0},
           {id:"water_payed",name:"water_payed",prompt:"water payed",width: 30,align: "center",padding: 0},
           {id:"water_regu",name:"water_regu",prompt:"water regularisation",width: 30,align: "center",padding: 0},
           {id:"heating",name:"heating",prompt:"heating consumed",width: 30,align: "center",padding: 0},
@@ -3762,9 +3762,9 @@
           currentPage = currentPage + 1;
         };
         function printFooterLandscape () {
-          doc.line(15, 190, 280, 190);
+          doc.line(10, 190, 280, 190);
           doc.setFontSize(10);
-          doc.setTextColor("green");doc.text("MyCondos" ,15, 195);doc.setTextColor("black");
+          doc.setTextColor("green");doc.text("MyCondos" ,10, 195);doc.setTextColor("black");
           doc.text(footerText,32, 195);
           doc.text("Page " + currentPage + "/" + numPages, 265, 195);
           currentPage = currentPage + 1;
