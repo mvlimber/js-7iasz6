@@ -3522,7 +3522,7 @@
                     var meterData = meterFS.data();
                     var lastReading = "";
                     var newReading = "";
-                    var differenceV = "";
+                    var differenceV = 0;
                     if (metersIncluded){
                       var readingDate = meterData.readings[0].date;
                       if ((!checkBookDate(readingDate))|| (readingDate.localeCompare(closeDateTransactions)>0)) {
@@ -3538,7 +3538,7 @@
                         totalHotWaterDifference = totalHotWaterDifference + differenceV;
                       };
                     };
-                    dataConsumption.push({ownerId:ownerIdV, owner:ownerName, property:prData.code, meter:meterData.meter, type:meterData.type, last_reading:lastReading, reading:newReading, difference:differenceV.toString(), water: " ", heating:" "});
+                    dataConsumption.push({ownerId:ownerIdV, owner:ownerName, property:prData.code, meter:meterData.meter, type:meterData.type, last_reading:lastReading, reading:newReading, difference:differenceV.toString(), water: 0, heating:0});
                   });    
                   
                   if (!stop) {
@@ -3558,7 +3558,7 @@
                           
                           var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon, dataCharges);                          
                           dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toLocaleString("nl-BE",currencyStyle)});
-                          var dataChargesCurrency = putChargesCurrency(Object.values(dataCharges));
+                          var dataChargesCurrency = putChargesCurrency(Object.values(dataCharges), metersIncluded);
                           writePDF(closeDateTransactions, metersIncluded, headerCommon, dataWater, dataHeating, dataCommon, headerConsumption, totalledConsumptionData, headerQuota, totalledQuotaData, headerCharges, dataChargesCurrency);
                         };
                       });
@@ -3575,12 +3575,19 @@
         });
       };  
 
-      function putChargesCurrency(dataChargesValues){
+      function putChargesCurrency(dataChargesValues, metersIncluded){
         dataChargesValues.forEach(function(arrayEl) {
-          arrayEl.Total = (arrayEl.common + arrayEl.water + arrayEl.heating).toLocaleString("nl-BE",currencyStyle);
-          arrayEl.common = arrayEl.common.toLocaleString("nl-BE",currencyStyle);
-          arrayEl.water = arrayEl.water.toLocaleString("nl-BE",currencyStyle);
-          arrayEl.heating = arrayEl.heating.toLocaleString("nl-BE",currencyStyle);
+          if (metersIncluded) {
+            arrayEl.Total = (arrayEl.common + arrayEl.water + arrayEl.heating).toLocaleString("nl-BE",currencyStyle);
+            arrayEl.common = arrayEl.common.toLocaleString("nl-BE",currencyStyle);
+            arrayEl.water = arrayEl.water.toLocaleString("nl-BE",currencyStyle);
+            arrayEl.heating = arrayEl.heating.toLocaleString("nl-BE",currencyStyle);
+          } else {
+            arrayEl.Total = (arrayEl.common).toLocaleString("nl-BE",currencyStyle);
+            arrayEl.common = arrayEl.common.toLocaleString("nl-BE",currencyStyle);
+            arrayEl.water = "";
+            arrayEl.heating = "";
+          }
         });
         return dataChargesValues;
       };
