@@ -3696,12 +3696,6 @@
         var subtotalAmountHeatingReguCurrency = "";
 
         function writeData(arrayEl){
-          if (arrayEl.type == "Cold Water"){
-            else if (arrayEl.type == "Heating") {
-            amountHeatingString = (buildingPureHeating * parseInt(arrayEl.difference) / totalHeatingDifference).toFixed(2);
-          } else {
-            amountHeatingString = (buildingHotWaterHeating * parseInt(arrayEl.difference) / totalHotWaterDifference).toFixed(2);
-          };
           amountHeating = Number(amountHeatingString);  
           arrayEl.heating = amountHeating.toLocaleString("nl-BE",currencyStyle);
           if (arrayEl.type != "Heating") {
@@ -3721,6 +3715,7 @@
           };
           if (arrayEl.type != "Cold Water") {
             var amountHeatingString = (buildingPureHeating * parseInt(arrayEl.difference) / totalHeatingDifference).toFixed(2);
+            amountHeating = Number(amountHeatingString); 
             var amountHeatingPayed = buildingHeating * arrayEl.quota / totalQuota;
             arrayEl.heating_payed = amountHeatingPayed.toLocaleString("nl-BE",currencyStyle);
             subtotalAmountHeatingPayed = subtotalAmountHeatingPayed + amountHeatingPayed;
