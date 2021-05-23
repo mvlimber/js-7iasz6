@@ -3440,6 +3440,14 @@
       var waterCommonParts;
 
       function reportTransaction(trData){
+        if (!trData.communication) {
+          trData.communication=" ";
+        } else {
+          trData.communication=trData.communication.substr(0,54);
+        };
+        trData.name=trData.name.substr(0,25);
+        var amount = Number(trData.amount);
+        trData.amount = amount.toLocaleString("nl-BE",currencyStyle);            
         return amount;
       };
 
@@ -3505,14 +3513,6 @@
         refCoproperty.collection("Transactions").where("bookDate", ">", lastCloseDate).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){
           transactionsFS.forEach(function(transactionFS){
             var trData = transactionFS.data();
-            if (!trData.communication) {
-              trData.communication=" ";
-            } else {
-              trData.communication=trData.communication.substr(0,54);
-            };
-            trData.name=trData.name.substr(0,25);
-            var amount = Number(trData.amount);
-            trData.amount = amount.toLocaleString("nl-BE",currencyStyle);
             dataCommon.push(trData);
             buildingCommon = buildingCommon + amount;
           });
