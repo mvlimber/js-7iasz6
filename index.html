@@ -3510,8 +3510,8 @@
         refCoproperty.collection("Transactions").where("bookDate", ">", lastCloseDate).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){
           transactionsFS.forEach(function(transactionFS){
             var trData = transactionFS.data();
+            buildingCommon = buildingCommon + reportTransaction(trData);
             dataCommon.push(trData);
-            buildingCommon = buildingCommon + amount;
           });
         
           
