@@ -3715,6 +3715,9 @@
             var amountHeatingString = (buildingPureHeating * parseInt(arrayEl.difference) / totalHeatingDifference).toFixed(2);
             amountHeating = Number(amountHeatingString); 
             arrayEl.heating = amountHeating.toLocaleString("nl-BE",currencyStyle);
+            subtotalAmountHeating = subtotalAmountHeating + amountHeating;
+            subtotalAmountHeatingCurrency = subtotalAmountHeating.toLocaleString("nl-BE",currencyStyle);
+          
             var amountHeatingPayed = buildingHeating * arrayEl.quota / totalQuota;
             arrayEl.heating_payed = amountHeatingPayed.toLocaleString("nl-BE",currencyStyle);
             subtotalAmountHeatingPayed = subtotalAmountHeatingPayed + amountHeatingPayed;
@@ -3725,8 +3728,6 @@
             subtotalAmountHeatingReguCurrency = subtotalAmountHeatingRegu.toLocaleString("nl-BE",currencyStyle);
           };
           result.push(arrayEl);
-          subtotalAmountHeating = subtotalAmountHeating + amountHeating;
-          subtotalAmountHeatingCurrency = subtotalAmountHeating.toLocaleString("nl-BE",currencyStyle);
           dataCharges[arrayEl.ownerId] = {ownerId:arrayEl.ownerId, owner:arrayEl.owner, common:" ", private:" ", water:subtotalAmountWater, heating:subtotalAmountHeating, Total:" "};
         };
         
