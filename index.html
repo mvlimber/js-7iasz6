@@ -3717,7 +3717,7 @@
             if (count > 1) {
               result.push({ownerId:currentOwnerId, owner:"Total", property:"", meter:"", type:"", last_reading:"", reading:"", difference:"", water:subtotalAmountWaterCurrency, water_payed:" ", water_regu: " ", heating:subtotalAmountHeatingCurrency, heating_payed:" ", heating_regu: " "});
             };
-            result.push({ownerId:" ", owner:"", property:"", meter:"", type:"", last_reading:"", reading:"", difference:"",water:"", water_payed:" ", water_regu: " ", heating:"", heating_payed:" ", heating_regu: " "});
+            result.push({ownerId:" ", owner:"", property:"", meter:"", type:"", last_reading:"", reading:"", difference:"",water:"", water_payed:"", water_regu: "", heating:"", heating_payed:"", heating_regu: ""});
             count = 0;
             subtotalAmountWater = 0;
             subtotalAmountHeating = 0;
@@ -3728,10 +3728,10 @@
           totalHeating = totalHeating + amountHeating;  
         });
         if (count > 1) {
-              result.push({ownerId:currentOwnerId, owner:"Total", property:"", meter:"", type:"", last_reading:"", reading:"", difference:"", water:subtotalAmountWaterCurrency, heating:subtotalAmountHeatingCurrency});
+              result.push({ownerId:currentOwnerId, owner:"Total", property:"", meter:"", type:"", last_reading:"", reading:"", difference:"", water:subtotalAmountWaterCurrency, water_payed:"", water_regu: "", heating:subtotalAmountHeatingCurrency, heating_payed:"", heating_regu: ""});
             };
-        result.push({ownerId:" ", owner:"", property:"", meter:"", type:"", last_reading:"", reading:"", difference:"",water:"", heating:""});
-        result.push({ownerId:" ", owner:"Total building", property:"", meter:"", type:"", last_reading:"", reading:"", difference:"", water:totalWater.toLocaleString("nl-BE",currencyStyle), heating:totalHeating.toLocaleString("nl-BE",currencyStyle)});
+        result.push({ownerId:" ", owner:"", property:"", meter:"", type:"", last_reading:"", reading:"", difference:"",water:"", water_payed:"", water_regu: "", heating:"", heating_payed:"", heating_regu: ""});
+        result.push({ownerId:" ", owner:"Total building", property:"", meter:"", type:"", last_reading:"", reading:"", difference:"", water:totalWater.toLocaleString("nl-BE",currencyStyle), water_payed:"", water_regu: "", heating:totalHeating.toLocaleString("nl-BE",currencyStyle), heating_payed:"", heating_regu: ""});
         waterCommonParts = buildingWater - totalWater;
         return result;
       };
