@@ -3471,10 +3471,10 @@
         var dataWater = [];
         var dataHeating = [];
         var headerConsumption = [
-          {id:"owner",name:"owner",prompt:"owner",width: 55,align: "center",padding: 0},
+          {id:"owner",name:"owner",prompt:"owner",width: 40,align: "center",padding: 0},
           {id:"property",name:"property",prompt:"property",width: 20,align: "center",padding: 0},
           {id:"meter",name:"meter",prompt:"meter",width: 38,align: "center",padding: 0},
-          {id:"type",name:"type",prompt:"type",width: 25,align: "center",padding: 0},
+          {id:"type",name:"type",prompt:"type",width: 28,align: "center",padding: 0},
           {id:"last_reading",name:"last_reading",prompt:"last reading",width: 33,align: "center",padding: 0},
           {id:"reading",name:"reading",prompt:"new reading",width: 33,align: "center",padding: 0},
           {id:"difference",name:"difference",prompt:"difference",width: 25,align: "center",padding: 0},
@@ -3569,7 +3569,7 @@
                         totalHotWaterDifference = totalHotWaterDifference + differenceV;
                       };
                     };
-                    dataConsumption.push({ownerId:ownerIdV, owner:ownerName, property:prData.code, meter:meterData.meter, type:meterData.type, last_reading:lastReading, reading:newReading, difference:differenceV.toString(), water: 0, water_payed:" ", water_regu: " ", heating:0, heating_payed:" ", heating_regu: " "});
+                    dataConsumption.push({ownerId:ownerIdV, owner:ownerName.substr(0,15), property:prData.code, meter:meterData.meter, type:meterData.type, last_reading:lastReading, reading:newReading, difference:differenceV.toString(), water: 0, water_payed:" ", water_regu: " ", heating:0, heating_payed:" ", heating_regu: " "});
                   });    
                   
                   if (!stop) {
@@ -3778,12 +3778,12 @@
             printFooterPortrait ();
           };
         };
-        function printTableLandscape(title, table, header) {
+        function printTableLandscape(title, table, header, fontSize) {
           for (i = 0; i < Math.ceil(table.length/rowsLandscape); i= i + 1) {
             doc.addPage("a4", "landscape");
             doc.setFontSize(16);
             doc.text(title, 15, 15);
-            doc.table(10, 20, table.slice(i*rowsLandscape, (i+1)*rowsLandscape), header,{fontSize:10});
+            doc.table(10, 20, table.slice(i*rowsLandscape, (i+1)*rowsLandscape), header,{fontSize:fontSize});
             printFooterLandscape ();
           };
         };
@@ -3823,10 +3823,10 @@
         if (metersIncludedHere){
           printTablePortrait("Water: total for building since last regularisation", dataWater, headerCommon);
           printTablePortrait("Heating: total for building since last regularisation", dataHeating, headerCommon);
-          printTableLandscape("Water and Heating: regularisation per owner and property", dataConsumption, headerConsumption);
-          printTableLandscape("Total charges: total charges per owner", tableCharges, headerChargesMetersIncluded);
+          printTableLandscape("Water and Heating: regularisation per owner and property", dataConsumption, headerConsumption,8);
+          printTableLandscape("Total charges: total charges per owner", tableCharges, headerChargesMetersIncluded,12);
         } else {
-          printTableLandscape("Total charges: total charges per owner", tableCharges, headerChargesMetersExcluded);
+          printTableLandscape("Total charges: total charges per owner", tableCharges, headerChargesMetersExcluded, 12);
         };
         
         refCoproperty.collection("ChargesReports").add({startDate: startDateString, endDate: closeDateTransactions, metersIncluded: metersIncludedHere, confirmed: false }).then (function (chargesReportFS){
