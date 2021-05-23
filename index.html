@@ -3520,11 +3520,12 @@
               dataWater.push(trData);
             });      
           dataWater.push({type:"Total",name:" ",communication:" ",amount:buildingWater.toLocaleString("nl-BE",currencyStyle)});
-          refCoproperty.collection("Transactions").where("type", "==", "Water").where("bookDate", ">", lastReguDate).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){
+
+          refCoproperty.collection("Transactions").where("type", "==", "Heating").where("bookDate", ">", lastReguDate).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){
             transactionsFS.forEach(function(transactionFS){
               var trData = transactionFS.data();
-              buildingWater = buildingWater + reportTransaction(trData);
-              dataWater.push(trData);
+              buildingHeating = buildingHeating + reportTransaction(trData);
+              dataHeating.push(trData);
             });      
           dataHeating.push({type:"Total",name:" ",communication:" ",amount:buildingHeating.toLocaleString("nl-BE",currencyStyle)});
           
