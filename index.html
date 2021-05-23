@@ -3518,12 +3518,12 @@
                 totalQuota = totalQuota + parseInt(prData.quota); 
                 refCoproperty.collection("Properties").doc(prFS.id).collection("Meters").get().then(function(metersFS){
                   
-                    metersFS.forEach(function(meterFS){
-                      var meterData = meterFS.data();
-                      var lastReading = "";
-                      var newReading = "";
-                      var differenceV = "";
-                      if (metersIncluded){
+                  metersFS.forEach(function(meterFS){
+                    var meterData = meterFS.data();
+                    var lastReading = "";
+                    var newReading = "";
+                    var differenceV = "";
+                    if (metersIncluded){
                       var readingDate = meterData.readings[0].date;
                       if ((!checkBookDate(readingDate))|| (readingDate.localeCompare(closeDateTransactions)>0)) {
                         M.toast({html:"following meter reading is missing or out of period: " + meterData.meter});
@@ -3537,9 +3537,9 @@
                       } else if (meterData.type == "Hot Water"){
                         totalHotWaterDifference = totalHotWaterDifference + differenceV;
                       };
-                      };
-                      dataConsumption.push({ownerId:ownerIdV, owner:ownerName, property:prData.code, meter:meterData.meter, type:meterData.type, last_reading:lastReading, reading:newReading, difference:differenceV.toString(), water: " ", heating:" "});
-                    });    
+                    };
+                    dataConsumption.push({ownerId:ownerIdV, owner:ownerName, property:prData.code, meter:meterData.meter, type:meterData.type, last_reading:lastReading, reading:newReading, difference:differenceV.toString(), water: " ", heating:" "});
+                  });    
                   
                   if (!stop) {
                     iteratorCount = iteratorCount + 1;
