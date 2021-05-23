@@ -3517,25 +3517,30 @@
                 dataQuota.push({ownerId:ownerIdV, owner:ownerName, property:prData.code, quota:prData.quota, period:"100%", quota_period: prData.quota, amount:" "}); 
                 totalQuota = totalQuota + parseInt(prData.quota); 
                 refCoproperty.collection("Properties").doc(prFS.id).collection("Meters").get().then(function(metersFS){
-                  if (metersIncluded){
+                  
                     metersFS.forEach(function(meterFS){
                       var meterData = meterFS.data();
+                      var lastReading = "";
+                      var newReading = "";
+                      var differenceV = "";
+                      if (metersIncluded){
                       var readingDate = meterData.readings[0].date;
                       if ((!checkBookDate(readingDate))|| (readingDate.localeCompare(closeDateTransactions)>0)) {
                         M.toast({html:"following meter reading is missing or out of period: " + meterData.meter});
                         stop = true;
                       };
-                      var lastReading = meterData.readings[1].reading;
-                      var newReading = meterData.readings[0].reading;
-                      var differenceV = parseFloat(newReading) - parseFloat(lastReading);
+                      lastReading = meterData.readings[1].reading;
+                      newReading = meterData.readings[0].reading;
+                      differenceV = parseFloat(newReading) - parseFloat(lastReading);
                       if (meterData.type == "Heating") {
                         totalHeatingDifference = totalHeatingDifference + differenceV;
                       } else if (meterData.type == "Hot Water"){
                         totalHotWaterDifference = totalHotWaterDifference + differenceV;
                       };
+                      };
                       dataConsumption.push({ownerId:ownerIdV, owner:ownerName, property:prData.code, meter:meterData.meter, type:meterData.type, last_reading:lastReading, reading:newReading, difference:differenceV.toString(), water: " ", heating:" "});
                     });    
-                  };
+                  
                   if (!stop) {
                     iteratorCount = iteratorCount + 1;
                     if (iteratorCount == propertiesFS.docs.length) {                      
@@ -3545,11 +3550,13 @@
                         if ((!checkBookDate(readingDate))|| (readingDate.localeCompare(closeDateTransactions)>0)) {
                           M.toast({html:"following meter reading is missing or out of period: " + meterData.meter});}
                         else {
-                          var lastReading = meterData.readings[1].reading;
-                          var newReading = meterData.readings[0].reading;
-                          buildingWaterDifference = parseFloat(newReading) - parseFloat(lastReading);                                            
-                          var totalledConsumptionData = makeSubtotalsConsumption (dataConsumption,buildingWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataCharges);
-                          var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon, dataCharges);
+                          
+                            var lastReading = meterData.readings[1].reading;
+                            var newReading = meterData.readings[0].reading;
+                            buildingWaterDifference = parseFloat(newReading) - parseFloat(lastReading);                                            
+                            var totalledConsumptionData = makeSubtotalsConsumption (dataConsumption,buildingWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataCharges);
+                          
+                          var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon, dataCharges);                          
                           dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toLocaleString("nl-BE",currencyStyle)});
                           var dataChargesCurrency = putChargesCurrency(Object.values(dataCharges));
                           writePDF(closeDateTransactions, metersIncluded, headerCommon, dataWater, dataHeating, dataCommon, headerConsumption, totalledConsumptionData, headerQuota, totalledQuotaData, headerCharges, dataChargesCurrency);
