@@ -3723,9 +3723,12 @@
           if (arrayEl.type != "Cold Water") {
             var amountHeatingPayed = buildingHeating * arrayEl.quota / totalQuota;
             arrayEl.heating_payed = amountHeatingPayed.toLocaleString("nl-BE",currencyStyle);
+            subtotalAmountHeatingPayed = subtotalAmountHeatingPayed + amountHeatingPayed;
+            subtotalAmountHeatingPayedCurrency = subtotalAmountHeatingPayed.toLocaleString("nl-BE",currencyStyle);
             var amountHeatingRegu = amountHeating - amountHeatingPayed;
             arrayEl.heating_regu = amountHeatingRegu.toLocaleString("nl-BE",currencyStyle);
-
+            subtotalAmountHeatingRegu = subtotalAmountHeatingRegu + amountHeatingRegu;
+            subtotalAmountHeatingReguCurrency = subtotalAmountHeatingRegu.toLocaleString("nl-BE",currencyStyle);
           };
           result.push(arrayEl);
           subtotalAmountWater = subtotalAmountWater + amountWater;
