@@ -3440,11 +3440,8 @@
       var waterCommonParts;
 
       function reportTransaction(trData){
-        if (!trData.communication) {
-          trData.communication=" ";
-        } else {
-          trData.communication=trData.communication.substr(0,54);
-        };
+        if (!trData.communication) { trData.communication=" ";
+        } else {trData.communication=trData.communication.substr(0,54);};
         trData.name=trData.name.substr(0,25);
         var amount = Number(trData.amount);
         trData.amount = amount.toLocaleString("nl-BE",currencyStyle);            
