@@ -3493,7 +3493,7 @@
       ];
 
       function generateChargesReport(closeDateTransactions, metersIncluded){
-        var buildingWater = 0
+        var buildingWater = 0;
         var buildingHeating = 0;
         var buildingCommon = 0;
         
@@ -3560,16 +3560,17 @@
                       if ((!checkBookDate(readingDate))|| (readingDate.localeCompare(closeDateTransactions)>0)) {
                         M.toast({html:"following meter reading is missing or out of period: " + meterData.meter});
                         stop = true;
-                      };
-                      lastReading = meterData.readings[1].reading;
-                      newReading = meterData.readings[0].reading;
-                      differenceV = parseFloat(newReading) - parseFloat(lastReading);
-                      if (meterData.type == "Heating") {
-                        totalHeatingDifference = totalHeatingDifference + differenceV;
-                      } else if (meterData.type == "Hot Water"){
-                        totalHotWaterDifference = totalHotWaterDifference + differenceV;
-                      };                    
-                      dataConsumption.push({ownerId:ownerIdV, quota: prQuota, owner:ownerName.substr(0,15), property:prData.code, meter:meterData.meter, type:meterData.type, last_reading:lastReading, reading:newReading, difference:differenceV.toString(), water: " ", water_payed:" ", water_regu: " ", heating:0, heating_payed:" ", heating_regu: " "});
+                      } else {}
+                        lastReading = meterData.readings[1].reading;
+                        newReading = meterData.readings[0].reading;
+                        differenceV = parseFloat(newReading) - parseFloat(lastReading);
+                        if (meterData.type == "Heating") {
+                          totalHeatingDifference = totalHeatingDifference + differenceV;
+                        } else if (meterData.type == "Hot Water"){
+                          totalHotWaterDifference = totalHotWaterDifference + differenceV;
+                        };                    
+                        dataConsumption.push({ownerId:ownerIdV, quota: prQuota, owner:ownerName.substr(0,15), property:prData.code, meter:meterData.meter, type:meterData.type, last_reading:lastReading, reading:newReading, difference:differenceV.toString(), water: " ", water_payed:" ", water_regu: " ", heating:" ", heating_payed:" ", heating_regu: " "});
+                    }
                     });
                     if (!stop)  {
                       if (iteratorCount == propertiesFS.docs.length) {
@@ -3628,8 +3629,8 @@
         return dataChargesValues;
       };
       
-      function calcTotalConsumption(){};
-      
+      function calcTotalConsumption(totalQuota, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataConsumption, dataCharges){};
+
       function makeSubtotals (dataQuota,totalQuota, buildingCommon, dataCharges) {
         var result = [];
         var totalCommon = 0;
