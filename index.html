@@ -3699,6 +3699,10 @@
           if (dataConsumption[i].water_regu){
             totalWaterCons = totalWaterCons + dataConsumption[i].water;
             totalHeatingCons = totalHeatingCons + dataConsumption[i].heating;
+            totalWaterPayed = totalWaterPayed + dataConsumption[i].water_payed;
+            totalHeatingPayed = totalHeatingPayed + dataConsumption[i].heating_payed;
+            totalWaterCons = totalWaterCons + dataConsumption[i].water;
+            totalHeatingCons = totalHeatingCons + dataConsumption[i].heating;
             if (((count == 0) && ((i + 1) != arraylength) && (dataConsumption[i].property != dataConsumption[i+1].property)) || ((count == 0) && ((i + 1) == arraylength))){
               /* solitary regularisation line */
               dataConsumption[i].water_payed = buildingWater * dataConsumption[i].quota / totalQuota;
