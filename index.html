@@ -3580,8 +3580,8 @@
                         if ((!checkBookDate(readingDate))|| (readingDate.localeCompare(closeDateTransactions)>0)) {
                           M.toast({html:"following meter reading is missing or out of period: " + meterData.meter});}
                         else {
-                          var totalledConsumptionData = makeSubtotalsConsumption (totalQuota, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataConsumption, dataCharges);
-                          calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota,buildingCommon, dataWater, dataHeating, dataCommon,totalledConsumptionData, dataQuota, dataCharges);
+                          var totalledConsumption = calcTotalConsumption (totalQuota, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataConsumption, dataCharges);
+                          calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota,buildingCommon, dataWater, dataHeating, dataCommon,totalledConsumption, dataQuota, dataCharges);
                           
                         };
                       };
@@ -3591,7 +3591,7 @@
                                 
               });
               if (!metersIncluded){
-                calcAndGenerate(closeDateTransactions, metersIncluded,totalQuote,buildingCommon, dataWater, dataHeating, dataCommon,dateConsumption, dataQuota, dataCharges);
+                calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota,buildingCommon, dataWater, dataHeating, dataCommon,dateConsumption, dataQuota, dataCharges);
               };
             }).catch(function(error) {
               M.toast({html:"Error during properties upload:" + error});
@@ -3627,6 +3627,8 @@
         });
         return dataChargesValues;
       };
+      
+      function calcTotalConsumption(){};
       
       function makeSubtotals (dataQuota,totalQuota, buildingCommon, dataCharges) {
         var result = [];
