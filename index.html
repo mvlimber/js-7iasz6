@@ -3578,7 +3578,8 @@
                     });
                     if (!stop)  {
                       if (iteratorCount == propertiesFS.docs.length) {
-                        /* ook testen op ingave coproperty meters ??*/                       
+                        /* ook testen op ingave coproperty meters ??*/   
+                        console.log("binnen metersIncluded met iteratorCount = ", iteratorCount);                    
                         var totalledConsumption = calcTotalConsumption (totalQuota, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataConsumption, dataCharges);
                         calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota,buildingCommon, dataWater, dataHeating, dataCommon,totalledConsumption, dataQuota, dataCharges);                         
                       };
@@ -3588,6 +3589,7 @@
                                 
               });
               if (!metersIncluded){
+                console.log("binnen meters not Included ");
                 calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota,buildingCommon, dataWater, dataHeating, dataCommon,dataConsumption, dataQuota, dataCharges);
               };
             }).catch(function(error) {
