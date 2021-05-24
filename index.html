@@ -3578,7 +3578,8 @@
                       };
                     });
                     if (!stop)  {
-                      if (iteratorCount == propertiesFS.docs.length) {
+                      if (onlyOnce && (iteratorCount == propertiesFS.docs.length)) {
+                        onlyOnce = false;
                         /* ook testen op ingave coproperty meters ??*/   
                         console.log("binnen metersIncluded met iteratorCount = ", iteratorCount);                    
                         var totalledConsumption = calcTotalConsumption (totalQuota, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataConsumption, dataCharges);
