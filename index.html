@@ -3477,6 +3477,14 @@
         {id:"quota_period",name:"quota_period",prompt:"quota period",width: 30,align: "center",padding: 0},
         {id:"amount",name:"amount",prompt:"amount",width: 40,align: "right",padding: 0}
       ];
+      var headerChargesMetersIncluded = [
+        {id:"owner",name:"owner",prompt:"owner",width: 80,align: "center",padding: 0},
+        {id:"common",name:"common",prompt:"common charges",width: 50,align: "right",padding: 0},
+        {id:"private",name:"private",prompt:"private charges",width: 50,align: "right",padding: 0},
+        {id:"water",name:"water",prompt:"regularisation water",width: 55,align: "right",padding: 0},
+        {id:"heating",name:"heating",prompt:"regularisation heating",width: 55,align: "right",padding: 0},
+        {id:"Total",name:"Total",prompt:"Total",width: 46,align: "right",padding: 0}
+      ];
 
 
 
@@ -3499,14 +3507,6 @@
         var dataHeating = [];
         var dataConsumption = [];
         var dataQuota = [];
-        var headerChargesMetersIncluded = [
-          {id:"owner",name:"owner",prompt:"owner",width: 80,align: "center",padding: 0},
-          {id:"common",name:"common",prompt:"common charges",width: 50,align: "right",padding: 0},
-          {id:"private",name:"private",prompt:"private charges",width: 50,align: "right",padding: 0},
-          {id:"water",name:"water",prompt:"regularisation water",width: 55,align: "right",padding: 0},
-          {id:"heating",name:"heating",prompt:"regularisation heating",width: 55,align: "right",padding: 0},
-          {id:"Total",name:"Total",prompt:"Total",width: 46,align: "right",padding: 0}
-        ];
         var headerChargesMetersExcluded = [
           {id:"owner",name:"owner",prompt:"owner",width: 80,align: "center",padding: 0},
           {id:"common",name:"common",prompt:"common charges",width: 50,align: "right",padding: 0},
