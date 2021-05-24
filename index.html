@@ -3626,7 +3626,10 @@
       };
       
       function putConsumptionCurreny(dataConsumption){
-
+        dataConsumption.forEach(function(arrayEl) {
+          if ((arrayEl.water)&& (arrayEl.water != " ")){};
+        });
+        return dataConsumption;
       };
       
       function calcConsumptionAmounts (dataConsumption, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating) {
