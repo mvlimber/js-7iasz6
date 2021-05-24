@@ -3584,7 +3584,7 @@
                                 
               });
               if (!metersIncluded){
-                calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota,buildingCommon, dataWater, dataHeating, dataCommon,dateConsumption, dataQuota, dataCharges);
+                calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota,buildingCommon, dataWater, dataHeating, dataCommon,dataConsumption, dataQuota, dataCharges);
               };
             }).catch(function(error) {
               M.toast({html:"Error during properties upload:" + error});
