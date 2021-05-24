@@ -3448,6 +3448,14 @@
         return amount;
       };
 
+      var headerCommon = [
+        {id:"type",name:"type",prompt:"type",width: 30,align: "center",padding: 0},
+        {id:"name",name:"name",prompt:"name",width: 60,align: "center",padding: 0},
+        {id:"communication",name:"communication",prompt:"communication",width: 117,align: "center",padding: 0},
+        {id:"amount",name:"amount",prompt:"amount",width: 38,align: "right",padding: 0}
+      ];
+
+
       function generateChargesReport(closeDateTransactions, metersIncluded){
         var buildingWaterDifference = 300;  
         var buildingWater = 0
@@ -3461,12 +3469,7 @@
         var coldWater = false;
         var hotWater = false;
         var heating = false;
-        var headerCommon = [
-          {id:"type",name:"type",prompt:"type",width: 30,align: "center",padding: 0},
-          {id:"name",name:"name",prompt:"name",width: 60,align: "center",padding: 0},
-          {id:"communication",name:"communication",prompt:"communication",width: 117,align: "center",padding: 0},
-          {id:"amount",name:"amount",prompt:"amount",width: 38,align: "right",padding: 0}
-        ];
+       
         var dataCommon = [];
         var dataWater = [];
         var dataHeating = [];
