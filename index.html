@@ -3722,7 +3722,7 @@
           } else {
               /* last regularisation line needed new totalling line */
               sumIt(dataConsumption[i]);
-              result.push({ownerId:dataConsumption[i].ownerId, owner:dataConsumption[i].owner, property:dataConsumption[i].owner, meter:"Subtotal", type:"", last_reading:"", reading:"", difference:"", water:totalWaterCons, water_payed:waterPayed, water_regu: waterRegu, heating:totalHeatingCons, heating_payed:heatingPayed, heating_regu: heatingRegu});
+              result.push({ownerId:dataConsumption[i].ownerId, owner:dataConsumption[i].owner, property:"Total", meter:"", type:"", last_reading:"", reading:"", difference:"", water:totalWaterCons, water_payed:totalWaterPayed, water_regu: totalWaterRegu, heating:totalHeatingCons, heating_payed:totalHeatingPayed, heating_regu: totalHeatingRegu});
               count = 0;
               totalWaterCons = 0;
               totalHeatingCons = 0;
