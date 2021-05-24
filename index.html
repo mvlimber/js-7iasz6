@@ -3581,7 +3581,7 @@
                         if ((!checkBookDate(readingDate))|| (readingDate.localeCompare(closeDateTransactions)>0)) {
                           M.toast({html:"following meter reading is missing or out of period: " + meterData.meter});}
                         else {
-                          calcAndGenerate(closeDateTransactions, metersIncluded,dataWater, dataHeating, dataCommon,totalledConsumptionData, dataQuota, dataCharges);
+                          calcAndGenerate(closeDateTransactions, metersIncluded,totalQuote,buildingCommon, dataWater, dataHeating, dataCommon,totalledConsumptionData, dataQuota, dataCharges);
                           
                         };
                       };
