@@ -3700,6 +3700,12 @@
         var result = [];
 
         function sumIt(consLine){
+            totalWaterCons = totalWaterCons + consLine.water;
+            totalHeatingCons = totalHeatingCons + consLine.heating;
+            totalWaterPayed = totalWaterPayed + consLine.water_payed;
+            totalHeatingPayed = totalHeatingPayed + consLine.heating_payed;
+            totalWaterRegu = totalWaterRegu + consLine.water_regu;
+            totalHeatingRegu = totalHeatingRegu + consLine.heating_regu;
 
         };
 
@@ -3707,12 +3713,6 @@
           result.push(dataConsumption[i]);
           if (dataConsumption[i].water_regu){
             count = count+1;
-            totalWaterCons = totalWaterCons + dataConsumption[i].water;
-            totalHeatingCons = totalHeatingCons + dataConsumption[i].heating;
-            totalWaterPayed = totalWaterPayed + dataConsumption[i].water_payed;
-            totalHeatingPayed = totalHeatingPayed + dataConsumption[i].heating_payed;
-            totalWaterRegu = totalWaterRegu + dataConsumption[i].water_regu;
-            totalHeatingRegu = totalHeatingRegu + dataConsumption[i].heating_regu;
             if (((count == 1) && ((i + 1) != arraylength) && (dataConsumption[i].ownerId != dataConsumption[i+1].ownerId)) || ((count == 0) && ((i + 1) == arraylength))){
               /* solitary regularisation line */
               result.push(emptyConsumptionLine);             
