@@ -3656,6 +3656,7 @@
         calcConsumptionAmounts (dataConsumption, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating);
         var reguProperties = calcConsumptionRegusProperties (dataConsumption, buildingWater, buildingHeating);
         var reguOwners = calcConsumptionRegusOwners(reguProperties);
+        return reguOwners;
       };
 
       function calcConsumptionRegusProperties (dataConsumption, buildingWater, buildingHeating) {
