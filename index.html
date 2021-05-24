@@ -3539,7 +3539,7 @@
               idMemberMap[memberFS.id] = (memberFS.data().lastName + " " + memberFS.data().firstName).substr(0,25);
             });
             refCoproperty.collection("Properties").orderBy("owner").get().then(function(propertiesFS){
-              var iteratorCount = 0;
+              var iteratorProp = 0;
               var stop = false;
               propertiesFS.forEach(function(prFS){
                 var prData = prFS.data();
@@ -3551,45 +3551,49 @@
                 if (!dataCharges[ownerIdV]) {
                   dataCharges[ownerIdV] = {ownerId:ownerIdV, owner:ownerName, common:" ", private:" ", water:" ", heating:" ", Total:" "};
                 };
-                if (metersIncluded){
-                  iteratorCount = iteratorCount + 1;
+                
+                  iteratorProp = iteratorProp + 1;
                   refCoproperty.collection("Properties").doc(prFS.id).collection("Meters").get().then(function(metersFS){
-                    metersFS.forEach(function(meterFS){
-                      var meterData = meterFS.data();
-                      var lastReading = "";
-                      var newReading = "";
-                      var differenceV = 0;
-                      var readingDate = meterData.readings[0].date;
-                      if ((!checkBookDate(readingDate))|| (readingDate.localeCompare(closeDateTransactions)>0)) {
-                        M.toast({html:"following meter reading is missing or out of period: " + meterData.meter});
-                        stop = true;
-                      } else {
-                        lastReading = meterData.readings[1].reading;
-                        newReading = meterData.readings[0].reading;
-                        differenceV = parseFloat(newReading) - parseFloat(lastReading);
-                        if (meterData.type == "Cold Water") {
-                          totalColdWaterDifference = totalColdWaterDifference + differenceV;
-                        } else if (meterData.type == "Heating") {
-                          totalHeatingDifference = totalHeatingDifference + differenceV;
-                        } else if (meterData.type == "Hot Water"){
-                          totalHotWaterDifference = totalHotWaterDifference + differenceV;
-                        };                    
-                        dataConsumption.push({ownerId:ownerIdV, quota: prQuota, owner:ownerName.substr(0,15), property:prData.code, meter:meterData.meter, type:meterData.type, last_reading:lastReading, reading:newReading, difference:differenceV.toString(), water: " ", water_payed:" ", water_regu: " ", heating:" ", heating_payed:" ", heating_regu: " "});
-                        console.log("lengte dataConsumption één per één ", dataConsumption.length); 
-                      };
-                    });
-                    if (!stop)  {
-                      if (onlyOnce && (iteratorCount == propertiesFS.docs.length)) {
-                        onlyOnce = false;
-                        /* ook testen op ingave coproperty meters ??*/   
-                        console.log("lengte dataConsumption voor berekeningen ", dataConsumption.length);                    
-                        var totalledConsumption = calcTotalConsumption (totalQuota, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataConsumption, dataCharges);
-                        console.log("lengte van totalledConsumption is ", totalledConsumption.length);
-                        calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota,buildingCommon, dataWater, dataHeating, dataCommon,totalledConsumption, dataQuota, dataCharges);                         
-                      };
-                    };
+                      var iteratorMeter = 0;                   
+                      metersFS.forEach(function(meterFS){
+                        iteratorMeter = iteratorMeter +1;
+                        var meterData = meterFS.data();
+                        var lastReading = "";
+                        var newReading = "";
+                        var differenceV = 0;
+                        var readingDate = meterData.readings[0].date;
+                        if ((!checkBookDate(readingDate))|| (readingDate.localeCompare(closeDateTransactions)>0)) {
+                          M.toast({html:"following meter reading is missing or out of period: " + meterData.meter});
+                          stop = true;
+                        } else {
+                          lastReading = meterData.readings[1].reading;
+                          newReading = meterData.readings[0].reading;
+                          differenceV = parseFloat(newReading) - parseFloat(lastReading);
+                          if (meterData.type == "Cold Water") {
+                            totalColdWaterDifference = totalColdWaterDifference + differenceV;
+                          } else if (meterData.type == "Heating") {
+                            totalHeatingDifference = totalHeatingDifference + differenceV;
+                          } else if (meterData.type == "Hot Water"){
+                            totalHotWaterDifference = totalHotWaterDifference + differenceV;
+                          };                    
+                          dataConsumption.push({ownerId:ownerIdV, quota: prQuota, owner:ownerName.substr(0,15), property:prData.code, meter:meterData.meter, type:meterData.type, last_reading:lastReading, reading:newReading, difference:differenceV.toString(), water: " ", water_payed:" ", water_regu: " ", heating:" ", heating_payed:" ", heating_regu: " "});
+                          console.log("lengte dataConsumption één per één ", dataConsumption.length); 
+                        };
+                      
+                        if (!stop)  {
+                          if ((iteratorMeter == metersFS.docs.length) && (iteratorProp == propertiesFS.docs.length)) {
+                            
+                            /* ook testen op ingave coproperty meters ??*/   
+                            console.log("lengte dataConsumption voor berekeningen ", dataConsumption.length);                    
+                            var totalledConsumption = calcTotalConsumption (totalQuota, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataConsumption, dataCharges);
+                            console.log("lengte van totalledConsumption is ", totalledConsumption.length);
+                            calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota,buildingCommon, dataWater, dataHeating, dataCommon,totalledConsumption, dataQuota, dataCharges);                         
+                          };
+                        };
+                      });
+            
                   });
-                };
+                
                                 
               });
               if (!metersIncluded){
