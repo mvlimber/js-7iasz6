@@ -3494,6 +3494,7 @@
       ];
 
       function generateChargesReport(closeDateTransactions, metersIncluded){
+        var onlyOnce = true;
         var buildingWater = 0;
         var buildingHeating = 0;
         var buildingCommon = 0;
@@ -3552,7 +3553,6 @@
                 };
                 if (metersIncluded){
                   iteratorCount = iteratorCount + 1;
-                  console.log("binnen metersIncluded met iteratorCount = ", iteratorCount, " en prop ",prData.code  );
                   refCoproperty.collection("Properties").doc(prFS.id).collection("Meters").get().then(function(metersFS){
                     metersFS.forEach(function(meterFS){
                       var meterData = meterFS.data();
@@ -3591,7 +3591,6 @@
                                 
               });
               if (!metersIncluded){
-                console.log("binnen meters not Included ");
                 calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota,buildingCommon, dataWater, dataHeating, dataCommon,dataConsumption, dataQuota, dataCharges);
               };
             }).catch(function(error) {
@@ -3658,8 +3657,8 @@
       };
       
       function calcTotalConsumption(totalQuota, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataConsumption, dataCharges){
-        calcConsumptionAmounts (dataConsumption, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating);
-        var reguProperties = calcConsumptionRegusProperties (totalQuota, dataConsumption, buildingWater, buildingHeating);
+        var calcs = calcConsumptionAmounts (dataConsumption, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating);
+        var reguProperties = calcConsumptionRegusProperties (totalQuota, calcs, buildingWater, buildingHeating);
         var reguOwners = calcConsumptionRegusOwners(reguProperties);
         return reguOwners;
       };
@@ -3703,7 +3702,7 @@
           };
           i = i + 1;
         };
-        return dataConsumption;
+        return result;
       };
 
       function calcConsumptionRegusOwners (dataConsumption) {
@@ -3757,7 +3756,7 @@
           };
           i = i + 1;
         };
-        return dataConsumption;
+        return result;
       };
 
 
