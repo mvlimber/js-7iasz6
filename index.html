@@ -3640,12 +3640,12 @@
       function calcConsumptionAmounts (dataConsumption, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating) {
         dataConsumption.forEach(function(arrayEl) {
           if (arrayEl.type != "Heating") {
-            var amountWaterString = (buildingWater * parseInt(arrayEl.difference) / (buildinColdWaterDifference + buildinHotWaterDifference)).toFixed(2);
+            var amountWaterString = (buildingWater * parseInt(arrayEl.difference) / (totalColdWaterDifference + totalHotWaterDifference)).toFixed(2);
             amountWater = Number(amountWaterString);
             arrayEl.water = amountWater;
           };
           if (arrayEl.type != "Cold Water") {
-            var amountHeatingString = (buildingPureHeating * parseInt(arrayEl.difference) / totalHeatingDifference).toFixed(2);
+            var amountHeatingString = (buildingHeating * parseInt(arrayEl.difference) / (totalHeatingDifference + totalHotWaterDifference)).toFixed(2);
             amountHeating = Number(amountHeatingString); 
             arrayEl.heating = amountHeating;
           };
