@@ -3694,9 +3694,9 @@
           totalHeatingCons = totalHeatingCons + dataConsumption[i].heating;
           if (((count == 0) && ((i + 1) != arraylength) && (dataConsumption[i].property != dataConsumption[i+1].property)) || ((count == 0) && ((i + 1) == arraylength))){
             /* solitary regularisation line */
-            dataConsumption[i].water_payed = buildingWater * arrayEl.quota / totalQuota;
+            dataConsumption[i].water_payed = buildingWater * dataConsumption[i].quota / totalQuota;
             dataConsumption[i].water_regu = dataConsumption[i].water - dataConsumption[i].water_payed;
-            dataConsumption[i].heating_payed = buildingHeating * arrayEl.quota / totalQuota;
+            dataConsumption[i].heating_payed = buildingHeating * dataConsumption[i].quota / totalQuota;
             dataConsumption[i].heating_regu = dataConsumption[i].heating - dataConsumption[i].heating_payed;
             result.push(dataConsumption[i]);
             totalWaterCons = 0;
@@ -3707,6 +3707,9 @@
          } else {
             /* last regularisation line needed new totalling line */
             result.push(dataConsumption[i]);
+            var waterPayed = buildingWater * dataConsumption[i].quota / totalQuota;
+            var waterPayed = buildingWater * dataConsumption[i].quota / totalQuota;
+            
             result.push({ownerId:dataConsumption[i].ownerId, owner:dataConsumption[i].owner, property:dataConsumption[i].owner, meter:"Subtotal", type:"", last_reading:"", reading:"", difference:"", water:totalWaterCons, water_payed:subtotalAmountWaterPayedCurrency, water_regu: subtotalAmountWaterReguCurrency, heating:subtotalAmountHeatingCurrency, heating_payed:subtotalAmountHeatingPayedCurrency, heating_regu: subtotalAmountHeatingReguCurrency});
           }
           i = i + 1;
