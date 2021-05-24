@@ -3628,11 +3628,11 @@
       function putConsumptionCurreny(dataConsumption){
         dataConsumption.forEach(function(arrayEl) {
           if ((arrayEl.water)&& (arrayEl.water != " ")){arrayEl.water = arrayEl.water.toLocaleString("nl-BE",currencyStyle);};
-          if ((arrayEl.water)&& (arrayEl.water_payed != " ")){arrayEl.water_payed = arrayEl.water_payed.toLocaleString("nl-BE",currencyStyle);};
-          if ((arrayEl.water)&& (arrayEl.water_regu != " ")){arrayEl.water_regu = arrayEl.water_regu.toLocaleString("nl-BE",currencyStyle);};
-          if ((arrayEl.water)&& (arrayEl.heating != " ")){arrayEl.heating = arrayEl.heating.toLocaleString("nl-BE",currencyStyle);};
-          if ((arrayEl.water)&& (arrayEl.heating_payed != " ")){arrayEl.heating_payed = arrayEl.heating_payed.toLocaleString("nl-BE",currencyStyle);};
-          if ((arrayEl.water)&& (arrayEl.heating_regu != " ")){arrayEl.heating_regu = arrayEl.heating_regu.toLocaleString("nl-BE",currencyStyle);};
+          if ((arrayEl.water_payed)&& (arrayEl.water_payed != " ")){arrayEl.water_payed = arrayEl.water_payed.toLocaleString("nl-BE",currencyStyle);};
+          if ((arrayEl.water_regu)&& (arrayEl.water_regu != " ")){arrayEl.water_regu = arrayEl.water_regu.toLocaleString("nl-BE",currencyStyle);};
+          if ((arrayEl.heating)&& (arrayEl.heating != " ")){arrayEl.heating = arrayEl.heating.toLocaleString("nl-BE",currencyStyle);};
+          if ((arrayEl.heating_payed)&& (arrayEl.heating_payed != " ")){arrayEl.heating_payed = arrayEl.heating_payed.toLocaleString("nl-BE",currencyStyle);};
+          if ((arrayEl.heating_regu)&& (arrayEl.heating_regu != " ")){arrayEl.heating_regu = arrayEl.heating_regu.toLocaleString("nl-BE",currencyStyle);};
           
         });
         return dataConsumption;
