@@ -3693,7 +3693,7 @@
           totalWaterCons = totalWaterCons + dataConsumption[i].water;
           if ((count == 0) && ((i + 1) != arraylength) && (dataConsumption[i].property != dataConsumption[i+1].property)) {
             dataConsumption[i].water_payed = buildingWater * arrayEl.quota / totalQuota;
-            dataConsumption[i].water_payed = buildingWater * arrayEl.quota / totalQuota;
+            dataConsumption[i].water_regu = dataConsumption[i].water - dataConsumption[i].water_payed;
           }
           totalWaterRegu = totalWaterRegu
         }
