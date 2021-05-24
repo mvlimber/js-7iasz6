@@ -3497,6 +3497,7 @@
         var buildingHeating = 0;
         var buildingCommon = 0;
         
+        var totalColdWaterDifference = 0
         var totalHeatingDifference = 0; 
         var totalHotWaterDifference = 0; 
         var totalQuota = 0;
@@ -3577,7 +3578,7 @@
                     if (!stop)  {
                       if (iteratorCount == propertiesFS.docs.length) {
                         /* ook testen op ingave coproperty meters ??*/                       
-                        var totalledConsumption = calcTotalConsumption (totalQuota, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataConsumption, dataCharges);
+                        var totalledConsumption = calcTotalConsumption (totalQuota, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataConsumption, dataCharges);
                         calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota,buildingCommon, dataWater, dataHeating, dataCommon,totalledConsumption, dataQuota, dataCharges);                         
                       };
                     };
@@ -3623,10 +3624,10 @@
         return dataChargesValues;
       };
       
-      function calcConsumptionAmounts (dataConsumption, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating) {
+      function calcConsumptionAmounts (dataConsumption, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating) {
         dataConsumption.forEach(function(arrayEl) {
           if (arrayEl.type != "Heating") {
-            var amountWaterString = (buildingWater * parseInt(arrayEl.difference) / buildingWaterDifference).toFixed(2);
+            var amountWaterString = (buildingWater * parseInt(arrayEl.difference) / (buildinColdWaterDifference + buildinHotWaterDifference)).toFixed(2);
             amountWater = Number(amountWaterString);
             arrayEl.water = amountWater;
           };
@@ -3638,8 +3639,8 @@
         };
       };
       
-      function calcTotalConsumption(totalQuota, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataConsumption, dataCharges){
-
+      function calcTotalConsumption(totalQuota, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataConsumption, dataCharges){
+        calcConsumptionAmounts (dataConsumption, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating);
       };
 
       function makeSubtotals (dataQuota,totalQuota, buildingCommon, dataCharges) {
