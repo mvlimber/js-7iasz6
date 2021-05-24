@@ -3593,12 +3593,6 @@
               if (!metersIncluded){
                 calcAndGenerate(closeDateTransactions, metersIncluded,totalQuote,buildingCommon, dataWater, dataHeating, dataCommon,dateConsumption, dataQuota, dataCharges);
               };
-              var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon, dataCharges);                          
-              dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toLocaleString("nl-BE",currencyStyle)});
-              var dataChargesCurrency = putChargesCurrency(Object.values(dataCharges), metersIncluded);
-              var totalledConsumptionData = dataConsumption;
-              writePDF(closeDateTransactions, metersIncluded, headerCommon, dataWater, dataHeating, dataCommon, headerConsumption, totalledConsumptionData, headerQuota, totalledQuotaData, headerChargesMetersIncluded, headerChargesMetersExcluded, dataChargesCurrency);
-
             }).catch(function(error) {
               M.toast({html:"Error during properties upload:" + error});
             });
