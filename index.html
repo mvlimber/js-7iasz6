@@ -3565,7 +3565,7 @@
                         newReading = meterData.readings[0].reading;
                         differenceV = parseFloat(newReading) - parseFloat(lastReading);
                         if (meterData.type == "Cold Water") {
-                          totalWaterDifference = totalWaterDifference + differenceV;
+                          totalColdWaterDifference = totalColdWaterDifference + differenceV;
                         } else if (meterData.type == "Heating") {
                           totalHeatingDifference = totalHeatingDifference + differenceV;
                         } else if (meterData.type == "Hot Water"){
