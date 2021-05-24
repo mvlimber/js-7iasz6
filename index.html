@@ -3707,6 +3707,7 @@
          } else {
             /* last regularisation line needed new totalling line */
             result.push(dataConsumption[i]);
+            result.push({ownerId:dataConsumption[i].ownerId, owner:dataConsumption[i].owner, property:dataConsumption[i].owner, meter:"Subtotal", type:"", last_reading:"", reading:"", difference:"", water:totalWaterCons, water_payed:subtotalAmountWaterPayedCurrency, water_regu: subtotalAmountWaterReguCurrency, heating:subtotalAmountHeatingCurrency, heating_payed:subtotalAmountHeatingPayedCurrency, heating_regu: subtotalAmountHeatingReguCurrency});
           }
           i = i + 1;
 
