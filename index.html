@@ -3575,13 +3575,14 @@
                           totalHotWaterDifference = totalHotWaterDifference + differenceV;
                         };                    
                         dataConsumption.push({ownerId:ownerIdV, quota: prQuota, owner:ownerName.substr(0,15), property:prData.code, meter:meterData.meter, type:meterData.type, last_reading:lastReading, reading:newReading, difference:differenceV.toString(), water: " ", water_payed:" ", water_regu: " ", heating:" ", heating_payed:" ", heating_regu: " "});
+                        console.log("lengte dataConsumption één per één ", dataConsumption.length); 
                       };
                     });
                     if (!stop)  {
                       if (onlyOnce && (iteratorCount == propertiesFS.docs.length)) {
                         onlyOnce = false;
                         /* ook testen op ingave coproperty meters ??*/   
-                        console.log("binnen metersIncluded met iteratorCount = ", iteratorCount);                    
+                        console.log("lengte dataConsumption voor berekeningen ", dataConsumption.length);                    
                         var totalledConsumption = calcTotalConsumption (totalQuota, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataConsumption, dataCharges);
                         console.log("lengte van totalledConsumption is ", totalledConsumption.length);
                         calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota,buildingCommon, dataWater, dataHeating, dataCommon,totalledConsumption, dataQuota, dataCharges);                         
@@ -3654,16 +3655,16 @@
             arrayEl.heating = amountHeating;
           };
         });
-        return dataConsumption;
+        
       };
       
       function calcTotalConsumption(totalQuota, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataConsumption, dataCharges){
-        var calcs = calcConsumptionAmounts (dataConsumption, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating);
-        console.log("lengte van totalledConsumption is ", totalledConsumption.length);
-        var reguProperties = calcConsumptionRegusProperties (totalQuota, calcs, buildingWater, buildingHeating);
-        console.log("lengte van totalledConsumption is ", totalledConsumption.length);
+        calcConsumptionAmounts (dataConsumption, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating);
+        console.log("lengte van dataConsumption is ", dataConsumption.length);
+        var reguProperties = calcConsumptionRegusProperties (totalQuota, dataConsumption, buildingWater, buildingHeating);
+        console.log("lengte van reguProperties is ", reguProperties.length);
         var reguOwners = calcConsumptionRegusOwners(reguProperties);
-        console.log("lengte van totalledConsumption is ", totalledConsumption.length);
+        console.log("lengte van reguOwners is ", reguOwners.length);
         return reguOwners;
       };
 
