@@ -3627,7 +3627,13 @@
       
       function putConsumptionCurreny(dataConsumption){
         dataConsumption.forEach(function(arrayEl) {
-          if ((arrayEl.water)&& (arrayEl.water != " ")){};
+          if ((arrayEl.water)&& (arrayEl.water != " ")){arrayEl.water = arrayEl.water.toLocaleString("nl-BE",currencyStyle);};
+          if ((arrayEl.water)&& (arrayEl.water != " ")){arrayEl.water = arrayEl.water.toLocaleString("nl-BE",currencyStyle);};
+          if ((arrayEl.water)&& (arrayEl.water != " ")){arrayEl.water = arrayEl.water.toLocaleString("nl-BE",currencyStyle);};
+          if ((arrayEl.water)&& (arrayEl.water != " ")){arrayEl.water = arrayEl.water.toLocaleString("nl-BE",currencyStyle);};
+          if ((arrayEl.water)&& (arrayEl.water != " ")){arrayEl.water = arrayEl.water.toLocaleString("nl-BE",currencyStyle);};
+          if ((arrayEl.water)&& (arrayEl.water != " ")){arrayEl.water = arrayEl.water.toLocaleString("nl-BE",currencyStyle);};
+          
         });
         return dataConsumption;
       };
