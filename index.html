@@ -3701,7 +3701,9 @@
             result.push(dataConsumption[i]);
             totalWaterCons = 0;
             totalHeatingCons = 0;
-          } else
+          } else if ((count > 0) && ((i + 1) != arraylength) && (dataConsumption[i].property != dataConsumption[i+1].property)){
+            /* intermediary regularisation line */
+          }
           i = i + 1;
 
         }
