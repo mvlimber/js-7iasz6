@@ -1768,7 +1768,7 @@
               lastCloseDate= chargesReportsFS.docs[0].endDate;
               var i = 0;
               while ((i < chargesReportsFS.docs.length) && (!chargesReportsFS.docs[i].data().metersIncluded)) {i = i+1};
-              if (chargesReportsFS.docs[i].data().metersIncluded) {lastReguDate = chargesReportsFS.docs[i].data().endDate}
+              if (i < chargesReportsFS.docs.length) {lastReguDate = chargesReportsFS.docs[i].data().endDate}
               else {lastReguDate = currentCoproperty.initialStartDate};
             }
             else {
@@ -3554,6 +3554,7 @@
               var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon, dataCharges);                          
               dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toLocaleString("nl-BE",currencyStyle)});
               var dataChargesCurrency = putChargesCurrency(Object.values(dataCharges), metersIncluded);
+              var totalledConsumptionData = dataConsumption;
               writePDF(closeDateTransactions, metersIncluded, headerCommon, dataWater, dataHeating, dataCommon, headerConsumption, totalledConsumptionData, headerQuota, totalledQuotaData, headerChargesMetersIncluded, headerChargesMetersExcluded, dataChargesCurrency);
 
             }).catch(function(error) {
