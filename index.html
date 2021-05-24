@@ -3564,7 +3564,9 @@
                         lastReading = meterData.readings[1].reading;
                         newReading = meterData.readings[0].reading;
                         differenceV = parseFloat(newReading) - parseFloat(lastReading);
-                        if (meterData.type == "Heating") {
+                        if (meterData.type == "Cold Water") {
+                          totalWaterDifference = totalWaterDifference + differenceV;
+                        } else if (meterData.type == "Heating") {
                           totalHeatingDifference = totalHeatingDifference + differenceV;
                         } else if (meterData.type == "Hot Water"){
                           totalHotWaterDifference = totalHotWaterDifference + differenceV;
@@ -3621,7 +3623,24 @@
         return dataChargesValues;
       };
       
-      function calcTotalConsumption(totalQuota, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataConsumption, dataCharges){};
+      function calcConsumptionAmounts (dataConsumption, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating) {
+        dataConsumption.forEach(function(arrayEl) {
+          if (arrayEl.type != "Heating") {
+            var amountWaterString = (buildingWater * parseInt(arrayEl.difference) / buildingWaterDifference).toFixed(2);
+            amountWater = Number(amountWaterString);
+            arrayEl.water = amountWater;
+          };
+          if (arrayEl.type != "Cold Water") {
+            var amountHeatingString = (buildingPureHeating * parseInt(arrayEl.difference) / totalHeatingDifference).toFixed(2);
+            amountHeating = Number(amountHeatingString); 
+            arrayEl.heating = amountHeating;
+          };
+        };
+      };
+      
+      function calcTotalConsumption(totalQuota, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataConsumption, dataCharges){
+
+      };
 
       function makeSubtotals (dataQuota,totalQuota, buildingCommon, dataCharges) {
         var result = [];
