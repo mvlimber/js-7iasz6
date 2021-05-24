@@ -3583,6 +3583,7 @@
                         /* ook testen op ingave coproperty meters ??*/   
                         console.log("binnen metersIncluded met iteratorCount = ", iteratorCount);                    
                         var totalledConsumption = calcTotalConsumption (totalQuota, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataConsumption, dataCharges);
+                        console.log("lengte van totalledConsumption is ", totalledConsumption.length);
                         calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota,buildingCommon, dataWater, dataHeating, dataCommon,totalledConsumption, dataQuota, dataCharges);                         
                       };
                     };
@@ -3658,8 +3659,11 @@
       
       function calcTotalConsumption(totalQuota, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataConsumption, dataCharges){
         var calcs = calcConsumptionAmounts (dataConsumption, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating);
+        console.log("lengte van totalledConsumption is ", totalledConsumption.length);
         var reguProperties = calcConsumptionRegusProperties (totalQuota, calcs, buildingWater, buildingHeating);
+        console.log("lengte van totalledConsumption is ", totalledConsumption.length);
         var reguOwners = calcConsumptionRegusOwners(reguProperties);
+        console.log("lengte van totalledConsumption is ", totalledConsumption.length);
         return reguOwners;
       };
 
@@ -3872,7 +3876,7 @@
           doc.text("without regularisation meter readings", 90, 115);
         };
         doc.setFontSize(16);
-        doc.text("List of tables:", 15, 135);doc.setFont("normal");
+        doc.text("List of tables:", 15, 135);
         doc.setFontSize(14);
         doc.text("Common charges:", 30, 145);doc.text("total for building", 90, 145);
         doc.text("Common charges:", 30, 155);doc.text("quota per owner", 90, 155);
