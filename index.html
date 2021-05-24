@@ -3711,7 +3711,7 @@
             var heatingPayed = buildingHeating * dataConsumption[i].quota / totalQuota;
             var waterRegu = totalWaterCons - waterPayed;
             var heatingRegu = totalHeatingCons - heatingPayed;
-            result.push({ownerId:dataConsumption[i].ownerId, owner:dataConsumption[i].owner, property:dataConsumption[i].owner, meter:"Subtotal", type:"", last_reading:"", reading:"", difference:"", water:totalWaterCons, water_payed:subtotalAmountWaterPayedCurrency, water_regu: subtotalAmountWaterReguCurrency, heating:subtotalAmountHeatingCurrency, heating_payed:subtotalAmountHeatingPayedCurrency, heating_regu: subtotalAmountHeatingReguCurrency});
+            result.push({ownerId:dataConsumption[i].ownerId, owner:dataConsumption[i].owner, property:dataConsumption[i].owner, meter:"Subtotal", type:"", last_reading:"", reading:"", difference:"", water:totalWaterCons, water_payed:waterPayed, water_regu: waterRegu, heating:totalHeatingCons, heating_payed:subtotalAmountHeatingPayedCurrency, heating_regu: subtotalAmountHeatingReguCurrency});
           }
           i = i + 1;
 
