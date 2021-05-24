@@ -3580,7 +3580,7 @@
                         if ((!checkBookDate(readingDate))|| (readingDate.localeCompare(closeDateTransactions)>0)) {
                           M.toast({html:"following meter reading is missing or out of period: " + meterData.meter});}
                         else {
-                          var totalledConsumptionData = makeSubtotalsConsumption (dataConsumption,buildingWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataCharges, totalQuota);
+                          var totalledConsumptionData = makeSubtotalsConsumption (totalQuota, dataConsumption,totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataCharges);
                           calcAndGenerate(closeDateTransactions, metersIncluded,totalQuote,buildingCommon, dataWater, dataHeating, dataCommon,totalledConsumptionData, dataQuota, dataCharges);
                           
                         };
