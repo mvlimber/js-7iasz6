@@ -3680,14 +3680,23 @@
         };
       };
 
-      function calcConsumptionRegus (dataConsumption) {
+      function calcConsumptionRegus (dataConsumption, buildingWater) {
         /* per property */
         var i=0;
+        var count = 0;
         var currentProp= "";
+        var totalWaterCons = 0;
         var totalWaterRegu = 0;
+        var totalheatingRegu = 0;
+        const arraylength = dataConsumption.length;
         
-        while (i < dataConsumption.length) {
-
+        while (i < arraylength) {
+          totalWaterCons = totalWaterCons + dataConsumption[i].water;
+          if ((count == 0) && ((i + 1) != arraylength) && (dataConsumption[i].property != dataConsumption[i+1].property)) {
+            dataConsumption[i].water_payed = buildingWater * arrayEl.quota / totalQuota;
+            dataConsumption[i].water_payed = buildingWater * arrayEl.quota / totalQuota;
+          }
+          totalWaterRegu = totalWaterRegu
         }
 
       }
