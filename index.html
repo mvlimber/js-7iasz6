@@ -3538,9 +3538,12 @@
             membersFS.forEach(function(memberFS){
               idMemberMap[memberFS.id] = (memberFS.data().lastName + " " + memberFS.data().firstName).substr(0,25);
             });
+            console.log("voor properties lezen");
+            var iteratorProp = 0;
+            var stop = false;
             refCoproperty.collection("Properties").orderBy("owner").get().then(function(propertiesFS){
-              var iteratorProp = 0;
-              var stop = false;
+              
+              
               propertiesFS.forEach(function(prFS){
                 var prData = prFS.data();
                 var ownerIdV = prData.owner;
@@ -3553,8 +3556,9 @@
                 };
                 
                   iteratorProp = iteratorProp + 1;
+                  var iteratorMeter = 0;
                   refCoproperty.collection("Properties").doc(prFS.id).collection("Meters").get().then(function(metersFS){
-                      var iteratorMeter = 0;                   
+                                         
                       metersFS.forEach(function(meterFS){
                         iteratorMeter = iteratorMeter +1;
                         var meterData = meterFS.data();
@@ -3584,7 +3588,11 @@
                           if ((iteratorMeter == metersFS.docs.length) && (iteratorProp == propertiesFS.docs.length)) {
                             
                             /* ook testen op ingave coproperty meters ??*/   
-                            console.log("lengte dataConsumption voor berekeningen ", dataConsumption.length);                    
+                            console.log("iteratorMeter is ", iteratorMeter);
+                            console.log("metersFS.docs.length is ", metersFS.docs.length);
+                            console.log("iteratorProp is ", iteratorProp);
+                            console.log("propertiesFS.docs.length is ", propertiesFS.docs.length);
+                                                
                             var totalledConsumption = calcTotalConsumption (totalQuota, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataConsumption, dataCharges);
                             console.log("lengte van totalledConsumption is ", totalledConsumption.length);
                             calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota,buildingCommon, dataWater, dataHeating, dataCommon,totalledConsumption, dataQuota, dataCharges);                         
@@ -3596,9 +3604,7 @@
                 
                                 
               });
-              if (!metersIncluded){
-                calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota,buildingCommon, dataWater, dataHeating, dataCommon,dataConsumption, dataQuota, dataCharges);
-              };
+              
             }).catch(function(error) {
               M.toast({html:"Error during properties upload:" + error});
             });
