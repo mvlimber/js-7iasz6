@@ -3654,9 +3654,10 @@
         const arraylength = dataConsumption.length;
         var result = [];
         while (i < arraylength) {
+          count = count+1;
           totalWaterCons = totalWaterCons + dataConsumption[i].water;
           totalHeatingCons = totalHeatingCons + dataConsumption[i].heating;
-          if (((count == 0) && ((i + 1) != arraylength) && (dataConsumption[i].property != dataConsumption[i+1].property)) || ((count == 0) && ((i + 1) == arraylength))){
+          if (((count == 1) && ((i + 1) != arraylength) && (dataConsumption[i].property != dataConsumption[i+1].property)) || ((count == 0) && ((i + 1) == arraylength))){
             /* solitary regularisation line */
             dataConsumption[i].water_payed = buildingWater * dataConsumption[i].quota / totalQuota;
             dataConsumption[i].water_regu = dataConsumption[i].water - dataConsumption[i].water_payed;
@@ -3665,7 +3666,7 @@
             result.push(dataConsumption[i]);
             totalWaterCons = 0;
             totalHeatingCons = 0;
-          } else if ((count > 0) && ((i + 1) != arraylength) && (dataConsumption[i].property != dataConsumption[i+1].property)){
+          } else if ((count > 1) && ((i + 1) != arraylength) && (dataConsumption[i].property != dataConsumption[i+1].property)){
             /* intermediary regularisation line */
             result.push(dataConsumption[i]);
          } else {
@@ -3708,8 +3709,7 @@
               /* solitary regularisation line */
               result.push(dataConsumption[i]);
               result.push(emptyConsumptionLine);
-              totalWaterCons = 0;
-              totalHeatingCons = 0;
+              
             } else if ((count > 0) && ((i + 1) != arraylength) && (dataConsumption[i].property != dataConsumption[i+1].property)){
               /* intermediary regularisation line */
               result.push(dataConsumption[i]);
