@@ -3712,12 +3712,13 @@
             var waterRegu = totalWaterCons - waterPayed;
             var heatingRegu = totalHeatingCons - heatingPayed;
             result.push({ownerId:dataConsumption[i].ownerId, owner:dataConsumption[i].owner, property:dataConsumption[i].owner, meter:"Subtotal", type:"", last_reading:"", reading:"", difference:"", water:totalWaterCons, water_payed:waterPayed, water_regu: waterRegu, heating:totalHeatingCons, heating_payed:heatingPayed, heating_regu: heatingRegu});
-          }
+            count = 0;
+            totalWaterCons = 0;
+            totalHeatingCons = 0;
+          };
           i = i + 1;
-
-        }
-
-      }
+        };
+      };
            
       function writePDF (closeDateTransactions, metersIncludedHere, headerCommon, dataWater, dataHeating, dataCommon, headerConsumption,dataConsumption,  headerQuota, dataQuota, headerChargesMetersIncluded, headerChargesMetersExcluded, tableCharges){
         const rowsLandscape =15;
