@@ -3666,6 +3666,7 @@
             result.push(dataConsumption[i]);
             totalWaterCons = 0;
             totalHeatingCons = 0;
+            count = 0;
           } else if ((count > 1) && ((i + 1) != arraylength) && (dataConsumption[i].property != dataConsumption[i+1].property)){
             /* intermediary regularisation line */
             result.push(dataConsumption[i]);
@@ -3699,6 +3700,8 @@
         var result = [];
         while (i < arraylength) {
           if (dataConsumption[i].water_regu){
+            count = count+1;
+      
             totalWaterCons = totalWaterCons + dataConsumption[i].water;
             totalHeatingCons = totalHeatingCons + dataConsumption[i].heating;
             totalWaterPayed = totalWaterPayed + dataConsumption[i].water_payed;
