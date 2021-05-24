@@ -3469,6 +3469,7 @@
         {id:"heating_payed",name:"heating_payed",prompt:"heating  payed",width: 30,align: "center",padding: 0},
         {id:"heating_regu",name:"heating_regu",prompt:"heating regularisation",width: 24,align: "center",padding: 0},
       ];
+      var emptyConsumption = 
       var headerQuota =[
         {id:"owner",name:"owner",prompt:"owner",width: 70,align: "center",padding: 0},
         {id:"property",name:"property",prompt:"property",width: 30,align: "center",padding: 0},
@@ -3705,11 +3706,8 @@
             totalHeatingRegu = totalHeatingRegu + dataConsumption[i].heating_regu;
             if (((count == 0) && ((i + 1) != arraylength) && (dataConsumption[i].ownerId != dataConsumption[i+1].ownerId)) || ((count == 0) && ((i + 1) == arraylength))){
               /* solitary regularisation line */
-              dataConsumption[i].water_payed = buildingWater * dataConsumption[i].quota / totalQuota;
-              dataConsumption[i].water_regu = dataConsumption[i].water - dataConsumption[i].water_payed;
-              dataConsumption[i].heating_payed = buildingHeating * dataConsumption[i].quota / totalQuota;
-              dataConsumption[i].heating_regu = dataConsumption[i].heating - dataConsumption[i].heating_payed;
               result.push(dataConsumption[i]);
+              result.puch(emptyConsumtion);
               totalWaterCons = 0;
               totalHeatingCons = 0;
             } else if ((count > 0) && ((i + 1) != arraylength) && (dataConsumption[i].property != dataConsumption[i+1].property)){
