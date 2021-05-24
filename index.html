@@ -3548,6 +3548,9 @@
                 dataQuota.push({ownerId:ownerIdV, owner:ownerName, property:prData.code, quota:prData.quota, period:"100%", quota_period: prData.quota, amount:" "}); 
                 var prQuota = parseInt(prData.quota);
                 totalQuota = totalQuota + prQuota; 
+                if (!dataCharges[ownerIdV]) {
+                  dataCharges[ownerIdV] = {ownerId:ownerIdV, owner:ownerName, common:" ", private:" ", water:" ", heating:" ", Total:" "};
+                };
                 refCoproperty.collection("Properties").doc(prFS.id).collection("Meters").get().then(function(metersFS){
                   
                   metersFS.forEach(function(meterFS){
