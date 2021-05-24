@@ -3706,107 +3706,14 @@
             result.push(dataConsumption[i]);
             totalWaterCons = totalWaterCons + dataConsumption[i].water;
             totalHeatingCons = totalHeatingCons + dataConsumption[i].heating;
+          } else {
+            /* last regularisation line needed new totalling line */
           }
           i = i + 1;
 
         }
 
       }
-
-      function makeSubtotalsConsumption (dataConsumption,buildingWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataCharges, totalQuota) {
-        var result = [];
-        var buildingPureHeating;
-        var buildingHotWaterHeating;
-        if (totalHeatingDifference) {
-          buildingPureHeating = buildingHeating/2;
-          buildingHotWaterHeating = buildingHeating/2;
-        } else {
-          buildingPureHeating = buildingHeating;
-        };
-        var totalWater = 0;
-        var totalHeating = 0;
-        var amountWater = 0;
-        var amountHeating = 0;
-        var currentOwnerId = "";
-        var count =0;
-        var subtotalAmountWater = 0;
-        var subtotalAmountWaterPayed = 0;
-        var subtotalAmountWaterRegu = 0;
-        var subtotalAmountHeating = 0;
-        var subtotalAmountHeatingPayed = 0;
-        var subtotalAmountHeatingRegu = 0;
-        var subtotalAmountWaterCurrency = "";
-        var subtotalAmountWaterPayedCurrency = "";
-        var subtotalAmountWaterReguCurrency = "";
-        var subtotalAmountHeatingCurrency = "";
-        var subtotalAmountHeatingPayedCurrency = "";
-        var subtotalAmountHeatingReguCurrency = "";
-
-        function writeData(arrayEl){
-          if (arrayEl.type != "Heating") {
-            var amountWaterString = (buildingWater * parseInt(arrayEl.difference) / buildingWaterDifference).toFixed(2);
-            amountWater = Number(amountWaterString);
-            arrayEl.water = amountWater.toLocaleString("nl-BE",currencyStyle);
-            subtotalAmountWater = subtotalAmountWater + amountWater;
-            subtotalAmountWaterCurrency = subtotalAmountWater.toLocaleString("nl-BE",currencyStyle);
-            var amountWaterPayed = buildingWater * arrayEl.quota / totalQuota;
-            arrayEl.water_payed = amountWaterPayed.toLocaleString("nl-BE",currencyStyle);
-            subtotalAmountWaterPayed = subtotalAmountWaterPayed + amountWaterPayed;
-            subtotalAmountWaterPayedCurrency = subtotalAmountWaterPayed.toLocaleString("nl-BE",currencyStyle);
-            var amountWaterRegu = amountWater - amountWaterPayed;
-            arrayEl.water_regu = amountWaterRegu.toLocaleString("nl-BE",currencyStyle);
-            subtotalAmountWaterRegu = subtotalAmountWaterRegu + amountWaterRegu;
-            subtotalAmountWaterReguCurrency = subtotalAmountWaterRegu.toLocaleString("nl-BE",currencyStyle);
-          };
-          if (arrayEl.type != "Cold Water") {
-            var amountHeatingString = (buildingPureHeating * parseInt(arrayEl.difference) / totalHeatingDifference).toFixed(2);
-            amountHeating = Number(amountHeatingString); 
-            arrayEl.heating = amountHeating.toLocaleString("nl-BE",currencyStyle);
-            subtotalAmountHeating = subtotalAmountHeating + amountHeating;
-            subtotalAmountHeatingCurrency = subtotalAmountHeating.toLocaleString("nl-BE",currencyStyle);
-            var amountHeatingPayed = buildingHeating * arrayEl.quota / totalQuota;
-            arrayEl.heating_payed = amountHeatingPayed.toLocaleString("nl-BE",currencyStyle);
-            subtotalAmountHeatingPayed = subtotalAmountHeatingPayed + amountHeatingPayed;
-            subtotalAmountHeatingPayedCurrency = subtotalAmountHeatingPayed.toLocaleString("nl-BE",currencyStyle);
-            var amountHeatingRegu = amountHeating - amountHeatingPayed;
-            arrayEl.heating_regu = amountHeatingRegu.toLocaleString("nl-BE",currencyStyle);
-            subtotalAmountHeatingRegu = subtotalAmountHeatingRegu + amountHeatingRegu;
-            subtotalAmountHeatingReguCurrency = subtotalAmountHeatingRegu.toLocaleString("nl-BE",currencyStyle);
-          };
-          result.push(arrayEl);
-          dataCharges[arrayEl.ownerId] = {ownerId:arrayEl.ownerId, owner:arrayEl.owner, common:" ", private:" ", water:subtotalAmountWaterRegu, heating:subtotalAmountHeatingRegu, Total:" "};
-        };
-        
-        dataConsumption.forEach(function(arrayEl) {
-          if ((!currentOwnerId) || (arrayEl.ownerId == currentOwnerId)) {
-            count = count + 1;
-            writeData(arrayEl);
-          } else {
-            if (count > 1) {
-              result.push({ownerId:currentOwnerId, owner:"Total", property:"", meter:"", type:"", last_reading:"", reading:"", difference:"", water:subtotalAmountWaterCurrency, water_payed:subtotalAmountWaterPayedCurrency, water_regu: subtotalAmountWaterReguCurrency, heating:subtotalAmountHeatingCurrency, heating_payed:subtotalAmountHeatingPayedCurrency, heating_regu: subtotalAmountHeatingReguCurrency});
-            };
-            result.push({ownerId:" ", owner:"", property:"", meter:"", type:"", last_reading:"", reading:"", difference:"",water:"", water_payed:"", water_regu: "", heating:"", heating_payed:"", heating_regu: ""});
-            count = 0;
-            subtotalAmountWater = 0;
-            subtotalAmountWaterPayed = 0;
-            subtotalAmountWaterRegu = 0;
-            subtotalAmountHeating = 0;
-            subtotalAmountHeatingPayed = 0;
-            subtotalAmountHeatingRegu = 0;
-            writeData(arrayEl);
-          };
-          currentOwnerId = arrayEl.ownerId;
-          totalWater = totalWater + amountWater;  
-          totalHeating = totalHeating + amountHeating;  
-        });
-        if (count > 1) {
-              result.push({ownerId:currentOwnerId, owner:"Total", property:"", meter:"", type:"", last_reading:"", reading:"", difference:"", water:subtotalAmountWaterCurrency, water_payed:subtotalAmountWaterPayedCurrency, water_regu: subtotalAmountWaterReguCurrency, heating:subtotalAmountHeatingCurrency, heating_payed:subtotalAmountHeatingPayedCurrency, heating_regu: subtotalAmountHeatingReguCurrency});
-            };
-        result.push({ownerId:" ", owner:"", property:"", meter:"", type:"", last_reading:"", reading:"", difference:"",water:"", water_payed:"", water_regu: "", heating:"", heating_payed:"", heating_regu: ""});
-        result.push({ownerId:" ", owner:"Total building", property:"", meter:"", type:"", last_reading:"", reading:"", difference:"", water:totalWater.toLocaleString("nl-BE",currencyStyle), water_payed:"", water_regu: "", heating:totalHeating.toLocaleString("nl-BE",currencyStyle), heating_payed:"", heating_regu: ""});
-        waterCommonParts = buildingWater - totalWater;
-        return result;
-      };
            
       function writePDF (closeDateTransactions, metersIncludedHere, headerCommon, dataWater, dataHeating, dataCommon, headerConsumption,dataConsumption,  headerQuota, dataQuota, headerChargesMetersIncluded, headerChargesMetersExcluded, tableCharges){
         const rowsLandscape =15;
