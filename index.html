@@ -3641,10 +3641,10 @@
       
       function calcTotalConsumption(totalQuota, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataConsumption, dataCharges){
         calcConsumptionAmounts (dataConsumption, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating);
-        var reguDataConsumption = calcConsumptionRegus (dataConsumption, buildingWater, buildingHeating);
+        var reguDataConsumption = calcConsumptionRegusProperties (dataConsumption, buildingWater, buildingHeating);
       };
 
-      function calcConsumptionRegus (dataConsumption, buildingWater, buildingHeating) {
+      function calcConsumptionRegusProperties (dataConsumption, buildingWater, buildingHeating) {
         /* per property */
         var i=0;
         var count = 0;
