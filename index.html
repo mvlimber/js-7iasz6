@@ -3578,7 +3578,13 @@
                   
                   if (!stop) {
                     iteratorCount = iteratorCount + 1;
-                    if (iteratorCount == propertiesFS.docs.length) {                      
+                    if (iteratorCount == propertiesFS.docs.length) {  
+                      var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon, dataCharges);                          
+                      dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toLocaleString("nl-BE",currencyStyle)});
+                      var dataChargesCurrency = putChargesCurrency(Object.values(dataCharges), metersIncluded);
+                      writePDF(closeDateTransactions, metersIncluded, headerCommon, dataWater, dataHeating, dataCommon, headerConsumption, totalledConsumptionData, headerQuota, totalledQuotaData, headerChargesMetersIncluded, headerChargesMetersExcluded, dataChargesCurrency);
+
+/*
                       refCoproperty.collection("Meters").where("type", "==","Cold Water").get().then(function(metersFS){
                         meterData = metersFS.docs[0].data();
                         var readingDate = meterData.readings[0].date;
@@ -3596,7 +3602,7 @@
                           var dataChargesCurrency = putChargesCurrency(Object.values(dataCharges), metersIncluded);
                           writePDF(closeDateTransactions, metersIncluded, headerCommon, dataWater, dataHeating, dataCommon, headerConsumption, totalledConsumptionData, headerQuota, totalledQuotaData, headerChargesMetersIncluded, headerChargesMetersExcluded, dataChargesCurrency);
                         };
-                      });
+                      });*/
                     };
                   };
                 });
