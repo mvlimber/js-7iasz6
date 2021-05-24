@@ -3552,6 +3552,7 @@
                 };
                 if (metersIncluded){
                   iteratorCount = iteratorCount + 1;
+                  console.log("binnen metersIncluded met iteratorCount = ", iteratorCount, " en prop ",prData.code  );
                   refCoproperty.collection("Properties").doc(prFS.id).collection("Meters").get().then(function(metersFS){
                     metersFS.forEach(function(meterFS){
                       var meterData = meterFS.data();
