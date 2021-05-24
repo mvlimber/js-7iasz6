@@ -3605,7 +3605,7 @@
               var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon, dataCharges);                          
               dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toLocaleString("nl-BE",currencyStyle)});
               var dataChargesCurrency = putChargesCurrency(Object.values(dataCharges), metersIncluded);
-              writePDF(closeDateTransactions, metersIncluded, headerCommon, dataWater, dataHeating, dataCommon, headerConsumption, totalledConsumptionData, headerQuota, totalledQuotaData, headerChargesMetersIncluded, headerChargesMetersExcluded, dataChargesCurrency);
+              writePDF(closeDateTransactions, metersIncluded, dataWater, dataCommon, totalledConsumptionData, totalledQuotaData, dataChargesCurrency);
       };
       
       function putChargesCurrency(dataChargesValues, metersIncluded){
@@ -3795,7 +3795,7 @@
       };
       
            
-      function writePDF (closeDateTransactions, metersIncludedHere, headerCommon, dataWater, dataHeating, dataCommon, headerConsumption,dataConsumption,  headerQuota, dataQuota, headerChargesMetersIncluded, headerChargesMetersExcluded, tableCharges){
+      function writePDF (closeDateTransactions, metersIncludedHere, dataWater, dataHeating, dataCommon, dataConsumption,  dataQuota, tableCharges){
         const rowsLandscape =15;
         const rowsPortrait =24;
         var numPages;
