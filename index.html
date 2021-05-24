@@ -3485,6 +3485,12 @@
         {id:"heating",name:"heating",prompt:"regularisation heating",width: 55,align: "right",padding: 0},
         {id:"Total",name:"Total",prompt:"Total",width: 46,align: "right",padding: 0}
       ];
+      var headerChargesMetersExcluded = [
+        {id:"owner",name:"owner",prompt:"owner",width: 80,align: "center",padding: 0},
+        {id:"common",name:"common",prompt:"common charges",width: 50,align: "right",padding: 0},
+        {id:"private",name:"private",prompt:"private charges",width: 50,align: "right",padding: 0},
+        {id:"Total",name:"Total",prompt:"Total",width: 50,align: "right",padding: 0}
+      ];
 
 
 
@@ -3507,12 +3513,6 @@
         var dataHeating = [];
         var dataConsumption = [];
         var dataQuota = [];
-        var headerChargesMetersExcluded = [
-          {id:"owner",name:"owner",prompt:"owner",width: 80,align: "center",padding: 0},
-          {id:"common",name:"common",prompt:"common charges",width: 50,align: "right",padding: 0},
-          {id:"private",name:"private",prompt:"private charges",width: 50,align: "right",padding: 0},
-          {id:"Total",name:"Total",prompt:"Total",width: 50,align: "right",padding: 0}
-        ];
         var dataCharges = [];
         
         refCoproperty.collection("Transactions").where("bookDate", ">", lastCloseDate).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){
