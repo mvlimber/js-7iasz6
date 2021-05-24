@@ -3492,21 +3492,15 @@
         {id:"Total",name:"Total",prompt:"Total",width: 50,align: "right",padding: 0}
       ];
 
-
-
       function generateChargesReport(closeDateTransactions, metersIncluded){
-        var buildingWaterDifference = 300;  
         var buildingWater = 0
         var buildingHeating = 0;
         var buildingCommon = 0;
         
+        var buildingWaterDifference = 300;  
         var totalHeatingDifference = 0; 
         var totalHotWaterDifference = 0; 
-        waterCommonParts = 0;
         var totalQuota = 0;
-        var coldWater = false;
-        var hotWater = false;
-        var heating = false;
        
         var dataCommon = [];
         var dataWater = [];
@@ -3555,62 +3549,13 @@
                 if (!dataCharges[ownerIdV]) {
                   dataCharges[ownerIdV] = {ownerId:ownerIdV, owner:ownerName, common:" ", private:" ", water:" ", heating:" ", Total:" "};
                 };
-                refCoproperty.collection("Properties").doc(prFS.id).collection("Meters").get().then(function(metersFS){
-                  
-                  metersFS.forEach(function(meterFS){
-                    var meterData = meterFS.data();
-                    var lastReading = "";
-                    var newReading = "";
-                    var differenceV = 0;
-                    if (metersIncluded){
-                      var readingDate = meterData.readings[0].date;
-                      if ((!checkBookDate(readingDate))|| (readingDate.localeCompare(closeDateTransactions)>0)) {
-                        M.toast({html:"following meter reading is missing or out of period: " + meterData.meter});
-                        stop = true;
-                      };
-                      lastReading = meterData.readings[1].reading;
-                      newReading = meterData.readings[0].reading;
-                      differenceV = parseFloat(newReading) - parseFloat(lastReading);
-                      if (meterData.type == "Heating") {
-                        totalHeatingDifference = totalHeatingDifference + differenceV;
-                      } else if (meterData.type == "Hot Water"){
-                        totalHotWaterDifference = totalHotWaterDifference + differenceV;
-                      };
-                    };
-                    dataConsumption.push({ownerId:ownerIdV, quota: prQuota, owner:ownerName.substr(0,15), property:prData.code, meter:meterData.meter, type:meterData.type, last_reading:lastReading, reading:newReading, difference:differenceV.toString(), water: 0, water_payed:" ", water_regu: " ", heating:0, heating_payed:" ", heating_regu: " "});
-                  });    
-                  
-                  if (!stop) {
-                    iteratorCount = iteratorCount + 1;
-                    if (iteratorCount == propertiesFS.docs.length) {  
-                      var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon, dataCharges);                          
-                      dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toLocaleString("nl-BE",currencyStyle)});
-                      var dataChargesCurrency = putChargesCurrency(Object.values(dataCharges), metersIncluded);
-                      writePDF(closeDateTransactions, metersIncluded, headerCommon, dataWater, dataHeating, dataCommon, headerConsumption, totalledConsumptionData, headerQuota, totalledQuotaData, headerChargesMetersIncluded, headerChargesMetersExcluded, dataChargesCurrency);
-
-/*
-                      refCoproperty.collection("Meters").where("type", "==","Cold Water").get().then(function(metersFS){
-                        meterData = metersFS.docs[0].data();
-                        var readingDate = meterData.readings[0].date;
-                        if ((!checkBookDate(readingDate))|| (readingDate.localeCompare(closeDateTransactions)>0)) {
-                          M.toast({html:"following meter reading is missing or out of period: " + meterData.meter});}
-                        else {
-                          
-                            var lastReading = meterData.readings[1].reading;
-                            var newReading = meterData.readings[0].reading;
-                            buildingWaterDifference = parseFloat(newReading) - parseFloat(lastReading);                                            
-                            var totalledConsumptionData = makeSubtotalsConsumption (dataConsumption,buildingWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataCharges, totalQuota);
-                          
-                          var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon, dataCharges);                          
-                          dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toLocaleString("nl-BE",currencyStyle)});
-                          var dataChargesCurrency = putChargesCurrency(Object.values(dataCharges), metersIncluded);
-                          writePDF(closeDateTransactions, metersIncluded, headerCommon, dataWater, dataHeating, dataCommon, headerConsumption, totalledConsumptionData, headerQuota, totalledQuotaData, headerChargesMetersIncluded, headerChargesMetersExcluded, dataChargesCurrency);
-                        };
-                      });*/
-                    };
-                  };
-                });
+                if (metersIncluded) {};                
               });
+              var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon, dataCharges);                          
+              dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toLocaleString("nl-BE",currencyStyle)});
+              var dataChargesCurrency = putChargesCurrency(Object.values(dataCharges), metersIncluded);
+              writePDF(closeDateTransactions, metersIncluded, headerCommon, dataWater, dataHeating, dataCommon, headerConsumption, totalledConsumptionData, headerQuota, totalledQuotaData, headerChargesMetersIncluded, headerChargesMetersExcluded, dataChargesCurrency);
+
             }).catch(function(error) {
               M.toast({html:"Error during properties upload:" + error});
             });
