@@ -3648,12 +3648,55 @@
         /* per property */
         var i=0;
         var count = 0;
-        var currentProp= "";
         var totalWaterCons = 0;
         var totalHeatingCons = 0;
         const arraylength = dataConsumption.length;
         var result = [];
         while (i < arraylength) {
+          totalWaterCons = totalWaterCons + dataConsumption[i].water;
+          totalHeatingCons = totalHeatingCons + dataConsumption[i].heating;
+          if (((count == 0) && ((i + 1) != arraylength) && (dataConsumption[i].property != dataConsumption[i+1].property)) || ((count == 0) && ((i + 1) == arraylength))){
+            /* solitary regularisation line */
+            dataConsumption[i].water_payed = buildingWater * dataConsumption[i].quota / totalQuota;
+            dataConsumption[i].water_regu = dataConsumption[i].water - dataConsumption[i].water_payed;
+            dataConsumption[i].heating_payed = buildingHeating * dataConsumption[i].quota / totalQuota;
+            dataConsumption[i].heating_regu = dataConsumption[i].heating - dataConsumption[i].heating_payed;
+            result.push(dataConsumption[i]);
+            totalWaterCons = 0;
+            totalHeatingCons = 0;
+          } else if ((count > 0) && ((i + 1) != arraylength) && (dataConsumption[i].property != dataConsumption[i+1].property)){
+            /* intermediary regularisation line */
+            result.push(dataConsumption[i]);
+         } else {
+            /* last regularisation line needed new totalling line */
+            result.push(dataConsumption[i]);
+            var waterPayed = buildingWater * dataConsumption[i].quota / totalQuota;
+            var heatingPayed = buildingHeating * dataConsumption[i].quota / totalQuota;
+            var waterRegu = totalWaterCons - waterPayed;
+            var heatingRegu = totalHeatingCons - heatingPayed;
+            result.push({ownerId:dataConsumption[i].ownerId, owner:dataConsumption[i].owner, property:dataConsumption[i].owner, meter:"Subtotal", type:"", last_reading:"", reading:"", difference:"", water:totalWaterCons, water_payed:waterPayed, water_regu: waterRegu, heating:totalHeatingCons, heating_payed:heatingPayed, heating_regu: heatingRegu});
+            count = 0;
+            totalWaterCons = 0;
+            totalHeatingCons = 0;
+          };
+          i = i + 1;
+        };
+      };
+
+      function calcConsumptionRegusOwners (dataConsumption) {
+        /* per property */
+        var i=0;
+        var count = 0;
+        var totalWaterCons = 0;
+        var totalHeatingCons = 0;
+        var totalWaterPayed = 0;
+        var totalHeatingPayed = 0;
+        var totalWaterRegu = 0;
+        var totalHeatingRegu = 0;
+        const arraylength = dataConsumption.length;
+        var result = [];
+        while (i < arraylength) {
+          
           totalWaterCons = totalWaterCons + dataConsumption[i].water;
           totalHeatingCons = totalHeatingCons + dataConsumption[i].heating;
           if (((count == 0) && ((i + 1) != arraylength) && (dataConsumption[i].property != dataConsumption[i+1].property)) || ((count == 0) && ((i + 1) == arraylength))){
