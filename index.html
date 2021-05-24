@@ -3574,16 +3574,9 @@
                     });
                     if (!stop)  {
                       if (iteratorCount == propertiesFS.docs.length) {
-                        /* ook testen op ingave coproperty meters*/
-                        refCoproperty.collection("Meters").where("type", "==","Cold Water").get().then(function(metersFS){
-                        meterData = metersFS.docs[0].data();
-                        var readingDate = meterData.readings[0].date;
-                        if ((!checkBookDate(readingDate))|| (readingDate.localeCompare(closeDateTransactions)>0)) {
-                          M.toast({html:"following meter reading is missing or out of period: " + meterData.meter});}
-                        else {
-                          var totalledConsumption = calcTotalConsumption (totalQuota, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataConsumption, dataCharges);
-                          calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota,buildingCommon, dataWater, dataHeating, dataCommon,totalledConsumption, dataQuota, dataCharges);                         
-                        };
+                        /* ook testen op ingave coproperty meters ??*/                       
+                        var totalledConsumption = calcTotalConsumption (totalQuota, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataConsumption, dataCharges);
+                        calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota,buildingCommon, dataWater, dataHeating, dataCommon,totalledConsumption, dataQuota, dataCharges);                         
                       };
                     };
                   });
