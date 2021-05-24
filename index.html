@@ -3560,7 +3560,7 @@
                       if ((!checkBookDate(readingDate))|| (readingDate.localeCompare(closeDateTransactions)>0)) {
                         M.toast({html:"following meter reading is missing or out of period: " + meterData.meter});
                         stop = true;
-                      } else {}
+                      } else {
                         lastReading = meterData.readings[1].reading;
                         newReading = meterData.readings[0].reading;
                         differenceV = parseFloat(newReading) - parseFloat(lastReading);
@@ -3570,7 +3570,7 @@
                           totalHotWaterDifference = totalHotWaterDifference + differenceV;
                         };                    
                         dataConsumption.push({ownerId:ownerIdV, quota: prQuota, owner:ownerName.substr(0,15), property:prData.code, meter:meterData.meter, type:meterData.type, last_reading:lastReading, reading:newReading, difference:differenceV.toString(), water: " ", water_payed:" ", water_regu: " ", heating:" ", heating_payed:" ", heating_regu: " "});
-                    }
+                      };
                     });
                     if (!stop)  {
                       if (iteratorCount == propertiesFS.docs.length) {
@@ -3582,8 +3582,7 @@
                           M.toast({html:"following meter reading is missing or out of period: " + meterData.meter});}
                         else {
                           var totalledConsumption = calcTotalConsumption (totalQuota, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataConsumption, dataCharges);
-                          calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota,buildingCommon, dataWater, dataHeating, dataCommon,totalledConsumption, dataQuota, dataCharges);
-                          
+                          calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota,buildingCommon, dataWater, dataHeating, dataCommon,totalledConsumption, dataQuota, dataCharges);                         
                         };
                       };
                     };
@@ -3605,7 +3604,7 @@
         });
       };  
 
-      function calcAndGenerate(closeDateTransactions, metersIncluded,totalQuote,buildingCommon, dataWater, dataHeating, dataCommon,totalledConsumptionData, dataQuota, dataCharges){
+      function calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota,buildingCommon, dataWater, dataHeating, dataCommon,totalledConsumptionData, dataQuota, dataCharges){
               var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon, dataCharges);                          
               dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toLocaleString("nl-BE",currencyStyle)});
               var dataChargesCurrency = putChargesCurrency(Object.values(dataCharges), metersIncluded);
