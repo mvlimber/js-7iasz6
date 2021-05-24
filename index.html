@@ -3543,7 +3543,6 @@
             var stop = false;
             refCoproperty.collection("Properties").orderBy("owner").get().then(function(propertiesFS){  
               propertiesFS.forEach(function(prFS){
-                iteratorProp = iteratorProp + 1;
                 console.log("iteratorProp is nu ", iteratorProp);
                 var prData = prFS.data();
                 var ownerIdV = prData.owner;
@@ -3555,7 +3554,8 @@
                   dataCharges[ownerIdV] = {ownerId:ownerIdV, owner:ownerName, common:" ", private:" ", water:" ", heating:" ", Total:" "};
                 };
                 var iteratorMeter = 0;
-                refCoproperty.collection("Properties").doc(prFS.id).collection("Meters").get().then(function(metersFS){                                       
+                refCoproperty.collection("Properties").doc(prFS.id).collection("Meters").get().then(function(metersFS){   
+                  iteratorProp = iteratorProp + 1;                                    
                     metersFS.forEach(function(meterFS){
                       iteratorMeter = iteratorMeter +1;
                       var meterData = meterFS.data();
