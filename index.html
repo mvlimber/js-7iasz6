@@ -3741,7 +3741,7 @@
 
         while (i < arraylength) {
           result.push(dataConsumption[i]);
-          if ((dataConsumption[i].water_regu) && (dataConsumption[i].water_regu != " ")){
+          if ((dataConsumption[i].water_regu) && (dataConsumption[i].water_regu !== " ")){
             count = count+1;
             if (((count == 1) && ((i + 1) != arraylength) && (dataConsumption[i].ownerId != dataConsumption[i+1].ownerId)) || ((count == 1) && ((i + 1) == arraylength))){
               /* solitary regularisation line */
