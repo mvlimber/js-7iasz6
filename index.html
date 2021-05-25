@@ -3577,7 +3577,7 @@
                         } else if (meterData.type == "Hot Water"){
                           totalHotWaterDifference = totalHotWaterDifference + differenceV;
                         };                    
-                        dataConsumption.push({ownerId:ownerIdV, quota: prQuota, owner:ownerName.substr(0,15), property:prData.code, meter:meterData.meter, type:meterData.type, last_reading:lastReading, reading:newReading, difference:differenceV.toString(), water: " ", water_payed:" ", water_regu: " ", heating:" ", heating_payed:" ", heating_regu: " "});
+                        dataConsumption.push({ownerId:ownerIdV, quota: prQuota, owner:ownerName.substr(0,15), property:prData.code, meter:meterData.meter, type:meterData.type, last_reading:lastReading, reading:newReading, difference:differenceV.toString(), water:" ", water_payed:" ", water_regu:" ", heating:" ", heating_payed:" ", heating_regu:" "});
                         console.log("lengte dataConsumption één per één ", dataConsumption.length); 
                       };
                     
@@ -3705,7 +3705,7 @@
             /* intermediary regularisation line */
             result.push(dataConsumption[i]);
          } else {
-            /* last regularisation line needed new totalling line */
+            /* last regularisation line newReading new totalling line */
             result.push(dataConsumption[i]);
             var waterPayed = Number((buildingWater * dataConsumption[i].quota / totalQuota).toFixed(2));
             var heatingPayed = Number((buildingHeating * dataConsumption[i].quota / totalQuota).toFixed(2));
