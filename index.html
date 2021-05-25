@@ -3742,7 +3742,8 @@
             if (((count == 1) && ((i + 1) != arraylength) && (dataConsumption[i].ownerId != dataConsumption[i+1].ownerId)) || ((count == 1) && ((i + 1) == arraylength))){
               /* solitary regularisation line */
               result.push(emptyConsumptionLine);
-              dataCharges[dataConsumption[i].ownerId].water = 
+              dataCharges[dataConsumption[i].ownerId].water = dataConsumption[i].water_regu.toLocaleString("nl-BE",currencyStyle);
+              dataCharges[dataConsumption[i].ownerId].heating = dataConsumption[i].heating_regu.toLocaleString("nl-BE",currencyStyle);
               count = 0;             
             } else if (((i + 1) != arraylength) && (dataConsumption[i].ownerId == dataConsumption[i+1].ownerId)){
               /* intermediary regularisation line */
