@@ -3657,13 +3657,11 @@
         dataConsumption.forEach(function(arrayEl) {
           if (arrayEl.type != "Heating") {
             var amountWaterString = (buildingWater * parseInt(arrayEl.difference) / (totalColdWaterDifference + totalHotWaterDifference)).toFixed(2);
-            amountWater = Number(amountWaterString);
-            arrayEl.water = amountWater;
+            arrayEl.water = Number(amountWaterString);
           };
           if (arrayEl.type != "Cold Water") {
             var amountHeatingString = (buildingHeating * parseInt(arrayEl.difference) / (totalHeatingDifference + totalHotWaterDifference)).toFixed(2);
-            amountHeating = Number(amountHeatingString); 
-            arrayEl.heating = amountHeating;
+            arrayEl.heating = Number(amountHeatingString);
           };
         });
         
