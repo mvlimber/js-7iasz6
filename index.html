@@ -3458,7 +3458,7 @@
         {id:"owner",name:"owner",prompt:"owner",width: 38,align: "center",padding: 0},
         {id:"property",name:"property",prompt:"property",width: 20,align: "center",padding: 0},
         {id:"meter",name:"meter",prompt:"meter",width: 30,align: "center",padding: 0},
-        {id:"type",name:"type",prompt:"type",width: 10,align: "center",padding: 0},
+        {id:"type",name:"type",prompt:"type",width: 20,align: "center",padding: 0},
         {id:"last_reading",name:"last_reading",prompt:"last reading",width: 28,align: "center",padding: 0},
         {id:"reading",name:"reading",prompt:"new reading",width: 28,align: "center",padding: 0},
         {id:"difference",name:"difference",prompt:"difference",width: 23,align: "center",padding: 0},
@@ -3633,9 +3633,9 @@
       
       function putConsumptionCurreny(dataConsumption){
         dataConsumption.forEach(function(arrayEl) {
-          if (arrayEl.type = "Cold Water") {arrayEl.type = "CW"};
-          if (arrayEl.type = "Hot Water") {arrayEl.type = "HW"};
-          if (arrayEl.type = "Heating") {arrayEl.type = "HE"};
+          if (arrayEl.type == "Cold Water") {arrayEl.type = "CW"};
+          if (arrayEl.type == "Hot Water") {arrayEl.type = "HW"};
+          if (arrayEl.type == "Heating") {arrayEl.type = "HE"};
           if ((arrayEl.difference)&& (arrayEl.difference != " ")){arrayEl.difference = arrayEl.difference.toString();};         
           if ((arrayEl.water)&& (arrayEl.water != " ")){arrayEl.water = arrayEl.water.toLocaleString("nl-BE",currencyStyle);};
           if ((arrayEl.water_payed)&& (arrayEl.water_payed != " ")){arrayEl.water_payed = arrayEl.water_payed.toLocaleString("nl-BE",currencyStyle);};
