@@ -3577,7 +3577,7 @@
                         } else if (meterData.type == "Hot Water"){
                           totalHotWaterDifference = totalHotWaterDifference + differenceV;
                         };                    
-                        dataConsumption.push({ownerId:ownerIdV, quota: prQuota, owner:ownerName.substr(0,15), property:prData.code, meter:meterData.meter, type:meterData.type, last_reading:lastReading, reading:newReading, difference:differenceV.toString(), water:" ", water_payed:" ", water_regu:" ", heating:" ", heating_payed:" ", heating_regu:" "});
+                        dataConsumption.push({ownerId:ownerIdV, quota: prQuota, owner:ownerName.substr(0,15), property:prData.code, meter:meterData.meter, type:meterData.type, last_reading:lastReading, reading:newReading, difference:differenceV, water:" ", water_payed:" ", water_regu:" ", heating:" ", heating_payed:" ", heating_regu:" "});
                         console.log("lengte dataConsumption één per één ", dataConsumption.length); 
                       };
                     
@@ -3642,6 +3642,8 @@
       
       function putConsumptionCurreny(dataConsumption){
         dataConsumption.forEach(function(arrayEl) {
+          if ((arrayEl.difference)&& (arrayEl.difference != " ")){arrayEl.difference = arrayEl.difference.toString();};
+          
           if ((arrayEl.water)&& (arrayEl.water != " ")){arrayEl.water = arrayEl.water.toLocaleString("nl-BE",currencyStyle);};
           if ((arrayEl.water_payed)&& (arrayEl.water_payed != " ")){arrayEl.water_payed = arrayEl.water_payed.toLocaleString("nl-BE",currencyStyle);};
           if ((arrayEl.water_regu)&& (arrayEl.water_regu != " ")){arrayEl.water_regu = arrayEl.water_regu.toLocaleString("nl-BE",currencyStyle);};
