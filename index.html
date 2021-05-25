@@ -3753,6 +3753,8 @@
               sumIt(dataConsumption[i]);
               result.push({ownerId:dataConsumption[i].ownerId, owner:dataConsumption[i].owner, property:"Total", meter:"", type:"", last_reading:"", reading:"", difference:"", water:totalWaterCons, water_payed:totalWaterPayed, water_regu: totalWaterRegu, heating:totalHeatingCons, heating_payed:totalHeatingPayed, heating_regu: totalHeatingRegu});
               result.push(emptyConsumptionLine);
+              dataCharges[dataConsumption[i].ownerId].water = totalWaterRegu.toLocaleString("nl-BE",currencyStyle);
+              dataCharges[dataConsumption[i].ownerId].heating = totalHeatingRegu.toLocaleString("nl-BE",currencyStyle);
               count = 0;
               totalWaterCons = 0;
               totalHeatingCons = 0;
