@@ -3480,10 +3480,10 @@
       ];
       var headerChargesMetersIncluded = [
         {id:"owner",name:"owner",prompt:"owner",width: 80,align: "center",padding: 0},
-        {id:"common",name:"common",prompt:"common charges",width: 50,align: "right",padding: 0},
-        {id:"private",name:"private",prompt:"private charges",width: 50,align: "right",padding: 0},
-        {id:"water",name:"water",prompt:"regularisation water",width: 55,align: "right",padding: 0},
-        {id:"heating",name:"heating",prompt:"regularisation heating",width: 55,align: "right",padding: 0},
+        {id:"common",name:"common",prompt:"common charges",width: 50,align: "center",padding: 0},
+        {id:"private",name:"private",prompt:"private charges",width: 50,align: "center",padding: 0},
+        {id:"water",name:"water",prompt:"regularisation water",width: 55,align: "center",padding: 0},
+        {id:"heating",name:"heating",prompt:"regularisation heating",width: 55,align: "center",padding: 0},
         {id:"Total",name:"Total",prompt:"Total",width: 46,align: "right",padding: 0}
       ];
       var headerChargesMetersExcluded = [
@@ -3664,8 +3664,8 @@
       function calcTotalConsumption(totalQuota, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataConsumption, dataCharges){
         calcConsumptionAmounts (dataConsumption, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating);
         var reguProperties = calcConsumptionRegusProperties (totalQuota, dataConsumption, buildingWater, buildingHeating);
-        /*var reguOwners = calcConsumptionRegusOwners(reguProperties);*/
-        return putConsumptionCurreny(reguProperties);        
+        var reguOwners = calcConsumptionRegusOwners(reguProperties);
+        return putConsumptionCurreny(reguOwners);        
       };
 
       function calcConsumptionRegusProperties (totalQuota, dataConsumption, buildingWater, buildingHeating) {
@@ -3711,7 +3711,7 @@
       };
 
       function calcConsumptionRegusOwners (dataConsumption) {
-        /* per property */
+        
         var i=0;
         var count = 0;
         var totalWaterCons = 0;
@@ -3757,9 +3757,7 @@
               totalWaterRegu = 0;
               totalHeatingRegu = 0;
             };
-          } else {
-            result.push(dataConsumption[i]);
-          };
+          } ;
           i = i + 1;
         };
         return result;
@@ -3898,7 +3896,7 @@
         if (metersIncludedHere){
           printTablePortrait("Water: total for building since last regularisation", dataWater, headerCommon);
           printTablePortrait("Heating: total for building since last regularisation", dataHeating, headerCommon);
-          printTableLandscape("Water and Heating: regularisation per owner and property", dataConsumption, headerConsumption,8);
+          printTableLandscape("Water and Heating: regularisation per property and owner (CW = Cold Water, HW= Hot Water, HE = heating)", dataConsumption, headerConsumption,8);
           printTableLandscape("Total charges: total charges per owner", tableCharges, headerChargesMetersIncluded,12);
         } else {
           printTableLandscape("Total charges: total charges per owner", tableCharges, headerChargesMetersExcluded, 12);
