@@ -3666,7 +3666,7 @@
       function calcTotalConsumption(totalQuota, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataConsumption, dataCharges){
         calcConsumptionAmounts (dataConsumption, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating);
         var reguProperties = calcConsumptionRegusProperties (totalQuota, dataConsumption, buildingWater, buildingHeating);
-        var reguOwners = calcConsumptionRegusOwners(reguProperties);
+        var reguOwners = calcConsumptionRegusOwners(reguProperties, dataCharges);
         return putConsumptionCurreny(reguOwners);        
       };
 
@@ -3712,7 +3712,7 @@
         return result;
       };
 
-      function calcConsumptionRegusOwners (dataConsumption) {
+      function calcConsumptionRegusOwners (dataConsumption, dataCharges) {
         
         var i=0;
         var count = 0;
@@ -3742,6 +3742,7 @@
             if (((count == 1) && ((i + 1) != arraylength) && (dataConsumption[i].ownerId != dataConsumption[i+1].ownerId)) || ((count == 1) && ((i + 1) == arraylength))){
               /* solitary regularisation line */
               result.push(emptyConsumptionLine);
+              dataCharges[dataConsumption[i].ownerId].water = 
               count = 0;             
             } else if (((i + 1) != arraylength) && (dataConsumption[i].ownerId == dataConsumption[i+1].ownerId)){
               /* intermediary regularisation line */
