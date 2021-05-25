@@ -3593,7 +3593,7 @@
                                               
                           var totalledConsumption = dataConsumption;
                           if (metersIncluded) {
-                            calcTotalConsumption (totalQuota, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataConsumption, dataCharges);
+                            totalledConsumption = calcTotalConsumption (totalQuota, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataConsumption, dataCharges);
                           };
                           console.log("lengte van totalledConsumption is ", totalledConsumption.length);
                           calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota,buildingCommon, dataWater, dataHeating, dataCommon,totalledConsumption, dataQuota, dataCharges);                         
@@ -3691,7 +3691,7 @@
           count = count+1;
           totalWaterCons = totalWaterCons + dataConsumption[i].water;
           totalHeatingCons = totalHeatingCons + dataConsumption[i].heating;
-          if (((count == 1) && ((i + 1) != arraylength) && (dataConsumption[i].property != dataConsumption[i+1].property)) || ((count == 0) && ((i + 1) == arraylength))){
+          if (((count == 1) && ((i + 1) != arraylength) && (dataConsumption[i].property != dataConsumption[i+1].property)) || ((count == 1) && ((i + 1) == arraylength))){
             /* solitary regularisation line */
             dataConsumption[i].water_payed = Number((buildingWater * dataConsumption[i].quota / totalQuota).toFixed(2));
             dataConsumption[i].water_regu = dataConsumption[i].water - dataConsumption[i].water_payed;
@@ -3748,7 +3748,7 @@
           result.push(dataConsumption[i]);
           if (dataConsumption[i].water_regu){
             count = count+1;
-            if (((count == 1) && ((i + 1) != arraylength) && (dataConsumption[i].ownerId != dataConsumption[i+1].ownerId)) || ((count == 0) && ((i + 1) == arraylength))){
+            if (((count == 1) && ((i + 1) != arraylength) && (dataConsumption[i].ownerId != dataConsumption[i+1].ownerId)) || ((count == 1) && ((i + 1) == arraylength))){
               /* solitary regularisation line */
               result.push(emptyConsumptionLine);             
             } else if ((count > 1) && ((i + 1) != arraylength) && (dataConsumption[i].ownerId != dataConsumption[i+1].ownerId)){
