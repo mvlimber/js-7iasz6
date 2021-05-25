@@ -3638,11 +3638,11 @@
           if (arrayEl.type == "Heating") {arrayEl.type = "HE"};
           if ((arrayEl.difference)&& (arrayEl.difference != " ")){arrayEl.difference = arrayEl.difference.toString();};         
           if ((arrayEl.water)&& (arrayEl.water != " ")){arrayEl.water = arrayEl.water.toLocaleString("nl-BE",currencyStyle);}
-          else {arrayEl.water = " "};
+          else if (arrayEl.owner){arrayEl.water = " "};
           if ((arrayEl.water_payed)&& (arrayEl.water_payed != " ")){arrayEl.water_payed = arrayEl.water_payed.toLocaleString("nl-BE",currencyStyle);};
           if ((arrayEl.water_regu)&& (arrayEl.water_regu != " ")){arrayEl.water_regu = arrayEl.water_regu.toLocaleString("nl-BE",currencyStyle);};
           if ((arrayEl.heating)&& (arrayEl.heating != " ")){arrayEl.heating = arrayEl.heating.toLocaleString("nl-BE",currencyStyle);}
-          else {arrayEl.heating = " "};;
+          else if (arrayEl.owner){arrayEl.heating = " "};;
           if ((arrayEl.heating_payed)&& (arrayEl.heating_payed != " ")){arrayEl.heating_payed = arrayEl.heating_payed.toLocaleString("nl-BE",currencyStyle);};
           if ((arrayEl.heating_regu)&& (arrayEl.heating_regu != " ")){arrayEl.heating_regu = arrayEl.heating_regu.toLocaleString("nl-BE",currencyStyle);};          
         });
