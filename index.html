@@ -432,8 +432,8 @@
                   <label for="transaction_communication_add">Communication</label>
                   <span class="helper-text" data-error="Maximum 80 characters"></span>
                 </div>
-                <div class="input-field col s12 m4">
-                  <select id="transaction_properties_add" required required="true" >
+                <div class="input-field col s12 m4" style="visibility:hidden">
+                  <select id="transaction_properties_add" required required="true" style="visibility:hidden" >
                    </select>
                   <label>Type<b><font color='red'>*</font></b></label>
                 </div>
@@ -2116,7 +2116,9 @@
       
     };
 
+    function enableSelectProperties(){
 
+    };
 
       function emptyTransactionEvidenceFields(){
         document.getElementById("transactionEvidenceFile").value = "";
