@@ -2109,6 +2109,8 @@
       if (document.getElementById("transaction_type_add").value == "Private") {
         listProperties(document.getElementById("transaction_properties_add"), "");
         document.getElementById("transaction_properties_add_frame").style.visibility = "visible";
+        var elems = document.querySelectorAll('select');
+        M.FormSelect.init(elems);
       };
     };
 
