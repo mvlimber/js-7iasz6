@@ -387,7 +387,7 @@
               <h5>New Transaction</h5>
               <form>
                 <div class="input-field col s12 m4">
-                  <select id="transaction_type_add" required required="true">
+                  <select id="transaction_type_add" required required="true" onchange="enableSelectProperties()">
                             <option value="" disabled selected>Select the type</option>
                             <option>Repair/Maintenance</option>
                             <option>Installation/ Renovation</option>
@@ -431,6 +431,11 @@
                   <input id="transaction_communication_add" type="text" class="validate" maxlength="80" >
                   <label for="transaction_communication_add">Communication</label>
                   <span class="helper-text" data-error="Maximum 80 characters"></span>
+                </div>
+                <div class="input-field col s12 m4">
+                  <select id="transaction_properties_add" required required="true" >
+                   </select>
+                  <label>Type<b><font color='red'>*</font></b></label>
                 </div>
                 <table>
                   <tbody>
@@ -2085,6 +2090,33 @@
       elems = document.querySelectorAll('.modal');
       instances = M.Modal.init(elems, {dismissible:false});
     };
+
+    function listProperties(el, selectedOption) {
+      var option;
+      emptyHTMLSet(el);
+      if (!Boolean(selectedOption)) {
+        option = document.createElement("option");
+        option.setAttribute("value","");
+        option.setAttribute("disabled",true);
+        option.setAttribute("selected",true);
+        option.innerHTML = "Select Properties";
+        el.appendChild(option);
+      };
+      refCoproperty.collection("Properties").get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(prFS) {
+            option = document.createElement("option");
+            option.setAttribute("value",prFS.id);
+            if (prFS.id == selectedOption) {option.setAttribute("selected",true);};
+            option.innerHTML = prFS.data().code;
+            el.appendChild(option);
+          });
+        var elems = document.querySelectorAll('select');
+        M.FormSelect.init(elems);
+      });
+      
+    };
+
+
 
       function emptyTransactionEvidenceFields(){
         document.getElementById("transactionEvidenceFile").value = "";
