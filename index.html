@@ -2099,18 +2099,20 @@
             option.innerHTML = prFS.data().code;
             el.appendChild(option);
           });
-        var elems = document.querySelectorAll('select');
-        M.FormSelect.init(elems);
       });
-      
     };
 
     function enableSelectProperties(){
       if (document.getElementById("transaction_type_add").value == "Private") {
-        listProperties(document.getElementById("transaction_properties_add"), "");
         document.getElementById("transaction_properties_add_frame").style.visibility = "visible";
+        listProperties(document.getElementById("transaction_properties_add"), "");
+        M.updateTextFields();
         var elems = document.querySelectorAll('select');
-        M.FormSelect.init(elems);
+        M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'));
+
+	      M.FormSelect.init(document.querySelector("select[id='transaction_properties_add']"));
+        
+        
       };
     };
 
