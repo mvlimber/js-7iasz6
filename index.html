@@ -2132,12 +2132,14 @@
         M.toast({html:"Please enter valid account"});
         valid=false;
       };
-      transactionDistribution.push({
-        property: propertyId,
-        propertyCode: document.getElementById("transaction_properties_add ").item(document.getElementById("transaction_properties_add ").selectedIndex).innerHTML;
-        amount: amount,
-      });
-      refreshTransactionDistribution();
+      if (valid){
+        transactionDistribution.push({
+          property: propertyId,
+          propertyCode: document.getElementById("transaction_properties_add").item(document.getElementById("transaction_properties_add").selectedIndex).innerHTML;
+          amount: amount,
+        };
+        refreshTransactionDistribution();
+      };
     };
     
     function refreshTransactionDistribution(){
@@ -2169,7 +2171,7 @@
         objectsRow.appendChild(cell);
 
         htmlTable.appendChild(objectsRow);
-      }
+      };
     };
     
     function enableSelectProperties(){
