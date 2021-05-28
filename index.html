@@ -2105,6 +2105,11 @@
       });
     };
 
+    function removeTransactionDistribution(i){
+      transactionDistribution.splice(i,1);
+      refreshTransactionDistribution();
+    };
+    
     function refreshTransactionDistribution(){
       var htmlTable = document.getElementById("transaction_distribution");
       emptyHTMLSet( htmlTable);
@@ -2124,12 +2129,14 @@
 
         cellContent = document.createElement('button');
         cellContent.setAttribute('class','btn-small waves-light red');
-        cellContent.setAttribute('onclick','removeTransactionEvidence('+JSON.stringify(objectFS.id)+','+JSON.stringify(object.fileName)+')');
+        cellContent.setAttribute('onclick','removeTransactionDistribution('+JSON.stringify(i)+')');
         var cellButtonIcon = document.createElement('i');
         cellButtonIcon.setAttribute('class','material-icons right');
         cellButtonIcon.innerHTML="delete";           
         cellContent.appendChild(cellButtonIcon);
         cellContent.innerHTML = "Remove";
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell);
 
         htmlTable.appendChild(objectsRow);
       }
