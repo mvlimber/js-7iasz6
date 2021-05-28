@@ -2128,17 +2128,19 @@
         M.toast({html:"Please select property"});
         valid=false;
       };
-      var amount = document.getElementById("transaction_distribution_amount_add").value();
-      if ((!amount) || (!document.getElementById("transaction_distribution_amount_add")).checkValidity()) {
+      var amountHere = document.getElementById("transaction_distribution_amount_add").value();
+      if ((!amountHere) || (!document.getElementById("transaction_distribution_amount_add")).checkValidity()) {
         M.toast({html:"Please enter valid account"});
         valid=false;
       };
       if (valid){
         transactionDistribution.push({
           property: propertyId,
-          propertyCode: ((document.getElementById("transaction_properties_add")).item(document.getElementById("transaction_properties_add").selectedIndex)).innerHTML;
-          amount: amount,
-        };
+          propertyCode: propertyId,
+          /*
+          propertyCode: ((document.getElementById("transaction_properties_add")).item(document.getElementById("transaction_properties_add").selectedIndex)).innerHTML;*/
+          amount: amountHere,
+        });
         refreshTransactionDistribution();
       };
     };
