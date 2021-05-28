@@ -1824,7 +1824,7 @@
     <script>
       var totalAmount=0;
       var transactionsTable = document.getElementById("transactionsTable");
-      var privateDistribution = [];
+      var transactionDistribution = [];
 
       function loadTransaction (objectFS){
           var object = objectFS.data();
@@ -2106,8 +2106,13 @@
     };
 
     function refreshTransactionDistribution(){
-      emptyHTMLSet( document.getElementById("transaction_distribution"));
-      
+      var htmlTable = document.getElementById("transaction_distribution");
+      emptyHTMLSet( htmlTable);
+      i=0;
+      while (i<transactionDistribution.length){
+        
+        htmlTable.appendChild()
+      }
     };
     
     function enableSelectProperties(){
