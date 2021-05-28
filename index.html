@@ -446,7 +446,7 @@
                   <button style="float: right" class="btn-small waves-light" onclick="addTransactionDistribution()"><i class="material-icons right">add</i>assign amount to property</button>
                   <br>
                   <table>
-                    <tbody id= "transaction_distribution">
+                    <tbody id= "transaction_distribution_table_add">
                     </tbody>
                   </table>
                 </div>              
@@ -2120,9 +2120,28 @@
       transactionDistribution.splice(i,1);
       refreshTransactionDistribution();
     };
+
+    addTransactionDistribution(){
+      var propertyId = document.getElementById("transaction_properties_add ").value();
+      if (propertyId == "Select Property") {
+        M.toast({html:"Please select property"});
+        valid=false;
+      };
+      var amount = document.getElementById("transaction_distribution_amount_add").value();
+      if ((!amount) || (!document.getElementById("transaction_distribution_amount_add")).checkValidity()) {
+        M.toast({html:"Please enter valid account"});
+        valid=false;
+      };
+      transactionDistribution.push({
+        property: propertyId,
+        propertyCode: document.getElementById("transaction_properties_add ").item(document.getElementById("transaction_properties_add ").selectedIndex).innerHTML;
+        amount: amount,
+      });
+      refreshTransactionDistribution();
+    };
     
     function refreshTransactionDistribution(){
-      var htmlTable = document.getElementById("transaction_distribution");
+      var htmlTable = document.getElementById("transaction_distribution_table_add");
       emptyHTMLSet( htmlTable);
       i=0;
       while (i<transactionDistribution.length){
