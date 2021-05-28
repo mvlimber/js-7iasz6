@@ -2123,9 +2123,8 @@
         objectsRow.appendChild(cell);
 
         cellContent = document.createElement('button');
-        cellContent.setAttribute('class','modal-trigger btn-small waves-light red');
-        cellContent.setAttribute("data-target", "transactionEvidenceRemove");
-        cellContent.setAttribute('onclick','popupRemoveTransactionEvidence('+JSON.stringify(objectFS.id)+','+JSON.stringify(object.fileName)+')');
+        cellContent.setAttribute('class','btn-small waves-light red');
+        cellContent.setAttribute('onclick','removeTransactionEvidence('+JSON.stringify(objectFS.id)+','+JSON.stringify(object.fileName)+')');
         var cellButtonIcon = document.createElement('i');
         cellButtonIcon.setAttribute('class','material-icons right');
         cellButtonIcon.innerHTML="delete";           
