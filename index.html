@@ -2117,8 +2117,21 @@
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);
 
+        var cellContent = document.createTextNode(transactionData.amount.toLocaleString("nl-BE", currencyStyle));
+        cell = document.createElement('td');
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell);
 
-        
+        cellContent = document.createElement('button');
+        cellContent.setAttribute('class','modal-trigger btn-small waves-light red');
+        cellContent.setAttribute("data-target", "transactionEvidenceRemove");
+        cellContent.setAttribute('onclick','popupRemoveTransactionEvidence('+JSON.stringify(objectFS.id)+','+JSON.stringify(object.fileName)+')');
+        var cellButtonIcon = document.createElement('i');
+        cellButtonIcon.setAttribute('class','material-icons right');
+        cellButtonIcon.innerHTML="delete";           
+        cellContent.appendChild(cellButtonIcon);
+        cellContent.innerHTML = "Remove";
+
         htmlTable.appendChild(objectsRow);
       }
     };
