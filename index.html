@@ -2105,6 +2105,11 @@
       });
     };
 
+    function refreshTransactionDistribution(){
+      emptyHTMLSet( document.getElementById("transaction_distribution"));
+      
+    };
+    
     function enableSelectProperties(){
       if (document.getElementById("transaction_type_add").value == "Private") {
         document.getElementById("transaction_properties_add_frame").style.visibility = "visible";
@@ -2113,8 +2118,6 @@
         M.updateTextFields();
         var elems = document.querySelectorAll('select');        
 	      M.FormSelect.init(document.querySelector("select[id='transaction_properties_add']"));
-        
-        
       };
     };
 
