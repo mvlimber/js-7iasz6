@@ -1824,6 +1824,8 @@
     <script>
       var totalAmount=0;
       var transactionsTable = document.getElementById("transactionsTable");
+      var privateDistribution = [];
+
       function loadTransaction (objectFS){
           var object = objectFS.data();
           var objectsRow= document.createElement('tr');
@@ -2073,6 +2075,7 @@
       document.getElementById("transaction_date_add").value="";
       document.getElementById("transaction_bookDate_add").value="";
       document.getElementById("transaction_communication_add").value="";
+      document.getElementById("transaction_properties_add_frame").style.visibility = "hidden";
       var elems = document.querySelectorAll('select');
       M.FormSelect.init(elems);
       M.updateTextFields();
@@ -2106,10 +2109,9 @@
       if (document.getElementById("transaction_type_add").value == "Private") {
         document.getElementById("transaction_properties_add_frame").style.visibility = "visible";
         listProperties(document.getElementById("transaction_properties_add"), "");
+        refreshTransactionDistribution();
         M.updateTextFields();
-        var elems = document.querySelectorAll('select');
-        M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'));
-
+        var elems = document.querySelectorAll('select');        
 	      M.FormSelect.init(document.querySelector("select[id='transaction_properties_add']"));
         
         
