@@ -2121,7 +2121,8 @@
       refreshTransactionDistribution();
     };
 
-    addTransactionDistribution(){
+    function addTransactionDistribution(){
+      var valid = true;
       var propertyId = document.getElementById("transaction_properties_add ").value();
       if (propertyId == "Select Property") {
         M.toast({html:"Please select property"});
@@ -2135,7 +2136,7 @@
       if (valid){
         transactionDistribution.push({
           property: propertyId,
-          propertyCode: document.getElementById("transaction_properties_add").item(document.getElementById("transaction_properties_add").selectedIndex).innerHTML;
+          propertyCode: ((document.getElementById("transaction_properties_add")).item(document.getElementById("transaction_properties_add").selectedIndex)).innerHTML;
           amount: amount,
         };
         refreshTransactionDistribution();
