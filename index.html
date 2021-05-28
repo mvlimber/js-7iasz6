@@ -434,7 +434,7 @@
                 </div>
                 <div id="transaction_properties_add_frame" style="visibility:hidden">
                   <div class="input-field col s12 m4" >
-                    <select multiple id="transaction_properties_add"  >
+                    <select id="transaction_properties_add">
                     </select>
                     <label>Properties<b><font color='red'>*</font></b></label>
                   </div>
@@ -443,7 +443,7 @@
                     <label for="transaction_distribution_amount_add">Amount<b><font color='red'>*</font></b></label>
                     <span class="helper-text" data-error="Positive amount of max 999999 with max 2 decimals. Example: 1234.56">Amount with max 2 decimals. Example: 1234.56</span>
                   </div>
-                  <button style="float: right" class="btn-small waves-light" onclick="addTransactionDistribution()"><i class="material-icons right">add</i>assign amount to property</button>
+                  <button style="float: left;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" onclick="addTransactionDistribution()"><i class="material-icons right">add</i>Assign amount to property</button>
                   <br>
                   <table>
                     <tbody id= "transaction_distribution_table_add">
@@ -451,6 +451,7 @@
                   </table>
                 </div>              
               </form>
+              <br>
               <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="addTransaction()">Save and go to adding evidence<i class="material-icons right">send</i></button>
               <a style="float: right;margin-bottom: 3px"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
@@ -2102,7 +2103,7 @@
         option.setAttribute("value","");
         option.setAttribute("disabled",true);
         option.setAttribute("selected",true);
-        option.innerHTML = "Select Properties";
+        option.innerHTML = "Select Property";
         el.appendChild(option);
       };
       refCoproperty.collection("Properties").get().then(function(querySnapshot) {
@@ -2123,7 +2124,7 @@
 
     function addTransactionDistribution(){
       var valid = true;
-      var propertyId = document.getElementById("transaction_properties_add ").value();
+      var propertyId = document.getElementById("transaction_properties_add").value();
       if (propertyId == "Select Property") {
         M.toast({html:"Please select property"});
         valid=false;
@@ -2184,7 +2185,7 @@
         refreshTransactionDistribution();
         M.updateTextFields();
         var elems = document.querySelectorAll('select');        
-	      M.FormSelect.init(document.querySelector("select[id='transaction_properties_add']"));
+	      M.FormSelect.init(elems);
       };
     };
 
