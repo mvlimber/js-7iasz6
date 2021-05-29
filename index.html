@@ -2214,7 +2214,7 @@
     function enableSelectProperties(){
       if (document.getElementById("transaction_type_add").value == "Private") {
         document.getElementById("transaction_properties_add_frame").style.visibility = "visible";
-        document.getElementById("transaction_properties_amount_add").value = "";
+        document.getElementById("transaction_distribution_amount_add").value = "";
         listProperties(document.getElementById("transaction_properties_add"), "");
         refreshTransactionDistribution();       
       } else {
