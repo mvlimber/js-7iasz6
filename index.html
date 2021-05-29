@@ -1993,7 +1993,8 @@
       };¨
       var amount = parseFloat() document.getElementById("transaction_amount_add").value);
       if ((amount - distributedAmount) > 0.09) ||  (distributedAmount - amount ) > 0.09)) {
-        
+        M.toast({html:"Transactaction amount too differnt from total assigned amounts: please correct"});
+        valid=false;
       }
       return valid;
     };
