@@ -2096,6 +2096,8 @@
       document.getElementById("transaction_bookDate_add").value="";
       document.getElementById("transaction_communication_add").value="";
       document.getElementById("transaction_properties_add_frame").style.visibility = "hidden";
+      transactionDistribution = [];
+      emptyHTMLSet(document.getElementById("transaction_distribution_table_add"));
       var elems = document.querySelectorAll('select');
       M.FormSelect.init(elems);
       M.updateTextFields();
@@ -2191,10 +2193,12 @@
       };
       var objectsRow= document.createElement('tr');
       var cellContent = document.createTextNode("Total");
+      /*cellContent.style.fontWeight = "bold";*/
       var cell = document.createElement('td');
       cell.appendChild(cellContent);
       objectsRow.appendChild(cell);
       cellContent = document.createTextNode(distributedAmount.toLocaleString("nl-BE", currencyStyle));
+      /*cellContent.style.fontWeight = "bold";*/
       cell = document.createElement('td');
       cell.appendChild(cellContent);
       objectsRow.appendChild(cell);
