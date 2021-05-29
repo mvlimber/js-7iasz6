@@ -453,7 +453,7 @@
                         <th>Amount</th>
                       </tr>  
                     </thead>
-                    <tbody id= "transaction_distribution_table_add">                     
+                    <tbody id = "transaction_distribution_table_add">                     
                     </tbody>
                   </table>
                 </div>              
@@ -2165,7 +2165,7 @@
         var transactionData = transactionDistribution[i];
         var objectsRow= document.createElement('tr');
         var cellContent = document.createTextNode(transactionData.propertyCode);
-        cell = document.createElement('td');
+        var cell = document.createElement('td');
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);
 
@@ -2189,7 +2189,20 @@
         htmlTable.appendChild(objectsRow);
         i = i+1;
       };
-      document.getElementById("transaction_distributed_amount").value = distributedAmounttoLocaleString("nl-BE", currencyStyle));
+      var objectsRow= document.createElement('tr');
+      var cellContent = document.createTextNode("Total");
+      var cell = document.createElement('td');
+      cell.appendChild(cellContent);
+      objectsRow.appendChild(cell);
+      cellContent = document.createTextNode(distributedAmount.toLocaleString("nl-BE", currencyStyle));
+      cell = document.createElement('td');
+      cell.appendChild(cellContent);
+      objectsRow.appendChild(cell);
+      /*cellContent = document.createTextNode();
+      cell = document.createElement('td');
+      cell.appendChild(cellContent);
+      objectsRow.appendChild(cell);*/
+      htmlTable.appendChild(objectsRow);
     };
     
     function enableSelectProperties(){
