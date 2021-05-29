@@ -407,6 +407,17 @@
                   <span class="helper-text" data-error="Maximum 50 characters"></span>
                 </div>
                 <div class="input-field col s12 m4">
+                  <input id="transaction_account_add" type="text" maxlength="19" class="validate"
+                    pattern="^BE\d{14}$|^BE\d{2}\s\d{4}\s\d{4}\s\d{4}$">
+                  <label for="transaction_account_add">Account</label>
+                  <span class="helper-text" data-error="BE followed by 14 digits, blancs for printing format allowed. Example: BE40 9799 2578 3625">BE followed by max 14 digits, blancs allowed. Example: BE40 9799 2578 3625</span>
+                </div>
+                <div class="input-field col s12 m8">
+                  <input id="transaction_communication_add" type="text" class="validate" maxlength="80" >
+                  <label for="transaction_communication_add">Communication</label>
+                  <span class="helper-text" data-error="Maximum 80 characters"></span>
+                </div>
+                <div class="input-field col s12 m4">
                   <input id="transaction_amount_add" type="number" class="validate" min="0" max="999999" step="0.01" required required="true">
                   <label for="transaction_amount_add">Amount<b><font color='red'>*</font></b></label>
                   <span class="helper-text" data-error="Positive amount of max 999999 with max 2 decimals. Example: 1234.56">Amount with max 2 decimals. Example: 1234.56</span>
@@ -421,17 +432,6 @@
                   <label for="transaction_bookDate_add">Accountancy Date<b><font color='red'>*</font></b></label>
                   <span class="helper-text" data-error="Required field">By default copied from Transaction Date</span>
                 </div>
-                <div class="input-field col s12 m4">
-                  <input id="transaction_account_add" type="text" maxlength="19" class="validate"
-                    pattern="^BE\d{14}$|^BE\d{2}\s\d{4}\s\d{4}\s\d{4}$">
-                  <label for="transaction_account_add">Account</label>
-                  <span class="helper-text" data-error="BE followed by 14 digits, blancs for printing format allowed. Example: BE40 9799 2578 3625">BE followed by max 14 digits, blancs allowed. Example: BE40 9799 2578 3625</span>
-                </div>
-                <div class="input-field col s12 m8">
-                  <input id="transaction_communication_add" type="text" class="validate" maxlength="80" >
-                  <label for="transaction_communication_add">Communication</label>
-                  <span class="helper-text" data-error="Maximum 80 characters"></span>
-                </div>
                 <div id="transaction_properties_add_frame" style="visibility:hidden">
                   <div class="input-field col s12 m4" >
                     <select id="transaction_properties_add">
@@ -445,11 +445,14 @@
                   </div>
                   <button style="float: left;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" onclick="addTransactionDistribution()"><i class="material-icons right">add</i>Assign amount to property</button>
                   <br>
-                  <table>
-                    <tbody id= "transaction_distribution_table_add">
+                  <table class="striped">
+                    <thead>
                       <tr>
-                        <td> jawel </td>
-                      </tr>
+                        <th>Property</th>
+                        <th>Amount</th>
+                      </tr>  
+                    </thead>
+                    <tbody id= "transaction_distribution_table_add">                     
                     </tbody>
                   </table>
                 </div>              
@@ -2115,7 +2118,6 @@
             option.setAttribute("value",prFS.id);
             if (prFS.id == selectedOption) {option.setAttribute("selected",true);};
             option.innerHTML = prFS.data().code;
-            console.log(option);
             el.appendChild(option);
           });
         M.updateTextFields();
@@ -2131,22 +2133,21 @@
 
     function addTransactionDistribution(){
       var valid = true;
-      var propertyId = document.getElementById("transaction_properties_add").value();
+      var propertyId = document.getElementById("transaction_properties_add").value;
       if (propertyId == "Select Property") {
         M.toast({html:"Please select property"});
         valid=false;
       };
-      var amountHere = document.getElementById("transaction_distribution_amount_add").value();
-      if ((!amountHere) || (!document.getElementById("transaction_distribution_amount_add")).checkValidity()) {
-        M.toast({html:"Please enter valid account"});
+      var amountHere = document.getElementById("transaction_distribution_amount_add").value;
+      if ((!amountHere) || (!(document.getElementById("transaction_distribution_amount_add")).checkValidity())) {
+        M.toast({html:"Please enter valid amount"});
         valid=false;
       };
       if (valid){
         transactionDistribution.push({
           property: propertyId,
-          propertyCode: propertyId,
-          /*
-          propertyCode: ((document.getElementById("transaction_properties_add")).item(document.getElementById("transaction_properties_add").selectedIndex)).innerHTML;*/
+          /*propertyCode: propertyId,*/
+          propertyCode: ((document.getElementById("transaction_properties_add")).item(document.getElementById("transaction_properties_add").selectedIndex)).innerHTML,
           amount: amountHere,
         });
         refreshTransactionDistribution();
@@ -2160,7 +2161,7 @@
       while (i<transactionDistribution.length){
         var transactionData = transactionDistribution[i];
         var objectsRow= document.createElement('tr');
-        var cellContent = document.createTextNode(transactionData.code);
+        var cellContent = document.createTextNode(transactionData.propertyCode);
         cell = document.createElement('td');
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);
@@ -2182,6 +2183,7 @@
         objectsRow.appendChild(cell);
 
         htmlTable.appendChild(objectsRow);
+        i = i+1;
       };
     };
     
