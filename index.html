@@ -433,6 +433,7 @@
                   <span class="helper-text" data-error="Required field">By default copied from Transaction Date</span>
                 </div>
                 <div id="transaction_properties_add_frame" style="visibility:hidden">
+                  <h5>For private transactions: please assign amount to properties</h5>
                   <div class="input-field col s12 m4" >
                     <select id="transaction_properties_add">
                     </select>
@@ -1843,6 +1844,7 @@
       var totalAmount=0;
       var transactionsTable = document.getElementById("transactionsTable");
       var transactionDistribution = [];
+      var distributedAmount = 0;
 
       function loadTransaction (objectFS){
           var object = objectFS.data();
@@ -2158,6 +2160,7 @@
       var htmlTable = document.getElementById("transaction_distribution_table_add");
       emptyHTMLSet( htmlTable);
       i=0;
+      distributedAmount = 0;
       while (i<transactionDistribution.length){
         var transactionData = transactionDistribution[i];
         var objectsRow= document.createElement('tr');
@@ -2166,6 +2169,7 @@
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);
 
+        distributedAmount = distributedAmount + transactionData.amount;
         var cellContent = document.createTextNode(transactionData.amount.toLocaleString("nl-BE", currencyStyle));
         cell = document.createElement('td');
         cell.appendChild(cellContent);
@@ -2185,6 +2189,7 @@
         htmlTable.appendChild(objectsRow);
         i = i+1;
       };
+      document.getElementById("transaction_distributed_amount").value = distributedAmounttoLocaleString("nl-BE", currencyStyle));
     };
     
     function enableSelectProperties(){
