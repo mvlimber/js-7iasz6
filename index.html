@@ -1841,7 +1841,6 @@
     </script>
     <!--   Transaction scripts start here -->
     <script>
-      var totalAmount=0;
       var transactionsTable = document.getElementById("transactionsTable");
       var transactionDistribution = [];
       var distributedAmount = 0;
@@ -1904,12 +1903,10 @@
           
         function refreshTransactions(){
           emptyHTMLSet(transactionsTable);
-          /*totalAmount = 0;*/
           refCoproperty.collection("Transactions").orderBy("date","desc").get().then(function(objectsFSArray){
               objectsFSArray.forEach(function(objectFS){
                 loadTransaction(objectFS);
-              });
-              /* document.getElementById("totalAmount").innerHTML = totalAmount.toLocaleString("nl-BE", currencyStyle);*/
+              });        
             });
         };
 
@@ -1959,7 +1956,7 @@
     };
     
     function validateTransactionAdd() {
-      var valid = true
+      var valid = true;
       if (!document.getElementById("transaction_type_add").checkValidity()) {
         M.toast({html:"Please enter type"});
         valid=false;
@@ -1990,17 +1987,17 @@
       if (!document.getElementById("transaction_communication_add").checkValidity()) {
         M.toast({html:"Please enter valid communication"});
         valid=false;
-      };¨
-      var amount = parseFloat() document.getElementById("transaction_amount_add").value);
-      if ((amount - distributedAmount) > 0.09) ||  (distributedAmount - amount ) > 0.09)) {
+      };
+      var amount = parseFloat(document.getElementById("transaction_amount_add").value);
+      if (((amount - distributedAmount) > 0.09) ||  ((distributedAmount - amount ) > 0.09)) {
         M.toast({html:"Transactaction amount too differnt from total assigned amounts: please correct"});
         valid=false;
-      }
+      };
       return valid;
     };
 
     function validateTransactionEdit() {
-      var valid = true
+      var valid = true;
       if (!document.getElementById("transaction_type_edit").checkValidity()) {
         M.toast({html:"Please enter type"});
         valid=false;
@@ -2217,9 +2214,9 @@
     function enableSelectProperties(){
       if (document.getElementById("transaction_type_add").value == "Private") {
         document.getElementById("transaction_properties_add_frame").style.visibility = "visible";
+        document.getElementById("transaction_properties_amount_add").value = "";
         listProperties(document.getElementById("transaction_properties_add"), "");
-        /*refreshTransactionDistribution();*/
-        
+        refreshTransactionDistribution();       
       } else {
         document.getElementById("transaction_properties_add_frame").style.visibility = "hidden";
       };
