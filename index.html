@@ -1857,10 +1857,10 @@
       var transactionsTable = document.getElementById("transactionsTable");
       var distributedAmount = 0;
       var selectedTransactionId;
-      var transactionObject = {
-        distribution: [];
-        new: function(){return {distribution:[]}}
+      function TransactionObject() {
+        distribution: []
       };
+      var transactionObject;
       
     
 
@@ -2148,7 +2148,7 @@
 
     function resetSelectedTransaction() {
       selectedTransactionId = null;
-      transactionObject = {};
+      transactionObject = new TransactionObject();
       document.getElementById("transaction_type_add").value="";
       document.getElementById("transaction_account_add").value="";
       document.getElementById("transaction_name_add").value="";
