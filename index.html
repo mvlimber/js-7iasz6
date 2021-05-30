@@ -2130,35 +2130,41 @@
       emptyHTMLSet( htmlTable);
       i=0;
       var total = 0;
-      while (i<transactionObject.distribution.length){
-        var transactionDistri = transactionObject.distribution[i];
-        var objectsRow= document.createElement('tr');
-        refCoproperty.collection("Properties").doc
-        var cellContent = makePropertyLink(transactionDistri.property);
-        console.log(cellcontent);
-        var cell = document.createElement('td');
-        cell.appendChild(cellContent);
-        objectsRow.appendChild(cell);
+      transactionObject.distribution.forEach(function(dis){
+      
+        refCoproperty.collection("Properties").doc(dis.property).get().then(function(prFS){
+          var objectsRow= document.createElement('tr');
+          var cellContent = propertyLink(prFS);
+          console.log(cellContent);
+          var cell = document.createElement('td');
+          cell.appendChild(cellContent);
+          objectsRow.appendChild(cell);
 
-        total = total + transactionDistri.amount;
-        var cellContent = document.createTextNode(transactionDistri.amount.toLocaleString("nl-BE", currencyStyle));
-        cell = document.createElement('td');
-        cell.appendChild(cellContent);
-        objectsRow.appendChild(cell);
+          total = total + dis.amount;
+          var cellContent = document.createTextNode(dis.amount.toLocaleString("nl-BE", currencyStyle));
+          cell = document.createElement('td');
+          cell.appendChild(cellContent);
+          objectsRow.appendChild(cell);
 
-        htmlTable.appendChild(objectsRow);
-        i = i+1;
-      };
-      var objectsRow= document.createElement('tr');
-      var cellContent = document.createTextNode("Total");
-      var cell = document.createElement('td');cell.style.fontWeight = "bold";
-      cell.appendChild(cellContent);
-      objectsRow.appendChild(cell);
-      cellContent = document.createTextNode(total.toLocaleString("nl-BE", currencyStyle));
-      cell = document.createElement('td');cell.style.fontWeight = "bold";
-      cell.appendChild(cellContent);
-      objectsRow.appendChild(cell);     
-      htmlTable.appendChild(objectsRow);
+          htmlTable.appendChild(objectsRow);
+          });
+          /*
+          i = i+1;
+          if (i == transactionObject.distribution.length){
+            var objectsRow= document.createElement('tr');
+            var cellContent = document.createTextNode("Total");
+            var cell = document.createElement('td');cell.style.fontWeight = "bold";
+            cell.appendChild(cellContent);
+            objectsRow.appendChild(cell);
+            cellContent = document.createTextNode(total.toLocaleString("nl-BE", currencyStyle));
+            cell = document.createElement('td');cell.style.fontWeight = "bold";
+            cell.appendChild(cellContent);
+            objectsRow.appendChild(cell);     
+            htmlTable.appendChild(objectsRow);
+          };
+          */
+      });
+      
     };
     
     function editTransaction(id,object) {
