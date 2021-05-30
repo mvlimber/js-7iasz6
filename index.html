@@ -1860,11 +1860,11 @@
       var selectedTransactionId;
       function TransactionObject() {
         this.account = "";
-        this.account = "";
-        this.account = "";
-        this.account = "";
-        this.account = "";
-        
+        this.name = "";
+        this.amount = "";
+        this.date = "";
+        this.bookDate = "";
+        this.communication = "";
         this.distribution= [];
         this.evidence = [];
       };
@@ -2107,7 +2107,6 @@
     function resetSelectedTransaction() {
       selectedTransactionId = null;
       transactionObject = new TransactionObject();
-      console.log(transactionObject);
       document.getElementById("transaction_type_add").value="";
       document.getElementById("transaction_account_add").value="";
       document.getElementById("transaction_name_add").value="";
