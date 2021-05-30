@@ -503,7 +503,7 @@
                     <label for="transaction_communication">Communication</label>
                   </div>
                   <div id="transaction_properties_frame" style="visibility:hidden">
-                    <h5>Private transaction: Amount assigned to:</h5>
+                    <h6>Private transaction: Amount assigned to:</h6>
                     <table class="striped">
                       <thead>
                         <tr>
@@ -2086,9 +2086,11 @@
       document.getElementById("transaction_bookDate").value=object.bookDate;
       document.getElementById("transaction_communication").value=object.communication;
       if (object.type == "Private") {
-        document.getElementById("transaction_properties_frame").visibility = "visible";
+        transactionDistribution = object.distribution;
+        document.getElementById("transaction_properties_frame").style.visibility = "visible";
+        showTransactionDistribution();
       } else {
-        document.getElementById("transaction_properties_frame").visibility = "hidden";
+        document.getElementById("transaction_properties_frame").style.visibility = "hidden";
       };
       refreshTransactionEvidence()
       var elems = document.querySelectorAll('select');
@@ -2096,6 +2098,46 @@
       M.updateTextFields();
     };
 
+    function showTransactionDistribution(){
+      var htmlTable = document.getElementById("transaction_distribution_table");
+      emptyHTMLSet( htmlTable);
+      i=0;
+      var total = 0;
+      while (i<transactionDistribution.length){
+        var transactionData = transactionDistribution[i];
+        var objectsRow= document.createElement('tr');
+        var cellContent = document.createTextNode(transactionData.propertyCode);
+        var cell = document.createElement('td');
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell);
+
+        total = total + transactionData.amount;
+        var cellContent = document.createTextNode(transactionData.amount.toLocaleString("nl-BE", currencyStyle));
+        cell = document.createElement('td');
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell);
+
+        htmlTable.appendChild(objectsRow);
+        i = i+1;
+      };
+      var objectsRow= document.createElement('tr');
+      var cellContent = document.createTextNode("Total");
+      /*cellContent.style.fontWeight = "bold";*/
+      var cell = document.createElement('td');
+      cell.appendChild(cellContent);
+      objectsRow.appendChild(cell);
+      cellContent = document.createTextNode(total.toLocaleString("nl-BE", currencyStyle));
+      /*cellContent.style.fontWeight = "bold";*/
+      cell = document.createElement('td');
+      cell.appendChild(cellContent);
+      objectsRow.appendChild(cell);
+      /*cellContent = document.createTextNode();
+      cell = document.createElement('td');
+      cell.appendChild(cellContent);
+      objectsRow.appendChild(cell);*/
+      htmlTable.appendChild(objectsRow);
+    };
+    
     function editTransaction(id,object) {
       document.getElementById("transaction_type_edit").value=object.type;
       document.getElementById("transaction_account_edit").value=object.account;
