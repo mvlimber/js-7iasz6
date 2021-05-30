@@ -2071,7 +2071,7 @@
     };
 
     var selectedTransactionId;
-    var selectedTransactionObject;
+    var selectedTransactionObject = {};
     function setSelectedTransaction(id,object) {
       selectedTransactionId = id;
       selectedTransactionObject = object;
@@ -2083,7 +2083,7 @@
       document.getElementById("transaction_bookDate").value=object.bookDate;
       document.getElementById("transaction_communication").value=object.communication;
       if (object.type == "Private") {
-        transactionDistribution = object.distribution;
+        selectedTransactionObject.distribution = object.distribution;
         document.getElementById("transaction_properties_frame").style.visibility = "visible";
         showTransactionDistribution();
       } else {
@@ -2100,16 +2100,16 @@
       emptyHTMLSet( htmlTable);
       i=0;
       var total = 0;
-      while (i<transactionDistribution.length){
-        var transactionData = transactionDistribution[i];
+      while (i<selectedTransactionObject.distribution.length){
+        var transactionDistri = selectedTransactionObject.distribution[i];
         var objectsRow= document.createElement('tr');
-        var cellContent = document.createTextNode(transactionData.propertyCode);
+        var cellContent = document.createTextNode(transactionDistri.propertyCode);
         var cell = document.createElement('td');
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);
 
-        total = total + transactionData.amount;
-        var cellContent = document.createTextNode(transactionData.amount.toLocaleString("nl-BE", currencyStyle));
+        total = total + transactionDistri.amount;
+        var cellContent = document.createTextNode(transactionDistri.amount.toLocaleString("nl-BE", currencyStyle));
         cell = document.createElement('td');
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);
