@@ -2085,6 +2085,11 @@
       document.getElementById("transaction_date").value=object.date;
       document.getElementById("transaction_bookDate").value=object.bookDate;
       document.getElementById("transaction_communication").value=object.communication;
+      if (object.type == "Private") {
+        document.getElementById("transaction_properties_frame").visibility = "visible";
+      } else {
+        document.getElementById("transaction_properties_frame").visibility = "hidden";
+      };
       refreshTransactionEvidence()
       var elems = document.querySelectorAll('select');
       M.FormSelect.init(elems);
