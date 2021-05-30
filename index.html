@@ -2133,7 +2133,9 @@
       while (i<transactionObject.distribution.length){
         var transactionDistri = transactionObject.distribution[i];
         var objectsRow= document.createElement('tr');
-        var cellContent = document.createTextNode(transactionDistri.propertyCode);
+        refCoproperty.collection("Properties").doc
+        var cellContent = makePropertyLink(transactionDistri.property);
+        console.log(cellcontent);
         var cell = document.createElement('td');
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);
