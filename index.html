@@ -456,10 +456,11 @@
                     <tbody id = "transaction_distribution_table_add">                     
                     </tbody>
                   </table>
-                </div>              
+                </div>
+         
               </form>
               <br>
-              <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="addTransaction()">Save and go to adding evidence<i class="material-icons right">send</i></button>
+              <button id="transaction_save_button" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="addTransaction()">Save and go to adding evidence<i class="material-icons right">send</i></button>
               <a style="float: right;margin-bottom: 3px"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
                 Cancel</a>
@@ -1858,7 +1859,14 @@
       var distributedAmount = 0;
       var selectedTransactionId;
       function TransactionObject() {
+        this.account = "";
+        this.account = "";
+        this.account = "";
+        this.account = "";
+        this.account = "";
+        
         this.distribution= [];
+        this.evidence = [];
       };
       var transactionObject;
 
@@ -2096,6 +2104,27 @@
       M.FormSelect.init(elems);
       M.updateTextFields();
     };
+    function resetSelectedTransaction() {
+      selectedTransactionId = null;
+      transactionObject = new TransactionObject();
+      console.log(transactionObject);
+      document.getElementById("transaction_type_add").value="";
+      document.getElementById("transaction_account_add").value="";
+      document.getElementById("transaction_name_add").value="";
+      document.getElementById("transaction_amount_add").value="";
+      document.getElementById("transaction_date_add").value="";
+      document.getElementById("transaction_bookDate_add").value="";
+      document.getElementById("transaction_communication_add").value="";
+      document.getElementById("transaction_properties_add_frame").style.visibility = "hidden";
+      document.getElementById("transaction_save_button").innerHTML = "Save and go to adding evidence";
+      emptyHTMLSet(document.getElementById("transaction_distribution_table_add"));
+      var elems = document.querySelectorAll('select');
+      M.FormSelect.init(elems);
+      M.updateTextFields();
+      elems = document.querySelectorAll('.modal');
+      instances = M.Modal.init(elems, {dismissible:false});
+    };
+
 
     function showTransactionDistribution(){
       var htmlTable = document.getElementById("transaction_distribution_table");
@@ -2142,26 +2171,6 @@
       var elems = document.querySelectorAll('select');
       M.FormSelect.init(elems);
       M.updateTextFields();
-    };
-
-    function resetSelectedTransaction() {
-      selectedTransactionId = null;
-      transactionObject = new TransactionObject();
-      console.log(transactionObject);
-      document.getElementById("transaction_type_add").value="";
-      document.getElementById("transaction_account_add").value="";
-      document.getElementById("transaction_name_add").value="";
-      document.getElementById("transaction_amount_add").value="";
-      document.getElementById("transaction_date_add").value="";
-      document.getElementById("transaction_bookDate_add").value="";
-      document.getElementById("transaction_communication_add").value="";
-      document.getElementById("transaction_properties_add_frame").style.visibility = "hidden";
-      emptyHTMLSet(document.getElementById("transaction_distribution_table_add"));
-      var elems = document.querySelectorAll('select');
-      M.FormSelect.init(elems);
-      M.updateTextFields();
-      elems = document.querySelectorAll('.modal');
-      instances = M.Modal.init(elems, {dismissible:false});
     };
 
     function listProperties(el, selectedOption) {
@@ -2360,7 +2369,7 @@
           type: document.getElementById("transactionEvidence_type_edit").value,
         };
       };
-
+      
       function writeTransactionEvidence() {
         if (validateTransactionEvidenceEntries()) {  
           var entries = getTransactionEvidenceEntries();
