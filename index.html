@@ -1937,6 +1937,7 @@
       function addTransaction() {
         if (validateTransactionAdd()) {  
             var entries = getTransactionEntriesAdd();
+            entries.distribution = transactionDistribution;
             refCoproperty.collection("Transactions").add(entries).then(function(docref) {
               refreshTransactions();
               setSelectedTransaction(docref.id,entries);
