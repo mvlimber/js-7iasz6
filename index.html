@@ -2003,9 +2003,6 @@
         valid=false;
       };
       var amount = parseFloat(document.getElementById("transaction_amount_add").value);
-      console.log(amount - distributedAmount);
-      console.log(distributedAmount - amount);
-
       if (!(((amount >= distributedAmount) && ((amount - distributedAmount) < 0.05)) ||  ((amount <= distributedAmount) && ((distributedAmount - amount) < 0.05)))) {
         M.toast({html:"Transactaction amount too differnt from total assigned amounts: please correct"});
         valid=false;
@@ -2122,19 +2119,13 @@
       };
       var objectsRow= document.createElement('tr');
       var cellContent = document.createTextNode("Total");
-      /*cellContent.style.fontWeight = "bold";*/
-      var cell = document.createElement('td');
+      var cell = document.createElement('td');cell.style.fontWeight = "bold";
       cell.appendChild(cellContent);
       objectsRow.appendChild(cell);
       cellContent = document.createTextNode(total.toLocaleString("nl-BE", currencyStyle));
-      /*cellContent.style.fontWeight = "bold";*/
-      cell = document.createElement('td');
+      cell = document.createElement('td');cell.style.fontWeight = "bold";
       cell.appendChild(cellContent);
-      objectsRow.appendChild(cell);
-      /*cellContent = document.createTextNode();
-      cell = document.createElement('td');
-      cell.appendChild(cellContent);
-      objectsRow.appendChild(cell);*/
+      objectsRow.appendChild(cell);     
       htmlTable.appendChild(objectsRow);
     };
     
@@ -2259,19 +2250,13 @@
       };
       var objectsRow= document.createElement('tr');
       var cellContent = document.createTextNode("Total");
-      /*cellContent.style.fontWeight = "bold";*/
-      var cell = document.createElement('td');
+      var cell = document.createElement('td');cell.style.fontWeight = "bold";
       cell.appendChild(cellContent);
       objectsRow.appendChild(cell);
       cellContent = document.createTextNode(distributedAmount.toLocaleString("nl-BE", currencyStyle));
-      /*cellContent.style.fontWeight = "bold";*/
-      cell = document.createElement('td');
+      cell = document.createElement('td');cell.style.fontWeight = "bold";
       cell.appendChild(cellContent);
-      objectsRow.appendChild(cell);
-      /*cellContent = document.createTextNode();
-      cell = document.createElement('td');
-      cell.appendChild(cellContent);
-      objectsRow.appendChild(cell);*/
+      objectsRow.appendChild(cell);      
       htmlTable.appendChild(objectsRow);
     };
     
