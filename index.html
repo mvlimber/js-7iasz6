@@ -2119,9 +2119,7 @@
       emptyHTMLSet(document.getElementById("transaction_distribution_table_add"));
       var elems = document.querySelectorAll('select');
       M.FormSelect.init(elems);
-      M.updateTextFields();
-      elems = document.querySelectorAll('.modal');
-      instances = M.Modal.init(elems, {dismissible:false});
+      M.updateTextFields();  
     };
 
 
@@ -2147,8 +2145,7 @@
           objectsRow.appendChild(cell);
 
           htmlTable.appendChild(objectsRow);
-          
-          
+                    
           i = i+1;
           if (i == transactionObject.distribution.length){
             var objectsRow= document.createElement('tr');
@@ -2163,8 +2160,7 @@
             htmlTable.appendChild(objectsRow);
           };
          }); 
-      });
-      
+      });     
     };
     
     function editTransaction(id,object) {
