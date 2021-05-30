@@ -1963,7 +1963,24 @@
         if (validateTransactionEdit()) { 
           var entries =  getTransactionEntriesAdd();
           entries.distribution = transaction.distribution;
-
+          if (selectedTransactionId) {
+            refCoproperty.collection("Transactions").doc(selectedTransactionId).set(entries).then(function(docref) {
+              refreshTransactions();
+              setSelectedTransaction(selectedTransactionId,entries)
+              M.Modal.getInstance(document.getElementById("transactionAdd")).close();
+            }).catch(function(error) {
+              console.error("Error updating transaction: ", error);
+            });
+          } else {
+            refCoproperty.collection("Transactions").add(entries).then(function(docref) {
+              refreshTransactions();
+              setSelectedTransaction(docref.id,entries);
+              M.Modal.getInstance(document.getElementById("transactionAdd")).close();
+              M.Modal.getInstance(document.getElementById("transactionView")).open();
+            }).catch(function(error) {
+              console.error("Error adding transaction: ", error);
+            });
+          };
       };
       
       function addTransaction() {
