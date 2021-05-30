@@ -502,6 +502,19 @@
                     <input id="transaction_communication" type="text" readonly>
                     <label for="transaction_communication">Communication</label>
                   </div>
+                  <div id="transaction_properties_frame" style="visibility:hidden">
+                    <h5>Private transaction: Amount assigned to:</h5>
+                    <table class="striped">
+                      <thead>
+                        <tr>
+                          <th>Property</th>
+                          <th>Amount</th>
+                        </tr>  
+                      </thead>
+                      <tbody id = "transaction_distribution_table">                     
+                      </tbody>
+                    </table>
+                </div>  
                 </form>
                 <div id="Transactions_Edit" class="displayHidden">
                   <button style="float: right;margin-bottom: 3px" data-target="transactionWrite" class="btn-small waves-light modal-trigger" onclick="editTransaction(selectedTransactionId, selectedTransactionObject)">Edit<i class="material-icons right">edit</i></button>
