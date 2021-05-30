@@ -1858,7 +1858,7 @@
       var distributedAmount = 0;
       var selectedTransactionId;
       function TransactionObject() {
-        distribution: []
+        this.distribution= [];
       };
       var transactionObject;
       
@@ -2149,6 +2149,7 @@
     function resetSelectedTransaction() {
       selectedTransactionId = null;
       transactionObject = new TransactionObject();
+      console.log(transactionObject);
       document.getElementById("transaction_type_add").value="";
       document.getElementById("transaction_account_add").value="";
       document.getElementById("transaction_name_add").value="";
@@ -2222,6 +2223,7 @@
       emptyHTMLSet( htmlTable);
       i=0;
       distributedAmount = 0;
+    
       while (i<transactionObject.distribution.length){
         var transactionData = transactionObject.distribution[i];
         var objectsRow= document.createElement('tr');
