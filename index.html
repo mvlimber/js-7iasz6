@@ -1959,6 +1959,13 @@
         };
       };
 
+      function writeTransaction() {
+        if (validateTransactionEdit()) { 
+          var entries =  getTransactionEntriesAdd();
+          entries.distribution = transaction.distribution;
+
+      };
+      
       function addTransaction() {
         if (validateTransactionAdd()) {  
             var entries = getTransactionEntriesAdd();
