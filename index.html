@@ -518,7 +518,7 @@
                 </div>  
                 </form>
                 <div id="Transactions_Edit" class="displayHidden">
-                  <button style="float: right;margin-bottom: 3px" data-target="transactionWrite" class="btn-small waves-light modal-trigger" onclick="editTransaction(selectedTransactionId, transactionObject)">Edit<i class="material-icons right">edit</i></button>
+                  <button style="float: right;margin-bottom: 3px" data-target="transactionAdd" class="btn-small waves-light modal-trigger" onclick="editTransaction(selectedTransactionId, transactionObject)">Edit<i class="material-icons right">edit</i></button>
                 </div>
               </div>
               <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
@@ -1859,6 +1859,7 @@
       var distributedAmount = 0;
       var selectedTransactionId;
       function TransactionObject() {
+        this.type = "";
         this.account = "";
         this.name = "";
         this.amount = "";
@@ -1981,6 +1982,7 @@
               console.error("Error adding transaction: ", error);
             });
           };
+        };
       };
       
       function addTransaction() {
@@ -2128,23 +2130,7 @@
       M.FormSelect.init(elems);
       M.updateTextFields();
     };
-    function resetSelectedTransaction() {
-      selectedTransactionId = null;
-      transactionObject = new TransactionObject();
-      document.getElementById("transaction_type_add").value="";
-      document.getElementById("transaction_account_add").value="";
-      document.getElementById("transaction_name_add").value="";
-      document.getElementById("transaction_amount_add").value="";
-      document.getElementById("transaction_date_add").value="";
-      document.getElementById("transaction_bookDate_add").value="";
-      document.getElementById("transaction_communication_add").value="";
-      document.getElementById("transaction_properties_add_frame").style.visibility = "hidden";
-      document.getElementById("transaction_save_button").innerHTML = "Save and go to adding evidence";
-      emptyHTMLSet(document.getElementById("transaction_distribution_table_add"));
-      var elems = document.querySelectorAll('select');
-      M.FormSelect.init(elems);
-      M.updateTextFields();  
-    };
+    
 
 
     function showTransactionDistribution(){
@@ -2187,14 +2173,32 @@
       });     
     };
     
+    function resetSelectedTransaction() {
+      selectedTransactionId = null;
+      transactionObject = new TransactionObject();
+      document.getElementById("transaction_type_add").value="";
+      document.getElementById("transaction_account_add").value="";
+      document.getElementById("transaction_name_add").value="";
+      document.getElementById("transaction_amount_add").value="";
+      document.getElementById("transaction_date_add").value="";
+      document.getElementById("transaction_bookDate_add").value="";
+      document.getElementById("transaction_communication_add").value="";
+      document.getElementById("transaction_properties_add_frame").style.visibility = "hidden";
+      document.getElementById("transaction_save_button").innerHTML = "Save and go to adding evidence";
+      emptyHTMLSet(document.getElementById("transaction_distribution_table_add"));
+      var elems = document.querySelectorAll('select');
+      M.FormSelect.init(elems);
+      M.updateTextFields();  
+    };
     function editTransaction(id,object) {
-      document.getElementById("transaction_type_edit").value=object.type;
-      document.getElementById("transaction_account_edit").value=object.account;
-      document.getElementById("transaction_name_edit").value=object.name;
-      document.getElementById("transaction_amount_edit").value=object.amount;
-      document.getElementById("transaction_date_edit").value=object.date;
-      document.getElementById("transaction_bookDate_edit").value=object.bookDate;
-      document.getElementById("transaction_communication_edit").value=object.communication;
+      document.getElementById("transaction_type_add").value=object.type;
+      document.getElementById("transaction_account_add").value=object.account;
+      document.getElementById("transaction_name_add").value=object.name;
+      document.getElementById("transaction_amount_add").value=object.amount;
+      document.getElementById("transaction_date_add").value=object.date;
+      document.getElementById("transaction_bookDate_add").value=object.bookDate;
+      document.getElementById("transaction_communication_add").value=object.communication;
+      document.getElementById("transaction_save_button").innerHTML = "Save";
       var elems = document.querySelectorAll('select');
       M.FormSelect.init(elems);
       M.updateTextFields();
