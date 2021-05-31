@@ -1945,7 +1945,7 @@
             transactionsLoaded = true;
           };
         };
-
+      /*
       function updateTransaction() {
         if (validateTransactionEdit()) { 
             var entries =  getTransactionEntriesEdit();
@@ -1959,11 +1959,11 @@
           });
         };
       };
-
+      */
       function writeTransaction() {
         if (validateTransactionAdd()) { 
           var entries =  getTransactionEntriesAdd();
-          if (entries.value == "Private") {entries.distribution = transaction.distribution;};
+          if (entries.type == "Private") {entries.distribution = transaction.distribution;};
           if (selectedTransactionId) {
             refCoproperty.collection("Transactions").doc(selectedTransactionId).set(entries).then(function(docref) {
               refreshTransactions();
@@ -2098,7 +2098,7 @@
         communication:document.getElementById("transaction_communication_add").value,
       };
     };
-
+    /*
     function getTransactionEntriesEdit() {
       return {
         type: document.getElementById("transaction_type_edit").value,
@@ -2110,7 +2110,7 @@
         communication:document.getElementById("transaction_communication_edit").value,
       };
     };
-
+    */
     function setSelectedTransaction(id,object) {
       selectedTransactionId = id;
       transaction = object;
@@ -2202,6 +2202,7 @@
       document.getElementById("transaction_bookDate_add").value=object.bookDate;
       document.getElementById("transaction_communication_add").value=object.communication;
       document.getElementById("transaction_save_button").innerHTML = "Save";
+      enableSelectProperties();
       var elems = document.querySelectorAll('select');
       M.FormSelect.init(elems);
       M.updateTextFields();
