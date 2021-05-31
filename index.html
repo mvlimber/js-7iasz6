@@ -3655,7 +3655,6 @@
             membersFS.forEach(function(memberFS){
               idMemberMap[memberFS.id] = (memberFS.data().lastName + " " + memberFS.data().firstName).substr(0,25);
             });
-            console.log("voor properties lezen");
             var iteratorProp = 0;
             var stop = false;
             refCoproperty.collection("Properties").orderBy("owner").get().then(function(propertiesFS){  
@@ -4014,9 +4013,12 @@
         };
         
         printFooterPortrait();
+        console.log("voor dataCommon");
         printTablePortrait("Common charges: total for building", dataCommon, headerCommon);
+        console.log("na dataCommon");
         printTablePortrait("Common charges: quota per owner", dataQuota, headerQuota);
         if (metersIncludedHere){
+          
           printTablePortrait("Water: total for building since last regularisation", dataWater, headerWH);
           printTablePortrait("Heating: total for building since last regularisation", dataHeating, headerWH);
           printTableLandscape("Water and Heating: regularisation per property and owner (CW = Cold Water, HW= Hot Water, HE = heating)", dataConsumption, headerConsumption,8);
