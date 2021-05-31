@@ -432,7 +432,7 @@
                   <label for="transaction_bookDate_add">Accountancy Date<b><font color='red'>*</font></b></label>
                   <span class="helper-text" data-error="Required field">By default copied from Transaction Date</span>
                 </div>
-                <div id="transaction_properties_add_frame" style="visibility:hidden">
+                <div id="transaction_properties_add_frame" style="display:none">
                   <h5>For private transactions: please assign amount to properties</h5>
                   <div class="input-field col s12 m4" >
                     <select id="transaction_properties_add">
@@ -503,7 +503,7 @@
                     <input id="transaction_bookDate" type="text" readonly>
                     <label for="transaction_bookDate">Accountancy Date</label>
                   </div>
-                 <div id="transaction_properties_frame" style="visibility:hidden">
+                 <div id="transaction_properties_frame" style="display:none">
                     <h6><b>Private transaction: Amount assigned to:</b></h6>
                     <table class="striped">
                       <thead>
@@ -1980,10 +1980,10 @@
       document.getElementById("transaction_communication").value=object.communication;
       if (object.type == "Private") {
         transaction.distribution = object.distribution;
-        document.getElementById("transaction_properties_frame").style.visibility = "visible";
+        document.getElementById("transaction_properties_frame").style.diplay = "block";
         showTransactionDistribution();
       } else {
-        document.getElementById("transaction_properties_frame").style.visibility = "hidden";
+        document.getElementById("transaction_properties_frame").style.diplay = "none";
       };
       refreshTransactionEvidence()
       var elems = document.querySelectorAll('select');
@@ -2166,12 +2166,12 @@
     
     function enableSelectProperties(){
       if (document.getElementById("transaction_type_add").value == "Private") {
-        document.getElementById("transaction_properties_add_frame").style.visibility = "visible";
+        document.getElementById("transaction_properties_add_frame").style.display = "block";
         document.getElementById("transaction_distribution_amount_add").value = "";
         listProperties(document.getElementById("transaction_properties_add"), "");
         refreshTransactionDistribution();       
       } else {
-        document.getElementById("transaction_properties_add_frame").style.visibility = "hidden";
+        document.getElementById("transaction_properties_add_frame").style.display = "none";
       };
     };
 
