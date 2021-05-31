@@ -544,72 +544,7 @@
             </div>
           </div>
 
-          <div id="transactionWrite" class="modal">
-            <div class="modal-content">
-              <a style="float: right"
-                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
-                Cancel</a>
-              <h5>Edit Transaction</h5>
-              <div class="row">
-                <form class="col s12">
-                  <div class="input-field col s12 m4">
-                    <select id="transaction_type_edit" required required="true">
-                           <option value="" disabled selected>Select the type</option>
-                            <option>Repair</option>
-                            <option>Maintenance</option>
-                            <option>Installation/ Renovation</option>
-                            <option>Insurance Building</option>
-                            <option>Services</option>
-                            <option>Small equipment</option>
-                            <option>Electricity</option>
-                            <option>Water</option>
-                            <option>Heating</option>
-                            <option>Private</option>
-                            <option>Other</option>
-                          </select>
-                    <label>Type<b><font color='red'>*</font></b></label>
-                  </div>
-                  <div class="input-field col s12 m8">
-                    <input id="transaction_name_edit" type="text" class="validate" maxlength="50" required required="true">
-                    <label for="transaction_name_edit">Counterparty<b><font color='red'>*</font></b></label>
-                    <span class="helper-text" data-error="maximum 50 characters" ></span>
-                  </div>
-                  <div class="input-field col s12 m4">
-                    <input id="transaction_amount_edit" type="number" class="validate" min="0" max="999999" step="0.01" required required="true">
-                    <label for="transaction_amount_edit">Amount<b><font color='red'>*</font></b></label>
-                    <span class="helper-text" data-error="Positive amount of max 999999 with max 2 decimals. Example: 1234.56">Amount with max 2 decimals. Example: 1234.56</span>
-                  </div>
-                  <div class="input-field col s12 m4">
-                    <input id="transaction_date_edit" type="text" class="datepicker validate"  required required="true">
-                    <label for="transaction_date_edit">Transaction Date<b><font color='red'>*</font></b></label>
-                    <span class="helper-text" data-error="required field" ></span>
-                  </div>
-                  <div class="input-field col s12 m4">
-                    <input id="transaction_bookDate_edit" type="text" class="datepicker validate"  required required="true">
-                    <label for="transaction_bookDate_edit">Accountancy Date<b><font color='red'>*</font></b></label>
-                    <span class="helper-text" data-error="required field" ></span>
-                  </div>
-                  <div class="input-field col s12 m4">
-                    <input id="transaction_account_edit" type="text" maxlength="19" class="validate"
-                    pattern="^BE\d{14}$|^BE\d{2}\s\d{4}\s\d{4}\s\d{4}$">
-                    <label for="transaction_account_edit">Account</label>
-                    <span class="helper-text" data-error="BE followed by 14 digits, blancs for printing format allowed. Example: BE40 9799 2578 3625">BE followed by max 14 digits, blancs allowed. Example: BE40 9799 2578 3625</span>
-                  </div>
-                  <div class="input-field col s12 m8">
-                    <input id="transaction_communication_edit" type="text" class="validate" maxlength="80" >
-                    <label for="transaction_communication_edit">Communication</label>
-                    <span class="helper-text" data-error="maximum 80 characters" ></span>
-                  </div>
-                </form>
-              </div>
-              <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="updateTransaction()">Submit<i class="material-icons right">send</i></button>
-              <a style="float: right;margin-bottom: 3px"
-                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
-                Cancel</a>
-            </div>
-          </div>
-
-          <div id="transactionEvidenceRemove" class="modal">
+         <div id="transactionEvidenceRemove" class="modal">
             <div class="modal-content">
               <h5> You are about to permanently remove the evidence</h5>
               <p id="transactionEvidence_to_remove"> </p>
@@ -1921,7 +1856,6 @@
           cell.setAttribute("style", "text-align: right"); 
           cell.appendChild(cellContent);
           objectsRow.appendChild(cell); 
-
           
           transactionsTable.appendChild (objectsRow);
           });
@@ -1945,21 +1879,7 @@
             transactionsLoaded = true;
           };
         };
-      /*
-      function updateTransaction() {
-        if (validateTransactionEdit()) { 
-            var entries =  getTransactionEntriesEdit();
-            refCoproperty.collection("Transactions").doc(selectedTransactionId).set(entries)
-          .then(function(docref) {
-              refreshTransactions();
-              setSelectedTransaction(selectedTransactionId,entries)
-              M.Modal.getInstance(document.getElementById("transactionWrite")).close();
-          }).catch(function(error) {
-            console.error("Error updating transaction: ", error);
-          });
-        };
-      };
-      */
+      
       function writeTransaction() {
         if (validateTransactionAdd()) { 
           var entries =  getTransactionEntriesAdd();
@@ -1984,23 +1904,7 @@
           };
         };
       };
-      
-      /*
-      function addTransaction() {
-        if (validateTransactionAdd()) {  
-            var entries = getTransactionEntriesAdd();
-            entries.distribution = transactionDistribution;
-            refCoproperty.collection("Transactions").add(entries).then(function(docref) {
-              refreshTransactions();
-              setSelectedTransaction(docref.id,entries);
-              M.Modal.getInstance(document.getElementById("transactionAdd")).close();
-              M.Modal.getInstance(document.getElementById("transactionView")).open();
-          }).catch(function(error) {
-            console.error("Error adding transaction: ", error);
-          });
-        };
-      };
-      */
+            
     function copyToBookDate(){
       if (!document.getElementById("transaction_bookDate_add").checkValidity()) {
         document.getElementById("transaction_bookDate_add").value = document.getElementById("transaction_date_add").value;
@@ -2051,42 +1955,7 @@
       return valid;
     };
 
-    function validateTransactionEdit() {
-      var valid = true;
-      if (!document.getElementById("transaction_type_edit").checkValidity()) {
-        M.toast({html:"Please enter type"});
-        valid=false;
-      };
-      if (!document.getElementById("transaction_account_edit").checkValidity()) {
-        M.toast({html:"Please enter valid account"});
-        valid=false;
-      };
-      if (!document.getElementById("transaction_name_edit").checkValidity()) {
-        M.toast({html:"Please enter supplier name"});
-        valid=false;
-      };
-      if (!document.getElementById("transaction_amount_edit").checkValidity()) {
-        M.toast({html:"Please enter amount"});
-        valid=false;
-      };
-      if (!document.getElementById("transaction_date_edit").checkValidity()) {
-        M.toast({html:"Please enter transaction date"});
-        valid=false;
-      };
-      if (!document.getElementById("transaction_bookDate_edit").checkValidity()) {
-        M.toast({html:"Please enter accountancy date"});
-        valid=false;
-      }else if (!checkBookDate(document.getElementById("transaction_bookDate_edit").value)) {
-          M.toast({html:"Accountancy date must be after last close data accountancy"});
-          valid=false;
-      };
-      if (!document.getElementById("transaction_communication_edit").checkValidity()) {
-        M.toast({html:"Please enter valid communication"});
-        valid=false;
-      };
-      return valid;
-    };
-
+    
     function getTransactionEntriesAdd() {
       return {
         type: document.getElementById("transaction_type_add").value,
@@ -2098,19 +1967,7 @@
         communication:document.getElementById("transaction_communication_add").value,
       };
     };
-    /*
-    function getTransactionEntriesEdit() {
-      return {
-        type: document.getElementById("transaction_type_edit").value,
-        account: document.getElementById("transaction_account_edit").value,
-        name: document.getElementById("transaction_name_edit").value,
-        amount: document.getElementById("transaction_amount_edit").value,
-        date: document.getElementById("transaction_date_edit").value,
-        bookDate: document.getElementById("transaction_bookDate_edit").value,
-        communication:document.getElementById("transaction_communication_edit").value,
-      };
-    };
-    */
+    
     function setSelectedTransaction(id,object) {
       selectedTransactionId = id;
       transaction = object;
