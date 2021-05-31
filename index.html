@@ -518,7 +518,7 @@
                 </div>  
                 </form>
                 <div id="Transactions_Edit" class="displayHidden">
-                  <button style="float: right;margin-bottom: 3px" data-target="transactionAdd" class="btn-small waves-light modal-trigger" onclick="editTransaction(selectedTransactionId, transactionObject)">Edit<i class="material-icons right">edit</i></button>
+                  <button style="float: right;margin-bottom: 3px" data-target="transactionAdd" class="btn-small waves-light modal-trigger" onclick="editTransaction(selectedTransactionId, transaction)">Edit<i class="material-icons right">edit</i></button>
                 </div>
               </div>
               <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
@@ -1869,7 +1869,7 @@
         this.distribution= [];
         this.evidence = [];
       };
-      var transactionObject;
+      var transaction;
 
       function loadTransaction (objectFS){
           var object = objectFS.data();
@@ -1961,7 +1961,7 @@
       };
 
       function writeTransaction() {
-        if (validateTransactionEdit()) { 
+        if (validateTransactionAdd()) { 
           var entries =  getTransactionEntriesAdd();
           entries.distribution = transaction.distribution;
           if (selectedTransactionId) {
@@ -2113,7 +2113,7 @@
 
     function setSelectedTransaction(id,object) {
       selectedTransactionId = id;
-      transactionObject = object;
+      transaction = object;
       document.getElementById("transaction_type").value=object.type;
       document.getElementById("transaction_account").value=object.account;
       document.getElementById("transaction_name").value=object.name;
@@ -2122,7 +2122,7 @@
       document.getElementById("transaction_bookDate").value=object.bookDate;
       document.getElementById("transaction_communication").value=object.communication;
       if (object.type == "Private") {
-        transactionObject.distribution = object.distribution;
+        transaction.distribution = object.distribution;
         document.getElementById("transaction_properties_frame").style.visibility = "visible";
         showTransactionDistribution();
       } else {
@@ -2141,7 +2141,7 @@
       emptyHTMLSet( htmlTable);
       i=0;
       var total = 0;
-      transactionObject.distribution.forEach(function(dis){
+      transaction.distribution.forEach(function(dis){
       
         refCoproperty.collection("Properties").doc(dis.property).get().then(function(prFS){
           var objectsRow= document.createElement('tr');
@@ -2160,7 +2160,7 @@
           htmlTable.appendChild(objectsRow);
                     
           i = i+1;
-          if (i == transactionObject.distribution.length){
+          if (i == transaction.distribution.length){
             var objectsRow= document.createElement('tr');
             var cellContent = document.createTextNode("Total");
             var cell = document.createElement('td');cell.style.fontWeight = "bold";
@@ -2178,7 +2178,7 @@
     
     function resetSelectedTransaction() {
       selectedTransactionId = null;
-      transactionObject = new TransactionObject();
+      transaction = new TransactionObject();
       document.getElementById("transaction_type_add").value="";
       document.getElementById("transaction_account_add").value="";
       document.getElementById("transaction_name_add").value="";
@@ -2233,7 +2233,7 @@
     };
 
     function removeTransactionDistribution(i){
-      transactionObject.distribution.splice(i,1);
+      transaction.distribution.splice(i,1);
       refreshTransactionDistribution();
     };
 
@@ -2250,7 +2250,7 @@
         valid=false;
       };
       if (valid){
-        transactionObject.distribution.push({
+        transaction.distribution.push({
           property: propertyId,
           propertyCode: ((document.getElementById("transaction_properties_add")).item(document.getElementById("transaction_properties_add").selectedIndex)).innerHTML,
           amount: parseFloat(amountString),
@@ -2265,8 +2265,8 @@
       i=0;
       distributedAmount = 0;
     
-      while (i<transactionObject.distribution.length){
-        var transactionData = transactionObject.distribution[i];
+      while (i<transaction.distribution.length){
+        var transactionData = transaction.distribution[i];
         var objectsRow= document.createElement('tr');
         var cellContent = document.createTextNode(transactionData.propertyCode);
         var cell = document.createElement('td');
