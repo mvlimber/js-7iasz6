@@ -1963,7 +1963,7 @@
       function writeTransaction() {
         if (validateTransactionAdd()) { 
           var entries =  getTransactionEntriesAdd();
-          entries.distribution = transaction.distribution;
+          if (entries.value == "Private") {entries.distribution = transaction.distribution;};
           if (selectedTransactionId) {
             refCoproperty.collection("Transactions").doc(selectedTransactionId).set(entries).then(function(docref) {
               refreshTransactions();
