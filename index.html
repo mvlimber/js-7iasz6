@@ -3640,7 +3640,7 @@
               buildingWater = buildingWater + reportTransaction(trData);
               dataWater.push(trData);
             });      
-          dataWater.push({type:"Total",name:" ",communication:" ",amount:buildingWater.toLocaleString("nl-BE",currencyStyle)});
+          dataWater.push({type:"Total",name:" ",date:" ",communication:" ",amount:buildingWater.toLocaleString("nl-BE",currencyStyle)});
 
           refCoproperty.collection("Transactions").where("type", "==", "Heating").where("bookDate", ">", lastReguDate).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){
             transactionsFS.forEach(function(transactionFS){
@@ -3648,7 +3648,7 @@
               buildingHeating = buildingHeating + reportTransaction(trData);
               dataHeating.push(trData);
             });      
-          dataHeating.push({type:"Total",name:" ",communication:" ",amount:buildingHeating.toLocaleString("nl-BE",currencyStyle)});
+          dataHeating.push({type:"Total",name:" ",date:" ",communication:" ",amount:buildingHeating.toLocaleString("nl-BE",currencyStyle)});
           
           refCoproperty.collection("Members").get().then(function(membersFS) { 
             var idMemberMap = [];
@@ -3726,7 +3726,7 @@
 
       function calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota,buildingCommon, dataWater, dataHeating, dataCommon,totalledConsumptionData, dataQuota, dataCharges){
               var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon, dataCharges);                          
-              dataCommon.push({type:"Total",name:" ",communication:" ",amount:buildingCommon.toLocaleString("nl-BE",currencyStyle)});
+              dataCommon.push({type:"Total",name:" ",date:" ",communication:" ",amount:buildingCommon.toLocaleString("nl-BE",currencyStyle)});
               var dataChargesCurrency = putChargesCurrency(Object.values(dataCharges), metersIncluded);
               writePDF(closeDateTransactions, metersIncluded, dataWater, dataHeating,  dataCommon, totalledConsumptionData, totalledQuotaData, dataChargesCurrency);
       };
@@ -4017,8 +4017,8 @@
         printTablePortrait("Common charges: total for building", dataCommon, headerCommon);
         printTablePortrait("Common charges: quota per owner", dataQuota, headerQuota);
         if (metersIncludedHere){
-          printTablePortrait("Water: total for building since last regularisation", dataWater, headerCommon);
-          printTablePortrait("Heating: total for building since last regularisation", dataHeating, headerCommon);
+          printTablePortrait("Water: total for building since last regularisation", dataWater, headerWH);
+          printTablePortrait("Heating: total for building since last regularisation", dataHeating, headerWH);
           printTableLandscape("Water and Heating: regularisation per property and owner (CW = Cold Water, HW= Hot Water, HE = heating)", dataConsumption, headerConsumption,8);
           printTableLandscape("Total charges: total charges per owner", tableCharges, headerChargesMetersIncluded,12);
         } else {
