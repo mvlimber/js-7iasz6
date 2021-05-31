@@ -460,7 +460,7 @@
          
               </form>
               <br>
-              <button id="transaction_save_button" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="addTransaction()">Save and go to adding evidence<i class="material-icons right">send</i></button>
+              <button id="transaction_save_button" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeTransaction()">Save and go to adding evidence<i class="material-icons right">send</i></button>
               <a style="float: right;margin-bottom: 3px"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
                 Cancel</a>
@@ -483,6 +483,14 @@
                     <input id="transaction_name" type="text" readonly>
                     <label for="transaction_name">Counterparty</label>
                   </div>
+                   <div class="input-field col s12 m4">
+                    <input id="transaction_account" type="text" readonly>
+                    <label for="transaction_account">Account</label>
+                  </div>
+                  <div class="input-field col s12 m8">
+                    <input id="transaction_communication" type="text" readonly>
+                    <label for="transaction_communication">Communication</label>
+                  </div>
                   <div class="input-field col s12 m4">
                     <input id="transaction_amount" type="text" readonly>
                     <label for="transaction_amount">Amount</label>
@@ -495,15 +503,7 @@
                     <input id="transaction_bookDate" type="text" readonly>
                     <label for="transaction_bookDate">Accountancy Date</label>
                   </div>
-                  <div class="input-field col s12 m4">
-                    <input id="transaction_account" type="text" readonly>
-                    <label for="transaction_account">Account</label>
-                  </div>
-                  <div class="input-field col s12 m8">
-                    <input id="transaction_communication" type="text" readonly>
-                    <label for="transaction_communication">Communication</label>
-                  </div>
-                  <div id="transaction_properties_frame" style="visibility:hidden">
+                 <div id="transaction_properties_frame" style="visibility:hidden">
                     <h6><b>Private transaction: Amount assigned to:</b></h6>
                     <table class="striped">
                       <thead>
@@ -1985,6 +1985,7 @@
         };
       };
       
+      /*
       function addTransaction() {
         if (validateTransactionAdd()) {  
             var entries = getTransactionEntriesAdd();
@@ -1999,7 +2000,7 @@
           });
         };
       };
-
+      */
     function copyToBookDate(){
       if (!document.getElementById("transaction_bookDate_add").checkValidity()) {
         document.getElementById("transaction_bookDate_add").value = document.getElementById("transaction_date_add").value;
@@ -2040,10 +2041,12 @@
         M.toast({html:"Please enter valid communication"});
         valid=false;
       };
-      var amount = parseFloat(document.getElementById("transaction_amount_add").value);
-      if (!(((amount >= distributedAmount) && ((amount - distributedAmount) < 0.05)) ||  ((amount <= distributedAmount) && ((distributedAmount - amount) < 0.05)))) {
-        M.toast({html:"Transactaction amount too differnt from total assigned amounts: please correct"});
-        valid=false;
+      if (document.getElementById("transaction_type_add").value == "Private") {
+        var amount = parseFloat(document.getElementById("transaction_amount_add").value);
+        if (!(((amount >= distributedAmount) && ((amount - distributedAmount) < 0.05)) ||  ((amount <= distributedAmount) && ((distributedAmount - amount) < 0.05)))) {
+          M.toast({html:"Transactaction amount too differnt from total assigned amounts: please correct"});
+          valid=false;
+        };
       };
       return valid;
     };
