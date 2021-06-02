@@ -2043,7 +2043,7 @@
       document.getElementById("transaction_date_add").value="";
       document.getElementById("transaction_bookDate_add").value="";
       document.getElementById("transaction_communication_add").value="";
-      document.getElementById("transaction_properties_add_frame").style.visibility = "hidden";
+      document.getElementById("transaction_properties_add_frame").style.display = "none";
       document.getElementById("transaction_save_button").innerHTML = "Save and go to adding evidence";
       emptyHTMLSet(document.getElementById("transaction_distribution_table_add"));
       var elems = document.querySelectorAll('select');
@@ -3552,9 +3552,9 @@
       };
 
       var headerCommon = [
-        {id:"type",name:"type",prompt:"type",width: 30,align: "center",padding: 0},
-        {id:"name",name:"name",prompt:"counter party",width: 60,align: "center",padding: 0},
-        {id:"date",name:"date",prompt:"date",width: 30,align: "center",padding: 0},
+        {id:"type",name:"type",prompt:"type",width: 35,align: "center",padding: 0},
+        {id:"name",name:"name",prompt:"counter party",width: 50,align: "center",padding: 0},
+        {id:"date",name:"date",prompt:"date",width: 35,align: "center",padding: 0},
         {id:"communication",name:"communication",prompt:"communication",width: 87,align: "center",padding: 0},
         {id:"amount",name:"amount",prompt:"amount",width: 38,align: "right",padding: 0}
       ];
