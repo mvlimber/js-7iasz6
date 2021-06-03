@@ -3615,6 +3615,7 @@
         var buildingWater = 0;
         var buildingHeating = 0;
         var buildingCommon = 0;
+        var buildingPrivate = 0;
         
         var totalColdWaterDifference = 0
         var totalHeatingDifference = 0; 
@@ -3622,6 +3623,7 @@
         var totalQuota = 0;
        
         var dataCommon = [];
+        var dataPrivate = [];
         var dataWater = [];
         var dataHeating = [];
         var dataConsumption = [];
@@ -3634,6 +3636,9 @@
             if (trData.type != "Private") {
             buildingCommon = buildingCommon + reportTransaction(trData);
             dataCommon.push(trData);
+            } else {
+              buildingPrivate = buildingPrivate + reportTransaction(trData);
+              dataPrivate.push(trData);
             };
           });
           refCoproperty.collection("Transactions").where("type", "==", "Water").where("bookDate", ">", lastReguDate).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){
