@@ -3631,8 +3631,10 @@
         refCoproperty.collection("Transactions").where("bookDate", ">", lastCloseDate).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){
           transactionsFS.forEach(function(transactionFS){
             var trData = transactionFS.data();
+            if (trData.type != "Private") {
             buildingCommon = buildingCommon + reportTransaction(trData);
             dataCommon.push(trData);
+            };
           });
           refCoproperty.collection("Transactions").where("type", "==", "Water").where("bookDate", ">", lastReguDate).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){
             transactionsFS.forEach(function(transactionFS){
