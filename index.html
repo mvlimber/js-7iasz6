@@ -3781,9 +3781,13 @@
       };
       
       function calcPrivate(dataPrivate, dataCharges){
-        dataprivate.forEach(function (dp) {
+        var i=0;
 
-        };
+        dataprivate.forEach(function (dp) {
+          dp.distribution = JSON.stringify(dp.distribution);
+          console.log(dp.distribution);
+        });
+        return dataPrivate;
       };
       
       function calcConsumptionAmounts (dataConsumption, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating) {
@@ -3946,7 +3950,7 @@
       };
       
            
-      function writePDF (closeDateTransactions, metersIncludedHere, dataWater, dataHeating, dataCommon, , totalledPrivateData, dataConsumption,  dataQuota, tableCharges){
+      function writePDF (closeDateTransactions, metersIncludedHere, dataWater, dataHeating, dataCommon, totalledPrivateData, dataConsumption,  dataQuota, tableCharges){
         const rowsLandscape =15;
         const rowsPortrait =24;
         var numPages;
