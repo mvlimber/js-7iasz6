@@ -3780,6 +3780,12 @@
         return dataConsumption;
       };
       
+      function calcPrivate(dataPrivate, dataCharges){
+        dataprivate.forEach(function (dp) {
+
+        };
+      };
+      
       function calcConsumptionAmounts (dataConsumption, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating) {
         dataConsumption.forEach(function(arrayEl) {
           if (arrayEl.type != "Heating") {
@@ -3790,8 +3796,7 @@
             var amountHeatingString = (buildingHeating * arrayEl.difference / (totalHeatingDifference + totalHotWaterDifference)).toFixed(2);
             arrayEl.heating = Number(amountHeatingString);
           };
-        });
-        
+        });      
       };
       
       function calcTotalConsumption(totalQuota, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataConsumption, dataCharges){
