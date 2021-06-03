@@ -3716,7 +3716,7 @@
                           if (metersIncluded) {
                             totalledConsumption = calcTotalConsumption (totalQuota, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataConsumption, dataCharges);
                           };
-                          calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota,buildingCommon, buildingPrivate, dataWater, dataHeating, dataCommon,totalledConsumption, dataQuota, dataCharges);                         
+                          calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota,buildingCommon, buildingPrivate, dataWater, dataHeating, dataCommon, dataPrivate, totalledConsumption, dataQuota, dataCharges);                         
                         };
                       };
                     });
@@ -3737,7 +3737,7 @@
         });
       };  
 
-      function calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota,buildingCommon, buildingPrivate, dataWater, dataHeating, dataCommon,totalledConsumptionData, dataQuota, dataCharges){
+      function calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota,buildingCommon, buildingPrivate, dataWater, dataHeating, dataCommon, dataPrivate, totalledConsumptionData, dataQuota, dataCharges){
         var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon, dataCharges);                          
         dataCommon.push({type:"Total",name:" ",date:" ",communication:" ",amount:buildingCommon.toLocaleString("nl-BE",currencyStyle)});
         var dataChargesCurrency = putChargesCurrency(Object.values(dataCharges), metersIncluded);
