@@ -3762,12 +3762,12 @@
             arrayEl.water = arrayEl.water.toLocaleString("nl-BE",currencyStyle);
             tHeating += arrayEl.heating;
             arrayEl.heating = arrayEl.heating.toLocaleString("nl-BE",currencyStyle);
-            
           } else {
-           arrayEl.water = " ";
+            arrayEl.water = " ";
             arrayEl.heating = " ";
           }
         });
+        dataChargesP.push({ownerId:ownerIdV, owner:"Total", common:tCommon.toLocaleString("nl-BE",currencyStyle), private:tPrivate.toLocaleString("nl-BE",currencyStyle), water:tWater.toLocaleString("nl-BE",currencyStyle), heating:tHeating.toLocaleString("nl-BE",currencyStyle), Total:" "});
         return dataChargesP;
       };
       
