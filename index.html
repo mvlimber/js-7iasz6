@@ -3782,12 +3782,16 @@
       
       function calcPrivate(dataPrivate, dataCharges){
         var result = [];
+        var thisProperty;
         function findProperty (quotaRow) {
           return (quotaRow.property == thisProperty);
         }
         dataPrivate.forEach(function (dp) {
           dp.distributionString = "";
           dp.distribution.forEach(function (ds){
+            thisProperty = ds.property;
+            var thisQuotaRow = 
+          
             dp.distributionString = dp.distributionString + ds.property + ": " + ds.amount.toLocaleString("nl-BE",currencyStyle) + " | ";
           });
           result.push({name: dp.name, date: dp.date, communication: dp.communication, distribution: dp.distributionString, amount: dp.amount.toLocaleString("nl-BE",currencyStyle)});
