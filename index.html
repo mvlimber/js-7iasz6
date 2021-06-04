@@ -3784,12 +3784,12 @@
         var i=0;
 
         dataPrivate.forEach(function (dp) {
-          dp.distributionStrng = "";
-          dp.distribution.forEach[function (ds){
-
+          dp.distributionString = "";
+          dp.distribution.forEach(function (ds){
+            dp.distributionString = dp.distributionString + ds.property + ": " + ds.amount.toLocaleString("nl-BE",currencyStyle) + " | ";
           });
-          dp.distribution = JSON.stringify(dp.distribution);
-          console.log(dp.distribution);
+          console.log(dp.distributionString);
+        
         });
         return dataPrivate;
       };
@@ -3954,14 +3954,14 @@
       };
       
            
-      function writePDF (closeDateTransactions, metersIncludedHere, dataWater, dataHeating, dataCommon, totalledPrivateData, dataConsumption,  dataQuota, tableCharges){
+      function writePDF (closeDateTransactions, metersIncludedHere, dataWater, dataHeating, dataCommon, privateData, dataConsumption,  dataQuota, tableCharges){
         const rowsLandscape =15;
         const rowsPortrait =24;
         var numPages;
         if (metersIncludedHere) {
-           numPages = 1 + Math.ceil(dataWater.length/rowsPortrait) + Math.ceil(dataHeating.length/rowsPortrait) + Math.ceil(dataConsumption.length/rowsLandscape) + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsPortrait) + Math.ceil(tableCharges.length/rowsLandscape);
+           numPages = 1 + Math.ceil(dataWater.length/rowsPortrait) + Math.ceil(dataHeating.length/rowsPortrait) + Math.ceil(dataConsumption.length/rowsLandscape) + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsPortrait) + Math.ceil(dataPrivate.length/rowsPortrait) + Math.ceil(tableCharges.length/rowsLandscape);
         } else {
-           numPages = 1 + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsPortrait) + Math.ceil(tableCharges.length/rowsLandscape);
+           numPages = 1 + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsPortrait) + Math.ceil(dataPrivate.length/rowsPortrait) + Math.ceil(tableCharges.length/rowsLandscape);
         };
         window.jsPDF = window.jspdf.jsPDF;
         var currentPage = 1;
@@ -4045,6 +4045,7 @@
         printTablePortrait("Common charges: total for building", dataCommon, headerCommon);
         console.log("na dataCommon");
         printTablePortrait("Common charges: quota per owner", dataQuota, headerQuota);
+        printTablePortrait("Private charges:", privateData, headerPrivate);
         if (metersIncludedHere){
           
           printTablePortrait("Water: total for building since last regularisation", dataWater, headerWH);
