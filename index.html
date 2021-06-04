@@ -3676,7 +3676,7 @@
                 var prData = prFS.data();
                 var ownerIdV = prData.owner;
                 var ownerName = idMemberMap[ownerIdV];
-                dataQuota.push({ownerId:ownerIdV, owner:ownerName, property:prData.code, quota:prData.quota, period:"100%", quota_period: prData.quota, amount:" "}); 
+                dataQuota.push({ownerId:ownerIdV, owner:ownerName, propertyId:prFS.id, property:prData.code, quota:prData.quota, period:"100%", quota_period: prData.quota, amount:" "}); 
                 var prQuota = parseInt(prData.quota);
                 totalQuota = totalQuota + prQuota; 
                 if (!dataCharges[ownerIdV]) {
@@ -3740,7 +3740,7 @@
       function calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota, buildingCommon, buildingPrivate, dataWater, dataHeating, dataCommon, dataPrivate, totalledConsumptionData, dataQuota, dataCharges){
         var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon, dataCharges);                          
         dataCommon.push({type:"Total",name:" ",date:" ",communication:" ",amount:buildingCommon.toLocaleString("nl-BE",currencyStyle)});
-        var totalledPrivateData = calcPrivate(dataPrivate, dataCharges);
+        var totalledPrivateData = calcPrivate(dataQuota, dataPrivate, dataCharges);
         var dataChargesCurrency = putChargesCurrency(Object.values(dataCharges), metersIncluded);
         writePDF(closeDateTransactions, metersIncluded, dataWater, dataHeating,  dataCommon, totalledPrivateData, totalledConsumptionData, totalledQuotaData, dataChargesCurrency);
       };
@@ -3780,23 +3780,21 @@
         return dataConsumption;
       };
       
-      function calcPrivate(dataPrivate, dataCharges){
+      function calcPrivate(dataQuota, dataPrivate, dataCharges){
         var result = [];
-        var thisProperty;
-        function findProperty (quotaRow) {
-          return (quotaRow.property == thisProperty);
+        var thisPropertyId;
+        function findQR (quotaRow) {
+          return quotaRow.propertyId == thisPropertyId;
         }
         dataPrivate.forEach(function (dp) {
-          dp.distributionString = "";
+          var distributionString = "";
           dp.distribution.forEach(function (ds){
-            thisProperty = ds.property;
-            var thisQuotaRow = 
+            thisPropertyId = ds.property;
+            var thisQR = dataQuota.find(findQR);
           
-            dp.distributionString = dp.distributionString + ds.property + ": " + ds.amount.toLocaleString("nl-BE",currencyStyle) + " | ";
+            distributionString = distributionString + thisQR.property + ": " + ds.amount.toLocaleString("nl-BE",currencyStyle) + " | ";
           });
-          result.push({name: dp.name, date: dp.date, communication: dp.communication, distribution: dp.distributionString, amount: dp.amount.toLocaleString("nl-BE",currencyStyle)});
-          console.log(dp.distributionString);
-        
+          result.push({name: dp.name, date: dp.date, communication: dp.communication, distribution: distributionString, amount: dp.amount.toLocaleString("nl-BE",currencyStyle)});
         });
         return result;
       };
