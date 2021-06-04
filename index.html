@@ -3562,7 +3562,7 @@
         {id:"name",name:"name",prompt:"counter party",width: 60,align: "center",padding: 0},
         {id:"date",name:"date",prompt:"date",width: 30,align: "center",padding: 0},
         {id:"communication",name:"communication",prompt:"communication",width: 72,align: "center",padding: 0},
-        {id:"assign",name:"assign",prompt:"assigned to",width: 72,align: "center",padding: 0},
+        {id:"distributionString",name:"distributionString",prompt:"assigned to",width: 72,align: "center",padding: 0},
         {id:"amount",name:"amount",prompt:"amount",width: 38,align: "right",padding: 0}
       ];
       var headerWH = [
@@ -3781,17 +3781,17 @@
       };
       
       function calcPrivate(dataPrivate, dataCharges){
-        var i=0;
-
+        var result = [];
         dataPrivate.forEach(function (dp) {
           dp.distributionString = "";
           dp.distribution.forEach(function (ds){
             dp.distributionString = dp.distributionString + ds.property + ": " + ds.amount.toLocaleString("nl-BE",currencyStyle) + " | ";
           });
+          result.push({name: dp.name, date: dp.date, communication: dp.communication, distribution: dp.distributionString, amount: dp.amount.toLocaleString("nl-BE",currencyStyle)});
           console.log(dp.distributionString);
         
         });
-        return dataPrivate;
+        return result;
       };
       
       function calcConsumptionAmounts (dataConsumption, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating) {
@@ -3954,7 +3954,7 @@
       };
       
            
-      function writePDF (closeDateTransactions, metersIncludedHere, dataWater, dataHeating, dataCommon, privateData, dataConsumption,  dataQuota, tableCharges){
+      function writePDF (closeDateTransactions, metersIncludedHere, dataWater, dataHeating, dataCommon, dataPrivate, dataConsumption,  dataQuota, tableCharges){
         const rowsLandscape =15;
         const rowsPortrait =24;
         var numPages;
@@ -4045,7 +4045,7 @@
         printTablePortrait("Common charges: total for building", dataCommon, headerCommon);
         console.log("na dataCommon");
         printTablePortrait("Common charges: quota per owner", dataQuota, headerQuota);
-        printTablePortrait("Private charges:", privateData, headerPrivate);
+        printTablePortrait("Private charges:", dataPrivate, headerPrivate);
         if (metersIncludedHere){
           
           printTablePortrait("Water: total for building since last regularisation", dataWater, headerWH);
