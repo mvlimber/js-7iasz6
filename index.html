@@ -3750,9 +3750,11 @@
         var tWater = 0;
         var tHeating = 0;
         var tPrivate = 0;
-        
+        var tTotal = 0;
         dataChargesP.forEach(function(arrayEl) {
-          arrayEl.Total = (arrayEl.common + arrayEl.water + arrayEl.heating).toLocaleString("nl-BE",currencyStyle);
+          var totalRow = arrayEl.common + arrayEl.water + arrayEl.heating;
+          tTotal += totalRow;
+          arrayEl.Total = totalRow.toLocaleString("nl-BE",currencyStyle);
           tCommon += arrayEl.common;
           arrayEl.common = arrayEl.common.toLocaleString("nl-BE",currencyStyle);
           tPrivate += arrayEl.private;
@@ -3767,7 +3769,11 @@
             arrayEl.heating = " ";
           }
         });
-        dataChargesP.push({ownerId:ownerIdV, owner:"Total", common:tCommon.toLocaleString("nl-BE",currencyStyle), private:tPrivate.toLocaleString("nl-BE",currencyStyle), water:tWater.toLocaleString("nl-BE",currencyStyle), heating:tHeating.toLocaleString("nl-BE",currencyStyle), Total:" "});
+        if (metersIncluded) {
+          dataChargesP.push({ownerId:"", owner:"Total", common:tCommon.toLocaleString("nl-BE",currencyStyle), private:tPrivate.toLocaleString("nl-BE",currencyStyle), water:tWater.toLocaleString("nl-BE",currencyStyle), heating:tHeating.toLocaleString("nl-BE",currencyStyle), Total:" "});
+        } else {
+          dataChargesP.push({ownerId:"", owner:"Total", common:tCommon.toLocaleString("nl-BE",currencyStyle), private:tPrivate.toLocaleString("nl-BE",currencyStyle), Total:" "});
+        };
         return dataChargesP;
       };
       
