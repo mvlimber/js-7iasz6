@@ -3680,7 +3680,7 @@
                 var prQuota = parseInt(prData.quota);
                 totalQuota = totalQuota + prQuota; 
                 if (!dataCharges[ownerIdV]) {
-                  dataCharges[ownerIdV] = {ownerId:ownerIdV, owner:ownerName, common:" ", private:" ", water:" ", heating:" ", Total:" "};
+                  dataCharges[ownerIdV] = {ownerId:ownerIdV, owner:ownerName, common:" ", private:0, water:" ", heating:" ", Total:" "};
                 };
                 var iteratorMeter = 0;
                 refCoproperty.collection("Properties").doc(prFS.id).collection("Meters").get().then(function(metersFS){   
@@ -3790,9 +3790,9 @@
           var distributionString = "";
           dp.distribution.forEach(function (ds){
             thisPropertyId = ds.property;
-            var thisQR = dataQuota.find(findQR);
-          
-            distributionString = distributionString + thisQR.property + ": " + ds.amount.toLocaleString("nl-BE",currencyStyle) + " | ";
+            var thisQR = dataQuota.find(findQR);         
+            distributionString += thisQR.property + ": " + ds.amount.toLocaleString("nl-BE",currencyStyle) + " | ";
+            dataCharges[thisQR.ownerId].private += ds.amount;
           });
           result.push({name: dp.name, date: dp.date, communication: dp.communication, distribution: distributionString, amount: dp.amount.toLocaleString("nl-BE",currencyStyle)});
         });
