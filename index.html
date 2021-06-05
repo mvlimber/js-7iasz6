@@ -2051,6 +2051,10 @@
       M.updateTextFields();  
     };
     function editTransaction(id,object) {
+      if (!checkBookDate(object.bookDate))   {
+        M.toast({html:"Transaction accountancy date is before last accountancy close data: updates no longer possible"});
+        M.close
+      } else {
       document.getElementById("transaction_type_add").value=object.type;
       document.getElementById("transaction_account_add").value=object.account;
       document.getElementById("transaction_name_add").value=object.name;
@@ -2063,6 +2067,7 @@
       var elems = document.querySelectorAll('select');
       M.FormSelect.init(elems);
       M.updateTextFields();
+      };
     };
 
     function listProperties(el, selectedOption) {
