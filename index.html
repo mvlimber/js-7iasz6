@@ -3978,7 +3978,7 @@
            
       function writePDF (closeDateTransactions, metersIncludedHere, dataWater, dataHeating, dataCommon, dataPrivate, dataConsumption,  dataQuota, tableCharges){
         const rowsLandscape =15;
-        const rowsPortrait =24;
+        const rowsPortrait =17;
         var numPages;
         if (metersIncludedHere) {
            numPages = 1 + Math.ceil(dataWater.length/rowsPortrait) + Math.ceil(dataHeating.length/rowsPortrait) + Math.ceil(dataConsumption.length/rowsLandscape) + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsPortrait) + Math.ceil(dataPrivate.length/rowsPortrait) + Math.ceil(tableCharges.length/rowsLandscape);
@@ -3997,7 +3997,7 @@
           doc.line(15, 280, 200, 280);
           doc.setFontSize(10);
           doc.setTextColor("green");doc.text("MyCondos " ,15, 285);doc.setTextColor("black");
-          doc.text(footerText,32, 285);
+          doc.text(footerText,35, 285);
           doc.text("Page " + currentPage + "/" + numPages, 185, 285);
           currentPage = currentPage + 1;
         };
