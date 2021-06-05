@@ -3752,10 +3752,8 @@
         var tWater = 0;
         var tHeating = 0;
         var tPrivate = 0;
-        var tTotal = 0;
         dataChargesP.forEach(function(arrayEl) {
           var totalRow = arrayEl.common + arrayEl.private + arrayEl.water + arrayEl.heating;
-          tTotal += totalRow;
           arrayEl.Total = totalRow.toLocaleString("nl-BE",currencyStyle);
           tCommon += arrayEl.common;
           arrayEl.common = arrayEl.common.toLocaleString("nl-BE",currencyStyle);
@@ -3772,9 +3770,9 @@
           }
         });
         if (metersIncluded) {
-          dataChargesP.push({ownerId:"", owner:"Total", common:tCommon.toLocaleString("nl-BE",currencyStyle), private:tPrivate.toLocaleString("nl-BE",currencyStyle), water:tWater.toLocaleString("nl-BE",currencyStyle), heating:tHeating.toLocaleString("nl-BE",currencyStyle), Total:tTotal.toLocaleString("nl-BE",currencyStyle)});
+          dataChargesP.push({ownerId:"", owner:"Total", common:tCommon.toLocaleString("nl-BE",currencyStyle), private:tPrivate.toLocaleString("nl-BE",currencyStyle), water:tWater.toLocaleString("nl-BE",currencyStyle), heating:tHeating.toLocaleString("nl-BE",currencyStyle), Total:(tCommon+tPrivate+tWater+tHeating).toLocaleString("nl-BE",currencyStyle)});
         } else {
-          dataChargesP.push({ownerId:"", owner:"Total", common:tCommon.toLocaleString("nl-BE",currencyStyle), private:tPrivate.toLocaleString("nl-BE",currencyStyle), Total:tTotal.toLocaleString("nl-BE",currencyStyle)});
+          dataChargesP.push({ownerId:"", owner:"Total", common:tCommon.toLocaleString("nl-BE",currencyStyle), private:tPrivate.toLocaleString("nl-BE",currencyStyle), Total:(tCommon+tPrivate).toLocaleString("nl-BE",currencyStyle)});
         };
         return dataChargesP;
       };
@@ -3981,9 +3979,9 @@
         const rowsPortrait =17;
         var numPages;
         if (metersIncludedHere) {
-           numPages = 1 + Math.ceil(dataWater.length/rowsPortrait) + Math.ceil(dataHeating.length/rowsPortrait) + Math.ceil(dataConsumption.length/rowsLandscape) + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsPortrait) + Math.ceil(dataPrivate.length/rowsPortrait) + Math.ceil(tableCharges.length/rowsLandscape);
+           numPages = 1 + Math.ceil(dataWater.length/rowsPortrait) + Math.ceil(dataHeating.length/rowsPortrait) + Math.ceil(dataConsumption.length/rowsLandscape) + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsPortrait) + Math.ceil(dataPrivate.length/rowsLandscape) + Math.ceil(tableCharges.length/rowsLandscape);
         } else {
-           numPages = 1 + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsPortrait) + Math.ceil(dataPrivate.length/rowsPortrait) + Math.ceil(tableCharges.length/rowsLandscape);
+           numPages = 1 + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsPortrait) + Math.ceil(dataPrivate.length/rowsPortrait) + Math.ceil(tableCharges.length/rowsPortrait);
         };
         window.jsPDF = window.jspdf.jsPDF;
         var currentPage = 1;
@@ -4067,7 +4065,7 @@
         printTablePortrait("Common charges: total for building", dataCommon, headerCommon);
         console.log("na dataCommon");
         printTablePortrait("Common charges: quota per owner", dataQuota, headerQuota);
-        printTablePortrait("Private charges:", dataPrivate, headerPrivate);
+        printTableLandscape("Private charges:", dataPrivate, headerPrivate);
         if (metersIncludedHere){
           
           printTablePortrait("Water: total for building since last regularisation", dataWater, headerWH);
@@ -4075,7 +4073,7 @@
           printTableLandscape("Water and Heating: regularisation per property and owner (CW = Cold Water, HW= Hot Water, HE = heating)", dataConsumption, headerConsumption,8);
           printTableLandscape("Total charges: total charges per owner", tableCharges, headerChargesMetersIncluded,12);
         } else {
-          printTableLandscape("Total charges: total charges per owner", tableCharges, headerChargesMetersExcluded, 12);
+          printTablePortrait("Total charges: total charges per owner", tableCharges, headerChargesMetersExcluded, 12);
         };
         
         refCoproperty.collection("ChargesReports").add({startDate: startDateString, endDate: closeDateTransactions, metersIncluded: metersIncludedHere, confirmed: false }).then (function (chargesReportFS){
