@@ -1557,10 +1557,12 @@
 
       function refreshReports(){
         emptyHTMLSet(reportsTable);
-        refCoproperty.collection("Reports").orderBy("date","desc").get().then(function(objectsFSArray){
+        refCoproperty.collection("Reports").orderBy("endDate", "desc").get().then(function(objectsFSArray){
             objectsFSArray.forEach(function(objectFS){
               loadReport(objectFS);
-            })
+            });
+            if  (objectsFSArray.docs.length > 0) {lastCloseDate= objectsFSArray.docs[0].endDate;}
+            else {lastCloseDate = currentCoproperty.initialStartDate;};
           });
       };
 
@@ -1985,8 +1987,8 @@
       } else {
         document.getElementById("transaction_properties_frame").style.diplay = "none";
       };
-      if (checkBookDate(object.bookDate)){document.getElementById("transaction_edit_button").disabled = true}
-      else {document.getElementById("transaction_edit_button").disabled = false};
+      if (checkBookDate(object.bookDate)){document.getElementById("transaction_edit_button").disabled = false}
+      else {document.getElementById("transaction_edit_button").disabled = true};
       refreshTransactionEvidence()
       var elems = document.querySelectorAll('select');
       M.FormSelect.init(elems);
