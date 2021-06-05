@@ -3546,7 +3546,7 @@
 
       function reportTransaction(trData){
         if (!trData.communication) { trData.communication=" ";
-        } else {trData.communication=trData.communication.substr(0,54);};
+        } else {trData.communication=trData.communication.substr(0,62);};
         trData.name=trData.name.substr(0,25);
         var amount = Number(trData.amount);
         trData.amount = amount.toLocaleString("nl-BE",currencyStyle);            
