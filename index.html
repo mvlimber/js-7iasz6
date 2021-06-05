@@ -1558,12 +1558,10 @@
       function refreshReports(){
         emptyHTMLSet(reportsTable);
         refCoproperty.collection("Reports").orderBy("endDate", "desc").get().then(function(objectsFSArray){
-            objectsFSArray.forEach(function(objectFS){
-              loadReport(objectFS);
-            });
-            if  (objectsFSArray.docs.length > 0) {lastCloseDate= objectsFSArray.docs[0].endDate;}
-            else {lastCloseDate = currentCoproperty.initialStartDate;};
+          objectsFSArray.forEach(function(objectFS){
+            loadReport(objectFS);
           });
+        });
       };
 
       var reportsLoaded = false;
@@ -3756,7 +3754,7 @@
         var tPrivate = 0;
         var tTotal = 0;
         dataChargesP.forEach(function(arrayEl) {
-          var totalRow = arrayEl.common + arrayEl.water + arrayEl.heating;
+          var totalRow = arrayEl.common + arrayEl.private + arrayEl.water + arrayEl.heating;
           tTotal += totalRow;
           arrayEl.Total = totalRow.toLocaleString("nl-BE",currencyStyle);
           tCommon += arrayEl.common;
@@ -3774,9 +3772,9 @@
           }
         });
         if (metersIncluded) {
-          dataChargesP.push({ownerId:"", owner:"Total", common:tCommon.toLocaleString("nl-BE",currencyStyle), private:tPrivate.toLocaleString("nl-BE",currencyStyle), water:tWater.toLocaleString("nl-BE",currencyStyle), heating:tHeating.toLocaleString("nl-BE",currencyStyle), Total:" "});
+          dataChargesP.push({ownerId:"", owner:"Total", common:tCommon.toLocaleString("nl-BE",currencyStyle), private:tPrivate.toLocaleString("nl-BE",currencyStyle), water:tWater.toLocaleString("nl-BE",currencyStyle), heating:tHeating.toLocaleString("nl-BE",currencyStyle), Total:tTotal.toLocaleString("nl-BE",currencyStyle)});
         } else {
-          dataChargesP.push({ownerId:"", owner:"Total", common:tCommon.toLocaleString("nl-BE",currencyStyle), private:tPrivate.toLocaleString("nl-BE",currencyStyle), Total:" "});
+          dataChargesP.push({ownerId:"", owner:"Total", common:tCommon.toLocaleString("nl-BE",currencyStyle), private:tPrivate.toLocaleString("nl-BE",currencyStyle), Total:tTotal.toLocaleString("nl-BE",currencyStyle)});
         };
         return dataChargesP;
       };
@@ -3973,7 +3971,7 @@
               result.push({ownerId:currentOwnerId, owner:"Total", property:"", quota:"", period:"", quota_period: "", amount:subtotalAmount.toLocaleString("nl-BE",currencyStyle)});
             };
         result.push({ownerId:" ", owner:"", property:"", quota:"", period:"", quota_period: "", amount:""});
-        result.push({ownerId:" ", owner:"Total building", property:" ", quota:totalQuota.toString(), period:" ", quota_period: " ", amount:totalCommon.toLocaleString("nl-BE",currencyStyle)});
+        result.push({ownerId:" ", owner:"Total building", property:" ", quota:" ", period:" ", quota_period: totalQuota.toString(), amount:totalCommon.toLocaleString("nl-BE",currencyStyle)});
         return result;
       };
       
