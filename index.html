@@ -518,7 +518,7 @@
                 </div>  
                 </form>
                 <div id="Transactions_Edit" class="displayHidden">
-                  <button style="float: right;margin-bottom: 3px" data-target="transactionAdd" class="btn-small waves-light modal-trigger" onclick="editTransaction(selectedTransactionId, transaction)">Edit<i class="material-icons right">edit</i></button>
+                  <button id="transaction_edit_button" style="float: right;margin-bottom: 3px" data-target="transactionAdd" class="btn-small waves-light modal-trigger" onclick="editTransaction(selectedTransactionId, transaction)">Edit<i class="material-icons right">edit</i></button>
                 </div>
               </div>
               <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
@@ -1985,6 +1985,8 @@
       } else {
         document.getElementById("transaction_properties_frame").style.diplay = "none";
       };
+      if (checkBookDate(object.bookDate)){document.getElementById("transaction_edit_button").disabled = true}
+      else {document.getElementById("transaction_edit_button").disabled = false};
       refreshTransactionEvidence()
       var elems = document.querySelectorAll('select');
       M.FormSelect.init(elems);
@@ -2051,10 +2053,6 @@
       M.updateTextFields();  
     };
     function editTransaction(id,object) {
-      if (!checkBookDate(object.bookDate))   {
-        M.toast({html:"Transaction accountancy date is before last accountancy close data: updates no longer possible"});
-        M.close
-      } else {
       document.getElementById("transaction_type_add").value=object.type;
       document.getElementById("transaction_account_add").value=object.account;
       document.getElementById("transaction_name_add").value=object.name;
@@ -2067,7 +2065,6 @@
       var elems = document.querySelectorAll('select');
       M.FormSelect.init(elems);
       M.updateTextFields();
-      };
     };
 
     function listProperties(el, selectedOption) {
