@@ -3551,7 +3551,8 @@
         } else {trData.communication=trData.communication.substr(0,62);};
         trData.name=trData.name.substr(0,25);
         var amount = Number(trData.amount);
-        if (trData.type != "Private") {trData.amount = amount.toLocaleString("nl-BE",currencyStyle);};            
+        if (trData.type == "Private") {trData.amount = amount;}
+        else {trData.amount = amount.toLocaleString("nl-BE",currencyStyle);};            
         return amount;
       };
 
