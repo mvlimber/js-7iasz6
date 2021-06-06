@@ -1343,7 +1343,7 @@
               });  
           }
           else {
-            M.toast({html:"Unknown email: Please contact your administartor"});
+            M.toast({html:"Unknown email: Please contact your administrator"});
           };
         });
       };
@@ -1778,7 +1778,7 @@
           document.getElementById("ChargesReport_Generate").setAttribute("class", "btn-small waves-light modal-trigger");
           M.toast({html:"Charges report removed: correct your data and generate a new charges report anytime"});
         }).catch(function(error) {
-          M.toast({html:"Error removing charges report: " + error);
+          M.toast({html:"Error removing charges report: " + error});
         });
       };
 
@@ -1885,7 +1885,7 @@
               setSelectedTransaction(selectedTransactionId,entries)
               M.Modal.getInstance(document.getElementById("transactionAdd")).close();
             }).catch(function(error) {
-              M.toast({html:"Error updating transaction: " + error);
+              M.toast({html:"Error updating transaction: " + error});
             });
           } else {
             refCoproperty.collection("Transactions").add(entries).then(function(docref) {
@@ -1894,7 +1894,7 @@
               M.Modal.getInstance(document.getElementById("transactionAdd")).close();
               M.Modal.getInstance(document.getElementById("transactionView")).open();
             }).catch(function(error) {
-              M.toast({html:"Error adding transaction: " + error);
+              M.toast({html:"Error adding transaction: " + error});
             });
           };
         };
