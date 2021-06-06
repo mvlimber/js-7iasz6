@@ -3551,7 +3551,7 @@
         } else {trData.communication=trData.communication.substr(0,62);};
         trData.name=trData.name.substr(0,25);
         var amount = Number(trData.amount);
-        trData.amount = amount.toLocaleString("nl-BE",currencyStyle);            
+        if (trData.type != "Private") {trData.amount = amount.toLocaleString("nl-BE",currencyStyle);};            
         return amount;
       };
 
@@ -3809,7 +3809,7 @@
           result.push({name: dp.name, date: dp.date, communication: dp.communication, distribution: distributionString, amount: dp.amount.toLocaleString("nl-BE",currencyStyle)});
           total += dp.amount;
         });
-        result.push({name: "Total", date: " ", communication: " ", distribution: " ", amount: totalAmount.toLocaleString("nl-BE",currencyStyle)});
+        result.push({name: "Total", date: " ", communication: " ", distribution: " ", amount: total.toLocaleString("nl-BE",currencyStyle)});
         return result;
       };
       
@@ -3975,10 +3975,11 @@
            
       function writePDF (closeDateTransactions, metersIncludedHere, dataWater, dataHeating, dataCommon, dataPrivate, dataConsumption,  dataQuota, tableCharges){
         const rowsLandscape =15;
+        const rowsLandscapePrivate =11;
         const rowsPortrait =17;
         var numPages;
         if (metersIncludedHere) {
-           numPages = 1 + Math.ceil(dataWater.length/rowsPortrait) + Math.ceil(dataHeating.length/rowsPortrait) + Math.ceil(dataConsumption.length/rowsLandscape) + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsPortrait) + Math.ceil(dataPrivate.length/rowsLandscape) + Math.ceil(tableCharges.length/rowsLandscape);
+           numPages = 1 + Math.ceil(dataWater.length/rowsPortrait) + Math.ceil(dataHeating.length/rowsPortrait) + Math.ceil(dataConsumption.length/rowsLandscape) + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsPortrait) + Math.ceil(dataPrivate.length/rowsLandscapePrivate) + Math.ceil(tableCharges.length/rowsLandscape);
         } else {
            numPages = 1 + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsPortrait) + Math.ceil(dataPrivate.length/rowsPortrait) + Math.ceil(tableCharges.length/rowsPortrait);
         };
