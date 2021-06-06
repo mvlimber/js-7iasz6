@@ -3791,6 +3791,7 @@
       
       function calcPrivate(dataQuota, dataPrivate, dataCharges){
         var result = [];
+        var total = 0;
         var thisPropertyId;
         function findQR (quotaRow) {
           return quotaRow.propertyId == thisPropertyId;
@@ -3804,7 +3805,9 @@
             dataCharges[thisQR.ownerId].private += ds.amount;
           });
           result.push({name: dp.name, date: dp.date, communication: dp.communication, distribution: distributionString, amount: dp.amount.toLocaleString("nl-BE",currencyStyle)});
+          total += dp.amount;
         });
+        result.push({name: "Total", date: " ", communication: " ", distribution: " ", amount: totalAmount.toLocaleString("nl-BE",currencyStyle)});
         return result;
       };
       
