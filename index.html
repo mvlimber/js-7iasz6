@@ -2316,7 +2316,7 @@
         objectsRow.appendChild(cell);
         
         var meterData = meterFS.data();
-        if (meterData.readings[0].date.localeCompare(lastCloseDate) < 1) {
+        if (meterData.readings[0].date.localeCompare(lastReguDate) < 1) {
           /* newest reading is in closed period: fake empty record */
           meterData.readings.unshift({
             counter : meterData.readings[0].counter + 1,
@@ -2497,8 +2497,8 @@
         if (!document.getElementById("meterReading_date_edit").checkValidity()) {
           M.toast({html:"Please enter Reading Date"});
           valid=false;
-        } else if (!checkBookDate(document.getElementById("meterReading_date_edit").value)) {
-          M.toast({html:"Reading date must be after last close data accountancy"});
+        } else if (lastReguDate.localeCompare((document.getElementById("meterReading_date_edit").value)) != -1) {
+          M.toast({html:"Reading date must be after last meters regulation date"});
           valid=false;
         };
         var readingPicture = document.getElementById('meterReading_picture_file').files[0];
@@ -3680,7 +3680,7 @@
                       var newReading = "";
                       var differenceV = 0;
                       var readingDate = meterData.readings[0].date;
-                      if ((!checkBookDate(readingDate))|| (readingDate.localeCompare(closeDateTransactions)>0)) {
+                      if (metersIncluded && ((!checkBookDate(readingDate))|| (readingDate.localeCompare(closeDateTransactions)>0))) {
                         M.toast({html:"following meter reading is missing or out of period: " + meterData.meter});
                         stop = true;
                       } else {
