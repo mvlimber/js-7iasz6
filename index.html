@@ -2124,7 +2124,7 @@
       emptyHTMLSet( htmlTable);
       i=0;
       distributedAmount = 0;
-    
+      
       while (i<transaction.distribution.length){
         var transactionData = transaction.distribution[i];
         var objectsRow= document.createElement('tr');
@@ -2154,6 +2154,7 @@
         htmlTable.appendChild(objectsRow);
         i = i+1;
       };
+      
       var objectsRow= document.createElement('tr');
       var cellContent = document.createTextNode("Total");
       var cell = document.createElement('td');cell.style.fontWeight = "bold";
@@ -2171,6 +2172,7 @@
         document.getElementById("transaction_properties_add_frame").style.display = "block";
         document.getElementById("transaction_distribution_amount_add").value = "";
         listProperties(document.getElementById("transaction_properties_add"), "");
+        if (!transaction.distribution) {transaction.distribution = [];};
         refreshTransactionDistribution();       
       } else {
         document.getElementById("transaction_properties_add_frame").style.display = "none";
@@ -3563,8 +3565,8 @@
       var headerPrivate = [
         {id:"name",name:"name",prompt:"counter party",width: 50,align: "center",padding: 0},
         {id:"date",name:"date",prompt:"date",width: 35,align: "center",padding: 0},
-        {id:"communication",name:"communication",prompt:"communication",width: 100,align: "center",padding: 0},
-        {id:"distribution",name:"distribution",prompt:"assigned to",width: 132,align: "center",padding: 0},
+        {id:"communication",name:"communication",prompt:"communication",width: 87,align: "center",padding: 0},
+        {id:"distribution",name:"distribution",prompt:"assigned to",width: 145,align: "center",padding: 0},
         {id:"amount",name:"amount",prompt:"amount",width: 38,align: "right",padding: 0}
       ];
       var headerWH = [
