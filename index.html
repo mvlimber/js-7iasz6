@@ -3750,7 +3750,9 @@
         var tHeating = 0;
         var tPrivate = 0;
         dataChargesP.forEach(function(arrayEl) {
-          var totalRow = arrayEl.common + arrayEl.private + arrayEl.water + arrayEl.heating;
+          var totalRow;
+          if (metersIncluded){totalRow = arrayEl.common + arrayEl.private + arrayEl.water + arrayEl.heating;}
+          else {totalRow = arrayEl.common + arrayEl.private ;};
           arrayEl.Total = totalRow.toLocaleString("nl-BE",currencyStyle);
           tCommon += arrayEl.common;
           arrayEl.common = arrayEl.common.toLocaleString("nl-BE",currencyStyle);
