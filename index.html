@@ -366,7 +366,7 @@
                   <p style="text-align: right">Amount</p>
                 </th>
                 <th>
-                  <p style="text-align: right">Date</p>
+                  <p style="text-align: right">Accountancy Date</p>
                 </th>
               </tr>
             </thead>
@@ -1246,12 +1246,8 @@
             currentUserProperties = [];
             refCoproperty.collection("Properties").where("owner","==",this.id).get().then(function(propertiesFS){
               propertiesFS.forEach(function (propertyFS){
-                console.log("properties is " + currentUserProperties);
-                currentUserProperties.push(propertyFS.id);
-                console.log("properties is " + currentUserProperties);
-              });
-              console.log("properties is " + currentUserProperties);
-              console.log("propertyid is is " + propertyId);
+                currentUserProperties.push(propertyFS.id);                
+              });             
               return currentUserProperties.includes(propertyId);
             });
           } else {
@@ -1851,7 +1847,7 @@
           cell.appendChild(cellContent);
           objectsRow.appendChild(cell);  
           
-          cellContent = document.createTextNode(object.date);
+          cellContent = document.createTextNode(object.bookDate);
           cell = document.createElement('td');
           cell.setAttribute("style", "text-align: right"); 
           cell.appendChild(cellContent);
@@ -1863,7 +1859,7 @@
           
         function refreshTransactions(){
           emptyHTMLSet(transactionsTable);
-          refCoproperty.collection("Transactions").orderBy("date","desc").get().then(function(objectsFSArray){
+          refCoproperty.collection("Transactions").orderBy("bookDate","desc").get().then(function(objectsFSArray){
               objectsFSArray.forEach(function(objectFS){
                 loadTransaction(objectFS);
               });        
