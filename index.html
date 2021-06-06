@@ -2316,6 +2316,7 @@
         objectsRow.appendChild(cell);
         
         var meterData = meterFS.data();
+        console.log("lastReguDate is ", lastReguDate);
         if (meterData.readings[0].date.localeCompare(lastReguDate) < 1) {
           /* newest reading is in closed period: fake empty record */
           meterData.readings.unshift({
