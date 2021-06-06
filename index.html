@@ -1638,8 +1638,7 @@
           var fileRef = refCopropertyFiles.child("Reports").child(report);
           fileRef.delete().then(function() {
           }).catch(function(error) {
-            M.toast({html:"System error removing report file:" + error});
-            console.log(error);
+            M.toast({html:"System error removing report file:" + error});           
           });
           M.Modal.getInstance(document.getElementById("reportRemove")).close();
         }).catch(function(error) {
@@ -1768,7 +1767,7 @@
           document.getElementById("ChargesReport_Generate").setAttribute("class", "btn-small waves-light modal-trigger");
           M.toast({html:"Charges report now visible to owners"});
         }).catch(function(error) {
-          console.error("Error confirming charges report: ", error);
+          M.toast({html:"Error confirming charges report: " + error);
         });
       };
 
@@ -1779,7 +1778,7 @@
           document.getElementById("ChargesReport_Generate").setAttribute("class", "btn-small waves-light modal-trigger");
           M.toast({html:"Charges report removed: correct your data and generate a new charges report anytime"});
         }).catch(function(error) {
-          console.error("Error removing charges report: ", error);
+          M.toast({html:"Error removing charges report: " + error);
         });
       };
 
@@ -1886,7 +1885,7 @@
               setSelectedTransaction(selectedTransactionId,entries)
               M.Modal.getInstance(document.getElementById("transactionAdd")).close();
             }).catch(function(error) {
-              console.error("Error updating transaction: ", error);
+              M.toast({html:"Error updating transaction: " + error);
             });
           } else {
             refCoproperty.collection("Transactions").add(entries).then(function(docref) {
@@ -1895,7 +1894,7 @@
               M.Modal.getInstance(document.getElementById("transactionAdd")).close();
               M.Modal.getInstance(document.getElementById("transactionView")).open();
             }).catch(function(error) {
-              console.error("Error adding transaction: ", error);
+              M.toast({html:"Error adding transaction: " + error);
             });
           };
         };
@@ -2001,7 +2000,6 @@
         refCoproperty.collection("Properties").doc(dis.property).get().then(function(prFS){
           var objectsRow= document.createElement('tr');
           var cellContent = propertyLink(prFS);
-          console.log(cellContent);
           var cell = document.createElement('td');
           cell.appendChild(cellContent);
           objectsRow.appendChild(cell);
@@ -2294,8 +2292,7 @@
           var fileRef = refCopropertyFiles.child("Transactions").child(transactionEvidence);
           fileRef.delete().then(function() {
           }).catch(function(error) {
-            M.toast({html:"System error removing transaction evidence file:" + error});
-            console.log(error);
+            M.toast({html:"System error removing transaction evidence file:" + error});            
           });
           M.Modal.getInstance(document.getElementById("transactionEvidenceRemove")).close();
         }).catch(function(error) {
@@ -2905,13 +2902,9 @@
               M.toast({html:"Error: property with this code already exists"}); 
             } else {
               refCoproperty.collection("Properties").add(entries).then(function(pFS) {
-                  console.log("voor refreshProperties");
                   refreshProperties();
-                  console.log("voor setSelectedProperty" + pFS.id + " met entries " + entries);
                   setSelectedProperty(pFS.id, entries);
-                  console.log("voor close modal");
                   M.Modal.getInstance(document.getElementById("propertyAdd")).close();
-                  console.log("voor open modal");
                   M.Modal.getInstance(document.getElementById("propertyView")).open();
                 }).catch(function(error) {
                   M.toast({html:"Error occurred adding this property:" + error}); 
@@ -4060,9 +4053,7 @@
         };
         
         printFooterPortrait();
-        console.log("voor dataCommon");
         printTablePortrait("Common charges: total for building", dataCommon, headerCommon);
-        console.log("na dataCommon");
         printTablePortrait("Common charges: quota per owner", dataQuota, headerQuota);
         printTableLandscape("Private charges:", dataPrivate, headerPrivate,10);
         if (metersIncludedHere){
