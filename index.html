@@ -1231,6 +1231,9 @@
       </div>
     </main>
     <script>
+      var lastCloseDate;
+      var lastReguDate;
+      
       var currencyStyle = {
         style: "currency",
         currency: "EUR"
@@ -1281,22 +1284,10 @@
     };
 
     function openApplication() {
-      refCoproperty.collection("ChargesReports").orderBy("endDate", "desc").limit(1).get().then (function(chargesReportsFS){
-        refCoproperty.get().then(function(copropertyFS){
-          currentCoproperty = copropertyFS.data();
-          if  (chargesReportsFS.docs.length > 0) {lastCloseDate= chargesReportsFS.docs[0].endDate;}
-          else {lastCloseDate = currentCoproperty.initialStartDate;};
-        
-          emptyHTMLSet(document.getElementById("Home_CopropertyName"));
-          var textN = document.createTextNode(currentCoproperty.name);
-          document.getElementById("Home_CopropertyName").appendChild(textN);
-          textN = document.createTextNode(currentCoproperty.street + " " + currentCoproperty.houseNumber + ", "+ currentCoproperty.zip + " " + currentCoproperty.town);
-          document.getElementById("Home_CopropertyAddress").appendChild(textN);
-          homeLoaded = true;
+      loadHome();
           document.getElementById("loginPanel").setAttribute("class","displayHidden");
           document.getElementById("applicationPanel").setAttribute("class","displayBlock");
-        });
-      });
+       
     };
     
     function login(){
@@ -1461,20 +1452,22 @@
     </script>
     <!--   Home scripts start here -->
     <script>
-      var lastCloseDate;
-      var lastReguDate;
       var currentCoproperty;
       var currentCopropertyId;
       function refreshHome(){
-      refCoproperty.get().then(function(copropertyFS){
-        currentCopropertyId = copropertyFS.id;
-        currentCoproperty = copropertyFS.data();
-        
-        emptyHTMLSet(document.getElementById("Home_CopropertyName"));
-        var textN = document.createTextNode(currentCoproperty.name);
-        document.getElementById("Home_CopropertyName").appendChild(textN);
-        textN = document.createTextNode(currentCoproperty.street + " " + currentCoproperty.houseNumber + ", "+ currentCoproperty.zip + " " + currentCoproperty.town);
-        document.getElementById("Home_CopropertyAddress").appendChild(textN);
+        refCoproperty.get().then(function(copropertyFS){
+          currentCopropertyId = copropertyFS.id;
+          currentCoproperty = copropertyFS.data();
+          
+          emptyHTMLSet(document.getElementById("Home_CopropertyName"));
+          var textN = document.createTextNode(currentCoproperty.name);
+          document.getElementById("Home_CopropertyName").appendChild(textN);
+          textN = document.createTextNode(currentCoproperty.street + " " + currentCoproperty.houseNumber + ", "+ currentCoproperty.zip + " " + currentCoproperty.town);
+          document.getElementById("Home_CopropertyAddress").appendChild(textN);
+          console.log("in home refresh");
+          refCoproperty.collection("ChargesReports").orderBy("endDate","desc").get().then(function(chargesReportsFS){
+            readCloseAndReguDate(chargesReportsFS);
+          });
         });
       };
       
@@ -1489,7 +1482,6 @@
       };
     
       function checkBookDate (bookDate){
-        /* applied both for transactions and for meter readings */
         if (bookDate.localeCompare(lastCloseDate) < 1) { return false} 
         else { return true};
       };
@@ -1732,11 +1724,10 @@
         });
       };
 
-      function refreshChargesReports(){
-        emptyHTMLSet(chargesReportsTable);
-        refCoproperty.collection("ChargesReports").orderBy("endDate","desc").get().then(function(chargesReportsFS){
-            if  (chargesReportsFS.docs.length > 0) {
-              lastCloseDate= chargesReportsFS.docs[0].endDate;
+      function readCloseAndReguDate (chargesReportsFS) {
+        if  (chargesReportsFS.docs.length > 0) {
+              lastCloseDate= chargesReportsFS.docs[0].data().endDate;
+              console.log("in readCloseAndReguDate lastCloseDate is ",lastCloseDate);
               var i = 0;
               while ((i < chargesReportsFS.docs.length) && (!chargesReportsFS.docs[i].data().metersIncluded)) {i = i+1};
               if (i < chargesReportsFS.docs.length) {lastReguDate = chargesReportsFS.docs[i].data().endDate}
@@ -1746,10 +1737,17 @@
               lastCloseDate = currentCoproperty.initialStartDate;
               lastReguDate = currentCoproperty.initialStartDate;
             };
+      };
+
+      function refreshChargesReports(){
+        emptyHTMLSet(chargesReportsTable);
+        refCoproperty.collection("ChargesReports").orderBy("endDate","desc").get().then(function(chargesReportsFS){
+            readCloseAndReguDate (chargesReportsFS);
             chargesReportsFS.forEach(function(objectFS){
               loadChargesReport(objectFS);
             });
             meterReadingsLoaded = false;
+            transactionsLoaded = false;
           });
       };
 
@@ -1980,6 +1978,8 @@
       } else {
         document.getElementById("transaction_properties_frame").style.diplay = "none";
       };
+      console.log("object.bookdate is ",object.bookDate);
+      console.log("lastCloseDate is ",lastCloseDate);
       if (checkBookDate(object.bookDate)){document.getElementById("transaction_edit_button").disabled = false}
       else {document.getElementById("transaction_edit_button").disabled = true};
       refreshTransactionEvidence()
