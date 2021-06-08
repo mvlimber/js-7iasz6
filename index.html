@@ -3629,19 +3629,17 @@
           transactionsFS.forEach(function(transactionFS){
             var trData = transactionFS.data();
             if (trData.type == "Private") {
-              buildingPrivate = buildingPrivate + reportTransaction(trData);
+              buildingPrivate += reportTransaction(trData);
               dataPrivate.push(trData);
             } else if (trData.type == "Water") {
-              buildingPrivate = buildingPrivate + reportTransaction(trData);
-              dataPrivate.push(trData);
-            }
-          
-
-            if (trData.type != "Private") {
-            buildingCommon = buildingCommon + reportTransaction(trData);
-            dataCommon.push(trData);
+              buildingWaterPeriod += reportTransaction(trData);
+              dataWaterPeriod.push(trData);
+            } else if (trData.type == "heating") {
+              buildingHeatingPeriod += reportTransaction(trData);
+              dataHeatingPeriod.push(trData);
             } else {
-              
+              buildingCommon = buildingCommon + reportTransaction(trData);
+            dataCommon.push(trData);
             };
           });
           refCoproperty.collection("Transactions").where("type", "==", "Water").where("bookDate", ">", lastReguDate).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){
