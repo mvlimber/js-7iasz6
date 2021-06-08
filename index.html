@@ -3616,6 +3616,8 @@
         var totalHeatingDifference = 0; 
         var totalHotWaterDifference = 0; 
         var totalQuota = 0;
+        var totalQuotaWater = 0;
+        var totalQuotaHeating = 0;
        
         var dataCommon = [];
         var dataPrivate = [];
@@ -3675,7 +3677,7 @@
                 var prData = prFS.data();
                 var ownerIdV = prData.owner;
                 var ownerName = idMemberMap[ownerIdV];
-                dataQuota.push({ownerId:ownerIdV, owner:ownerName, propertyId:prFS.id, property:prData.code, quota:prData.quota, period:"100%", quota_period: prData.quota, amount:" "}); 
+                dataQuota.push({ownerId:ownerIdV, owner:ownerName, propertyId:prFS.id, property:prData.code, quota:prData.quota, period:"100%", quota_period: prData.quota, amount:" ", waterCons: false, heatingCons: false}); 
                 var prQuota = parseInt(prData.quota);
                 totalQuota = totalQuota + prQuota; 
                 if (!dataCharges[ownerIdV]) {
@@ -3700,10 +3702,16 @@
                         differenceV = parseFloat(newReading) - parseFloat(lastReading);
                         if (meterData.type == "Cold Water") {
                           totalColdWaterDifference = totalColdWaterDifference + differenceV;
+                          if (!dataQuota[dataQuota.length-1].waterCons) {totalQuotaWater += prQuota};
+                          dataQuota[dataQuota.length-1].waterCons = true;
                         } else if (meterData.type == "Heating") {
                           totalHeatingDifference = totalHeatingDifference + differenceV;
+                          if (!dataQuota[dataQuota.length-1].heatingCons) {totalQuotaHeating += prQuota};
+                          dataQuota[dataQuota.length-1].heatingCons = true;
                         } else if (meterData.type == "Hot Water"){
                           totalHotWaterDifference = totalHotWaterDifference + differenceV;
+                          if (!dataQuota[dataQuota.length-1].heatingCons) {totalQuotaHeating += prQuota};
+                          dataQuota[dataQuota.length-1].heatingCons = true;
                         };                    
                         dataConsumption.push({ownerId:ownerIdV, quota: prQuota, owner:ownerName.substr(0,15), property:prData.code, meter:meterData.meter, type:meterData.type, last_reading:lastReading, reading:newReading, difference:differenceV, water:0, water_payed:" ", water_regu:" ", heating:0, heating_payed:" ", heating_regu:" "});                       
                       };
