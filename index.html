@@ -3952,26 +3952,29 @@
         var subtotalAmount = 0;
         var subtotalWater = 0;
         var subtotalHeating = 0;
-        var amount = 0;;
         function writeData(arrayEl){
+          var total = 0;
           var quota = parseInt(arrayEl.quota);
           var amountString = (buildingCommon * quota / totalQuota).toFixed(2);
-          amount = Number(amountString);
+          var amount = Number(amountString);
+          total += amount;
           arrayEl.amount = amount.toLocaleString("nl-BE",currencyStyle);
           subtotalAmount = subtotalAmount + amount;
           if (arrayel.waterCons){
             amountString = (buildingWater * quota / totalQuotaWater).toFixed(2);
             amount = Number(amountString);
+            total += amount;
             arrayEl.water = amount.toLocaleString("nl-BE",currencyStyle);
             subtotalAmountWater += amount;
           };
           if (arrayel.heatingCons){
             amountString = (buildingHeating * quota / totalQuotaHeating).toFixed(2);
             amount = Number(amountString);
+            total += amount;
             arrayEl.heating = amount.toLocaleString("nl-BE",currencyStyle);
             subtotalAmountHeating += amount;
           };
-          
+
 
 
 
