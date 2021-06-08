@@ -1464,7 +1464,6 @@
           document.getElementById("Home_CopropertyName").appendChild(textN);
           textN = document.createTextNode(currentCoproperty.street + " " + currentCoproperty.houseNumber + ", "+ currentCoproperty.zip + " " + currentCoproperty.town);
           document.getElementById("Home_CopropertyAddress").appendChild(textN);
-          console.log("in home refresh");
           refCoproperty.collection("ChargesReports").orderBy("endDate","desc").get().then(function(chargesReportsFS){
             readCloseAndReguDate(chargesReportsFS);
           });
@@ -1545,7 +1544,7 @@
 
       function refreshReports(){
         emptyHTMLSet(reportsTable);
-        refCoproperty.collection("Reports").orderBy("endDate", "desc").get().then(function(objectsFSArray){
+        refCoproperty.collection("Reports").orderBy("date", "desc").get().then(function(objectsFSArray){
           objectsFSArray.forEach(function(objectFS){
             loadReport(objectFS);
           });
@@ -1727,7 +1726,6 @@
       function readCloseAndReguDate (chargesReportsFS) {
         if  (chargesReportsFS.docs.length > 0) {
               lastCloseDate= chargesReportsFS.docs[0].data().endDate;
-              console.log("in readCloseAndReguDate lastCloseDate is ",lastCloseDate);
               var i = 0;
               while ((i < chargesReportsFS.docs.length) && (!chargesReportsFS.docs[i].data().metersIncluded)) {i = i+1};
               if (i < chargesReportsFS.docs.length) {lastReguDate = chargesReportsFS.docs[i].data().endDate}
@@ -1978,8 +1976,6 @@
       } else {
         document.getElementById("transaction_properties_frame").style.diplay = "none";
       };
-      console.log("object.bookdate is ",object.bookDate);
-      console.log("lastCloseDate is ",lastCloseDate);
       if (checkBookDate(object.bookDate)){document.getElementById("transaction_edit_button").disabled = false}
       else {document.getElementById("transaction_edit_button").disabled = true};
       refreshTransactionEvidence()
@@ -2316,7 +2312,6 @@
         objectsRow.appendChild(cell);
         
         var meterData = meterFS.data();
-        console.log("lastReguDate is ", lastReguDate);
         if (meterData.readings[0].date.localeCompare(lastReguDate) < 1) {
           /* newest reading is in closed period: fake empty record */
           meterData.readings.unshift({
