@@ -3604,7 +3604,9 @@
       function generateChargesReport(closeDateTransactions, metersIncluded){
         var onlyOnce = true;
         var buildingWater = 0;
+        var buildingWaterPeriod = 0;
         var buildingHeating = 0;
+        var buildingHeatingPeriod = 0;
         var buildingCommon = 0;
         var buildingPrivate = 0;
         
@@ -3615,6 +3617,8 @@
        
         var dataCommon = [];
         var dataPrivate = [];
+        var dataWaterPeriod = [];
+        var dataHeatingPeriod = [];
         var dataWater = [];
         var dataHeating = [];
         var dataConsumption = [];
@@ -3624,12 +3628,20 @@
         refCoproperty.collection("Transactions").where("bookDate", ">", lastCloseDate).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){
           transactionsFS.forEach(function(transactionFS){
             var trData = transactionFS.data();
+            if (trData.type == "Private") {
+              buildingPrivate = buildingPrivate + reportTransaction(trData);
+              dataPrivate.push(trData);
+            } else if (trData.type == "Water") {
+              buildingPrivate = buildingPrivate + reportTransaction(trData);
+              dataPrivate.push(trData);
+            }
+          
+
             if (trData.type != "Private") {
             buildingCommon = buildingCommon + reportTransaction(trData);
             dataCommon.push(trData);
             } else {
-              buildingPrivate = buildingPrivate + reportTransaction(trData);
-              dataPrivate.push(trData);
+              
             };
           });
           refCoproperty.collection("Transactions").where("type", "==", "Water").where("bookDate", ">", lastReguDate).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){
