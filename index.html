@@ -3950,18 +3950,34 @@
         var currentOwnerId = "";
         var count =0;
         var subtotalAmount = 0;
+        var subtotalWater = 0;
+        var subtotalHeating = 0;
         var amount = 0;;
         function writeData(arrayEl){
-          var amountString = (buildingCommon * parseInt(arrayEl.quota) / totalQuota).toFixed(2);
+          var quota = parseInt(arrayEl.quota);
+          var amountString = (buildingCommon * quota / totalQuota).toFixed(2);
           amount = Number(amountString);
           arrayEl.amount = amount.toLocaleString("nl-BE",currencyStyle);
           subtotalAmount = subtotalAmount + amount;
-
-
-
-
-
+          if (arrayel.waterCons){
+            amountString = (buildingWater * quota / totalQuotaWater).toFixed(2);
+            amount = Number(amountString);
+            arrayEl.water = amount.toLocaleString("nl-BE",currencyStyle);
+            subtotalAmountWater += amount;
+          };
+          if (arrayel.heatingCons){
+            amountString = (buildingHeating * quota / totalQuotaHeating).toFixed(2);
+            amount = Number(amountString);
+            arrayEl.heating = amount.toLocaleString("nl-BE",currencyStyle);
+            subtotalAmountHeating += amount;
+          };
           
+
+
+
+
+
+
           result.push(arrayEl);
           
           dataCharges[arrayEl.ownerId].common = subtotalAmount;
