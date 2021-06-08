@@ -160,8 +160,8 @@
             onclick="loadMembers()">Members</a></li>
         <li class="tab side text-teal"><a class="waves-effect" href="#Properties" style="font-size:22px"
             onclick="loadProperties()">Properties</a></li>
-        <li id="tabSettings" style="display:none" class="tab side text-teal"><a class="waves-effect" href="#Settings" style="font-size:22px"
-            onclick="loadSettings()">Settings</a></li>  
+        <li id="tabSettings" style="display:none" class="tab side text-teal"><a class="waves-effect" href="#Settings"
+            style="font-size:22px" onclick="loadSettings()">Settings</a></li>
       </ul>
 
       <script>
@@ -434,7 +434,7 @@
                 </div>
                 <div id="transaction_properties_add_frame" style="display:none">
                   <h5>For private transactions: please assign amount to properties</h5>
-                  <div class="input-field col s12 m4" >
+                  <div class="input-field col s12 m4">
                     <select id="transaction_properties_add">
                     </select>
                     <label>Property<b><font color='red'>*</font></b></label>
@@ -451,13 +451,13 @@
                       <tr>
                         <th>Property</th>
                         <th>Amount</th>
-                      </tr>  
+                      </tr>
                     </thead>
-                    <tbody id = "transaction_distribution_table_add">                     
+                    <tbody id="transaction_distribution_table_add">
                     </tbody>
                   </table>
                 </div>
-         
+
               </form>
               <br>
               <button id="transaction_save_button" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeTransaction()">Save and go to adding evidence<i class="material-icons right">send</i></button>
@@ -483,7 +483,7 @@
                     <input id="transaction_name" type="text" readonly>
                     <label for="transaction_name">Counterparty</label>
                   </div>
-                   <div class="input-field col s12 m4">
+                  <div class="input-field col s12 m4">
                     <input id="transaction_account" type="text" readonly>
                     <label for="transaction_account">Account</label>
                   </div>
@@ -503,19 +503,19 @@
                     <input id="transaction_bookDate" type="text" readonly>
                     <label for="transaction_bookDate">Accountancy Date</label>
                   </div>
-                 <div id="transaction_properties_frame" style="display:none">
+                  <div id="transaction_properties_frame" style="display:none">
                     <h6><b>Private transaction: Amount assigned to:</b></h6>
                     <table class="striped">
                       <thead>
                         <tr>
                           <th>Property</th>
                           <th>Amount</th>
-                        </tr>  
+                        </tr>
                       </thead>
-                      <tbody id = "transaction_distribution_table">                     
+                      <tbody id="transaction_distribution_table">
                       </tbody>
                     </table>
-                </div>  
+                  </div>
                 </form>
                 <div id="Transactions_Edit" class="displayHidden">
                   <button id="transaction_edit_button" style="float: right;margin-bottom: 3px" data-target="transactionAdd" class="btn-small waves-light modal-trigger" onclick="editTransaction(selectedTransactionId, transaction)">Edit<i class="material-icons right">edit</i></button>
@@ -544,7 +544,7 @@
             </div>
           </div>
 
-         <div id="transactionEvidenceRemove" class="modal">
+          <div id="transactionEvidenceRemove" class="modal">
             <div class="modal-content">
               <h5> You are about to permanently remove the evidence</h5>
               <p id="transactionEvidence_to_remove"> </p>
@@ -890,12 +890,13 @@
                 <input  id="member_town_edit" type="text" class="validate" maxlength="50" >
                 <label for="member_town_edit">Town</label>
                 <span class="helper-text" data-error="Max 50 characters"></span>
-              </div><div class="input-field col s6 m2">
+              </div>
+              <div class="input-field col s6 m2">
                 <input  id="member_zip_edit" type="text" class="validate" min="0" maxlength="10">
                 <label for="member_zip_edit" >Zip</label>
                 <span class="helper-text" data-error="Max 10 characters. For Belgium 4 digits. Example Belgium: 1730">"Example Belgium: 1730"</span>
               </div>
-              
+
               <div class="input-field col s12 m4">
                 <input  id="member_street_edit" type="text" class="validate" maxlength="50" >
                 <label for="member_street_edit">Street</label>
@@ -978,7 +979,7 @@
                 <button style="float: right;margin-bottom: 3px" class="btn-small waves-light modal-trigger" data-target="meterWrite" onclick="addMeter()">Add Meter<i class="material-icons right">add</i></button>
               </div>
             </div>
-            
+
             <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
               <div>
                 <h7>Occupants</h7>
@@ -1006,43 +1007,43 @@
         </div>
 
         <div id="meterWrite" class="modal">
-            <div class="modal-content">
-              <a style="float: right"
-                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Close</a>
-              <h5> Enter meter</h5>
-              <form class="col s12">
-                <div class="input-field col s12 m4">
-                  <select id="meter_type" required aria-required="true">
+          <div class="modal-content">
+            <a style="float: right" class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
+              Close</a>
+            <h5> Enter meter</h5>
+            <form class="col s12">
+              <div class="input-field col s12 m4">
+                <select id="meter_type" required aria-required="true">
                     <option value="" disabled selected>Select the type</option>
                     <option>Cold Water</option>
                     <option>Hot Water</option>
                     <option>Heating</option>
                   </select>
-                  <label for="meter_type">Type<b><font color='red'>*</font></b></label>
-                </div>
-                <div class="input-field col s12 m4">
-                  <input id="meter_id" type="text" maxlength="10" class="validate" required aria-required="true" pattern="([A-Z]|[0-9]){4,10}">
-                  <label for="meter_id">ID meter<b><font color='red'>*</font></b></label>
-                  <span class="helper-text" data-error="4 to 10 digts or capital letters. Example 99DB517508">4 to 10 digts or capital letters. Example 99DB517508</span>
-                </div>
-                <div class="input-field col s12 m4">
-                  <select id="meter_status" required aria-required="true">
+                <label for="meter_type">Type<b><font color='red'>*</font></b></label>
+              </div>
+              <div class="input-field col s12 m4">
+                <input id="meter_id" type="text" maxlength="10" class="validate" required aria-required="true" pattern="([A-Z]|[0-9]){4,10}">
+                <label for="meter_id">ID meter<b><font color='red'>*</font></b></label>
+                <span class="helper-text" data-error="4 to 10 digts or capital letters. Example 99DB517508">4 to 10 digts or capital letters. Example 99DB517508</span>
+              </div>
+              <div class="input-field col s12 m4">
+                <select id="meter_status" required aria-required="true">
                     <option selected>Active</option>
                     <option>Removed</option>
                   </select>
-                  <label for="meter_status">Status<b><font color='red'>*</font></b></label>
-                </div>
-                  <div id="meter_firstReadingPanel" class="input-field col s12 m4" >
-                    <input id="meter_firstReading" type="number" class="validate" max="9999999999" required required="true">
-                    <label for="meter_firstReading">Reading<b><font color='red'>*</font></b></label>
-                    <span class="helper-text" data-error="Include decimals but ignore separator if present. Max 10 digits. Example: 06614639">Include decimals but ignore separator if present. Example: 06614639</span>
-                  </div>
-                
-              </form>
-              <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeMeter()">Submit<i class="material-icons right">send</i></button>
-              <a style="float: right;margin-bottom: 3px"
-                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
-            </div>
+                <label for="meter_status">Status<b><font color='red'>*</font></b></label>
+              </div>
+              <div id="meter_firstReadingPanel" class="input-field col s12 m4">
+                <input id="meter_firstReading" type="number" class="validate" max="9999999999" required required="true">
+                <label for="meter_firstReading">Reading<b><font color='red'>*</font></b></label>
+                <span class="helper-text" data-error="Include decimals but ignore separator if present. Max 10 digits. Example: 06614639">Include decimals but ignore separator if present. Example: 06614639</span>
+              </div>
+
+            </form>
+            <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeMeter()">Submit<i class="material-icons right">send</i></button>
+            <a style="float: right;margin-bottom: 3px"
+              class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+          </div>
         </div>
         <!------------------------------------------------------------------------------------------>
         <div id="Properties" class="col s12">
@@ -1063,7 +1064,7 @@
             <button style="float: right" data-target="propertyAdd" class="btn-small waves-light modal-trigger" onclick="resetSelectedProperty()"><i class="material-icons right">add</i>New Property</button>
           </div>
 
-          
+
           <div id="previousOwners" class="modal">
             <div class="modal-content">
               <a style="float: right"
@@ -1216,17 +1217,17 @@
         </div>
         <div id="Settings" class="col s12">
           <h5>Meters common parts</h5>
-            <table class="striped">
-              <thead>
-                <th>Type</th>
-                <th>Meter ID</th>
-                <th>Status</th>
-              </thead>
-              <tbody id="coproperty_meters">
-              </tbody>
-            </table>
-            <br>
-            <button style="float: right;margin-bottom: 3px" class="btn-small waves-light modal-trigger" data-target="meterWrite" onclick="addCopropertyMeter()">Add Meter<i class="material-icons right">add</i></button>
+          <table class="striped">
+            <thead>
+              <th>Type</th>
+              <th>Meter ID</th>
+              <th>Status</th>
+            </thead>
+            <tbody id="coproperty_meters">
+            </tbody>
+          </table>
+          <br>
+          <button style="float: right;margin-bottom: 3px" class="btn-small waves-light modal-trigger" data-target="meterWrite" onclick="addCopropertyMeter()">Add Meter<i class="material-icons right">add</i></button>
         </div>
       </div>
     </main>
@@ -1411,8 +1412,7 @@
     </script>
     <!--   Application scripts starts here -->
     <script>
-      
-    const options = {
+      const options = {
         duration: 300,
         onShow: null,
         swipeable: false,
@@ -3952,30 +3952,34 @@
         var subtotalAmount = 0;
         var subtotalWater = 0;
         var subtotalHeating = 0;
+        var subtotalTotal = 0;
+        var amount = 0;
+        var amountWater = 0;
+        var amountHeating = 0;
         function writeData(arrayEl){
           var total = 0;
           var quota = parseInt(arrayEl.quota);
           var amountString = (buildingCommon * quota / totalQuota).toFixed(2);
-          var amount = Number(amountString);
+          amount = Number(amountString);
           total += amount;
           arrayEl.amount = amount.toLocaleString("nl-BE",currencyStyle);
           subtotalAmount = subtotalAmount + amount;
           if (arrayEl.waterCons){
             amountString = (buildingWater * quota / totalQuotaWater).toFixed(2);
-            amount = Number(amountString);
-            total += amount;
-            arrayEl.water = amount.toLocaleString("nl-BE",currencyStyle);
-            subtotalAmountWater += amount;
+            amountWater = Number(amountString);
+            total += amountWater;
+            arrayEl.water = amountWater.toLocaleString("nl-BE",currencyStyle);
+            subtotalAmountWater += amountWater;
           };
           if (arrayEl.heatingCons){
             amountString = (buildingHeating * quota / totalQuotaHeating).toFixed(2);
-            amount = Number(amountString);
-            total += amount;
-            arrayEl.heating = amount.toLocaleString("nl-BE",currencyStyle);
-            subtotalAmountHeating += amount;
+            amountHeating = Number(amountString);
+            total += amountHeating;
+            arrayEl.heating = amountHeating.toLocaleString("nl-BE",currencyStyle);
+            subtotalAmountHeating += amountHeating;
           };
           arrayEl.total = total.toLocaleString("nl-BE",currencyStyle);
-
+          subtotalTotal += total;
           result.push(arrayEl);
           
           dataCharges[arrayEl.ownerId].common = subtotalAmount;
@@ -3986,9 +3990,9 @@
             writeData(arrayEl);
           } else {
             if (count > 1) {
-              result.push({ownerId:currentOwnerId, owner:"Total", property:"", quota:"", period:"", quota_period: "", amount:subtotalAmount.toLocaleString("nl-BE",currencyStyle)});
+              result.push({ownerId:currentOwnerId, owner:"Total", property:"", quota:"", period:"", quota_period: "", amount:subtotalAmount.toLocaleString("nl-BE",currencyStyle),water:subtotalAmountWater.toLocaleString("nl-BE",currencyStyle),heating:subtotalAmountHeating.toLocaleString("nl-BE",currencyStyle),total:subtotalTotal.toLocaleString("nl-BE",currencyStyle)});
             };
-            result.push({ownerId:" ", owner:"", property:"", quota:"", period:"", quota_period: "", amount:""});
+            result.push({ownerId:" ", owner:"", property:"", quota:"", period:"", quota_period: "", amount:"", water:"", heating:"", total=""});
             count = 0;
             subtotalAmount = 0;
             writeData(arrayEl);
@@ -3997,10 +4001,10 @@
           totalCommon = totalCommon + amount;   
         });
         if (count > 1) {
-              result.push({ownerId:currentOwnerId, owner:"Total", property:"", quota:"", period:"", quota_period: "", amount:subtotalAmount.toLocaleString("nl-BE",currencyStyle)});
+              result.push({ownerId:currentOwnerId, owner:"Total", property:"", quota:"", period:"", quota_period: "", amount:subtotalAmount.toLocaleString("nl-BE",currencyStyle),water:subtotalAmountWater.toLocaleString("nl-BE",currencyStyle),heating:subtotalAmountHeating.toLocaleString("nl-BE",currencyStyle),total:subtotalTotal.toLocaleString("nl-BE",currencyStyle)});
             };
-        result.push({ownerId:" ", owner:"", property:"", quota:"", period:"", quota_period: "", amount:""});
-        result.push({ownerId:" ", owner:"Total building", property:" ", quota:" ", period:" ", quota_period: totalQuota.toString(), amount:totalCommon.toLocaleString("nl-BE",currencyStyle)});
+            result.push({ownerId:" ", owner:"", property:"", quota:"", period:"", quota_period: "", amount:"", water:"", heating:"", total=""});
+            result.push({ownerId:" ", owner:"Total building", property:" ", quota:" ", period:" ", quota_period: totalQuota.toString(), amount:totalCommon.toLocaleString("nl-BE",currencyStyle)});
         return result;
       };
       
