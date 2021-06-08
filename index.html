@@ -3634,12 +3634,12 @@
             } else if (trData.type == "Water") {
               buildingWaterPeriod += reportTransaction(trData);
               dataWaterPeriod.push(trData);
-            } else if (trData.type == "heating") {
+            } else if (trData.type == "Heating") {
               buildingHeatingPeriod += reportTransaction(trData);
               dataHeatingPeriod.push(trData);
             } else {
               buildingCommon = buildingCommon + reportTransaction(trData);
-            dataCommon.push(trData);
+              dataCommon.push(trData);
             };
           });
           dataWaterPeriod.push({type:" ",name:"Total",date:" ",communication:" ",amount:buildingWaterPeriod.toLocaleString("nl-BE",currencyStyle)});
@@ -4050,18 +4050,18 @@
         doc.text("List of tables:", 15, 135);
         doc.setFontSize(14);
         doc.text("Common charges:", 30, 145);doc.text("total building", 90, 145);
-        doc.text("Water:", 30, 145);doc.text("total building this period", 90, 155);
-        doc.text("Heating:", 30, 145);doc.text("total building this period", 90, 165);
+        doc.text("Water:", 30, 155);doc.text("total building this period", 90, 155);
+        doc.text("Heating:", 30, 165);doc.text("total building this period", 90, 165);
         
-        doc.text("Common charges:", 30, 155);doc.text("quota per owner", 90, 175);
-        doc.text("Private expenses:", 30, 165);doc.text("expenses per owner", 90, 185);
+        doc.text("Common charges:", 30, 175);doc.text("quota per owner", 90, 175);
+        doc.text("Private expenses:", 30, 185);doc.text("expenses per owner", 90, 185);
         if (metersIncludedHere){
-          doc.text("Water:", 30, 175);doc.text("total building since last regularisation", 90, 195);
-          doc.text("Heating:", 30, 185);doc.text("total building since last regularisation", 90, 215);
-          doc.text("Water and Heating:", 30, 195);doc.text("regularisation per owner and property", 90, 225);
-          doc.text("Total Charges:", 30, 215);doc.text("total charges per owner", 90, 235);
+          doc.text("Water:", 30, 195);doc.text("total building since last regularisation", 90, 195);
+          doc.text("Heating:", 30, 205);doc.text("total building since last regularisation", 90, 205);
+          doc.text("Water and Heating:", 30, 215);doc.text("regularisation per owner and property", 90, 215);
+          doc.text("Total Charges:", 30, 230);doc.text("total charges per owner", 90, 230);
         } else {
-          doc.text("Total Charges:", 30, 185);doc.text("total charges per owner", 90, 195);
+          doc.text("Total Charges:", 30, 200);doc.text("total charges per owner", 90, 200);
         };
         
         printFooterPortrait();
