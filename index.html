@@ -3955,8 +3955,15 @@
           var amountString = (buildingCommon * parseInt(arrayEl.quota) / totalQuota).toFixed(2);
           amount = Number(amountString);
           arrayEl.amount = amount.toLocaleString("nl-BE",currencyStyle);
-          result.push(arrayEl);
           subtotalAmount = subtotalAmount + amount;
+
+
+
+
+
+          
+          result.push(arrayEl);
+          
           dataCharges[arrayEl.ownerId].common = subtotalAmount;
         };
         dataQuota.forEach(function(arrayEl) {
