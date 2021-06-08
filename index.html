@@ -3960,26 +3960,21 @@
           total += amount;
           arrayEl.amount = amount.toLocaleString("nl-BE",currencyStyle);
           subtotalAmount = subtotalAmount + amount;
-          if (arrayel.waterCons){
+          if (arrayEl.waterCons){
             amountString = (buildingWater * quota / totalQuotaWater).toFixed(2);
             amount = Number(amountString);
             total += amount;
             arrayEl.water = amount.toLocaleString("nl-BE",currencyStyle);
             subtotalAmountWater += amount;
           };
-          if (arrayel.heatingCons){
+          if (arrayEl.heatingCons){
             amountString = (buildingHeating * quota / totalQuotaHeating).toFixed(2);
             amount = Number(amountString);
             total += amount;
             arrayEl.heating = amount.toLocaleString("nl-BE",currencyStyle);
             subtotalAmountHeating += amount;
           };
-
-
-
-
-
-
+          arrayEl.total = total.toLocaleString("nl-BE",currencyStyle);
 
           result.push(arrayEl);
           
