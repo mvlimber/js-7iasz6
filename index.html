@@ -3678,7 +3678,7 @@
                 var prData = prFS.data();
                 var ownerIdV = prData.owner;
                 var ownerName = idMemberMap[ownerIdV];
-                dataQuota.push({ownerId:ownerIdV, owner:ownerName, propertyId:prFS.id, property:prData.code, quota:prData.quota, period:"100%", quota_period: prData.quota, amount:" ", waterCons: false, heatingCons: false}); 
+                dataQuota.push({ownerId:ownerIdV, owner:ownerName, propertyId:prFS.id, property:prData.code, quota:prData.quota, period:"100%", quota_period: prData.quota, amount:" ", water: " ", heating: " ", waterCons: false, heatingCons: false}); 
                 var prQuota = parseInt(prData.quota);
                 totalQuota = totalQuota + prQuota; 
                 if (!dataCharges[ownerIdV]) {
@@ -3746,6 +3746,7 @@
       };  
 
       function calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota, buildingCommon, buildingPrivate, dataWaterPeriod, dataWater, dataHeatingPeriod, dataHeating, dataCommon, dataPrivate, totalledConsumptionData, dataQuota, dataCharges){
+        console.log("voor totalledQuotaData");
         var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon, dataCharges);                          
         dataCommon.push({type:"Total",name:" ",date:" ",communication:" ",amount:buildingCommon.toLocaleString("nl-BE",currencyStyle)});
         var totalledPrivateData = calcPrivate(dataQuota, dataPrivate, dataCharges);
@@ -3955,7 +3956,6 @@
         var subtotalAmount = 0;
         var subtotalWater = 0;
         var subtotalHeating = 0;
-        var subtotalTotal = 0;
         var amount = 0;
         var amountWater = 0;
         var amountHeating = 0;
@@ -3982,7 +3982,6 @@
             subtotalAmountHeating += amountHeating;
           };
           arrayEl.total = total.toLocaleString("nl-BE",currencyStyle);
-          subtotalTotal += total;
           result.push(arrayEl);
           
           dataCharges[arrayEl.ownerId].common = subtotalAmount;
@@ -4006,7 +4005,7 @@
           totalHeating += amountHeating;
         });
         if (count > 1) {
-              result.push({ownerId:currentOwnerId, owner:"Total", property:"", quota:"", period:"", quota_period: "", amount:subtotalAmount.toLocaleString("nl-BE",currencyStyle),water:subtotalAmountWater.toLocaleString("nl-BE",currencyStyle),heating:subtotalAmountHeating.toLocaleString("nl-BE",currencyStyle),total:subtotalTotal.toLocaleString("nl-BE",currencyStyle)});
+              result.push({ownerId:currentOwnerId, owner:"Total", property:"", quota:"", period:"", quota_period: "", amount:subtotalAmount.toLocaleString("nl-BE",currencyStyle),water:subtotalAmountWater.toLocaleString("nl-BE",currencyStyle),heating:subtotalAmountHeating.toLocaleString("nl-BE",currencyStyle),total:(subtotalAmount+subtotalAmountWater+subtotalAmountHeating).toLocaleString("nl-BE",currencyStyle)});
             };
             result.push({ownerId:" ", owner:"", property:"", quota:"", period:"", quota_period: "", amount:"", water:"", heating:"", total=""});
             result.push({ownerId:" ", owner:"Total building", property:" ", quota:" ", period:" ", quota_period: totalQuota.toString(), amount:totalCommon.toLocaleString("nl-BE",currencyStyle),water:totalWater.toLocaleString("nl-BE",currencyStyle),heating:totalHeating.toLocaleString("nl-BE",currencyStyle),total:(totalCommon+totalWater+totalHeating).toLocaleString("nl-BE",currencyStyle)});
@@ -4022,7 +4021,7 @@
         if (metersIncludedHere) {
            numPages = 1 + Math.ceil(dataWaterPeriod.length/rowsPortrait) + Math.ceil(dataWater.length/rowsPortrait) + Math.ceil(dataHeatingPeriod.length/rowsPortrait) + Math.ceil(dataHeating.length/rowsPortrait) + Math.ceil(dataConsumption.length/rowsLandscape) + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsLandscape) + Math.ceil(dataPrivate.length/rowsLandscapePrivate) + Math.ceil(tableCharges.length/rowsLandscape);
         } else {
-           numPages = 1 + Math.ceil(dataWaterPeriod.length/rowsPortrait) + Math.ceil(dataHeatingPeriod.length/rowsPortrait) + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsPortrait) + Math.ceil(dataPrivate.length/rowsPortrait) + Math.ceil(tableCharges.length/rowsPortrait);
+           numPages = 1 + Math.ceil(dataWaterPeriod.length/rowsPortrait) + Math.ceil(dataHeatingPeriod.length/rowsPortrait) + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsLandscape) + Math.ceil(dataPrivate.length/rowsPortrait) + Math.ceil(tableCharges.length/rowsPortrait);
         };
         window.jsPDF = window.jspdf.jsPDF;
         var currentPage = 1;
@@ -4066,6 +4065,7 @@
             printFooterLandscape ();
           };
         };
+        
         var doc = new jsPDF({ putOnlyUsedFonts: true, orientation: "portrait" });
         doc.setTextColor("green"); doc.setFontSize(32);
         doc.text("MyCondos", 60, 20);
