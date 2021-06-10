@@ -3728,7 +3728,7 @@
                           if (metersIncluded) {
                             totalledConsumption = calcTotalConsumption (totalQuota, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataConsumption, dataCharges);
                           };
-                          calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota,buildingCommon, buildingPrivate, dataWaterPeriod, dataWater, dataHeatingPeriod, dataHeating, dataCommon, dataPrivate, totalledConsumption, dataQuota, dataCharges);                         
+                          calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota,buildingCommon, buildingWater, buildingHeating, buildingPrivate, dataWaterPeriod, dataWater, dataHeatingPeriod, dataHeating, dataCommon, dataPrivate, totalledConsumption, dataQuota, dataCharges);                         
                         };
                       };
                     });
@@ -3749,7 +3749,7 @@
         });
       };  
 
-      function calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota, buildingCommon, buildingPrivate, dataWaterPeriod, dataWater, dataHeatingPeriod, dataHeating, dataCommon, dataPrivate, totalledConsumptionData, dataQuota, dataCharges){
+      function calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota, buildingCommon, buildingWater, buildingHeating, buildingPrivate, dataWaterPeriod, dataWater, dataHeatingPeriod, dataHeating, dataCommon, dataPrivate, totalledConsumptionData, dataQuota, dataCharges){
         console.log("voor totalledQuotaData");
         var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon, buildingWater, buildingHeating, dataCharges);                          
         dataCommon.push({type:"Total",name:" ",date:" ",communication:" ",amount:buildingCommon.toLocaleString("nl-BE",currencyStyle)});
