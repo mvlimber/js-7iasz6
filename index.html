@@ -3580,12 +3580,12 @@
       var headerQuota =[
         {id:"owner",name:"owner",prompt:"owner",width: 70,align: "center",padding: 0},
         {id:"property",name:"property",prompt:"property",width: 30,align: "center",padding: 0},
-        {id:"quota",name:"quota",prompt:"quota",width: 25,align: "center",padding: 0},
-        {id:"period",name:"period",prompt:"period",width: 30,align: "center",padding: 0},
+        /*{id:"quota",name:"quota",prompt:"quota",width: 25,align: "center",padding: 0},
+        {id:"period",name:"period",prompt:"period",width: 30,align: "center",padding: 0},*/
         {id:"quota_period",name:"quota_period",prompt:"quota",width: 30,align: "center",padding: 0},
-        {id:"amount",name:"amount",prompt:"common charges",width: 40,align: "right",padding: 0},
-        {id:"water",name:"water",prompt:"water provisions",width: 40,align: "right",padding: 0},
-        {id:"heating",name:"heating",prompt:"heating provisions",width: 40,align: "right",padding: 0},
+        {id:"amount",name:"amount",prompt:"common charges",width: 40,align: "center",padding: 0},
+        {id:"water",name:"water",prompt:"water provisions",width: 40,align: "center",padding: 0},
+        {id:"heating",name:"heating",prompt:"heating provisions",width: 40,align: "center",padding: 0},
         {id:"total",name:"total",prompt:"Total",width: 40,align: "right",padding: 0}
       ];
       var headerChargesMetersIncluded = [
@@ -3684,7 +3684,7 @@
                 var prQuota = parseInt(prData.quota);
                 totalQuota = totalQuota + prQuota; 
                 if (!dataCharges[ownerIdV]) {
-                  dataCharges[ownerIdV] = {ownerId:ownerIdV, owner:ownerName, common:" ", private:0, water:" ", heating:" ", Total:" "};
+                  dataCharges[ownerIdV] = {ownerId:ownerIdV, owner:ownerName, common:0, private:0, water:0, heating:0, Total:0};
                 };
                 var iteratorMeter = 0;
                 refCoproperty.collection("Properties").doc(prFS.id).collection("Meters").get().then(function(metersFS){   
@@ -3705,16 +3705,16 @@
                         differenceV = parseFloat(newReading) - parseFloat(lastReading);
                         if (meterData.type == "Cold Water") {
                           totalColdWaterDifference = totalColdWaterDifference + differenceV;
-                          if (!dataQuota[(dataQuota.length)-1].waterCons) {totalQuotaWater += prQuota};
+                          console.log("dataQuota.length voor", prdata.code, " is ", dataQuota.length);
+                          if (!(dataQuota[(dataQuota.length)-1].waterCons)) {totalQuotaWater += prQuota};
                           dataQuota[(dataQuota.length)-1].waterCons = true;
                         } else if (meterData.type == "Heating") {
                           totalHeatingDifference = totalHeatingDifference + differenceV;
-                          if (!dataQuota[(dataQuota.length)-1].heatingCons) {totalQuotaHeating += prQuota};
+                          if (!(dataQuota[(dataQuota.length)-1].heatingCons)) {totalQuotaHeating += prQuota};
                           dataQuota[(dataQuota.length)-1].heatingCons = true;
                         } else if (meterData.type == "Hot Water"){
                           totalHotWaterDifference = totalHotWaterDifference + differenceV;
                           
-                          dataQuota[(dataQuota.length)-1].heatingCons = true;
                         };                    
                         dataConsumption.push({ownerId:ownerIdV, quota: prQuota, owner:ownerName.substr(0,15), property:prData.code, meter:meterData.meter, type:meterData.type, last_reading:lastReading, reading:newReading, difference:differenceV, water:0, water_payed:" ", water_regu:" ", heating:0, heating_payed:" ", heating_regu:" "});                       
                       };
@@ -3971,6 +3971,7 @@
           arrayEl.amount = amount.toLocaleString("nl-BE",currencyStyle);
           subtotalAmount = subtotalAmount + amount;
           if (arrayEl.waterCons){
+            console.log("arrayEl.waterCons voor", arrayEl.property  ," is ", arrayEl.waterCons);
             amountString = (buildingWaterPeriod * quota / totalQuotaWater).toFixed(2);
             amountWater = Number(amountString);
             total += amountWater;
