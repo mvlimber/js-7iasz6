@@ -3529,8 +3529,7 @@
         addMeter();
         handlingCopropertyMeter = true;
       }
-      var waterCommonParts;
-
+      
       function reportTransaction(trData){
         if (!trData.communication) { trData.communication= " ";} 
         else {trData.communication = trData.communication.substr(0,62);};
@@ -3728,7 +3727,7 @@
                           if (metersIncluded) {
                             totalledConsumption = calcTotalConsumption (totalQuota, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataConsumption, dataCharges);
                           };
-                          calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota, totalQuotaWater,totalQuotaHeating,buildingCommon, buildingWater, buildingHeating, buildingPrivate, dataWaterPeriod, dataWater, dataHeatingPeriod, dataHeating, dataCommon, dataPrivate, totalledConsumption, dataQuota, dataCharges);                         
+                          calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota, totalQuotaWater,totalQuotaHeating,buildingCommon, buildingWater, buildingWaterPeriod, buildingHeating, buildingHeatingPeriod, buildingPrivate, dataWaterPeriod, dataWater, dataHeatingPeriod, dataHeating, dataCommon, dataPrivate, totalledConsumption, dataQuota, dataCharges);                         
                         };
                       };
                     });
@@ -3749,9 +3748,9 @@
         });
       };  
 
-      function calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota, totalQuotaWater,totalQuotaHeating, buildingCommon, buildingWater, buildingHeating, buildingPrivate, dataWaterPeriod, dataWater, dataHeatingPeriod, dataHeating, dataCommon, dataPrivate, totalledConsumptionData, dataQuota, dataCharges){
+      function calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota, totalQuotaWater,totalQuotaHeating, buildingCommon, buildingWater, buildingWaterPeriod, buildingHeating, buildingHeatingPeriod, buildingPrivate, dataWaterPeriod, dataWater, dataHeatingPeriod, dataHeating, dataCommon, dataPrivate, totalledConsumptionData, dataQuota, dataCharges){
         console.log("voor totalledQuotaData");
-        var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, totalQuotaWater,totalQuotaHeating, buildingCommon, buildingWater, buildingHeating, dataCharges);                          
+        var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, totalQuotaWater,totalQuotaHeating, buildingCommon, buildingWaterPeriod, buildingHeatingPeriod, dataCharges);                          
         dataCommon.push({type:"Total",name:" ",date:" ",communication:" ",amount:buildingCommon.toLocaleString("nl-BE",currencyStyle)});
         var totalledPrivateData = calcPrivate(dataQuota, dataPrivate, dataCharges);
         var dataChargesCurrency = putChargesCurrency(Object.values(dataCharges), metersIncluded);
@@ -3950,7 +3949,7 @@
       };
 
 
-      function makeSubtotals (dataQuota,totalQuota, totalQuotaWater,totalQuotaHeating, buildingCommon, buildingWater, buildingHeating, dataCharges) {
+      function makeSubtotals (dataQuota,totalQuota, totalQuotaWater,totalQuotaHeating, buildingCommon, buildingWaterPeriod, buildingHeatingPeriod, dataCharges) {
         var result = [];
         var totalCommon = 0;
         var totalWater = 0;
@@ -3972,14 +3971,14 @@
           arrayEl.amount = amount.toLocaleString("nl-BE",currencyStyle);
           subtotalAmount = subtotalAmount + amount;
           if (arrayEl.waterCons){
-            amountString = (buildingWater * quota / totalQuotaWater).toFixed(2);
+            amountString = (buildingWaterPeriod * quota / totalQuotaWater).toFixed(2);
             amountWater = Number(amountString);
             total += amountWater;
             arrayEl.water = amountWater.toLocaleString("nl-BE",currencyStyle);
             subtotalWater += amountWater;
           };
           if (arrayEl.heatingCons){
-            amountString = (buildingHeating * quota / totalQuotaHeating).toFixed(2);
+            amountString = (buildingHeatingPeriod * quota / totalQuotaHeating).toFixed(2);
             amountHeating = Number(amountString);
             total += amountHeating;
             arrayEl.heating = amountHeating.toLocaleString("nl-BE",currencyStyle);
