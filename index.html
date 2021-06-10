@@ -3751,7 +3751,7 @@
 
       function calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota, buildingCommon, buildingPrivate, dataWaterPeriod, dataWater, dataHeatingPeriod, dataHeating, dataCommon, dataPrivate, totalledConsumptionData, dataQuota, dataCharges){
         console.log("voor totalledQuotaData");
-        var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon, dataCharges);                          
+        var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, buildingCommon, buildingWater, buildingHeating, dataCharges);                          
         dataCommon.push({type:"Total",name:" ",date:" ",communication:" ",amount:buildingCommon.toLocaleString("nl-BE",currencyStyle)});
         var totalledPrivateData = calcPrivate(dataQuota, dataPrivate, dataCharges);
         var dataChargesCurrency = putChargesCurrency(Object.values(dataCharges), metersIncluded);
@@ -3950,7 +3950,7 @@
       };
 
 
-      function makeSubtotals (dataQuota,totalQuota, buildingCommon, dataCharges) {
+      function makeSubtotals (dataQuota,totalQuota, buildingCommon, buildingWater, buildingHeating, dataCharges) {
         var result = [];
         var totalCommon = 0;
         var totalWater = 0;
@@ -3996,7 +3996,7 @@
             writeData(arrayEl);
           } else {
             if (count > 1) {
-              result.push({ownerId:currentOwnerId, owner:"Total", property:"", quota:"", period:"", quota_period: "", amount:subtotalAmount.toLocaleString("nl-BE",currencyStyle),water:subtotalWater.toLocaleString("nl-BE",currencyStyle),heating:subtotalHeating.toLocaleString("nl-BE",currencyStyle),total:subtotalTotal.toLocaleString("nl-BE",currencyStyle)});
+              result.push({ownerId:currentOwnerId, owner:"Total", property:"", quota:"", period:"", quota_period: "", amount:subtotalAmount.toLocaleString("nl-BE",currencyStyle),water:subtotalWater.toLocaleString("nl-BE",currencyStyle),heating:subtotalHeating.toLocaleString("nl-BE",currencyStyle),total:(subtotalAmount+subtotalWater+subtotalHeating).toLocaleString("nl-BE",currencyStyle)});
             };
             result.push({ownerId:" ", owner:"", property:"", quota:"", period:"", quota_period: "", amount:"", water:"", heating:"", total:""});
             count = 0;
