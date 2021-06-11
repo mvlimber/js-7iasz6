@@ -3705,7 +3705,7 @@
                         differenceV = parseFloat(newReading) - parseFloat(lastReading);
                         if (meterData.type == "Cold Water") {
                           totalColdWaterDifference = totalColdWaterDifference + differenceV;
-                          console.log("dataQuota.length voor", prdata.code, " is ", dataQuota.length);
+                          console.log("dataQuota.length voor", prData.code, " is ", dataQuota.length);
                           if (!(dataQuota[(dataQuota.length)-1].waterCons)) {totalQuotaWater += prQuota};
                           dataQuota[(dataQuota.length)-1].waterCons = true;
                         } else if (meterData.type == "Heating") {
