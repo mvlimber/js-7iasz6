@@ -3760,7 +3760,12 @@
       
       function putQuotaCurreny(dataQuota){
         dataQuota.forEach(function(arrayEl) {
-          arrayEl.private = private.toLocaleString("nl-BE",currencyStyle);
+          arrayEl.total = (arrayEl.common+arrayEl.water+arrayEl.heating+arrayEl.private).toLocaleString("nl-BE",currencyStyle);
+          arrayEl.common = arrayEl.common.toLocaleString("nl-BE",currencyStyle);
+          if (arrayEl.water){arrayEl.water = arrayEl.water.toLocaleString("nl-BE",currencyStyle);};
+          if (arrayEl.heating){arrayEl.heating = arrayEl.heating.toLocaleString("nl-BE",currencyStyle);};
+          if (arrayEl.private){arrayEl.private = arrayEl.private.toLocaleString("nl-BE",currencyStyle);};
+          
         });
       }
       
