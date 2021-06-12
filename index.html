@@ -3681,7 +3681,7 @@
                 var prData = prFS.data();
                 var ownerIdV = prData.owner;
                 var ownerName = idMemberMap[ownerIdV];
-                dataQuota.push({ownerId:ownerIdV, owner:ownerName, propertyId:prFS.id, property:prData.code, quota:prData.quota, period:"100%", quota_period: prData.quota, amount:" ", water: " ", heating: " ", waterCons: false, heatingCons: false}); 
+                dataQuota.push({ownerId:ownerIdV, owner:ownerName, propertyId:prFS.id, property:prData.code, quota:prData.quota, period:"100%", quota_period: prData.quota, amount:" ", water: " ", heating: " ", waterCons: false, heatingCons: false, private: 0, total: " "}); 
                 var prQuota = parseInt(prData.quota);
                 totalQuota = totalQuota + prQuota; 
                 if (!dataCharges[ownerIdV]) {
@@ -3758,6 +3758,12 @@
         writePDF(closeDateTransactions, metersIncluded, dataWaterPeriod, dataWater, dataHeatingPeriod, dataHeating,  dataCommon, totalledPrivateData, totalledConsumptionData, totalledQuotaData, dataChargesCurrency);
       };
       
+      function putQuotaCurreny(dataQuota){
+        dataQuota.forEach(function(arrayEl) {
+          arrayEl.private = private.toLocaleString("nl-BE",currencyStyle);
+        });
+      }
+      
       function putChargesCurrency(dataChargesP, metersIncluded){
         var tCommon = 0;
         var tWater = 0;
@@ -3821,7 +3827,8 @@
             thisPropertyId = ds.property;
             var thisQR = dataQuota.find(findQR);         
             distributionString += thisQR.property + ": " + ds.amount.toLocaleString("nl-BE",currencyStyle) + " | ";
-            dataCharges[thisQR.ownerId].private += ds.amount;
+            /*dataCharges[thisQR.ownerId].private += ds.amount;*/
+            thisQR.private += ds.amount;
           });
           result.push({name: dp.name, date: dp.date, communication: dp.communication, distribution: distributionString, amount: dp.amount.toLocaleString("nl-BE",currencyStyle)});
           total += dp.amount;
