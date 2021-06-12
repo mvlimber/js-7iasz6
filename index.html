@@ -3643,7 +3643,7 @@
               buildingHeatingPeriod += reportTransaction(trData);
               dataHeatingPeriod.push(trData);
             } else {
-              buildingCommon = buildingCommon + reportTransaction(trData);
+              buildingCommon += reportTransaction(trData);
               dataCommon.push(trData);
             };
           });
@@ -3653,7 +3653,7 @@
           refCoproperty.collection("Transactions").where("type", "==", "Water").where("bookDate", ">", lastReguDate).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){
             transactionsFS.forEach(function(transactionFS){
               var trData = transactionFS.data();
-              buildingWater = buildingWater + reportTransaction(trData);
+              buildingWater += reportTransaction(trData);
               dataWater.push(trData);
             });      
           dataWater.push({type:"Total",name:" ",date:" ",communication:" ",amount:buildingWater.toLocaleString("nl-BE",currencyStyle)});
@@ -3661,7 +3661,7 @@
           refCoproperty.collection("Transactions").where("type", "==", "Heating").where("bookDate", ">", lastReguDate).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){
             transactionsFS.forEach(function(transactionFS){
               var trData = transactionFS.data();
-              buildingHeating = buildingHeating + reportTransaction(trData);
+              buildingHeating += reportTransaction(trData);
               dataHeating.push(trData);
             });      
           dataHeating.push({type:"Total",name:" ",date:" ",communication:" ",amount:buildingHeating.toLocaleString("nl-BE",currencyStyle)});
@@ -3706,11 +3706,11 @@
                           if (!(dataQuota[iteratorProp-1].waterCons)) {totalQuotaWater += prQuota};
                           dataQuota[iteratorProp-1].waterCons = true;
                         } else if (meterData.type == "Heating") {
-                          totalHeatingDifference = totalHeatingDifference + differenceV;
+                          totalHeatingDifference += differenceV;
                           if (!(dataQuota[iteratorProp-1].heatingCons)) {totalQuotaHeating += prQuota};
                           dataQuota[iteratorProp-1].heatingCons = true;
                         } else if (meterData.type == "Hot Water"){
-                          totalHotWaterDifference = totalHotWaterDifference + differenceV;
+                          totalHotWaterDifference += differenceV;
                           
                         };                    
                         dataConsumption.push({ownerId:ownerIdV, quota: prQuota, owner:ownerName.substr(0,15), property:prData.code, meter:meterData.meter, type:meterData.type, last_reading:lastReading, reading:newReading, difference:differenceV, water:0, water_payed:" ", water_regu:" ", heating:0, heating_payed:" ", heating_regu:" "});                       
