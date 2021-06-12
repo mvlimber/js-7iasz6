@@ -3604,9 +3604,7 @@
         {id:"Total",name:"Total",prompt:"Total",width: 50,align: "right",padding: 0}
       ];
 
-      function generateChargesReport(closeDateTransactions, metersIncluded){
-        console.log("aangekomen");                                                 
-          
+      function generateChargesReport(closeDateTransactions, metersIncluded){  
         var onlyOnce = true;
         var buildingWater = 0;
         var buildingWaterPeriod = 0;
@@ -3667,7 +3665,6 @@
               dataHeating.push(trData);
             });      
           dataHeating.push({type:"Total",name:" ",date:" ",communication:" ",amount:buildingHeating.toLocaleString("nl-BE",currencyStyle)});
-          console.log("net voor collections");                                                 
                           
           refCoproperty.collection("Members").get().then(function(membersFS) { 
             var idMemberMap = [];
@@ -3706,7 +3703,6 @@
                         differenceV = parseFloat(newReading) - parseFloat(lastReading);
                         if (meterData.type == "Cold Water") {
                           totalColdWaterDifference = totalColdWaterDifference + differenceV;
-                          console.log("dataQuota.length voor", prData.code, " is ", dataQuota.length);
                           if (!(dataQuota[iteratorProp-1].waterCons)) {totalQuotaWater += prQuota};
                           dataQuota[iteratorProp-1].waterCons = true;
                         } else if (meterData.type == "Heating") {
@@ -3723,7 +3719,6 @@
                       if (!stop)  {
                         if ((iteratorMeter == metersFS.docs.length) && (iteratorProp == propertiesFS.docs.length)) {                         
                           /* ook testen op ingave coproperty meters ??*/
-                          console.log("net na stop controle");                                                 
                           var totalledConsumption = dataConsumption;
                           if (metersIncluded) {
                             totalledConsumption = calcTotalConsumption (totalQuota, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataConsumption, dataCharges);
@@ -3750,7 +3745,6 @@
       };  
 
       function calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota, totalQuotaWater,totalQuotaHeating, buildingCommon, buildingWater, buildingWaterPeriod, buildingHeating, buildingHeatingPeriod, buildingPrivate, dataWaterPeriod, dataWater, dataHeatingPeriod, dataHeating, dataCommon, dataPrivate, totalledConsumptionData, dataQuota, dataCharges){
-        console.log("voor totalledQuotaData");
         var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, totalQuotaWater,totalQuotaHeating, buildingCommon, buildingWaterPeriod, buildingHeatingPeriod, dataCharges);                          
         dataCommon.push({type:"Total",name:" ",date:" ",communication:" ",amount:buildingCommon.toLocaleString("nl-BE",currencyStyle)});
         var totalledPrivateData = calcPrivate(dataQuota, dataPrivate, dataCharges);
@@ -3983,7 +3977,6 @@
           arrayEl.common = amount;
           subtotalCommon += amount;
           if (arrayEl.waterCons){
-            console.log("arrayEl.waterCons voor", arrayEl.property  ," is ", arrayEl.waterCons);
             amountString = (buildingWaterPeriod * quota / totalQuotaWater).toFixed(2);
             amountWater = Number(amountString);
             arrayEl.water = amountWater;
