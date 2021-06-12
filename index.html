@@ -3999,9 +3999,9 @@
           } else {
             /* we are treating another owner */
             if (count > 1) {
-              result.push({ownerId:currentOwnerId, owner:"Total", property:"", quota:"", period:"", quota_period: "", amount:subtotalAmount.toLocaleString("nl-BE",currencyStyle),water:subtotalWater.toLocaleString("nl-BE",currencyStyle),heating:subtotalHeating.toLocaleString("nl-BE",currencyStyle),total:(subtotalAmount+subtotalWater+subtotalHeating).toLocaleString("nl-BE",currencyStyle)});
+              result.push({ownerId:currentOwnerId, owner:"Total", property:"", quota:"", period:"", quota_period: "", common:subtotalCommon.toLocaleString("nl-BE",currencyStyle),water:subtotalWater.toLocaleString("nl-BE",currencyStyle),heating:subtotalHeating.toLocaleString("nl-BE",currencyStyle), private: "", total:(subtotalCommon+subtotalWater+subtotalHeating).toLocaleString("nl-BE",currencyStyle)});
             };
-            result.push({ownerId:" ", owner:"", property:"", quota:"", period:"", quota_period: "", amount:"", water:"", heating:"", total:""});
+            result.push({ownerId:" ", owner:"", property:"", quota:"", period:"", quota_period: "", common:"", water:"", heating:"", private: "", total:""});
             count = 0;
             subtotalCommon = 0; subtotalWater = 0; subtotalHeating = 0;
             writeData(arrayEl);
@@ -4013,10 +4013,10 @@
         });
         /* all owners treated. possibly add last summation*/
         if (count > 1) {
-              result.push({ownerId:currentOwnerId, owner:"Total", property:"", quota:"", period:"", quota_period: "", amount:subtotalAmount.toLocaleString("nl-BE",currencyStyle),water:subtotalWater.toLocaleString("nl-BE",currencyStyle),heating:subtotalHeating.toLocaleString("nl-BE",currencyStyle),total:(subtotalAmount+subtotalWater+subtotalHeating).toLocaleString("nl-BE",currencyStyle)});
+              result.push({ownerId:currentOwnerId, owner:"Total", property:"", quota:"", period:"", quota_period: "", common:subtotalCommon.toLocaleString("nl-BE",currencyStyle),water:subtotalWater.toLocaleString("nl-BE",currencyStyle),heating:subtotalHeating.toLocaleString("nl-BE",currencyStyle), private: "",total:(subtotalAmount+subtotalWater+subtotalHeating).toLocaleString("nl-BE",currencyStyle)});
             };
-            result.push({ownerId:" ", owner:"", property:"", quota:"", period:"", quota_period: "", amount:"", water:"", heating:"", total:""});
-            result.push({ownerId:" ", owner:"Total building", property:" ", quota:" ", period:" ", quota_period: totalQuota.toString(), amount:totalCommon.toLocaleString("nl-BE",currencyStyle),water:totalWater.toLocaleString("nl-BE",currencyStyle),heating:totalHeating.toLocaleString("nl-BE",currencyStyle),total:(totalCommon+totalWater+totalHeating).toLocaleString("nl-BE",currencyStyle)});
+            result.push({ownerId:" ", owner:"", property:"", quota:"", period:"", quota_period: "", common:"", water:"", heating:"", total:""});
+            result.push({ownerId:" ", owner:"Total building", property:" ", quota:" ", period:" ", quota_period: totalQuota.toString(), common:totalCommon.toLocaleString("nl-BE",currencyStyle),water:totalWater.toLocaleString("nl-BE",currencyStyle),heating:totalHeating.toLocaleString("nl-BE",currencyStyle), private: "",total:(totalCommon+totalWater+totalHeating).toLocaleString("nl-BE",currencyStyle)});
         return result;
       };
       
