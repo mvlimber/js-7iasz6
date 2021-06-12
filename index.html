@@ -3681,7 +3681,7 @@
                 var prData = prFS.data();
                 var ownerIdV = prData.owner;
                 var ownerName = idMemberMap[ownerIdV];
-                dataQuota.push({ownerId:ownerIdV, owner:ownerName, propertyId:prFS.id, property:prData.code, quota:prData.quota, period:"100%", quota_period: prData.quota, amount:" ", water: " ", heating: " ", waterCons: false, heatingCons: false, private: 0, total: " "}); 
+                dataQuota.push({ownerId:ownerIdV, owner:ownerName, propertyId:prFS.id, property:prData.code, quota:prData.quota, period:"100%", quota_period: prData.quota, common:0, water: 0, heating: 0, waterCons: false, heatingCons: false, private: 0, total: 0}); 
                 var prQuota = parseInt(prData.quota);
                 totalQuota = totalQuota + prQuota; 
                 if (!dataCharges[ownerIdV]) {
@@ -3964,38 +3964,32 @@
         var totalHeating = 0;
         var currentOwnerId = "";
         var count =0;
-        var subtotalAmount = 0;
+        var subtotalCommon = 0;
         var subtotalWater = 0;
         var subtotalHeating = 0;
         var amount = 0;
         var amountWater = 0;
         var amountHeating = 0;
         function writeData(arrayEl){
-          var total = 0;
           var quota = parseInt(arrayEl.quota);
           var amountString = (buildingCommon * quota / totalQuota).toFixed(2);
           amount = Number(amountString);
-          total += amount;
-          arrayEl.amount = amount.toLocaleString("nl-BE",currencyStyle);
-          subtotalAmount = subtotalAmount + amount;
+          arrayEl.common = amount;
+          subtotalCommon += amount;
           if (arrayEl.waterCons){
             console.log("arrayEl.waterCons voor", arrayEl.property  ," is ", arrayEl.waterCons);
             amountString = (buildingWaterPeriod * quota / totalQuotaWater).toFixed(2);
             amountWater = Number(amountString);
-            total += amountWater;
-            arrayEl.water = amountWater.toLocaleString("nl-BE",currencyStyle);
+            arrayEl.water = amountWater;
             subtotalWater += amountWater;
           };
           if (arrayEl.heatingCons){
             amountString = (buildingHeatingPeriod * quota / totalQuotaHeating).toFixed(2);
             amountHeating = Number(amountString);
-            total += amountHeating;
-            arrayEl.heating = amountHeating.toLocaleString("nl-BE",currencyStyle);
+            arrayEl.heating = amountHeating;
             subtotalHeating += amountHeating;
           };
-          arrayEl.total = total.toLocaleString("nl-BE",currencyStyle);
-          result.push(arrayEl);
-          
+          result.push(arrayEl);         
           dataCharges[arrayEl.ownerId].common = subtotalAmount;
         };
         dataQuota.forEach(function(arrayEl) {
