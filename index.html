@@ -3706,12 +3706,12 @@
                         if (meterData.type == "Cold Water") {
                           totalColdWaterDifference = totalColdWaterDifference + differenceV;
                           console.log("dataQuota.length voor", prData.code, " is ", dataQuota.length);
-                          if (!(dataQuota[(dataQuota.length)-1].waterCons)) {totalQuotaWater += prQuota};
-                          dataQuota[(dataQuota.length)-1].waterCons = true;
+                          if (!(dataQuota[iteratorProp-1].waterCons)) {totalQuotaWater += prQuota};
+                          dataQuota[iteratorProp-1].waterCons = true;
                         } else if (meterData.type == "Heating") {
                           totalHeatingDifference = totalHeatingDifference + differenceV;
-                          if (!(dataQuota[(dataQuota.length)-1].heatingCons)) {totalQuotaHeating += prQuota};
-                          dataQuota[(dataQuota.length)-1].heatingCons = true;
+                          if (!(dataQuota[iteratorProp-1].heatingCons)) {totalQuotaHeating += prQuota};
+                          dataQuota[iteratorProp-1].heatingCons = true;
                         } else if (meterData.type == "Hot Water"){
                           totalHotWaterDifference = totalHotWaterDifference + differenceV;
                           
