@@ -3581,13 +3581,13 @@
         {id:"owner",name:"owner",prompt:"owner",width: 70,align: "center",padding: 0},
         {id:"property",name:"property",prompt:"property",width: 30,align: "center",padding: 0},
         /*{id:"quota",name:"quota",prompt:"quota",width: 25,align: "center",padding: 0},
-        {id:"period",name:"period",prompt:"period",width: 30,align: "center",padding: 0},*/
+        {id:"period",name:"period",prompt:"period",width: 30,align: "center",padding: 0},
         {id:"quota_period",name:"quota_period",prompt:"quota",width: 30,align: "center",padding: 0},
         {id:"common",name:"common",prompt:"common charges",width: 40,align: "center",padding: 0},
         {id:"water",name:"water",prompt:"provision water",width: 40,align: "center",padding: 0},
         {id:"heating",name:"heating",prompt:"provision heating",width: 40,align: "center",padding: 0},
         {id:"private",name:"private",prompt:"private",width: 40,align: "center",padding: 0},
-        {id:"total",name:"total",prompt:"Total",width: 40,align: "right",padding: 0}
+        {id:"total",name:"total",prompt:"Total",width: 40,align: "right",padding: 0}*/
       ];
       var headerChargesMetersIncluded = [
         {id:"owner",name:"owner",prompt:"owner",width: 80,align: "center",padding: 0},
@@ -3757,9 +3757,12 @@
           if (arrayEl.owner) {
             arrayEl.total = (arrayEl.common+arrayEl.water+arrayEl.heating+arrayEl.private).toLocaleString("nl-BE",currencyStyle);
             arrayEl.common = arrayEl.common.toLocaleString("nl-BE",currencyStyle);
-            if (arrayEl.water){arrayEl.water = arrayEl.water.toLocaleString("nl-BE",currencyStyle);};
-            if (arrayEl.heating){arrayEl.heating = arrayEl.heating.toLocaleString("nl-BE",currencyStyle);};
-            if (arrayEl.private){arrayEl.private = arrayEl.private.toLocaleString("nl-BE",currencyStyle);};
+            if (arrayEl.water){arrayEl.water = arrayEl.water.toLocaleString("nl-BE",currencyStyle);}
+            else {arrayEl.water =""};
+            if (arrayEl.heating){arrayEl.heating = arrayEl.heating.toLocaleString("nl-BE",currencyStyle);}
+            else {arrayEl.heating =""};
+            if (arrayEl.private){arrayEl.private = arrayEl.private.toLocaleString("nl-BE",currencyStyle);}
+            else {arrayEl.private =""};
           };
         });
         return dataQuota;
@@ -4063,12 +4066,14 @@
             printFooterPortrait ();
           };
         };
-        function printTableLandscape(title, table, header, fontSize) {
+        function printTableLandscape(title, table, header, fontSizeP) {
           for (i = 0; i < Math.ceil(table.length/rowsLandscape); i= i + 1) {
             doc.addPage("a4", "landscape");
             doc.setFontSize(16);
             doc.text(title, 15, 15);
-            doc.table(10, 20, table.slice(i*rowsLandscape, (i+1)*rowsLandscape), header,{fontSize:fontSize});
+            console.log("before doc.table");
+            doc.table(10, 20, table.slice(i*rowsLandscape, (i+1)*rowsLandscape), header,{fontSize:fontSizeP});
+            console.log("after doc.table");
             printFooterLandscape ();
           };
         };
@@ -4116,7 +4121,10 @@
         printTablePortrait("Water: total building this period", dataWaterPeriod, headerWH);
         printTablePortrait("Heating: total building this period", dataHeatingPeriod, headerWH);
         printTableLandscape("Private expenses", dataPrivate, headerPrivate,10);
+        console.log(dataQuota);
         printTableLandscape("Charges and expenses per owner", dataQuota, headerQuota,10);
+        console.log("na de fameuze print");
+        
         if (metersIncludedHere){
           
           printTablePortrait("Water: total for building since last regularisation", dataWater, headerWH);
