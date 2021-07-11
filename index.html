@@ -3580,14 +3580,14 @@
       var headerQuota =[
         {id:"owner",name:"owner",prompt:"owner",width: 70,align: "center",padding: 0},
         {id:"property",name:"property",prompt:"property",width: 30,align: "center",padding: 0},
-        /*{id:"quota",name:"quota",prompt:"quota",width: 25,align: "center",padding: 0},
+        {id:"quota",name:"quota",prompt:"quota",width: 25,align: "center",padding: 0},
         {id:"period",name:"period",prompt:"period",width: 30,align: "center",padding: 0},
         {id:"quota_period",name:"quota_period",prompt:"quota",width: 30,align: "center",padding: 0},
         {id:"common",name:"common",prompt:"common charges",width: 40,align: "center",padding: 0},
         {id:"water",name:"water",prompt:"provision water",width: 40,align: "center",padding: 0},
         {id:"heating",name:"heating",prompt:"provision heating",width: 40,align: "center",padding: 0},
         {id:"private",name:"private",prompt:"private",width: 40,align: "center",padding: 0},
-        {id:"total",name:"total",prompt:"Total",width: 40,align: "right",padding: 0}*/
+        {id:"total",name:"total",prompt:"Total",width: 40,align: "right",padding: 0}
       ];
       var headerChargesMetersIncluded = [
         {id:"owner",name:"owner",prompt:"owner",width: 80,align: "center",padding: 0},
@@ -4018,7 +4018,7 @@
         if (count > 1) {
               result.push({ownerId:currentOwnerId, owner:"Total", property:"", quota:"", period:"", quota_period: "", common:subtotalCommon,water:subtotalWater,heating:subtotalHeating, private: 0,total:0});
             };
-            result.push({ownerId:" ", owner:"", property:"", quota:"", period:"", quota_period: "", common:"", water:"", heating:"", total:""});
+            result.push({ownerId:" ", owner:"", property:"", quota:"", period:"", quota_period: "", common:"", water:"", heating:"", private: "", total:""});
             result.push({ownerId:" ", owner:"Total building", property:" ", quota:" ", period:" ", quota_period: totalQuota.toString(), common:totalCommon,water:totalWater,heating:totalHeating, private: "",total:0});
         return result;
       };
@@ -4132,7 +4132,7 @@
           printTableLandscape("Water and Heating: regularisation per property and owner (CW = Cold Water, HW= Hot Water, HE = heating)", dataConsumption, headerConsumption,8);
           printTableLandscape("Total charges: total charges per owner", tableCharges, headerChargesMetersIncluded,10);
         } else {
-          /*printTablePortrait("Total charges: total charges per owner", tableCharges, headerChargesMetersExcluded, 10);*/
+          printTablePortrait("Total charges: total charges per owner", tableCharges, headerChargesMetersExcluded, 10);
         };
         
         refCoproperty.collection("ChargesReports").add({startDate: startDateString, endDate: closeDateTransactions, metersIncluded: metersIncludedHere, confirmed: false }).then (function (chargesReportFS){
