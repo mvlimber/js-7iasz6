@@ -3992,7 +3992,7 @@
           if (arrayEl.waterCons){
             amountString = (buildingWaterPeriod * quota / totalQuotaWater).toFixed(2);
             amountWater = Number(amountString);
-            arrayEl.tWater_pro = amountWater;
+            arrayEl.water_pro = amountWater;
             subtotalWater += amountWater;
           };
           if (arrayEl.heatingCons){
@@ -4011,7 +4011,7 @@
           } else {
             /* we are treating another owner */
             if (count > 1) {
-              result.push({ownerId:currentOwnerId, owner:"Total", property:"", quota:"", period:"", quota_period: "", common:subtotalCommon,water_pro:subtotalWater,tHeating_pro:subtotalHeating, private: 0, total:0});
+              result.push({ownerId:currentOwnerId, owner:"Total", property:"", quota:"", period:"", quota_period: "", common:subtotalCommon,water_pro:subtotalWater,heating_pro:subtotalHeating, private: 0, total:0});
             };
             result.push({ownerId:" ", owner:"", property:"", quota:"", period:"", quota_period: "", common:"", water_pro:"", heating_pro:"", private: "", total:""});
             count = 0;
