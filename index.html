@@ -3584,8 +3584,8 @@
         {id:"period",name:"period",prompt:"period",width: 30,align: "center",padding: 0},
         {id:"quota_period",name:"quota_period",prompt:"quota",width: 30,align: "center",padding: 0},
         {id:"common",name:"common",prompt:"common charges",width: 40,align: "center",padding: 0},
-        {id:"water",name:"water",prompt:"provision water",width: 40,align: "center",padding: 0},
-        {id:"heating",name:"heating",prompt:"provision heating",width: 40,align: "center",padding: 0},
+        {id:"water_pro",name:"water_pro",prompt:"provision water",width: 40,align: "center",padding: 0},
+        {id:"heating_pro",name:"heating_pro",prompt:"provision heating",width: 40,align: "center",padding: 0},
         {id:"private",name:"private",prompt:"private",width: 40,align: "center",padding: 0},
         {id:"total",name:"total",prompt:"Total",width: 40,align: "right",padding: 0}
       ];
@@ -3593,17 +3593,17 @@
         {id:"owner",name:"owner",prompt:"owner",width: 80,align: "center",padding: 0},
         {id:"common",name:"common",prompt:"common charges",width: 55,align: "center",padding: 0},
         {id:"private",name:"private",prompt:"private charges",width: 55,align: "center",padding: 0},
-        {id:"water_pro",name:"water",prompt:"provision water",width: 55,align: "center",padding: 0},
-        {id:"heating_pro",name:"heating",prompt:"provision heating",width: 55,align: "center",padding: 0},
-        {id:"water_regu",name:"water",prompt:"regularisation water",width: 55,align: "center",padding: 0},
-        {id:"heating_regu",name:"heating",prompt:"regularisation heating",width: 55,align: "center",padding: 0},
+        {id:"water_pro",name:"water_pro",prompt:"provision water",width: 55,align: "center",padding: 0},
+        {id:"heating_pro",name:"heating_pro",prompt:"provision heating",width: 55,align: "center",padding: 0},
+        {id:"water_regu",name:"water_regu",prompt:"regularisation water",width: 55,align: "center",padding: 0},
+        {id:"heating_regu",name:"heating_regu",prompt:"regularisation heating",width: 55,align: "center",padding: 0},
         {id:"Total",name:"Total",prompt:"Total",width: 55,align: "right",padding: 0}
       ];
       var headerChargesMetersExcluded = [
         {id:"owner",name:"owner",prompt:"owner",width: 80,align: "center",padding: 0},
         {id:"common",name:"common",prompt:"common charges",width: 50,align: "right",padding: 0},
-        {id:"water_pro",name:"water",prompt:"provision water",width: 55,align: "center",padding: 0},
-        {id:"heating_pro",name:"heating",prompt:"provision heating",width: 55,align: "center",padding: 0},
+        {id:"water_pro",name:"water_pro",prompt:"provision water",width: 55,align: "center",padding: 0},
+        {id:"heating_pro",name:"heating_pro",prompt:"provision heating",width: 55,align: "center",padding: 0},
         {id:"private",name:"private",prompt:"private charges",width: 50,align: "right",padding: 0},
         {id:"Total",name:"Total",prompt:"Total",width: 50,align: "right",padding: 0}
       ];
@@ -3681,7 +3681,7 @@
                 var prData = prFS.data();
                 var ownerIdV = prData.owner;
                 var ownerName = idMemberMap[ownerIdV];
-                dataQuota.push({ownerId:ownerIdV, owner:ownerName, propertyId:prFS.id, property:prData.code, quota:prData.quota, period:"100%", quota_period: prData.quota, common:0, water: 0, heating: 0, waterCons: false, heatingCons: false, private: 0, total: 0}); 
+                dataQuota.push({ownerId:ownerIdV, owner:ownerName, propertyId:prFS.id, property:prData.code, quota:prData.quota, period:"100%", quota_period: prData.quota, common:0, water_pro: 0, heating_pro: 0, waterCons: false, heatingCons: false, private: 0, total: 0}); 
                 var prQuota = parseInt(prData.quota);
                 totalQuota = totalQuota + prQuota; 
                 if (!dataCharges[ownerIdV]) {
@@ -3758,12 +3758,12 @@
       function putQuotaCurreny(dataQuota){
         dataQuota.forEach(function(arrayEl) {
           if (arrayEl.owner) {
-            arrayEl.total = (arrayEl.common+arrayEl.water+arrayEl.heating+arrayEl.private).toLocaleString("nl-BE",currencyStyle);
+            arrayEl.total = (arrayEl.common+arrayEl.water_pro+arrayEl.heating_pro+arrayEl.private).toLocaleString("nl-BE",currencyStyle);
             arrayEl.common = arrayEl.common.toLocaleString("nl-BE",currencyStyle);
-            if (arrayEl.water){arrayEl.water = arrayEl.water.toLocaleString("nl-BE",currencyStyle);}
-            else {arrayEl.water =""};
-            if (arrayEl.heating){arrayEl.heating = arrayEl.heating.toLocaleString("nl-BE",currencyStyle);}
-            else {arrayEl.heating =""};
+            if (arrayEl.water_pro){arrayEl.water_pro = arrayEl.water_pro.toLocaleString("nl-BE",currencyStyle);}
+            else {arrayEl.water_pro =""};
+            if (arrayEl.heating_pro){arrayEl.heating_pro = arrayEl.heating_pro.toLocaleString("nl-BE",currencyStyle);}
+            else {arrayEl.heating_pro =""};
             if (arrayEl.private){arrayEl.private = arrayEl.private.toLocaleString("nl-BE",currencyStyle);}
             else {arrayEl.private =""};
           };
@@ -3773,16 +3773,22 @@
       
       function putChargesCurrency(dataChargesP, metersIncluded){
         var tCommon = 0;
-        var tWater = 0;
-        var tHeating = 0;
+        var tWater_pro = 0;
+        var tHeating_pro = 0;
+        var tWater_regu = 0;
+        var tHeating_regu = 0;
         var tPrivate = 0;
         dataChargesP.forEach(function(arrayEl) {
           var totalRow;
-          if (metersIncluded){totalRow = arrayEl.common + arrayEl.private + arrayEl.water + arrayEl.heating;}
-          else {totalRow = arrayEl.common + arrayEl.private ;};
+          if (metersIncluded){totalRow = arrayEl.common + arrayEl.private + arrayEl.water_pro + arrayEl.heating_pro + arrayEl.water_regu + arrayEl.heating_regu;}
+          else {totalRow = arrayEl.common + arrayEl.private + arrayEl.water_pro + arrayEl.heating_pro;};
           arrayEl.Total = totalRow.toLocaleString("nl-BE",currencyStyle);
           tCommon += arrayEl.common;
           arrayEl.common = arrayEl.common.toLocaleString("nl-BE",currencyStyle);
+          tWater_pro += arrayEl.water_pro;
+          arrayEl.water_pro = arrayEl.water_pro.toLocaleString("nl-BE",currencyStyle);
+          tHeating_pro += arrayEl.heating_pro;
+          arrayEl.heating_pro = arrayEl.heating_pro.toLocaleString("nl-BE",currencyStyle);
           tPrivate += arrayEl.private;
           arrayEl.private = arrayEl.private.toLocaleString("nl-BE",currencyStyle); 
           if (metersIncluded) {
