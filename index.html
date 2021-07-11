@@ -3593,19 +3593,22 @@
         {id:"owner",name:"owner",prompt:"owner",width: 80,align: "center",padding: 0},
         {id:"common",name:"common",prompt:"common charges",width: 55,align: "center",padding: 0},
         {id:"private",name:"private",prompt:"private charges",width: 55,align: "center",padding: 0},
-        {id:"water",name:"water",prompt:"regularisation water",width: 55,align: "center",padding: 0},
-        {id:"heating",name:"heating",prompt:"regularisation heating",width: 55,align: "center",padding: 0},
+        {id:"water_pro",name:"water",prompt:"provision water",width: 55,align: "center",padding: 0},
+        {id:"heating_pro",name:"heating",prompt:"provision heating",width: 55,align: "center",padding: 0},
+        {id:"water_regu",name:"water",prompt:"regularisation water",width: 55,align: "center",padding: 0},
+        {id:"heating_regu",name:"heating",prompt:"regularisation heating",width: 55,align: "center",padding: 0},
         {id:"Total",name:"Total",prompt:"Total",width: 55,align: "right",padding: 0}
       ];
       var headerChargesMetersExcluded = [
         {id:"owner",name:"owner",prompt:"owner",width: 80,align: "center",padding: 0},
         {id:"common",name:"common",prompt:"common charges",width: 50,align: "right",padding: 0},
+        {id:"water_pro",name:"water",prompt:"provision water",width: 55,align: "center",padding: 0},
+        {id:"heating_pro",name:"heating",prompt:"provision heating",width: 55,align: "center",padding: 0},
         {id:"private",name:"private",prompt:"private charges",width: 50,align: "right",padding: 0},
         {id:"Total",name:"Total",prompt:"Total",width: 50,align: "right",padding: 0}
       ];
 
       function generateChargesReport(closeDateTransactions, metersIncluded){  
-        var onlyOnce = true;
         var buildingWater = 0;
         var buildingWaterPeriod = 0;
         var buildingHeating = 0;
