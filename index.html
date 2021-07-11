@@ -3685,7 +3685,7 @@
                 var prQuota = parseInt(prData.quota);
                 totalQuota = totalQuota + prQuota; 
                 if (!dataCharges[ownerIdV]) {
-                  dataCharges[ownerIdV] = {ownerId:ownerIdV, owner:ownerName, common:0, private:0, water:0, heating:0, Total:0};
+                  dataCharges[ownerIdV] = {ownerId:ownerIdV, owner:ownerName, common:0, private:0, water_pro:0, heating_pro:0, water_regu:0, heating_regu:0, Total:0};
                 };
                 var iteratorMeter = 0;
                 refCoproperty.collection("Properties").doc(prFS.id).collection("Meters").get().then(function(metersFS){   
