@@ -3792,19 +3792,19 @@
           tPrivate += arrayEl.private;
           arrayEl.private = arrayEl.private.toLocaleString("nl-BE",currencyStyle); 
           if (metersIncluded) {
-            tWater += arrayEl.water;
-            arrayEl.water = arrayEl.water.toLocaleString("nl-BE",currencyStyle);
-            tHeating += arrayEl.heating;
-            arrayEl.heating = arrayEl.heating.toLocaleString("nl-BE",currencyStyle);
+            tWater_regu += arrayEl.water_regu;
+            arrayEl.water_regu = arrayEl.water_regu.toLocaleString("nl-BE",currencyStyle);
+            tHeating_regu += arrayEl.heating_regu;
+            arrayEl.heating_regu = arrayEl.heating_regu.toLocaleString("nl-BE",currencyStyle);
           } else {
-            arrayEl.water = " ";
-            arrayEl.heating = " ";
+            arrayEl.tWater_regu = " ";
+            arrayEl.heating_regu = " ";
           }
         });
         if (metersIncluded) {
-          dataChargesP.push({ownerId:"", owner:"Total", common:tCommon.toLocaleString("nl-BE",currencyStyle), private:tPrivate.toLocaleString("nl-BE",currencyStyle), water:tWater.toLocaleString("nl-BE",currencyStyle), heating:tHeating.toLocaleString("nl-BE",currencyStyle), Total:(tCommon+tPrivate+tWater+tHeating).toLocaleString("nl-BE",currencyStyle)});
+          dataChargesP.push({ownerId:"", owner:"Total", common:tCommon.toLocaleString("nl-BE",currencyStyle), private:tPrivate.toLocaleString("nl-BE",currencyStyle), water_pro:tWater_pro.toLocaleString("nl-BE",currencyStyle), heating_pro:tHeating_pro.toLocaleString("nl-BE",currencyStyle), water_regu:tWater_regu.toLocaleString("nl-BE",currencyStyle), heating_regu:tHeating_regu.toLocaleString("nl-BE",currencyStyle), Total:(tCommon+tPrivate+tWater_pro+tHeating_pro+tWater_regu+tHeating_regu).toLocaleString("nl-BE",currencyStyle)});
         } else {
-          dataChargesP.push({ownerId:"", owner:"Total", common:tCommon.toLocaleString("nl-BE",currencyStyle), private:tPrivate.toLocaleString("nl-BE",currencyStyle), Total:(tCommon+tPrivate).toLocaleString("nl-BE",currencyStyle)});
+          dataChargesP.push({ownerId:"", owner:"Total", common:tCommon.toLocaleString("nl-BE",currencyStyle), private:tPrivate.toLocaleString("nl-BE",currencyStyle), water_pro:tWater_pro.toLocaleString("nl-BE",currencyStyle), heating_pro:tHeating_pro.toLocaleString("nl-BE",currencyStyle), Total:(tCommon+tPrivate).toLocaleString("nl-BE",currencyStyle)});
         };
         return dataChargesP;
       };
