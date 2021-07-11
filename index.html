@@ -4141,7 +4141,7 @@
           printTableLandscape("Water and Heating: regularisation per property and owner (CW = Cold Water, HW= Hot Water, HE = heating)", dataConsumption, headerConsumption,8);
           printTableLandscape("Total charges: total charges per owner", tableCharges, headerChargesMetersIncluded,10);
         } else {
-          printTablePortrait("Total charges: total charges per owner", tableCharges, headerChargesMetersExcluded, 10);
+          printTableLandscape("Total charges: total charges per owner", tableCharges, headerChargesMetersExcluded, 10);
         };
         
         refCoproperty.collection("ChargesReports").add({startDate: startDateString, endDate: closeDateTransactions, metersIncluded: metersIncludedHere, confirmed: false }).then (function (chargesReportFS){
