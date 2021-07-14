@@ -3761,11 +3761,11 @@
             arrayEl.total = (arrayEl.common+arrayEl.water_pro+arrayEl.heating_pro+arrayEl.private).toLocaleString("nl-BE",currencyStyle);
             arrayEl.common = arrayEl.common.toLocaleString("nl-BE",currencyStyle);
             if (arrayEl.water_pro){arrayEl.water_pro = arrayEl.water_pro.toLocaleString("nl-BE",currencyStyle);}
-            else {arrayEl.water_pro =""};
+            else {arrayEl.water_pro =" "};
             if (arrayEl.heating_pro){arrayEl.heating_pro = arrayEl.heating_pro.toLocaleString("nl-BE",currencyStyle);}
-            else {arrayEl.heating_pro =""};
+            else {arrayEl.heating_pro =" "};
             if (arrayEl.private){arrayEl.private = arrayEl.private.toLocaleString("nl-BE",currencyStyle);}
-            else {arrayEl.private =""};
+            else {arrayEl.private =" "};
           };
         });
         return dataQuota;
