@@ -3600,12 +3600,12 @@
         {id:"Total",name:"Total",prompt:"Total",width: 55,align: "right",padding: 0}
       ];
       var headerChargesMetersExcluded = [
-        {id:"owner",name:"owner",prompt:"owner",width: 80,align: "center",padding: 0},
-        {id:"common",name:"common",prompt:"common charges",width: 50,align: "right",padding: 0},
-        {id:"water_pro",name:"water_pro",prompt:"provision water",width: 55,align: "center",padding: 0},
-        {id:"heating_pro",name:"heating_pro",prompt:"provision heating",width: 55,align: "center",padding: 0},
-        {id:"private",name:"private",prompt:"private charges",width: 50,align: "right",padding: 0},
-        {id:"Total",name:"Total",prompt:"Total",width: 50,align: "right",padding: 0}
+        {id:"owner",name:"owner",prompt:"owner",width: 70,align: "center",padding: 0},
+        {id:"common",name:"common",prompt:"common charges",width: 40,align: "right",padding: 0},
+        {id:"water_pro",name:"water_pro",prompt:"provision water",width: 40,align: "center",padding: 0},
+        {id:"heating_pro",name:"heating_pro",prompt:"provision heating",width: 40,align: "center",padding: 0},
+        {id:"private",name:"private",prompt:"private charges",width: 40,align: "right",padding: 0},
+        {id:"Total",name:"Total",prompt:"Total",width: 40,align: "right",padding: 0}
       ];
 
       function generateChargesReport(closeDateTransactions, metersIncluded){  
@@ -3942,8 +3942,8 @@
             if (((count == 1) && ((i + 1) != arraylength) && (dataConsumption[i].ownerId != dataConsumption[i+1].ownerId)) || ((count == 1) && ((i + 1) == arraylength))){
               /* solitary regularisation line */
               result.push(emptyConsumptionLine);
-              dataCharges[dataConsumption[i].ownerId].water = dataConsumption[i].water_regu;
-              dataCharges[dataConsumption[i].ownerId].heating = dataConsumption[i].heating_regu;
+              dataCharges[dataConsumption[i].ownerId].water_regu = dataConsumption[i].water_regu;
+              dataCharges[dataConsumption[i].ownerId].heating_regu = dataConsumption[i].heating_regu;
               count = 0;             
             } else if (((i + 1) != arraylength) && (dataConsumption[i].ownerId == dataConsumption[i+1].ownerId)){
               /* intermediary regularisation line */
@@ -3953,8 +3953,8 @@
               sumIt(dataConsumption[i]);
               result.push({ownerId:dataConsumption[i].ownerId, owner:dataConsumption[i].owner, property:"Total", meter:"", type:"", last_reading:"", reading:"", difference:"", water:totalWaterCons, water_payed:totalWaterPayed, water_regu: totalWaterRegu, heating:totalHeatingCons, heating_payed:totalHeatingPayed, heating_regu: totalHeatingRegu});
               result.push(emptyConsumptionLine);
-              dataCharges[dataConsumption[i].ownerId].water = totalWaterRegu;
-              dataCharges[dataConsumption[i].ownerId].heating = totalHeatingRegu;
+              dataCharges[dataConsumption[i].ownerId].water_regu = totalWaterRegu;
+              dataCharges[dataConsumption[i].ownerId].heating_regu = totalHeatingRegu;
               count = 0;
               totalWaterCons = 0;
               totalHeatingCons = 0;
