@@ -4001,8 +4001,12 @@
             arrayEl.heating_pro = amountHeating;
             subtotalHeating += amountHeating;
           };
-          result.push(arrayEl);         
-          dataCharges[arrayEl.ownerId].common = subtotalCommon;
+          result.push(arrayEl);
+          var thisOwnerId = arrayEl.ownerId;         
+          dataCharges[thisOwnerId].common = subtotalCommon;
+          dataCharges[thisOwnerId].water_pro = subtotalWater;
+          dataCharges[thisOwnerId].heating_pro = subtotalHeating;
+          
         };
         dataQuota.forEach(function(arrayEl) {
           if ((!currentOwnerId) || (arrayEl.ownerId == currentOwnerId)) {
