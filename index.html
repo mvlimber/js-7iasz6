@@ -3724,7 +3724,7 @@
                           /* ook testen op ingave coproperty meters ??*/
                           var totalledConsumption = dataConsumption;
                           if (metersIncluded) {
-                            totalledConsumption = calcTotalConsumption (totalQuota, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataConsumption, dataCharges);
+                            totalledConsumption = calcTotalConsumption (totalQuota, totalQuotaWater, totalQuotaHeating, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataConsumption, dataCharges);
                           };
                           calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota, totalQuotaWater,totalQuotaHeating,buildingCommon, buildingWater, buildingWaterPeriod, buildingHeating, buildingHeatingPeriod, buildingPrivate, dataWaterPeriod, dataWater, dataHeatingPeriod, dataHeating, dataCommon, dataPrivate, totalledConsumption, dataQuota, dataCharges);                         
                         };
@@ -3863,14 +3863,14 @@
         });      
       };
       
-      function calcTotalConsumption(totalQuota, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataConsumption, dataCharges){
+      function calcTotalConsumption(totalQuota, totalQuotaWater, totalQuotaHeating, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataConsumption, dataCharges){
         calcConsumptionAmounts (dataConsumption, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating);
-        var reguProperties = calcConsumptionRegusProperties (totalQuota, dataConsumption, buildingWater, buildingHeating);
+        var reguProperties = calcConsumptionRegusProperties (totalQuota, totalQuotaWater, totalQuotaHeating, dataConsumption, buildingWater, buildingHeating);
         var reguOwners = calcConsumptionRegusOwners(reguProperties, dataCharges);
         return putConsumptionCurreny(reguOwners);        
       };
 
-      function calcConsumptionRegusProperties (totalQuota, dataConsumption, buildingWater, buildingHeating) {
+      function calcConsumptionRegusProperties (totalQuota, totalQuotaWater, totalQuotaHeating, dataConsumption, buildingWater, buildingHeating) {
         /* per property */
         var i=0;
         var count = 0;
@@ -3884,9 +3884,9 @@
           totalHeatingCons = totalHeatingCons + dataConsumption[i].heating;
           if (((count == 1) && ((i + 1) != arraylength) && (dataConsumption[i].property != dataConsumption[i+1].property)) || ((count == 1) && ((i + 1) == arraylength))){
             /* solitary regularisation line */
-            dataConsumption[i].water_payed = Number((buildingWater * dataConsumption[i].quota / totalQuota).toFixed(2));
+            dataConsumption[i].water_payed = Number((buildingWater * dataConsumption[i].quota / totalQuotaWater).toFixed(2));
             dataConsumption[i].water_regu = dataConsumption[i].water - dataConsumption[i].water_payed;
-            dataConsumption[i].heating_payed = Number((buildingHeating * dataConsumption[i].quota / totalQuota).toFixed(2));
+            dataConsumption[i].heating_payed = Number((buildingHeating * dataConsumption[i].quota / totalQuotaHeating).toFixed(2));
             dataConsumption[i].heating_regu = dataConsumption[i].heating - dataConsumption[i].heating_payed;
             result.push(dataConsumption[i]);
             totalWaterCons = 0;
@@ -3898,8 +3898,8 @@
           } else {
             /* last regularisation line newReading new totalling line */
             result.push(dataConsumption[i]);
-            var waterPayed = Number((buildingWater * dataConsumption[i].quota / totalQuota).toFixed(2));
-            var heatingPayed = Number((buildingHeating * dataConsumption[i].quota / totalQuota).toFixed(2));
+            var waterPayed = Number((buildingWater * dataConsumption[i].quota / totalQuotaWater).toFixed(2));
+            var heatingPayed = Number((buildingHeating * dataConsumption[i].quota / totalQuotaHeating).toFixed(2));
             var waterRegu = totalWaterCons - waterPayed;
             var heatingRegu = totalHeatingCons - heatingPayed;
             result.push({ownerId:dataConsumption[i].ownerId, owner:dataConsumption[i].owner, property:dataConsumption[i].property, meter:"Subtotal", type:"", last_reading:"", reading:"", difference:"", water:totalWaterCons, water_payed:waterPayed, water_regu: waterRegu, heating:totalHeatingCons, heating_payed:heatingPayed, heating_regu: heatingRegu});
