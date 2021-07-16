@@ -3607,17 +3607,15 @@
         {id:"private",name:"private",prompt:"private charges",width: 35,align: "right",padding: 0},
         {id:"Total",name:"Total",prompt:"Total",width: 35,align: "right",padding: 0}
       ];
-
+      var buildingCommon = 0; /* must be global because adpated in procedure calcConsumptionRegusOwners */
       function generateChargesReport(closeDateTransactions, metersIncluded){  
         var buildingWater = 0;
         var buildingWaterPeriod = 0;
         var buildingHeating = 0;
         var buildingHeatingPeriod = 0;
-        var buildingCommon = 0;
+        buildingCommon = 0;
         var buildingPrivate = 0;
 
-        var waterPayedBuilding = 0;
-        
         var totalColdWaterDifference = 0
         var totalHeatingDifference = 0; 
         var totalHotWaterDifference = 0; 
@@ -3726,7 +3724,7 @@
                           /* ook testen op ingave coproperty meters ??*/
                           var totalledConsumption = dataConsumption;
                           if (metersIncluded) {
-                            totalledConsumption = calcTotalConsumption (totalQuota, totalQuotaWater, totalQuotaHeating, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataConsumption, dataCharges);
+                            totalledConsumption = calcTotalConsumption (totalQuota, totalQuotaWater, totalQuotaHeating, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataCommon, dataConsumption, dataCharges);
                           };
                           calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota, totalQuotaWater,totalQuotaHeating,buildingCommon, buildingWater, buildingWaterPeriod, buildingHeating, buildingHeatingPeriod, buildingPrivate, dataWaterPeriod, dataWater, dataHeatingPeriod, dataHeating, dataCommon, dataPrivate, totalledConsumption, dataQuota, dataCharges);                         
                         };
@@ -3751,10 +3749,6 @@
 
       function calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota, totalQuotaWater,totalQuotaHeating, buildingCommon, buildingWater, buildingWaterPeriod, buildingHeating, buildingHeatingPeriod, buildingPrivate, dataWaterPeriod, dataWater, dataHeatingPeriod, dataHeating, dataCommon, dataPrivate, totalledConsumptionData, dataQuota, dataCharges){
         var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, totalQuotaWater,totalQuotaHeating, buildingCommon, buildingWaterPeriod, buildingHeatingPeriod, dataCharges);
-        /* dit is te laat!!!   buiding Common heeft foute waarde in makeSubTotals
-        var waterCommonParts = buildingWater-waterPayedBuilding;                           
-        dataCommon.push({type:"Water Common", name:" ",date:" ", communication:"water common parts = " + buildingWater.toLocaleString("nl-BE",currencyStyle)+ " - " + waterPayedBuilding.toLocaleString("nl-BE",currencyStyle), amount:waterCommonParts.toLocaleString("nl-BE",currencyStyle)});
-        buildingCommon*/
         dataCommon.push({type:"Total",name:" ",date:" ",communication:" ",amount:buildingCommon.toLocaleString("nl-BE",currencyStyle)});
         var totalledPrivateData = calcPrivate(totalledQuotaData, dataPrivate, dataCharges);
         var dataChargesCurrency = putChargesCurrency(Object.values(dataCharges), metersIncluded);
@@ -3869,10 +3863,10 @@
         });      
       };
       
-      function calcTotalConsumption(totalQuota, totalQuotaWater, totalQuotaHeating, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataConsumption, dataCharges){
+      function calcTotalConsumption(totalQuota, totalQuotaWater, totalQuotaHeating, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataCommon, dataConsumption, dataCharges){
         calcConsumptionAmounts (dataConsumption, totalColdWaterDifference, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating);
         var reguProperties = calcConsumptionRegusProperties (totalQuota, totalQuotaWater, totalQuotaHeating, dataConsumption, buildingWater, buildingHeating);
-        var reguOwners = calcConsumptionRegusOwners(reguProperties, dataCharges);
+        var reguOwners = calcConsumptionRegusOwners(buildingWater, reguProperties, dataCommon, dataCharges);
         return putConsumptionCurreny(reguOwners);        
       };
 
@@ -3891,7 +3885,6 @@
           if (((count == 1) && ((i + 1) != arraylength) && (dataConsumption[i].property != dataConsumption[i+1].property)) || ((count == 1) && ((i + 1) == arraylength))){
             /* solitary regularisation line */
             dataConsumption[i].water_payed = Number((buildingWater * dataConsumption[i].quota / totalQuotaWater).toFixed(2));
-            waterPayedBuilding += dataConsumption[i].water_payed;
             dataConsumption[i].water_regu = dataConsumption[i].water - dataConsumption[i].water_payed;
             dataConsumption[i].heating_payed = Number((buildingHeating * dataConsumption[i].quota / totalQuotaHeating).toFixed(2));
             dataConsumption[i].heating_regu = dataConsumption[i].heating - dataConsumption[i].heating_payed;
@@ -3906,7 +3899,6 @@
             /* last regularisation line newReading new totalling line */
             result.push(dataConsumption[i]);
             var waterPayed = Number((buildingWater * dataConsumption[i].quota / totalQuotaWater).toFixed(2));
-            waterPayedBuilding += waterPayed;
             var heatingPayed = Number((buildingHeating * dataConsumption[i].quota / totalQuotaHeating).toFixed(2));
             var waterRegu = totalWaterCons - waterPayed;
             var heatingRegu = totalHeatingCons - heatingPayed;
@@ -3920,7 +3912,7 @@
         return result;
       };
 
-      function calcConsumptionRegusOwners (dataConsumption, dataCharges) {
+      function calcConsumptionRegusOwners (buildingWater, dataConsumption, dataCommon, dataCharges) {
         
         var i=0;
         var count = 0;
@@ -3930,6 +3922,8 @@
         var totalHeatingPayed = 0;
         var totalWaterRegu = 0;
         var totalHeatingRegu = 0;
+        var waterPayedBuilding = 0;
+        
         const arraylength = dataConsumption.length;
         var result = [];
 
@@ -3949,6 +3943,7 @@
             count = count+1;
             if (((count == 1) && ((i + 1) != arraylength) && (dataConsumption[i].ownerId != dataConsumption[i+1].ownerId)) || ((count == 1) && ((i + 1) == arraylength))){
               /* solitary regularisation line */
+              waterPayedBuilding += dataConsumption[i].water_payed;
               result.push(emptyConsumptionLine);
               dataCharges[dataConsumption[i].ownerId].water_regu = dataConsumption[i].water_regu;
               dataCharges[dataConsumption[i].ownerId].heating_regu = dataConsumption[i].heating_regu;
@@ -3959,6 +3954,7 @@
           } else {
               /* last regularisation line needed new totalling line */
               sumIt(dataConsumption[i]);
+              waterPayedBuilding += totalWaterPayed;
               result.push({ownerId:dataConsumption[i].ownerId, owner:dataConsumption[i].owner, property:"Total", meter:"", type:"", last_reading:"", reading:"", difference:"", water:totalWaterCons, water_payed:totalWaterPayed, water_regu: totalWaterRegu, heating:totalHeatingCons, heating_payed:totalHeatingPayed, heating_regu: totalHeatingRegu});
               result.push(emptyConsumptionLine);
               dataCharges[dataConsumption[i].ownerId].water_regu = totalWaterRegu;
@@ -3974,6 +3970,9 @@
           } ;
           i = i + 1;
         };
+        var waterCommonParts = buildingWater-waterPayedBuilding;
+        buildingCommon += waterCommonParts;                           
+        dataCommon.push({type:"Water Common", name:" ",date:" ", communication:"water common parts = " + buildingWater.toLocaleString("nl-BE",currencyStyle)+ " - " + waterPayedBuilding.toLocaleString("nl-BE",currencyStyle), amount:waterCommonParts.toLocaleString("nl-BE",currencyStyle)});
         return result;
       };
 
