@@ -3616,7 +3616,7 @@
         var buildingCommon = 0;
         var buildingPrivate = 0;
 
-        var commonWater= 0;
+        var waterPayedBuilding = 0;
         
         var totalColdWaterDifference = 0
         var totalHeatingDifference = 0; 
@@ -3750,7 +3750,11 @@
       };  
 
       function calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota, totalQuotaWater,totalQuotaHeating, buildingCommon, buildingWater, buildingWaterPeriod, buildingHeating, buildingHeatingPeriod, buildingPrivate, dataWaterPeriod, dataWater, dataHeatingPeriod, dataHeating, dataCommon, dataPrivate, totalledConsumptionData, dataQuota, dataCharges){
-        var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, totalQuotaWater,totalQuotaHeating, buildingCommon, buildingWaterPeriod, buildingHeatingPeriod, dataCharges);                          
+        var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, totalQuotaWater,totalQuotaHeating, buildingCommon, buildingWaterPeriod, buildingHeatingPeriod, dataCharges);
+        /* dit is te laat!!!   buiding Common heeft foute waarde in makeSubTotals
+        var waterCommonParts = buildingWater-waterPayedBuilding;                           
+        dataCommon.push({type:"Water Common", name:" ",date:" ", communication:"water common parts = " + buildingWater.toLocaleString("nl-BE",currencyStyle)+ " - " + waterPayedBuilding.toLocaleString("nl-BE",currencyStyle), amount:waterCommonParts.toLocaleString("nl-BE",currencyStyle)});
+        buildingCommon*/
         dataCommon.push({type:"Total",name:" ",date:" ",communication:" ",amount:buildingCommon.toLocaleString("nl-BE",currencyStyle)});
         var totalledPrivateData = calcPrivate(totalledQuotaData, dataPrivate, dataCharges);
         var dataChargesCurrency = putChargesCurrency(Object.values(dataCharges), metersIncluded);
@@ -3887,6 +3891,7 @@
           if (((count == 1) && ((i + 1) != arraylength) && (dataConsumption[i].property != dataConsumption[i+1].property)) || ((count == 1) && ((i + 1) == arraylength))){
             /* solitary regularisation line */
             dataConsumption[i].water_payed = Number((buildingWater * dataConsumption[i].quota / totalQuotaWater).toFixed(2));
+            waterPayedBuilding += dataConsumption[i].water_payed;
             dataConsumption[i].water_regu = dataConsumption[i].water - dataConsumption[i].water_payed;
             dataConsumption[i].heating_payed = Number((buildingHeating * dataConsumption[i].quota / totalQuotaHeating).toFixed(2));
             dataConsumption[i].heating_regu = dataConsumption[i].heating - dataConsumption[i].heating_payed;
@@ -3901,6 +3906,7 @@
             /* last regularisation line newReading new totalling line */
             result.push(dataConsumption[i]);
             var waterPayed = Number((buildingWater * dataConsumption[i].quota / totalQuotaWater).toFixed(2));
+            waterPayedBuilding += waterPayed;
             var heatingPayed = Number((buildingHeating * dataConsumption[i].quota / totalQuotaHeating).toFixed(2));
             var waterRegu = totalWaterCons - waterPayed;
             var heatingRegu = totalHeatingCons - heatingPayed;
