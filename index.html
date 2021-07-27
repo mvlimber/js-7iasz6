@@ -4006,14 +4006,12 @@
         var amountHeating = 0;
         
         function writeData(arrayEl){
-          console.log(arrayEl);
           var quota = parseInt(arrayEl.quota);
           var amountString = (buildingCommon * quota / totalQuota).toFixed(2);
           amount = Number(amountString);
           arrayEl.common = amount;
           subtotalCommon += amount;
           subtotalPrivate += Number(arrayEl.private);
-          console.log("arrayEl.private is ",Number(arrayEl.private));
           if (arrayEl.waterCons){
             amountString = (buildingWaterPeriod * quota / totalQuotaWater).toFixed(2);
             amountWater = Number(amountString);
@@ -4035,7 +4033,6 @@
           
         };
         dataQuota.forEach(function(arrayEl) {
-          console.log("arrayEl.common is ",arrayEl.common);
           if ((!currentOwnerId) || (arrayEl.ownerId == currentOwnerId)) {
             count = count + 1;
             writeData(arrayEl);
