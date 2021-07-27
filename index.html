@@ -3934,7 +3934,7 @@
         var totalHeatingPayed = 0;
         var totalWaterRegu = 0;
         var totalHeatingRegu = 0;
-        var waterPayedBuilding = 0;
+        var waterOwners = 0;
         
         const arraylength = dataConsumption.length;
         var result = [];
@@ -3955,7 +3955,7 @@
             count = count+1;
             if (((count == 1) && ((i + 1) != arraylength) && (dataConsumption[i].ownerId != dataConsumption[i+1].ownerId)) || ((count == 1) && ((i + 1) == arraylength))){
               /* solitary regularisation line */
-              waterPayedBuilding += dataConsumption[i].water_payed;
+              waterOwners += dataConsumption[i].water;
               result.push(emptyConsumptionLine);
               dataCharges[dataConsumption[i].ownerId].water_regu = dataConsumption[i].water_regu;
               dataCharges[dataConsumption[i].ownerId].heating_regu = dataConsumption[i].heating_regu;
@@ -3966,7 +3966,7 @@
           } else {
               /* last regularisation line needed new totalling line */
               sumIt(dataConsumption[i]);
-              waterPayedBuilding += totalWaterPayed;
+              waterOwners += totalWaterCons;
               result.push({ownerId:dataConsumption[i].ownerId, owner:dataConsumption[i].owner, property:"Total", meter:"", type:"", last_reading:"", reading:"", difference:"", water:totalWaterCons, water_payed:totalWaterPayed, water_regu: totalWaterRegu, heating:totalHeatingCons, heating_payed:totalHeatingPayed, heating_regu: totalHeatingRegu});
               result.push(emptyConsumptionLine);
               dataCharges[dataConsumption[i].ownerId].water_regu = totalWaterRegu;
@@ -3982,9 +3982,9 @@
           } ;
           i = i + 1;
         };
-        var waterCommonParts = buildingWater-waterPayedBuilding;
+        var waterCommonParts = buildingWater-waterOwners;
         buildingCommon += waterCommonParts;                           
-        dataCommon.push({type:"Water Common", name:" ",date:" ", communication:"water common parts = " + buildingWater.toLocaleString("nl-BE",currencyStyle)+ " - " + waterPayedBuilding.toLocaleString("nl-BE",currencyStyle), amount:waterCommonParts.toLocaleString("nl-BE",currencyStyle)});
+        dataCommon.push({type:"Water Common", name:" ",date:" ", communication:"water common parts = " + buildingWater.toLocaleString("nl-BE",currencyStyle)+ " - " + waterOwners.toLocaleString("nl-BE",currencyStyle), amount:waterCommonParts.toLocaleString("nl-BE",currencyStyle)});
         return result;
       };
 
