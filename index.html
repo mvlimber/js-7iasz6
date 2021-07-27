@@ -3807,7 +3807,7 @@
             tHeating_regu += arrayEl.heating_regu;
             arrayEl.heating_regu = arrayEl.heating_regu.toLocaleString("nl-BE",currencyStyle);
           } else {
-            arrayEl.tWater_regu = " ";
+            arrayEl.water_regu = " ";
             arrayEl.heating_regu = " ";
           }
         });
@@ -3993,20 +3993,24 @@
         var totalCommon = 0;
         var totalWater = 0;
         var totalHeating = 0;
+        var totalPrivate = 0;
         var currentOwnerId = "";
         var count =0;
         var subtotalCommon = 0;
         var subtotalWater = 0;
         var subtotalHeating = 0;
+        var subtotalPrivate = 0;
         var amount = 0;
         var amountWater = 0;
         var amountHeating = 0;
+        
         function writeData(arrayEl){
           var quota = parseInt(arrayEl.quota);
           var amountString = (buildingCommon * quota / totalQuota).toFixed(2);
           amount = Number(amountString);
           arrayEl.common = amount;
           subtotalCommon += amount;
+          subtotalPrivate += arrayEl.private;
           if (arrayEl.waterCons){
             amountString = (buildingWaterPeriod * quota / totalQuotaWater).toFixed(2);
             amountWater = Number(amountString);
@@ -4022,6 +4026,7 @@
           result.push(arrayEl);
           var thisOwnerId = arrayEl.ownerId;         
           dataCharges[thisOwnerId].common = subtotalCommon;
+          dataCharges[thisOwnerId].private = subtotalPrivate;
           dataCharges[thisOwnerId].water_pro = subtotalWater;
           dataCharges[thisOwnerId].heating_pro = subtotalHeating;
           
@@ -4033,24 +4038,25 @@
           } else {
             /* we are treating another owner */
             if (count > 1) {
-              result.push({ownerId:currentOwnerId, owner:"Total", property:"", quota:"", period:"", quota_period: "", common:subtotalCommon,water_pro:subtotalWater,heating_pro:subtotalHeating, private: 0, total:0});
+              result.push({ownerId:currentOwnerId, owner:"Total", property:"", quota:"", period:"", quota_period: "", common:subtotalCommon,water_pro:subtotalWater,heating_pro:subtotalHeating, private: subtotalPrivate, total:0});
             };
             result.push({ownerId:" ", owner:"", property:"", quota:"", period:"", quota_period: "", common:"", water_pro:"", heating_pro:"", private: "", total:""});
             count = 0;
-            subtotalCommon = 0; subtotalWater = 0; subtotalHeating = 0;
+            subtotalCommon = 0; subtotalWater = 0; subtotalHeating = 0; subtotalPrivate = 0;
             writeData(arrayEl);
           };
           currentOwnerId = arrayEl.ownerId;
           totalCommon += amount;   
           totalWater += amountWater;
           totalHeating += amountHeating;
+          totalPrivate += arrayEl.private;
         });
         /* all owners treated. possibly add last summation*/
         if (count > 1) {
-              result.push({ownerId:currentOwnerId, owner:"Total", property:"", quota:"", period:"", quota_period: "", common:subtotalCommon,water_pro:subtotalWater,tHeating_pro:subtotalHeating, private: 0,total:0});
+              result.push({ownerId:currentOwnerId, owner:"Total", property:"", quota:"", period:"", quota_period: "", common:subtotalCommon,water_pro:subtotalWater,tHeating_pro:subtotalHeating, private: subtotalPrivate,total:0});
             };
             result.push({ownerId:" ", owner:"", property:"", quota:"", period:"", quota_period: "", common:"", water_pro:"", heating_pro:"", private: "", total:""});
-            result.push({ownerId:" ", owner:"Total building", property:" ", quota:" ", period:" ", quota_period: totalQuota.toString(), common:totalCommon,water_pro:totalWater,heating_pro:totalHeating, private: "",total:0});
+            result.push({ownerId:" ", owner:"Total building", property:" ", quota:" ", period:" ", quota_period: totalQuota.toString(), common:totalCommon,water_pro:totalWater,heating_pro:totalHeating, private: totalPrivate,total:0});
         return result;
       };
       
