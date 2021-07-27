@@ -3758,9 +3758,10 @@
       };  
 
       function calcAndGenerate(closeDateTransactions, metersIncluded,totalQuota, totalQuotaWater,totalQuotaHeating, buildingCommon, buildingWater, buildingWaterPeriod, buildingHeating, buildingHeatingPeriod, buildingPrivate, dataWaterPeriod, dataWater, dataHeatingPeriod, dataHeating, dataCommon, dataPrivate, totalledConsumptionData, dataQuota, dataCharges){
+        var totalledPrivateData = calcPrivate(dataQuota, dataPrivate, dataCharges);
         var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, totalQuotaWater,totalQuotaHeating, buildingCommon, buildingWaterPeriod, buildingHeatingPeriod, dataCharges);
         dataCommon.push({type:"Total",name:" ",date:" ",communication:" ",amount:buildingCommon.toLocaleString("nl-BE",currencyStyle)});
-        var totalledPrivateData = calcPrivate(totalledQuotaData, dataPrivate, dataCharges);
+        /*var totalledPrivateData = calcPrivate(totalledQuotaData, dataPrivate, dataCharges);*/
         var dataChargesCurrency = putChargesCurrency(Object.values(dataCharges), metersIncluded);
         writePDF(closeDateTransactions, metersIncluded, dataWaterPeriod, dataWater, dataHeatingPeriod, dataHeating,  dataCommon, totalledPrivateData, totalledConsumptionData, putQuotaCurreny(totalledQuotaData), dataChargesCurrency);
       };
@@ -4011,7 +4012,8 @@
           amount = Number(amountString);
           arrayEl.common = amount;
           subtotalCommon += amount;
-          subtotalPrivate += arrayEl.private;
+          subtotalPrivate += Number(arrayEl.private);
+          console.log("arrayEl.private is ",Number(arrayEl.private));
           if (arrayEl.waterCons){
             amountString = (buildingWaterPeriod * quota / totalQuotaWater).toFixed(2);
             amountWater = Number(amountString);
@@ -4033,6 +4035,7 @@
           
         };
         dataQuota.forEach(function(arrayEl) {
+          console.log("arrayEl.common is ",arrayEl.common);
           if ((!currentOwnerId) || (arrayEl.ownerId == currentOwnerId)) {
             count = count + 1;
             writeData(arrayEl);
@@ -4109,9 +4112,7 @@
             doc.addPage("a4", "landscape");
             doc.setFontSize(16);
             doc.text(title, 15, 15);
-            console.log("before doc.table");
             doc.table(10, 20, table.slice(i*rowsLandscape, (i+1)*rowsLandscape), header,{fontSize:fontSizeP});
-            console.log("after doc.table");
             printFooterLandscape ();
           };
         };
@@ -4159,9 +4160,7 @@
         printTablePortrait("Water: total building this period", dataWaterPeriod, headerWH);
         printTablePortrait("Heating: total building this period", dataHeatingPeriod, headerWH);
         printTableLandscape("Private expenses", dataPrivate, headerPrivate,10);
-        console.log(dataQuota);
         printTableLandscape("Charges and expenses per owner", dataQuota, headerQuota,10);
-        console.log("na de fameuze print");
         
         if (metersIncludedHere){
           
