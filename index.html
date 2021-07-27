@@ -4005,6 +4005,7 @@
         var amountHeating = 0;
         
         function writeData(arrayEl){
+          console.log(arrayEl);
           var quota = parseInt(arrayEl.quota);
           var amountString = (buildingCommon * quota / totalQuota).toFixed(2);
           amount = Number(amountString);
