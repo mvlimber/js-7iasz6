@@ -1803,13 +1803,14 @@
           
           var cellContent = document.createElement('button');
           cellContent.setAttribute("data-target", "transactionView");
-          cellContent.setAttribute('class','btn-small waves-light modal-trigger');
+          cellContent.setAttribute('class','modal-trigger');
+          cellContent.setAttribute('style','border:none;background-color:Transparent');
           cellContent.setAttribute('onclick','setSelectedTransaction('+JSON.stringify(objectFS.id)+','+JSON.stringify(object)+')');
           var cellButtonIcon = document.createElement('i');
           cellButtonIcon.setAttribute('class','material-icons right');
           cellButtonIcon.innerHTML="add";           
           cellContent.appendChild(cellButtonIcon);
-          cellContent.innerHTML = object.type;
+          cellContent.innerHTML = "<font color='blue'>" + object.type + "</font>";
           var cell = document.createElement('td');
           cell.appendChild(cellContent);
           objectsRow.appendChild(cell);   
