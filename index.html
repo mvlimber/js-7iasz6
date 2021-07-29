@@ -2343,8 +2343,9 @@
           cellContent.setAttribute("data-target", "meterReadingRead");
           cellContent.setAttribute('onclick','setSelectedMeterReading_readonly('+JSON.stringify(idHere)+','+JSON.stringify(codeHere)+','+JSON.stringify(meterFS.id)+','+JSON.stringify(meterData)+')');
         };
-        cellContent.setAttribute('class','btn-small waves-light modal-trigger');
-        cellContent.innerHTML = meterData.type;
+        cellContent.setAttribute('class','modal-trigger');
+        cellContent.setAttribute('style','border:none;background-color:Transparent');
+        cellContent.innerHTML = "<font color='blue'>" + meterData.type + "</font>";
         cell = document.createElement('td');
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);  
