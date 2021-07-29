@@ -358,15 +358,15 @@
             <thead>
               <tr>
                 <th>Type</th>
-                <th>
-                  <p style="writing-mode: vertical-rl">Evidence?</p>
-                </th>
                 <th>Counterparty</th>
                 <th>
                   <p style="text-align: right">Amount</p>
                 </th>
                 <th>
                   <p style="text-align: right">Date</p>
+                </th>
+                <th>
+                <p style="writing-mode: vertical-rl">Evidence?</p>
                 </th>
               </tr>
             </thead>
@@ -1814,22 +1814,7 @@
           var cell = document.createElement('td');
           cell.appendChild(cellContent);
           objectsRow.appendChild(cell);   
-          
-          refCoproperty.collection("Transactions").doc(objectFS.id).collection("Evidence").get().then(function(objectsFSArray){
-            if (objectsFSArray.docs.length > 0) {
-              cellContent = document.createElement("i");
-              cellContent.setAttribute("class","material-icons  green ");
-              cellContent.innerHTML = "done";
-            } else {
-              cellContent = document.createElement("i");
-              cellContent.setAttribute("class","material-icons  red ");
-              cellContent.innerHTML = "clear";
-            };
-          
-          cell = document.createElement('td');
-          cell.appendChild(cellContent);
-          objectsRow.appendChild(cell);
-          
+
           cellContent = document.createTextNode(object.name);
           cell = document.createElement('td');
           cell.appendChild(cellContent);
@@ -1848,6 +1833,23 @@
           cell.setAttribute("style", "text-align: right"); 
           cell.appendChild(cellContent);
           objectsRow.appendChild(cell); 
+          
+          
+          refCoproperty.collection("Transactions").doc(objectFS.id).collection("Evidence").get().then(function(objectsFSArray){
+            if (objectsFSArray.docs.length > 0) {
+              cellContent = document.createElement("i");
+              cellContent.setAttribute("class","material-icons  green ");
+              cellContent.innerHTML = "done";
+            } else {
+              cellContent = document.createElement("i");
+              cellContent.setAttribute("class","material-icons  red ");
+              cellContent.innerHTML = "clear";
+            };
+          
+          cell = document.createElement('td');
+          cell.appendChild(cellContent);
+          objectsRow.appendChild(cell);
+          
           
           transactionsTable.appendChild (objectsRow);
           });
