@@ -599,11 +599,9 @@
           <table class="striped">
             <thead>
               <tr>
+                <th align=center>Type</th>
                 <th align=center>
                   <p style="writing-mode: vertical-rl">Property</p>
-                </th>
-                <th align=center>
-                  <div class="writing-mode: vertical-rl">Click To<br>Open Reading</div>
                 </th>
                 <th align=center>
                   <p style="writing-mode: vertical-rl">Reading?</p>
@@ -2308,11 +2306,7 @@
       function loadMeterReading(propertyFS, meterFS){
         var objectsRow= document.createElement('tr');
         var cellContent;
-        if (propertyFS) {cellContent = propertyLink(propertyFS);}
-        else {cellContent = document.createTextNode("Common Parts");};
-        var cell = document.createElement('td');
-        cell.appendChild(cellContent);
-        objectsRow.appendChild(cell);
+        var cell;
         
         var meterData = meterFS.data();
         if (meterData.readings[0].date.localeCompare(lastReguDate) < 1) {
@@ -2324,7 +2318,7 @@
             date: "",
           });
         };
-        var cellContent = document.createElement('button');
+        cellContent = document.createElement('button');
         var isOwner;
         if (propertyFS) {
           isOwner = (currentUser.id == propertyFS.data().owner);
@@ -2350,6 +2344,12 @@
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);  
 
+        if (propertyFS) {cellContent = propertyLink(propertyFS);}
+        else {cellContent = document.createTextNode("Common Parts");};
+        cell = document.createElement('td');
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell);
+        
         if (meterData.readings[0].reading) {
            cellContent = document.createElement("i");
            cellContent.setAttribute("class","material-icons  green ");
