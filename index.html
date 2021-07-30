@@ -2345,7 +2345,11 @@
         objectsRow.appendChild(cell);  
 
         if (propertyFS) {cellContent = propertyLink(propertyFS);}
-        else {cellContent = document.createTextNode("Common Parts");};
+        else {
+            /*cellContent = document.createElement();
+            cellContent.innerHTML ="Common <br> Parts";*/
+            cellContent = document.createTextNode("Common Parts");
+          };
         cell = document.createElement('td');
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);
