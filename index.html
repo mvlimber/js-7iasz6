@@ -378,6 +378,8 @@
           <br>
           <div id="Transactions_Add" class="displayHidden">
             <button style="float: right" data-target="transactionAdd" class="btn-small waves-light modal-trigger" onclick="resetSelectedTransaction()"><i class="material-icons right">add</i>New transaction</button>
+            <br><br>
+            <button style="float: right" data-target="transactionLoad" class="btn-small waves-light modal-trigger" onclick="resetSelectedTransaction()"><i class="material-icons right">add</i>Load transactions</button>
             <form id="myForm">
             <input type="file" id="csvFile" accept=".csv" class="btn-small waves-light">Load transactions file</input>
             <br />
@@ -2377,9 +2379,31 @@
       reader.readAsText(input);
     });
 
-    function loadTransactionFile() {
-
+    function validateTransactionsLoadEntries(){
+      
     };
+    
+    function loadTransactionsFile() {
+      if (validateTransactionsLoadEntries()) {  
+        var entries = getTransactionsLoadEntries();
+        /*
+        refCoproperty.collection("Transactions").doc(selectedTransactionId).collection("Evidence").add(entries).then(function(docref) {
+          if (transactionEvidenceFile) {
+            var fileRef = refCopropertyFiles.child("Transactions").child(docref.id);  
+            fileRef.put(transactionEvidenceFile).then (function (){});
+            refreshTransactionEvidence();
+            refreshTransactions();
+            M.Modal.getInstance(document.getElementById("transactionEvidenceAdd")).close();
+          } else {
+            M.toast({html:"System error writing file"});
+          };
+        }).catch(function(error) {
+          M.toast({html:"System error writing document: " + error});
+        });
+        */
+      };
+    };
+
 
     </script>
     <!--   Meter readings scripts start here -->
