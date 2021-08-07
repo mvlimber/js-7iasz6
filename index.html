@@ -497,7 +497,7 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="loadTransactionFile()">Submit<i class="material-icons right">send</i></button>
+              <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="loadTransactionsFile()">Submit<i class="material-icons right">send</i></button>
               <a style="float: right"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
                 Cancel</a>
@@ -2379,8 +2379,33 @@
       reader.readAsText(input);
     });
 
+    var transactionsLoadFile;
     function validateTransactionsLoadEntries(){
-      
+      var valid = true
+      transactionsLoadFile = document.getElementById('transactionLoadFile').files[0];
+      let allowed_mime_types = ['csv'];
+      let allowed_size_kb = 100;
+      if (transactionsLoadFile) {
+        if(allowed_mime_types.indexOf(transactionsLoadFile.type) == -1) {
+          console.log(transactionsLoadFile.type);
+          M.toast({html:"Incorrect file type (only csv allowed)"});
+          valid=false;
+        };
+        if(transactionsLoadFile.size > allowed_size_kb*1024) {
+          M.toast({html:"File exceeds max size 100KB"});
+          valid=false;
+        };
+      } else {
+          M.toast({html:"Please select CSV File"});
+          valid=false;
+      };
+      return valid;
+    };
+    
+    function getTransactionsLoadEntries(){
+    return {
+        fileName: transactionsLoadFile.name,
+      };
     };
     
     function loadTransactionsFile() {
