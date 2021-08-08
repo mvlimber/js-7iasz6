@@ -380,11 +380,6 @@
             <button style="float: right" data-target="transactionAdd" class="btn-small waves-light modal-trigger" onclick="resetSelectedTransaction()"><i class="material-icons right">add</i>New transaction</button>
             <br><br>
             <button style="float: right" data-target="transactionLoad" class="btn-small waves-light modal-trigger" onclick="resetSelectedTransaction()"><i class="material-icons right">add</i>Load transactions</button>
-            <form id="myForm">
-            <input type="file" id="csvFile" accept=".csv" class="btn-small waves-light">Load transactions file</input>
-            <br />
-            <input type="submit" value="Submit" class="btn-small waves-light"/>
-          </form>
           </div>
           <div id="transactionAdd" class="modal">
             <div class="modal-content">
@@ -497,7 +492,36 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="loadTransactionsFile()">Submit<i class="material-icons right">send</i></button>
+              <button style="float: right;margin-left: 20px" data-target="transactionLoadConfirm" class="btn-small waves-light modal-trigger" type="submit" onclick="confirmTransactionsFile()">Load<i class="material-icons right">send</i></button>
+              <a style="float: right"
+                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
+                Cancel</a>
+            </div>
+          </div>
+
+          <div id="transactionLoadConfirm" class="modal">
+            <div class="modal-content">
+              <a style="float: right"
+                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
+                Cancel</a>
+              <h5>Please confirm transactions to be uploaded</h5>
+              <table class="striped">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Counterparty</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Account</th>
+                    <th>Communication</th>
+                  </tr>
+                </thead>
+                <tbody id="transactionsLoadConfirmTable">
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+              <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="writeTransactionsFile()">Submit<i class="material-icons right">send</i></button>
               <a style="float: right"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
                 Cancel</a>
@@ -2463,6 +2487,11 @@
       };
     };
 
+    function confirmTransactionsFile(){
+      M.Modal.getInstance(document.getElementById("transactionLoad")).close();
+    };
+    
+    function writeTransactionsFile(){};
 
     </script>
     <!--   Meter readings scripts start here -->
