@@ -2383,7 +2383,7 @@
     function validateTransactionsLoadEntries(){
       var valid = true
       transactionsLoadFile = document.getElementById('transactionLoadFile').files[0];
-      let allowed_mime_types = ['csv'];
+      let allowed_mime_types = ['application/vnd.ms-excel'];
       let allowed_size_kb = 100;
       if (transactionsLoadFile) {
         if(allowed_mime_types.indexOf(transactionsLoadFile.type) == -1) {
@@ -2408,8 +2408,42 @@
       };
     };
     
+
+    function argentaCsvToArray(str, delimiter = ";") {
+    // slice from \n index + 1 to the end of the text
+    // use split to create an array of each csv value row
+    const rows = str.slice(str.indexOf("\n") + 1).split("\n");
+
+    const arr = rows.map(function (row) {
+      const values = row.split(delimiter);
+      var resultRow = {};
+      resultRow.type = "toBeClassified";
+      resultRow.account = values[8];
+      resultRow.name = values[9];
+      resultRow.amount = values[5];
+      resultRow.date = values[7];
+      resultRow.bookDate = resultRow.date;
+      resultRow.communication = values[10];
+      return resultRow;
+    });
+
+    // return the array
+    return arr;
+    }
+
     function loadTransactionsFile() {
       if (validateTransactionsLoadEntries()) {  
+
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+          const text = e.target.result;
+          const data = argentaCsvToArray(text);
+          console.log(data);
+        };
+        
+        reader.readAsText(transactionsLoadFile);
+
         var entries = getTransactionsLoadEntries();
         /*
         refCoproperty.collection("Transactions").doc(selectedTransactionId).collection("Evidence").add(entries).then(function(docref) {
