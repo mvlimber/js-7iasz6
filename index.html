@@ -504,7 +504,7 @@
               <a style="float: right"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
                 Cancel</a>
-              <h5>Please confirm transactions to be uploaded</h5>
+              <h5>Please review and confirm all these transactions to be uploaded</h5>
               <table class="striped">
                 <thead>
                   <tr>
@@ -521,7 +521,7 @@
               </table>
             </div>
             <div class="modal-footer">
-              <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="writeTransactionsFile()">Submit<i class="material-icons right">send</i></button>
+              <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="writeTransactionsFile()">Confirm<i class="material-icons right">send</i></button>
               <a style="float: right"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
                 Cancel</a>
@@ -2401,7 +2401,7 @@
     const arr = rows.map(function (row) {
       const values = row.split(delimiter);
       var resultRow = {};
-      resultRow.type = "toBeClassified";
+      resultRow.type = "to be classified";
       resultRow.account = values[8];
       resultRow.name = values[9];
       resultRow.amount = values[5];
