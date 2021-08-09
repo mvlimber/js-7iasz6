@@ -2367,17 +2367,17 @@
       let allowed_size_kb = 100;
       if (transactionsLoadFile) {
         if(allowed_mime_types.indexOf(transactionsLoadFile.type) == -1) {
-          console.log(transactionsLoadFile.type);
-          M.toast({html:"Incorrect file type (only csv allowed)"});
           valid=false;
+          M.toast({html:"Incorrect file type (only csv allowed)"});
         };
         if(transactionsLoadFile.size > allowed_size_kb*1024) {
-          M.toast({html:"File exceeds max size 100KB"});
           valid=false;
+          M.toast({html:"File exceeds max size 100KB"});
+          
         };
       } else {
-          M.toast({html:"Please select CSV File"});
           valid=false;
+          M.toast({html:"Please select CSV File"});       
       };
       return valid;
     };
