@@ -492,7 +492,7 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button style="float: right;margin-left: 20px" data-target="transactionLoadConfirm" class="btn-small waves-light modal-trigger" type="submit" onclick="confirmTransactionsFile()">Load<i class="material-icons right">send</i></button>
+              <button style="float: right;margin-left: 20px" data-target="transactionLoadConfirm" class="btn-small waves-light modal-trigger" type="submit" onclick="loadTransactionsFile()">Load<i class="material-icons right">send</i></button>
               <a style="float: right"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
                 Cancel</a>
@@ -2361,7 +2361,7 @@
    
     var transactionsLoadFile;
     function validateTransactionsLoadEntries(){
-      var valid = true
+      var valid = true;
       transactionsLoadFile = document.getElementById('transactionLoadFile').files[0];
       let allowed_mime_types = ['application/vnd.ms-excel'];
       let allowed_size_kb = 100;
@@ -2436,6 +2436,7 @@
     
     function loadTransactionsFile() {
       if (validateTransactionsLoadEntries()) {  
+        M.Modal.getInstance(document.getElementById("transactionLoad")).close();
         var loadedData;
         const reader = new FileReader();
 
@@ -2471,9 +2472,7 @@
       };
     };
 
-    function confirmTransactionsFile(){
-      M.Modal.getInstance(document.getElementById("transactionLoad")).close();
-    };
+    
     
     function writeTransactionsFile(){};
 
