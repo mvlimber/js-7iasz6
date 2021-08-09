@@ -379,7 +379,7 @@
           <div id="Transactions_Add" class="displayHidden">
             <button style="float: right" data-target="transactionAdd" class="btn-small waves-light modal-trigger" onclick="resetSelectedTransaction()"><i class="material-icons right">add</i>New transaction</button>
             <br><br>
-            <button style="float: right" data-target="transactionLoad" class="btn-small waves-light modal-trigger" onclick="resetSelectedTransaction()"><i class="material-icons right">add</i>Load transactions</button>
+            <button style="float: right" data-target="transactionLoad" class="btn-small waves-light modal-trigger" onclick="emptyTransactionLoadFields()"><i class="material-icons right">add</i>Load transactions</button>
           </div>
           <div id="transactionAdd" class="modal">
             <div class="modal-content">
@@ -2388,6 +2388,10 @@
       };
     };
     
+    function emptyTransactionLoadFields(){
+      document.getElementById("transactionLoadFile").value = "";
+      document.getElementById("transactionLoadFileText").value = "";
+    };
 
     function argentaCsvToArray(str, delimiter = ";") {
     // slice from \n index + 1 to the end of the text
@@ -2438,14 +2442,15 @@
         reader.onload = function (e) {
           const text = e.target.result;
           loadedData = argentaCsvToArray(text);
-          console.log(data);
+          console.log(loadedData);
+          emptyHTMLSet(transactionsLoadConfirmTable);
+          loadedData.map(function(el){
+            appendTransactionRow(el);
+          });
         };
         
         reader.readAsText(transactionsLoadFile);
-        emptyHTMLSet(transactionsLoadConfirmTable);
-        loadedData.map(function(el){
-          appendTransactionRow(el);
-        });
+        
 
         var entries = getTransactionsLoadEntries();
         /*
