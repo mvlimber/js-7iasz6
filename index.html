@@ -2409,36 +2409,25 @@
 
     // return the array
     return arr;
-    }
+    };
 
     function appendTransactionRow(object){
       function createMyCell(myText) {
         var cellContent = document.createTextNode(myText);
         var cell = document.createElement('td');
         cell.appendChild(cellContent);
-        retrun cell;
-      }:
+        return cell;
+      };
       
-      var objectsRow= document.createElement('tr');
+      var objectsRow = document.createElement('tr');
       objectsRow.appendChild(createMyCell(object.type));
-      objectsRow.appendChild(createMyCell(object.type));
-      objectsRow.appendChild(createMyCell(object.type));
-      objectsRow.appendChild(createMyCell(object.type));
-      objectsRow.appendChild(createMyCell(object.type));
-      objectsRow.appendChild(createMyCell(object.type));
-      objectsRow.appendChild(createMyCell(object.type));
-        
-      var cellContent = document.createTextNode(object.type);
-      var cell = document.createElement('td');
-      cell.appendChild(cellContent);
-      objectsRow.appendChild(cell);  
+      objectsRow.appendChild(createMyCell(object.name));
+      objectsRow.appendChild(createMyCell(object.amount));
+      objectsRow.appendChild(createMyCell(object.date));
+      objectsRow.appendChild(createMyCell(object.account));
+      objectsRow.appendChild(createMyCell(object.communication));
       
-      cellContent = document.createTextNode(object.date);
-      cell = document.createElement('td');
-      cell.appendChild(cellContent);
-      objectsRow.appendChild(cell); 
-      
-      reportsTable.appendChild (objectsRow);
+      transactionsLoadConfirmTable.appendChild (objectsRow);
     };
     
     function loadTransactionsFile() {
@@ -2448,7 +2437,7 @@
 
         reader.onload = function (e) {
           const text = e.target.result;
-          const loadedData = argentaCsvToArray(text);
+          loadedData = argentaCsvToArray(text);
           console.log(data);
         };
         
