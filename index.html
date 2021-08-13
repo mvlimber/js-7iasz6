@@ -2382,12 +2382,6 @@
       return valid;
     };
     
-    function getTransactionsLoadEntries(){
-    return {
-        fileName: transactionsLoadFile.name,
-      };
-    };
-    
     function emptyTransactionLoadFields(){
       document.getElementById("transactionLoadFile").value = "";
       document.getElementById("transactionLoadFileText").value = "";
@@ -2412,6 +2406,7 @@
     });
 
     // return the array
+    arr.pop();
     return arr;
     };
 
@@ -2434,27 +2429,24 @@
       transactionsLoadConfirmTable.appendChild (objectsRow);
     };
     
+    var transactionsBatchData;
     function loadTransactionsFile() {
       if (validateTransactionsLoadEntries()) {  
         M.Modal.getInstance(document.getElementById("transactionLoad")).close();
         M.Modal.getInstance(document.getElementById("transactionLoadConfirm")).open();
-        var loadedData;
         const reader = new FileReader();
 
         reader.onload = function (e) {
           const text = e.target.result;
-          loadedData = argentaCsvToArray(text);
-          console.log(loadedData);
+          transactionsBatchData = argentaCsvToArray(text);
           emptyHTMLSet(transactionsLoadConfirmTable);
-          loadedData.map(function(el){
+          transactionsBatchData.map(function(el){
             appendTransactionRow(el);
           });
         };
         
         reader.readAsText(transactionsLoadFile);
         
-
-        var entries = getTransactionsLoadEntries();
         /*
         refCoproperty.collection("Transactions").doc(selectedTransactionId).collection("Evidence").add(entries).then(function(docref) {
           if (transactionEvidenceFile) {
@@ -2475,7 +2467,9 @@
 
     
     
-    function writeTransactionsFile(){};
+    function writeTransactionsFile(){
+      
+    };
 
     </script>
     <!--   Meter readings scripts start here -->
