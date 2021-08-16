@@ -1489,8 +1489,9 @@
     elems = document.querySelectorAll('.modal');
     instances = M.Modal.init(elems, {dismissible:false,preventScrolling:false});
 
-    var refCoproperty = firestore.doc("CoProperties/OrncEBHp37pJYisfxf79");
-    var refCopropertyFiles = fileStorageRef.child("OrncEBHp37pJYisfxf79");
+    const thisCoproperty = "OrncEBHp37pJYisfxf79";
+    var refCoproperty = firestore.collection("CoProperties").doc(thisCoproperty);
+    var refCopropertyFiles = fileStorageRef.child(thisCoproperty);
     var editMode = "_edit";
         
     function emptyHTMLSet(set) {
@@ -2468,9 +2469,10 @@
     
     
     function writeTransactionsFile(){
-      var batch = refCoproperty.collection("Transactions").batch();
+      var batch = firestore.batch();
+      refCoproperty.collection("Transactions").batch();
       transactionsBatchData.map(function(el){
-        var docRef = batch.doc();
+        var docRef = batch..collection("CoProperties").doc(thisCoproperty).collection("Transactions").doc();
         batch.set(docRef, el);
       });
 
