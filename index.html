@@ -2470,38 +2470,16 @@
     
     function writeTransactionsFile(){
       var batch = firestore.batch();
-      refCoproperty.collection("Transactions").batch();
       transactionsBatchData.map(function(el){
-        var docRef = batch..collection("CoProperties").doc(thisCoproperty).collection("Transactions").doc();
+        var docRef = refCoproperty.collection("Transactions").doc();
         batch.set(docRef, el);
-        batch.commit().then(function() {
-          refreshTransactions();
-          M.Modal.getInstance(document.getElementById("transactionLoadConfirm")).close();
-        }) .catch(function(error) {
-          M.toast({html:"System error loading transactions: " + error});
-        });
       });
-
-
-      // Get a new write batch
-
-
-// Set the value of 'NYC'
-var nycRef = db.collection("cities").doc("NYC");
-batch.set(nycRef, {name: "New York City"});
-
-// Update the population of 'SF'
-var sfRef = db.collection("cities").doc("SF");
-batch.update(sfRef, {"population": 1000000});
-
-// Delete the city 'LA'
-var laRef = db.collection("cities").doc("LA");
-batch.delete(laRef);
-
-// Commit the batch
-batch.commit().then(() => {
-    // ...
-});
+      batch.commit().then(function() {
+        refreshTransactions();
+        M.Modal.getInstance(document.getElementById("transactionLoadConfirm")).close();
+      }).catch(function(error) {
+        M.toast({html:"System error loading transactions: " + error});
+      });
     };
 
     </script>
