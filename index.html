@@ -2474,6 +2474,12 @@
       transactionsBatchData.map(function(el){
         var docRef = batch..collection("CoProperties").doc(thisCoproperty).collection("Transactions").doc();
         batch.set(docRef, el);
+        batch.commit().then(function() {
+          refreshTransactions();
+          M.Modal.getInstance(document.getElementById("transactionLoadConfirm")).close();
+        }) .catch(function(error) {
+          M.toast({html:"System error loading transactions: " + error});
+        });
       });
 
 
