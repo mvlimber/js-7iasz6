@@ -2467,8 +2467,8 @@
     };
 
     
-    
     function writeTransactionsFile(){
+
       var batch = firestore.batch();
       transactionsBatchData.map(function(el){
         var docRef = refCoproperty.collection("Transactions").doc();
@@ -2481,6 +2481,34 @@
         M.toast({html:"System error loading transactions: " + error});
       });
     };
+
+    </script>
+    <!-- TransactionRules scripts start here-->
+    <script>
+      function loadTransactionRule(objectFS){};
+      
+      var transactionRules = [];
+      function refreshTransactionRules(){
+        //emptyHTMLSet(transactionRulesTable);
+        transactionRules = [];
+        refCoproperty.collection("TransactionRules").get().then(function(objectsFSArray){
+          objectsFSArray.forEach(function(objectFS){
+            loadTransactionRule(objectFS);
+            transactionRules.push(objectFS.data());
+          });
+        });
+      };
+
+      var reportsLoaded = false;
+      function loadReports() {
+      hideMenu();
+      document.getElementById("logo-container").innerHTML = "MyCondos: Reports";
+      loadChargesReports();
+      if (!reportsLoaded) {
+            refreshReports();
+            reportsLoaded = true;
+          };
+      };
 
     </script>
     <!--   Meter readings scripts start here -->
