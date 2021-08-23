@@ -366,7 +366,7 @@
                   <p style="text-align: right">Date</p>
                 </th>
                 <th>
-                <p style="writing-mode: vertical-rl">Evidence?</p>
+                  <p style="writing-mode: vertical-rl">Evidence?</p>
                 </th>
               </tr>
             </thead>
@@ -657,21 +657,22 @@
         </div>
         <!------------------------------------------------------------------------------------------------------>
         <div id="TransactionRules" class="col s12">
-        <table class="striped">
-        <thead>
-          <tr>
-            <th>Account</th>
-            <th>Communication</th>
-            <th>Classification</th>
-            <th>Owner</th>
-          </tr>
-        </thead>
-        <tbody id="transactionRulesTable">
-        </tbody>
-      </table>
+          <table class="striped">
+            <thead>
+              <tr>
+                <th>Account</th>
+                <th>Communication</th>
+                <th>Classification</th>
+                <th>Owner</th>
+              </tr>
+            </thead>
+            <tbody id="transactionRulesTable">
+            </tbody>
+          </table>
+          <button style="float: right" data-target="transactionRulesAdd" class="btn-small waves-light modal-trigger" onclick="resetSelectedTransactionRule()"><i class="material-icons right">add</i>New transaction rule</button>
         </div>
         <!------------------------------------------------------------------------------------------------------>
-        
+
         <div id="MeterReadings" class="col s12">
           <table class="striped">
             <thead>
@@ -1042,6 +1043,7 @@
                 <h7>Meters</h7>
                 <table class="striped">
                   <thead>
+                    
                     <th>Type</th>
                     <th>Meter ID</th>
                     <th>Status</th>
@@ -2501,7 +2503,44 @@
     </script>
     <!-- TransactionRules scripts start here-->
     <script>
-      function loadTransactionRule(objectFS){};
+      function loadTransactionRule(objectFS){
+        var object = objectFS.data();
+          var objectsRow= document.createElement('tr');
+          
+          var cellContent = document.createElement('button');
+          cellContent.setAttribute("data-target", "transactionRuleEdit");
+          cellContent.setAttribute('class','modal-trigger');
+          cellContent.setAttribute('style','border:none;background-color:Transparent');
+          cellContent.setAttribute('onclick','setSelectedTransaction('+JSON.stringify(objectFS.id)+','+JSON.stringify(object)+')');
+          cellContent.innerHTML = "<font color='blue'>" + object.account + "</font>";
+          var cell = document.createElement('td');
+          cell.appendChild(cellContent);
+          objectsRow.appendChild(cell);   
+
+          if (object.communication) {cellContent = document.createTextNode(object.communication);}
+          else {cellContent = document.createTextNode("");};
+          cell = document.createElement('td');
+          cell.appendChild(cellContent);
+          objectsRow.appendChild(cell); 
+
+          cellContent = document.createTextNode(object.Classification);
+          cell = document.createElement('td');
+          cell.appendChild(cellContent);
+          objectsRow.appendChild(cell);
+          
+          if (object.owner) {
+            
+          }
+          else {cellContent = document.createTextNode("");};
+          cell = document.createElement('td');
+          cell.appendChild(cellContent);
+          objectsRow.appendChild(cell); 
+
+           
+
+
+          transactionRulesTable.appendChild (objectsRow);
+      };
       
       var transactionRules = [];
       function refreshTransactionRules(){
@@ -2516,6 +2555,8 @@
       };
 
       var transactionRulesLoaded = false;
+
+      function resetSelectedTransactionRule(){};
       
 
     </script>
