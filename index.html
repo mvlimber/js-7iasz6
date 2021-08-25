@@ -662,10 +662,10 @@
           <table class="striped">
             <thead>
               <tr>
-                <th>Account</th>
-                <th>Communication</th>
-                <th>Classification</th>
-                <th>Owner</th>
+                <th>If:Account</th>
+                <th>If:Communication</th>
+                <th>Then:Type</th>
+                <th>Then:Owner</th>
               </tr>
             </thead>
             <tbody id="transactionRulesTable">
@@ -2525,7 +2525,7 @@
           cell.appendChild(cellContent);
           objectsRow.appendChild(cell); 
 
-          cellContent = document.createTextNode(object.classification);
+          cellContent = document.createTextNode(object.type);
           cell = document.createElement('td');
           cell.appendChild(cellContent);
           objectsRow.appendChild(cell);
