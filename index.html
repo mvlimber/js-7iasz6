@@ -2552,6 +2552,14 @@
       };
 
       var transactionRulesLoaded = false;
+      function loadTransactionRules(){
+          hideMenu();
+          document.getElementById("logo-container").innerHTML = "MyCondos: Transaction Rules";
+          if (!transactionRulesLoaded) {
+            refreshTransactionRules();
+            transactionRulesLoaded = true;
+          };
+        };
 
       function resetSelectedTransactionRule(){};
       
