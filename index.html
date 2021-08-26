@@ -685,7 +685,17 @@
                 <label for="transaction_account_add">If:Account<b><font color='red'>*</font></b></label>
                 <span class="helper-text" data-error="BE followed by 14 digits, blancs for printing format allowed. Example: BE40 9799 2578 3625">BE followed by max 14 digits, blancs allowed. Example: BE40 9799 2578 3625</span>
               </div>
-          <div class="input-field col s12 m4">
+              <div class="input-field col s12 m8">
+                <input id="transaction_name_add" type="text" class="validate" maxlength="50">
+                <label for="transaction_name_add">Info:Counterpart</label>
+                <span class="helper-text" data-error="Maximum 50 characters"></span>
+              </div>
+              <div class="input-field col s12 m8">
+                <input id="transactionRule_communication" type="text" class="validate" maxlength="80" >
+                <label for="transaction_communication_add">If:Communication</label>
+                <span class="helper-text" data-error="Maximum 80 characters"></span>
+              </div>
+              <div class="input-field col s12 m4">
                 <select id="transactionRule_type" required required="true" onchange="enableSelectProperties()">
                           <option value="" disabled selected>Select the type</option>
                           <option>Repair/Maintenance</option>
@@ -700,58 +710,7 @@
                         </select>
                 <label>Then:Type<b><font color='red'>*</font></b></label>
               </div>
-              <div class="input-field col s12 m8">
-                <input id="transaction_name_add" type="text" class="validate" maxlength="50" required required="true">
-                <label for="transaction_name_add">Counterparty<b><font color='red'>*</font></b></label>
-                <span class="helper-text" data-error="Maximum 50 characters"></span>
-              </div>
               
-              <div class="input-field col s12 m8">
-                <input id="transaction_communication_add" type="text" class="validate" maxlength="80" >
-                <label for="transaction_communication_add">Communication</label>
-                <span class="helper-text" data-error="Maximum 80 characters"></span>
-              </div>
-              <div class="input-field col s12 m4">
-                <input id="transaction_amount_add" type="number" class="validate" min="0" max="999999" step="0.01" required required="true">
-                <label for="transaction_amount_add">Amount<b><font color='red'>*</font></b></label>
-                <span class="helper-text" data-error="Positive amount of max 999999 with max 2 decimals. Example: 1234.56">Amount with max 2 decimals. Example: 1234.56</span>
-              </div>
-              <div class="input-field col s12 m4">
-                <input id="transaction_date_add" type="text" class="datepicker validate"  required required="true" onchange="copyToBookDate()">
-                <label for="transaction_date_add">Transaction Date<b><font color='red'>*</font></b></label>
-                <span class="helper-text" data-error="Required field"></span>
-              </div>
-              <div class="input-field col s12 m4">
-                <input id="transaction_bookDate_add" type="text" class="datepicker validate"  required required="true">
-                <label for="transaction_bookDate_add">Accountancy Date<b><font color='red'>*</font></b></label>
-                <span class="helper-text" data-error="Required field">By default copied from Transaction Date</span>
-              </div>
-              <div id="transaction_properties_add_frame" style="display:none">
-                <h5>For private transactions: please assign amount to properties</h5>
-                <div class="input-field col s12 m4">
-                  <select id="transaction_properties_add">
-                  </select>
-                  <label>Property<b><font color='red'>*</font></b></label>
-                </div>
-                <div class="input-field col s12 m4">
-                  <input id="transaction_distribution_amount_add" type="number" class="validate" min="0" max="999999" step="0.01" required required="true">
-                  <label for="transaction_distribution_amount_add">Amount<b><font color='red'>*</font></b></label>
-                  <span class="helper-text" data-error="Positive amount of max 999999 with max 2 decimals. Example: 1234.56">Amount with max 2 decimals. Example: 1234.56</span>
-                </div>
-                <button style="float: left;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="button" onclick="addTransactionDistribution()"><i class="material-icons right">add</i>Assign amount to property</button>
-                <br>
-                <table class="striped">
-                  <thead>
-                    <tr>
-                      <th>Property</th>
-                      <th>Amount</th>
-                    </tr>
-                  </thead>
-                  <tbody id="transaction_distribution_table_add">
-                  </tbody>
-                </table>
-              </div>
-
             </form>
             <br>
             <button id="transaction_save_button" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeTransaction()">Save and go to adding evidence<i class="material-icons right">send</i></button>
