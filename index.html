@@ -680,6 +680,12 @@
             <h5>Enter transaction rule data</h5>
             <form>
               <div class="input-field col s12 m4">
+                <input id="transactionRule_account" type="text" maxlength="19" class="validate"
+                  pattern="^BE\d{14}$|^BE\d{2}\s\d{4}\s\d{4}\s\d{4}$" required required="true">
+                <label for="transaction_account_add">If:Account<b><font color='red'>*</font></b></label>
+                <span class="helper-text" data-error="BE followed by 14 digits, blancs for printing format allowed. Example: BE40 9799 2578 3625">BE followed by max 14 digits, blancs allowed. Example: BE40 9799 2578 3625</span>
+              </div>
+          <div class="input-field col s12 m4">
                 <select id="transactionRule_type" required required="true" onchange="enableSelectProperties()">
                           <option value="" disabled selected>Select the type</option>
                           <option>Repair/Maintenance</option>
@@ -699,12 +705,7 @@
                 <label for="transaction_name_add">Counterparty<b><font color='red'>*</font></b></label>
                 <span class="helper-text" data-error="Maximum 50 characters"></span>
               </div>
-              <div class="input-field col s12 m4">
-                <input id="transaction_account_add" type="text" maxlength="19" class="validate"
-                  pattern="^BE\d{14}$|^BE\d{2}\s\d{4}\s\d{4}\s\d{4}$">
-                <label for="transaction_account_add">Account</label>
-                <span class="helper-text" data-error="BE followed by 14 digits, blancs for printing format allowed. Example: BE40 9799 2578 3625">BE followed by max 14 digits, blancs allowed. Example: BE40 9799 2578 3625</span>
-              </div>
+              
               <div class="input-field col s12 m8">
                 <input id="transaction_communication_add" type="text" class="validate" maxlength="80" >
                 <label for="transaction_communication_add">Communication</label>
