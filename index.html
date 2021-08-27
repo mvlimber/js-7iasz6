@@ -2583,6 +2583,21 @@
           cell = document.createElement('td');
           cell.appendChild(cellContent);
           objectsRow.appendChild(cell); 
+
+          cellContent = document.createElement('button');
+          cellContent.setAttribute('class','modal-trigger btn-small waves-light red');
+          cellContent.setAttribute("data-target", "transactionRuleRemove");
+          cellContent.setAttribute('onclick','popupRemoveTransactionRule('+JSON.stringify(objectFS.id)+')');
+          var cellButtonIcon = document.createElement('i');
+          cellButtonIcon.setAttribute('class','material-icons right');
+          cellButtonIcon.innerHTML="delete";           
+          cellContent.appendChild(cellButtonIcon);
+          cellContent.innerHTML = "Remove";
+
+          cell = document.createElement('td');
+          cell.appendChild(cellContent);
+          objectsRow.appendChild(cell);   
+
           transactionRulesTable.appendChild (objectsRow);
       };
       
