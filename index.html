@@ -2623,6 +2623,27 @@
         M.updateTextFields();
       };
 
+      function validateTransactionRule(){
+        var valid = true;
+        if (!document.getElementById("transactionRule_type").checkValidity()) {
+          M.toast({html:"Please enter type"});
+          valid=false;
+        };
+        if (!document.getElementById("transactionRule_account").checkValidity()) {
+          M.toast({html:"Please enter valid account"});
+          valid=false;
+        };
+        if (!document.getElementById("transactionRule_name").checkValidity()) {
+          M.toast({html:"Please enter counter party"});
+          valid=false;
+        };
+        if (!document.getElementById("transactionRule_communication").checkValidity()) {
+          M.toast({html:"Please enter valid communication"});
+          valid=false;
+        };
+        return valid;
+      };
+      
       function writeTransactionRule(){
         if (validateTransactionRule()) { 
           var entries =  getTransactionRuleEntries();
