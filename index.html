@@ -2644,6 +2644,15 @@
         return valid;
       };
       
+      function getTransactionRuleEntries(){
+        return {
+          type: document.getElementById("transactionRule_type").value,
+          account: document.getElementById("transactionRule_account").value,
+          name: document.getElementById("transactionRule_name").value,
+          communication:document.getElementById("transactionRule_communication").value,
+        };
+      };
+      
       function writeTransactionRule(){
         if (validateTransactionRule()) { 
           var entries =  getTransactionRuleEntries();
