@@ -682,20 +682,20 @@
               <div class="input-field col s12 m4">
                 <input id="transactionRule_account" type="text" maxlength="19" class="validate"
                   pattern="^BE\d{14}$|^BE\d{2}\s\d{4}\s\d{4}\s\d{4}$" required required="true">
-                <label for="transaction_account_add">If:Account<b><font color='red'>*</font></b></label>
+                <label for="transactionRule_account">If:Account<b><font color='red'>*</font></b></label>
                 <span class="helper-text" data-error="BE followed by 14 digits, blancs for printing format allowed. Example: BE40 9799 2578 3625">BE followed by max 14 digits, blancs allowed. Example: BE40 9799 2578 3625</span>
               </div>
               <div class="input-field col s12 m8">
-                <input id="transaction_name_add" type="text" class="validate" maxlength="50">
-                <label for="transaction_name_add">Info:Counterpart</label>
+                <input id="transactionRule_name" type="text" class="validate" maxlength="50">
+                <label for="transactionRule_name">Info:Counterpart</label>
                 <span class="helper-text" data-error="Maximum 50 characters"></span>
               </div>
-              <div class="input-field col s12 m8">
+              <div class="input-field col s12 m12">
                 <input id="transactionRule_communication" type="text" class="validate" maxlength="80" >
-                <label for="transaction_communication_add">If:Communication</label>
+                <label for="transactionRule_communication">If:Communication</label>
                 <span class="helper-text" data-error="Maximum 80 characters"></span>
               </div>
-              <div class="input-field col s12 m4">
+              <div class="input-field col s12 m12">
                 <select id="transactionRule_type" required required="true" onchange="enableSelectProperties()">
                           <option value="" disabled selected>Select the type</option>
                           <option>Repair/Maintenance</option>
@@ -713,7 +713,7 @@
               
             </form>
             <br>
-            <button id="transaction_save_button" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeTransaction()">Save and go to adding evidence<i class="material-icons right">send</i></button>
+            <button id="transaction_save_button" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeTransactionRule()">Save<i class="material-icons right">send</i></button>
             <a style="float: right;margin-bottom: 3px"
               class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
               Cancel</a>
@@ -2611,16 +2611,37 @@
       var selectedTransactionRuleId;
       var transactionRule;
       function resetSelectedTransactionRule(){};
-      function setSelectedTransaction(id,object) {
+      function setSelectedTransactionRule(id,object) {
         selectedTransactionRuleId = id;
         transaction = object;
-        document.getElementById("transactionRyle_type").value=object.type;
+        document.getElementById("transactionRule_type").value=object.type;
         document.getElementById("transactionRule_account").value=object.account;
         document.getElementById("transactionRule_name").value=object.name;
         document.getElementById("transactionRule_communication").value=object.communication;
         var elems = document.querySelectorAll('select');
         M.FormSelect.init(elems);
         M.updateTextFields();
+      };
+
+      function writeTransactionRule(){
+        if (validateTransactionRule()) { 
+          var entries =  getTransactionRuleEntries();
+          if (selectedTransactionRuleId) {
+            refCoproperty.collection("TransactionRules").doc(selectedTransactionRuleId).set(entries).then(function(docref) {
+              refreshTransactionRules();
+              M.Modal.getInstance(document.getElementById("transactionRuleEdit")).close();
+            }).catch(function(error) {
+              M.toast({html:"Error updating transaction rule: " + error});
+            });
+          } else {
+            refCoproperty.collection("TransactionRules").add(entries).then(function(docref) {
+              refreshTransactionRules();
+              M.Modal.getInstance(document.getElementById("transactionRuleEdit")).close();
+            }).catch(function(error) {
+              M.toast({html:"Error adding transaction rule: " + error});
+            });
+          };
+        };
       };
 
     </script>
