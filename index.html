@@ -2560,7 +2560,7 @@
           cellContent.setAttribute("data-target", "transactionRuleEdit");
           cellContent.setAttribute('class','modal-trigger');
           cellContent.setAttribute('style','border:none;background-color:Transparent');
-          cellContent.setAttribute('onclick','setSelectedTransaction('+JSON.stringify(objectFS.id)+','+JSON.stringify(object)+')');
+          cellContent.setAttribute('onclick','setSelectedTransactionRule('+JSON.stringify(objectFS.id)+','+JSON.stringify(object)+')');
           cellContent.innerHTML = "<font color='blue'>" + object.account + "</font>";
           var cell = document.createElement('td');
           cell.appendChild(cellContent);
@@ -2608,8 +2608,20 @@
           };
         };
 
+      var selectedTransactionRuleId;
+      var transactionRule;
       function resetSelectedTransactionRule(){};
-      
+      function setSelectedTransaction(id,object) {
+        selectedTransactionRuleId = id;
+        transaction = object;
+        document.getElementById("transactionRyle_type").value=object.type;
+        document.getElementById("transactionRule_account").value=object.account;
+        document.getElementById("transactionRule_name").value=object.name;
+        document.getElementById("transactionRule_communication").value=object.communication;
+        var elems = document.querySelectorAll('select');
+        M.FormSelect.init(elems);
+        M.updateTextFields();
+      };
 
     </script>
     <!--   Meter readings scripts start here -->
