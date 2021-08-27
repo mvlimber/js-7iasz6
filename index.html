@@ -2588,7 +2588,7 @@
       
       var transactionRules = [];
       function refreshTransactionRules(){
-        //emptyHTMLSet(transactionRulesTable);
+        emptyHTMLSet(transactionRulesTable);
         transactionRules = [];
         refCoproperty.collection("TransactionRules").get().then(function(objectsFSArray){
           objectsFSArray.forEach(function(objectFS){
@@ -2610,10 +2610,20 @@
 
       var selectedTransactionRuleId;
       var transactionRule;
-      function resetSelectedTransactionRule(){};
+      function resetSelectedTransactionRule(){
+        var trR = 
+          {
+          type: "",
+          account: "",
+          name: "",
+          communication:"",
+          };
+          setSelectedTransactionRule(null,trR)
+
+      };
+
       function setSelectedTransactionRule(id,object) {
         selectedTransactionRuleId = id;
-        transaction = object;
         document.getElementById("transactionRule_type").value=object.type;
         document.getElementById("transactionRule_account").value=object.account;
         document.getElementById("transactionRule_name").value=object.name;
