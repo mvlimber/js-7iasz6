@@ -2723,7 +2723,7 @@
       function removeTransactionRule(tRId){
         refCoproperty.collection("TransactionRule").doc(tRId).delete().then(function(){
           refreshTransactionRules();
-          M.Modal.getInstance(document.getElementById("reportTransactionRule")).close();
+          M.Modal.getInstance(document.getElementById("transactionRuleRemove")).close();
         }).catch(function(error) {
             M.toast({html:"System error removing transaction rule:" + error});
         });
