@@ -2613,9 +2613,6 @@
           transactionRulesTable.appendChild (objectsRow);
       };
       
-      function popupRemoveTransactionRule(){
-
-      };
       
       var transactionRules = [];
       function refreshTransactionRules(){
@@ -2721,7 +2718,7 @@
       }
       
       function removeTransactionRule(tRId){
-        refCoproperty.collection("TransactionRule").doc(tRId).delete().then(function(){
+        refCoproperty.collection("TransactionRules").doc(tRId).delete().then(function(){
           refreshTransactionRules();
           M.Modal.getInstance(document.getElementById("transactionRuleRemove")).close();
         }).catch(function(error) {
