@@ -2510,6 +2510,19 @@
       transactionsLoadConfirmTable.appendChild (objectsRow);
     };
     
+    function applyTransactionRule(el) {
+      var i = 0;
+      while (i < transactionRules.length) {
+        if (transactionRules[i]. account == el.account) {
+          el.type = transactionRules[i].type;
+          return el;
+        };
+        i += 1;
+      };
+      return el;
+      
+    };
+    
     var transactionsBatchData;
     function loadTransactionsFile() {
       if (validateTransactionsLoadEntries()) {  
@@ -2522,7 +2535,9 @@
           transactionsBatchData = argentaCsvToArray(text);
           emptyHTMLSet(transactionsLoadConfirmTable);
           transactionsBatchData.map(function(el){
-            appendTransactionRow(el);
+            // gebruik transactionRules
+            if (transactionRules.length == 0) {refreshTransactionRules();};
+            appendTransactionRow(applyTransactionRule(el));
           });
         };
         
