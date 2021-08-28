@@ -2703,6 +2703,21 @@
         };
       };
 
+      var transactionRule_to_remove;
+      function popupRemoveTransactionRule(tRId){
+        transactionRule_to_remove = tRId;
+      }
+      
+      function removeTransactionRule(tRId){
+        refCoproperty.collection("TransactionRule").doc(tRId).delete().then(function(){
+          refreshTransactionRules();
+          M.Modal.getInstance(document.getElementById("reportTransactionRule")).close();
+        }).catch(function(error) {
+            M.toast({html:"System error removing transaction rule:" + error});
+        });
+      };
+
+
     </script>
     <!--   Meter readings scripts start here -->
     <script>
