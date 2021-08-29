@@ -2464,6 +2464,7 @@
     };
     
     function emptyTransactionLoadFields(){
+      if (transactionRules.length == 0) {refreshTransactionRules();};
       document.getElementById("transactionLoadFile").value = "";
       document.getElementById("transactionLoadFileText").value = "";
     };
@@ -2513,14 +2514,14 @@
     function applyTransactionRule(el) {
       var i = 0;
       while (i < transactionRules.length) {
-        if (transactionRules[i]. account == el.account) {
+        if (transactionRules[i].account == el.account) {
           el.type = transactionRules[i].type;
           return el;
         };
         i += 1;
       };
       return el;
-      
+
     };
     
     var transactionsBatchData;
@@ -2535,29 +2536,11 @@
           transactionsBatchData = argentaCsvToArray(text);
           emptyHTMLSet(transactionsLoadConfirmTable);
           transactionsBatchData.map(function(el){
-            // gebruik transactionRules
-            if (transactionRules.length == 0) {refreshTransactionRules();};
             appendTransactionRow(applyTransactionRule(el));
           });
         };
-        
+      
         reader.readAsText(transactionsLoadFile);
-        
-        /*
-        refCoproperty.collection("Transactions").doc(selectedTransactionId).collection("Evidence").add(entries).then(function(docref) {
-          if (transactionEvidenceFile) {
-            var fileRef = refCopropertyFiles.child("Transactions").child(docref.id);  
-            fileRef.put(transactionEvidenceFile).then (function (){});
-            refreshTransactionEvidence();
-            refreshTransactions();
-            M.Modal.getInstance(document.getElementById("transactionEvidenceAdd")).close();
-          } else {
-            M.toast({html:"System error writing file"});
-          };
-        }).catch(function(error) {
-          M.toast({html:"System error writing document: " + error});
-        });
-        */
       };
     };
 
