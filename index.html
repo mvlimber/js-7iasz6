@@ -2478,10 +2478,11 @@
       const values = row.split(delimiter);
       var resultRow = {};
       resultRow.type = "to be classified";
-      resultRow.account = Number(values[8].toFixed(2));
+      resultRow.account = values[8];
       resultRow.name = values[9];
       resultRow.amount = values[5];
-      resultRow.date = values[7];
+      var trDate = values[7];
+      resultRow.date = trDate.substring(6,9) + "-" + trDate.substring(3,4) + "-" + trDate.substring(0,1);
       resultRow.bookDate = resultRow.date;
       resultRow.communication = values[10];
       return resultRow;
