@@ -2482,7 +2482,7 @@
       resultRow.name = values[9];
       resultRow.amount = values[5];
       var trDate = values[7];
-      resultRow.date = trDate.substring(6,9) + "-" + trDate.substring(3,4) + "-" + trDate.substring(0,1);
+      if (trDate) {resultRow.date = trDate.substring(6,10) + "-" + trDate.substring(3,5) + "-" + trDate.substring(0,2);};
       resultRow.bookDate = resultRow.date;
       resultRow.communication = values[10];
       return resultRow;
