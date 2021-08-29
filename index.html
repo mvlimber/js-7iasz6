@@ -2478,7 +2478,7 @@
       const values = row.split(delimiter);
       var resultRow = {};
       resultRow.type = "to be classified";
-      resultRow.account = values[8];
+      resultRow.account = Number(values[8].toFixed(2));
       resultRow.name = values[9];
       resultRow.amount = values[5];
       resultRow.date = values[7];
