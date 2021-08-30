@@ -2483,7 +2483,7 @@
       resultRow.name = values[9];
       resultRow.amount = values[5].replace(".","").replace(",",".");
       var trDate = values[7];
-      if (trDate) {resultRow.date = trDate.substring(6,10) + "-" + trDate.substring(3,5) + "-" + trDate.substring(0,2);};
+      resultRow.date = trDate.substring(6,10) + "-" + trDate.substring(3,5) + "-" + trDate.substring(0,2);
       resultRow.bookDate = resultRow.date;
       resultRow.communication = values[10];
       return resultRow;
