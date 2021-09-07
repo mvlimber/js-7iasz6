@@ -711,10 +711,10 @@
                 <label>Then:Type<b><font color='red'>*</font></b></label>
               </div>
               <div class="input-field col s12 m6">
-              <select id="transactionRule__owne" required aria-required="true">
+              <select id="transactionRule_owner" required aria-required="true">
                 <option value="" disabled selected>Select Owner</option>
               </select>
-              <label for="property_owner_add">Then:Owner<b><font color='red'>*</font></b></label>
+              <label for="transactionRule__owner">Then:Owner<b><font color='red'>*</font></b></label>
             </div>
               
             </form>
@@ -2652,6 +2652,7 @@
           account: "",
           name: "",
           communication:"",
+          owner:"",
           };
           setSelectedTransactionRule(null,trR)
 
@@ -2663,6 +2664,7 @@
         document.getElementById("transactionRule_account").value=object.account;
         document.getElementById("transactionRule_name").value=object.name;
         document.getElementById("transactionRule_communication").value=object.communication;
+        listMembers(document.getElementById("transactionRule_owner"), object.owner);
         var elems = document.querySelectorAll('select');
         M.FormSelect.init(elems);
         M.updateTextFields();
@@ -2684,6 +2686,10 @@
         };
         if (!document.getElementById("transactionRule_communication").checkValidity()) {
           M.toast({html:"Please enter valid communication"});
+          valid=false;
+        };
+        if (!document.getElementById("transactionRule_owner").checkValidity()) {
+          M.toast({html:"Please select owner"});
           valid=false;
         };
         return valid;
