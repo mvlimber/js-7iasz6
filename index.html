@@ -672,59 +672,59 @@
             </tbody>
           </table>
           <button style="float: right" data-target="transactionRuleEdit" class="btn-small waves-light modal-trigger" onclick="resetSelectedTransactionRule()"><i class="material-icons right">add</i>New transaction rule</button>
-        <div id="transactionRuleEdit" class="modal">
-          <div class="modal-content">
-            <a style="float: right"
-              class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
-              Cancel</a>
-            <h5>Enter transaction rule data</h5>
-            <form>
-              <div class="input-field col s12 m4">
-                <input id="transactionRule_account" type="text" maxlength="19" class="validate"
-                  pattern="^BE\d{14}$|^BE\d{2}\s\d{4}\s\d{4}\s\d{4}$" required required="true">
-                <label for="transactionRule_account">If:Account<b><font color='red'>*</font></b></label>
-                <span class="helper-text" data-error="BE followed by 14 digits, blancs for printing format allowed. Example: BE40 9799 2578 3625">BE followed by max 14 digits, blancs allowed. Example: BE40 9799 2578 3625</span>
+          <div id="transactionRuleEdit" class="modal">
+            <div class="modal-content">
+              <a style="float: right"
+                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
+                Cancel</a>
+              <h5>Enter transaction rule data</h5>
+              <form>
+                <div class="input-field col s12 m4">
+                  <input id="transactionRule_account" type="text" maxlength="19" class="validate"
+                    pattern="^BE\d{14}$|^BE\d{2}\s\d{4}\s\d{4}\s\d{4}$" required required="true">
+                  <label for="transactionRule_account">If:Account<b><font color='red'>*</font></b></label>
+                  <span class="helper-text" data-error="BE followed by 14 digits, blancs for printing format allowed. Example: BE40 9799 2578 3625">BE followed by max 14 digits, blancs allowed. Example: BE40 9799 2578 3625</span>
+                </div>
+                <div class="input-field col s12 m8">
+                  <input id="transactionRule_name" type="text" class="validate" maxlength="50">
+                  <label for="transactionRule_name">Info:Counterpart</label>
+                  <span class="helper-text" data-error="Maximum 50 characters"></span>
+                </div>
+                <div class="input-field col s12 m12">
+                  <input id="transactionRule_communication" type="text" class="validate" maxlength="80" >
+                  <label for="transactionRule_communication">If:Communication</label>
+                  <span class="helper-text" data-error="Maximum 80 characters"></span>
+                </div>
+                <div class="input-field col s12 m6">
+                  <select id="transactionRule_type" required required="true" onchange="enableSelectProperties()">
+                            <option value="" disabled selected>Select the type</option>
+                            <option>Repair/Maintenance</option>
+                            <option>Installation/Renovation</option>
+                            <option>Insurance Building</option>
+                            <option>Services</option>
+                            <option>Small equipment</option>
+                            <option>Electricity</option>
+                            <option>Water</option>
+                            <option>Heating</option>
+                            <option>Private</option>
+                          </select>
+                  <label>Then:Type<b><font color='red'>*</font></b></label>
+                </div>
+                <div class="input-field col s12 m6">
+                <select id="transactionRule_owner" required aria-required="true">
+                  <option value="" disabled selected>Select Owner</option>
+                </select>
+                <label for="transactionRule__owner">Then:Owner<b><font color='red'>*</font></b></label>
               </div>
-              <div class="input-field col s12 m8">
-                <input id="transactionRule_name" type="text" class="validate" maxlength="50">
-                <label for="transactionRule_name">Info:Counterpart</label>
-                <span class="helper-text" data-error="Maximum 50 characters"></span>
-              </div>
-              <div class="input-field col s12 m12">
-                <input id="transactionRule_communication" type="text" class="validate" maxlength="80" >
-                <label for="transactionRule_communication">If:Communication</label>
-                <span class="helper-text" data-error="Maximum 80 characters"></span>
-              </div>
-              <div class="input-field col s12 m6">
-                <select id="transactionRule_type" required required="true" onchange="enableSelectProperties()">
-                          <option value="" disabled selected>Select the type</option>
-                          <option>Repair/Maintenance</option>
-                          <option>Installation/Renovation</option>
-                          <option>Insurance Building</option>
-                          <option>Services</option>
-                          <option>Small equipment</option>
-                          <option>Electricity</option>
-                          <option>Water</option>
-                          <option>Heating</option>
-                          <option>Private</option>
-                        </select>
-                <label>Then:Type<b><font color='red'>*</font></b></label>
-              </div>
-              <div class="input-field col s12 m6">
-              <select id="transactionRule_owner" required aria-required="true">
-                <option value="" disabled selected>Select Owner</option>
-              </select>
-              <label for="transactionRule__owner">Then:Owner<b><font color='red'>*</font></b></label>
+                
+              </form>
+              <br>
+              <button id="transaction_save_button" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeTransactionRule()">Save<i class="material-icons right">send</i></button>
+              <a style="float: right;margin-bottom: 3px"
+                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
+                Cancel</a>
             </div>
-              
-            </form>
-            <br>
-            <button id="transaction_save_button" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeTransactionRule()">Save<i class="material-icons right">send</i></button>
-            <a style="float: right;margin-bottom: 3px"
-              class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
-              Cancel</a>
           </div>
-        </div>
         <div id="transactionRuleRemove" class="modal">
         <div class="modal-content">
           <h5> Please confirm you want to permanently remove this transaction rule</h5>
@@ -735,8 +735,7 @@
             class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
             Cancel</a>
         </div>
-      </div>  
-      
+        </div>  
       </div>
         <!------------------------------------------------------------------------------------------------------>
 
