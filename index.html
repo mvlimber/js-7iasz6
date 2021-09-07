@@ -695,7 +695,7 @@
                 <label for="transactionRule_communication">If:Communication</label>
                 <span class="helper-text" data-error="Maximum 80 characters"></span>
               </div>
-              <div class="input-field col s12 m12">
+              <div class="input-field col s12 m6">
                 <select id="transactionRule_type" required required="true" onchange="enableSelectProperties()">
                           <option value="" disabled selected>Select the type</option>
                           <option>Repair/Maintenance</option>
@@ -710,6 +710,12 @@
                         </select>
                 <label>Then:Type<b><font color='red'>*</font></b></label>
               </div>
+              <div class="input-field col s12 m6">
+              <select id="transactionRule__owne" required aria-required="true">
+                <option value="" disabled selected>Select Owner</option>
+              </select>
+              <label for="property_owner_add">Then:Owner<b><font color='red'>*</font></b></label>
+            </div>
               
             </form>
             <br>
