@@ -731,7 +731,7 @@
             <h5> Please confirm you want to permanently remove this transaction rule</h5>
           </div>
           <div class="modal-footer">
-            <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="deleteTransactionRule()">Confirm<i class="material-icons right">send</i></button>
+            <button style="float: right;margin-left: 20px" class="modal-close btn-small waves-light" type="submit" onclick="deleteTransactionRule()">Confirm<i class="material-icons right">send</i></button>
             <a style="float: right"
               class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
               Cancel</a>
@@ -2604,20 +2604,6 @@
           ownerCell.appendChild(cellContent);
           objectsRow.appendChild(cell);
           
-          cellContent = document.createElement('button');
-          cellContent.setAttribute('class','modal-trigger btn-small waves-light red');
-          cellContent.setAttribute("data-target", "transactionRuleRemove");
-          cellContent.setAttribute('onclick','popupRemoveTransactionRule('+JSON.stringify(objectFS.id)+')');
-          var cellButtonIcon = document.createElement('i');
-          cellButtonIcon.setAttribute('class','material-icons right');
-          cellButtonIcon.innerHTML="delete";           
-          cellContent.appendChild(cellButtonIcon);
-          cellContent.innerHTML = "Remove";
-
-          cell = document.createElement('td');
-          cell.appendChild(cellContent);
-          objectsRow.appendChild(cell);   
-
           transactionRulesTable.appendChild (objectsRow);
 
           if (Boolean(object.owner)) {
@@ -2737,29 +2723,14 @@
         };
       };
 
-      var transactionRule_to_remove;
-      function popupRemoveTransactionRule(tRId){
-        transactionRule_to_remove = tRId;
-      }
-      
-      function removeTransactionRule(tRId){
-        refCoproperty.collection("TransactionRules").doc(tRId).delete().then(function(){
-          refreshTransactionRules();
-          M.Modal.getInstance(document.getElementById("transactionRuleRemove")).close();
-        }).catch(function(error) {
-            M.toast({html:"System error removing transaction rule:" + error});
-        });
-      };
-
       function deleteTransactionRule(){
         refCoproperty.collection("TransactionRules").doc(selectedTransactionRuleId).delete().then(function(){
           refreshTransactionRules();
-          M.Modal.getInstance(document.getElementById("transactionRuleRemove")).close();
+          M.Modal.getInstance(document.getElementById("transactionRuleEdit")).close();
         }).catch(function(error) {
             M.toast({html:"System error removing transaction rule:" + error});
         });
       };
-
 
     </script>
     <!--   Meter readings scripts start here -->
