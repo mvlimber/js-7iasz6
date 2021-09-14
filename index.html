@@ -2596,8 +2596,6 @@
           cell.appendChild(cellContent);
           objectsRow.appendChild(cell);
           
-          
-          
           cellContent = document.createTextNode("");
           var ownerCell = document.createElement('td');
           ownerCell.setAttribute("style","white-space: nowrap");
@@ -2605,11 +2603,11 @@
           objectsRow.appendChild(cell);
           
           transactionRulesTable.appendChild (objectsRow);
-
           if (Boolean(object.owner)) {
             refCoproperty.collection("Members").doc(object.owner).get().then(function(ownerFS) {
               ownerCell.removeChild(ownerCell.firstChild);
               ownerCell.appendChild(memberLink(ownerFS));
+              
             }).catch(function(error) {
               console.log("Error getting owner:", error);
             });
