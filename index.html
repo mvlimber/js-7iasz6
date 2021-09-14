@@ -719,10 +719,11 @@
                 
               </form>
               <br>
-              <button id="transaction_save_button" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeTransactionRule()">Save<i class="material-icons right">send</i></button>
-              <a style="float: right;margin-bottom: 3px"
+              <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeTransactionRule()">Save<i class="material-icons right">send</i></button>
+              <a style="float: right;margin-left: 20px;margin-bottom: 3px"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
                 Cancel</a>
+              <button style="float: right;margin-left: 20px;margin-bottom: 3px" data-target="transactionRuleRemove" class="btn-small waves-light red modal-trigger">Delete<i class="material-icons right">delete</i></button>
             </div>
           </div>
           <div id="transactionRuleRemove" class="modal">
@@ -730,7 +731,7 @@
             <h5> Please confirm you want to permanently remove this transaction rule</h5>
           </div>
           <div class="modal-footer">
-            <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="removeTransactionRule(transactionRule_to_remove)">Confirm<i class="material-icons right">send</i></button>
+            <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="deleteTransactionRule()">Confirm<i class="material-icons right">send</i></button>
             <a style="float: right"
               class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
               Cancel</a>
@@ -2743,6 +2744,15 @@
       
       function removeTransactionRule(tRId){
         refCoproperty.collection("TransactionRules").doc(tRId).delete().then(function(){
+          refreshTransactionRules();
+          M.Modal.getInstance(document.getElementById("transactionRuleRemove")).close();
+        }).catch(function(error) {
+            M.toast({html:"System error removing transaction rule:" + error});
+        });
+      };
+
+      function deleteTransactionRule(){
+        refCoproperty.collection("TransactionRules").doc(selectedTransactionRuleId).delete().then(function(){
           refreshTransactionRules();
           M.Modal.getInstance(document.getElementById("transactionRuleRemove")).close();
         }).catch(function(error) {
