@@ -723,7 +723,7 @@
               <a style="float: right;margin-left: 20px;margin-bottom: 3px"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
                 Cancel</a>
-              <button style="float: right;margin-left: 20px;margin-bottom: 3px" data-target="transactionRuleRemove" class="btn-small waves-light red modal-trigger">Delete<i class="material-icons right">delete</i></button>
+              <button id="transactionRuleDeleteButton" style="float: right;margin-left: 20px;margin-bottom: 3px;display:block" data-target="transactionRuleRemove" class="btn-small waves-light red modal-trigger">Delete<i class="material-icons right">delete</i></button>
             </div>
           </div>
           <div id="transactionRuleRemove" class="modal">
@@ -2662,6 +2662,8 @@
         document.getElementById("transactionRule_name").value=object.name;
         document.getElementById("transactionRule_communication").value=object.communication;
         listMembers(document.getElementById("transactionRule_owner"), object.owner);
+        if (id) {document.getElementById("transactionRuleDeleteButton").style = "float: right;margin-left: 20px;margin-bottom: 3px;display:block"}
+        else {document.getElementById("transactionRuleDeleteButton").style = "float: right;margin-left: 20px;margin-bottom: 3px;display:none"};
         var elems = document.querySelectorAll('select');
         M.FormSelect.init(elems);
         M.updateTextFields();
