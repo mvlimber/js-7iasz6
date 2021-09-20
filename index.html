@@ -2524,6 +2524,9 @@
       while (i < transactionRules.length) {
         if (transactionRules[i].account == el.account) {
           el.type = transactionRules[i].type;
+          if ((transactionRules[i].type == "ownerPayment") && (transactionRules[i].owner)){
+            el.owner = transactionRules[i].owner;
+          };
           return el;
         };
         i += 1;
