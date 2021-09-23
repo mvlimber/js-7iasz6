@@ -3106,15 +3106,7 @@
                 .then(function(existingList) {
                   if (existingList.docs.length > 0) {
                     M.toast({html:"Error: member with this email already exists"}); 
-                  } else {
-                      if (entries.account) {
-                        refCoproperty.collection("Members").where("account", "==", entries.account).get().then(function(existingListAcc) {
-                          if (existingListAcc.docs.length > 0) {
-                              M.toast({html:"Error: member with this account already exists"});
-                          } else {addMember(entries);};
-                        });
-                      } else { addMember(entries);};
-                  };
+                  } else {addMember(entries);};
                 }) .catch (function(error) {
                   M.toast({html:"Error occurred checking email uniqueness:" + error}); 
                 });
