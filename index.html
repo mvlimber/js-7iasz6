@@ -3096,6 +3096,7 @@
           });
       };
 
+      
       function writeMember() {
         if (validateMemberEntries()) {  
           var entries = getMemberEntries();
@@ -3110,8 +3111,8 @@
                         refCoproperty.collection("Members").where("account", "==", entries.account).get().then(function(existingListAcc) {
                           if (existingListAcc.docs.length > 0) {
                               M.toast({html:"Error: member with this account already exists"});
-                          } else {addMember(entries);}
-                        };
+                          } else {addMember(entries);};
+                        });
                       } else { addMember(entries);};
                   };
                 }) .catch (function(error) {
