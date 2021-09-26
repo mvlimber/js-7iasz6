@@ -1336,11 +1336,7 @@
                 </div>
                 <div class="row">
                   <div class="input-field col s6 m6">
-                    <select id="property_type_edit" required aria-required="true">
-                    <option value="" disabled selected>Select the type</option>
-                    <option value="GARAG">Garage</option>
-                    <option value="APART">Apartment</option>
-                  </select>
+                    <select id="property_type_edit" required aria-required="true"></select>
                     <label for="property_type_edit">Type<b><font color='red'>*</font></b></label>
                   </div>
                   <div class="input-field col s6 m6">
@@ -1611,6 +1607,7 @@
       });
     };
     insertSelectOptions("property_type_add", PropType, "type");
+    insertSelectOptions("property_type_edit", PropType, "type");
     
     </script>
     <!--   Home scripts start here -->
