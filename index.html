@@ -1601,9 +1601,14 @@
       GARAG: 'garage'
     };
 
-    function insertSelectOptions (elBeforeID, keyValuePairs) {
-      var el= document.getElementById(elBeforeID);
-      //var default
+    function insertSelectOptions (elBeforeID, keyValuePairs, defaultString) {
+      var el = document.getElementById(elBeforeID);
+      var default = document.createElement("option");
+      default.setAttribute("value", "");
+      default.innerHTML = "Select " + defaultString;
+      el.insertAdjacentElement('afterend', default);
+      el = default;
+        
       Object.keys(keyValuePairs).forEach(function(key){
         var newEl = document.createElement("option");
         newEl.setAttribute("value", key);
@@ -1613,7 +1618,7 @@
         el =newEl;
       });
     };
-    insertSelectOptions("property_type_add", PropType);
+    insertSelectOptions("property_type_add", PropType, "type");
     
     </script>
     <!--   Home scripts start here -->
