@@ -1593,6 +1593,19 @@
       GARAG: 'garage'
     };
 
+    var TransType = {
+      MAINT : 'repair/maintenance',
+      RENOV: 'installation/renovation',
+      INSUR: 'insurance building',
+      SERVI: 'services',
+      EQUIP: 'small equipment',
+      ELECT: 'electricity',
+      WATER: 'water',
+      HEATI: 'heating',
+      PRIVA: 'private'
+    };
+
+
     function insertSelectOptions (elBeforeID, keyValuePairs, defaultString) {
       var el = document.getElementById(elBeforeID);
       var defaultt = document.createElement("option");
@@ -3387,7 +3400,7 @@
             selectedPropertyObject.cellar=property.cellar;
             document.getElementById("property_code").value=property.code;
             document.getElementById("property_quota").value=property.quota;
-            document.getElementById("property_type").value=property.type;
+            document.getElementById("property_type").value=PropType[property.type];
             document.getElementById("property_cellar").value=property.cellar;
             M.Modal.getInstance(document.getElementById("propertyWrite")).close();
           }).catch(function(error) {
