@@ -1607,15 +1607,11 @@
       defaultt.setAttribute("value", "");
       defaultt.innerHTML = "Select " + defaultString;
       el.insertAdjacentElement('beforeend', defaultt);
-      //el = defaultt;
-        
       Object.keys(keyValuePairs).forEach(function(key){
         var newEl = document.createElement("option");
         newEl.setAttribute("value", key);
         newEl.innerHTML = keyValuePairs[key];
-        //el.appendChild(newEl);
         el.insertAdjacentElement('beforeend', newEl);
-        //el =newEl;
       });
     };
     insertSelectOptions("property_type_add", PropType, "type");
