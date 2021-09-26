@@ -1603,19 +1603,19 @@
 
     function insertSelectOptions (elBeforeID, keyValuePairs, defaultString) {
       var el = document.getElementById(elBeforeID);
-      var default = document.createElement("option");
-      default.setAttribute("value", "");
-      default.innerHTML = "Select " + defaultString;
-      el.insertAdjacentElement('afterend', default);
-      el = default;
+      var defaultt = document.createElement("option");
+      defaultt.setAttribute("value", "");
+      defaultt.innerHTML = "Select " + defaultString;
+      el.insertAdjacentElement('beforeend', defaultt);
+      //el = defaultt;
         
       Object.keys(keyValuePairs).forEach(function(key){
         var newEl = document.createElement("option");
         newEl.setAttribute("value", key);
         newEl.innerHTML = keyValuePairs[key];
         //el.appendChild(newEl);
-        el.insertAdjacentElement('afterend', newEl);
-        el =newEl;
+        el.insertAdjacentElement('beforeend', newEl);
+        //el =newEl;
       });
     };
     insertSelectOptions("property_type_add", PropType, "type");
