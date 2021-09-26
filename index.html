@@ -1595,6 +1595,11 @@
     */
     var elems = document.querySelectorAll('.collapsible');
     var instances = M.Collapsible.init(elems);
+
+    var PropType = {
+      APART: 'apartment',
+      GARAG: 'garage'
+    }
     
     </script>
     <!--   Home scripts start here -->
@@ -3298,7 +3303,7 @@
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);  
         
-        cellContent = document.createTextNode(object.type);
+        cellContent = document.createTextNode(PropType[object.type]);
         cell = document.createElement('td');
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell); 
@@ -3716,7 +3721,7 @@
         };
         document.getElementById("property_code").value=object.code;
         document.getElementById("property_quota").value=object.quota;
-        document.getElementById("property_type").value=object.type;
+        document.getElementById("property_type").value=PropType[object.type];
         document.getElementById("property_cellar").value=object.cellar;
         var ownerEl = document.getElementById("property_owner");
         refCoproperty.collection("Members").doc(object.owner).get().then(function(member) {
