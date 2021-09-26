@@ -391,18 +391,7 @@
               <h5>Enter transaction data</h5>
               <form>
                 <div class="input-field col s12 m4">
-                  <select id="transaction_type_add" required required="true" onchange="enableSelectProperties()">
-                            <option value="" disabled selected>Select the type</option>
-                            <option>Repair/Maintenance</option>
-                            <option>Installation/Renovation</option>
-                            <option>Insurance Building</option>
-                            <option>Services</option>
-                            <option>Small equipment</option>
-                            <option>Electricity</option>
-                            <option>Water</option>
-                            <option>Heating</option>
-                            <option>Private</option>
-                          </select>
+                  <select id="transaction_type_add" required required="true" onchange="enableSelectProperties()"></select>
                   <label>Type<b><font color='red'>*</font></b></label>
                 </div>
                 <div class="input-field col s12 m8">
@@ -696,19 +685,7 @@
                   <span class="helper-text" data-error="Maximum 80 characters"></span>
                 </div>
                 <div class="input-field col s12 m6">
-                  <select id="transactionRule_type" required required="true" onchange="enableSelectProperties()">
-                            <option value="" disabled selected>Select the type</option>
-                            <option>Repair/Maintenance</option>
-                            <option>Installation/Renovation</option>
-                            <option>Insurance Building</option>
-                            <option>Services</option>
-                            <option>Small equipment</option>
-                            <option>Electricity</option>
-                            <option>Water</option>
-                            <option>Heating</option>
-                            <option>Private</option>
-                            <option>Owner Payment</option>
-                          </select>
+                  <select id="transactionRule_type" required required="true" onchange="enableSelectProperties()"></select>
                   <label>Then:Type<b><font color='red'>*</font></b></label>
                 </div>
                 <div class="input-field col s12 m6">
@@ -1621,6 +1598,8 @@
     };
     insertSelectOptions("property_type_add", PropType, "type");
     insertSelectOptions("property_type_edit", PropType, "type");
+    insertSelectOptions("transaction_type_add", TransType, "type");
+    insertSelectOptions("transaction_type_edit", TransType, "type");
     
     </script>
     <!--   Home scripts start here -->
