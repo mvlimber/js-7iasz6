@@ -1962,7 +1962,7 @@
           cellButtonIcon.setAttribute('class','material-icons right');
           cellButtonIcon.innerHTML="add";           
           cellContent.appendChild(cellButtonIcon);
-          cellContent.innerHTML = "<font color='blue'>" + object.type + "</font>";
+          cellContent.innerHTML = "<font color='blue'>" + TransType[object.type] + "</font>";
           var cell = document.createElement('td');
           cell.appendChild(cellContent);
           objectsRow.appendChild(cell);   
@@ -2117,7 +2117,7 @@
     function setSelectedTransaction(id,object) {
       selectedTransactionId = id;
       transaction = object;
-      document.getElementById("transaction_type").value=object.type;
+      document.getElementById("transaction_type").value=TransType[object.type];
       document.getElementById("transaction_account").value=object.account;
       document.getElementById("transaction_name").value=object.name;
       document.getElementById("transaction_amount").value=Number(object.amount).toLocaleString("nl-BE", currencyStyle);
@@ -2198,7 +2198,7 @@
       M.updateTextFields();  
     };
     function editTransaction(id,object) {
-      document.getElementById("transaction_type_add").value=object.type;
+      document.getElementById("transaction_type_add").value=TransType[object.type];
       document.getElementById("transaction_account_add").value=object.account;
       document.getElementById("transaction_name_add").value=object.name;
       document.getElementById("transaction_amount_add").value=object.amount;
