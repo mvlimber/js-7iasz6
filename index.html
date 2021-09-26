@@ -1603,11 +1603,13 @@
 
     function insertSelectOptions (elBeforeID, keyValuePairs) {
       var el= document.getElementById(elBeforeID);
+      //var default
       Object.keys(keyValuePairs).forEach(function(key){
         var newEl = document.createElement("option");
         newEl.setAttribute("value", key);
         newEl.innerHTML = keyValuePairs[key];
-        el.appendChild();
+        //el.appendChild(newEl);
+        el.insertAdjacentElement('afterend', newEl);
         el =newEl;
       });
     };
