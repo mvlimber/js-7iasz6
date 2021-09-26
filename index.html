@@ -1249,9 +1249,9 @@
                 <div class="row">
                   <div class="input-field col s6 m6">
                     <select id="property_type_add" required aria-required="true">
-                    <option value="" disabled selected>Select the type</option>
-                    <option value="GARAG">Garage</option>
-                    <option value="APART">Apartment</option>
+                    <!--<option value="" disabled selected>Select the type</option>-->
+                    <!--<option value="GARAG">Garage</option>
+                    <option value="APART">Apartment</option>-->
                   </select>
                     <label for="property_type_add">Type<b><font color='red'>*</font></b></label>
                   </div>
@@ -1601,7 +1601,17 @@
       GARAG: 'garage'
     };
 
-    
+    function insertSelectOptions (elBeforeID, keyValuePairs) {
+      var el= document.getElementById(elBeforeID);
+      Object.keys(keyValuePairs).forEach(function(key){
+        var newEl = document.createElement("option");
+        newEl.setAttribute("value", key);
+        newEl.innerHTML = keyValuePairs[key];
+        el.appendChild();
+        el =newEl;
+      });
+    };
+    insertSelectOptions("property_type_add", PropType);
     
     </script>
     <!--   Home scripts start here -->
