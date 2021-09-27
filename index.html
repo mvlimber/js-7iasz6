@@ -686,7 +686,7 @@
                 </div>
                 <div class="input-field col s12 m6">
                   <select id="transactionRule_type" required required="true" onchange="enableSelectProperties()"></select>
-                  <label>Then:Type<b><font color='red'>*</font></b></label>
+                  <label for="transactionRule_type">Then:Type<b><font color='red'>*</font></b></label>
                 </div>
                 <div class="input-field col s12 m6">
                 <select id="transactionRule_owner" >
@@ -1600,7 +1600,7 @@
     insertSelectOptions("property_type_edit", PropType, "type");
     insertSelectOptions("transaction_type_add", TransType, "type");
     insertSelectOptions("transaction_type_edit", TransType, "type");
-    
+    insertSelectOptions("transactionRule_type", TransType, "type");
     </script>
     <!--   Home scripts start here -->
     <script>
@@ -2600,7 +2600,7 @@
           cell.appendChild(cellContent);
           objectsRow.appendChild(cell); 
 
-          cellContent = document.createTextNode(object.type);
+          cellContent = document.createTextNode(TransType[object.type]);
           cell = document.createElement('td');
           cell.appendChild(cellContent);
           objectsRow.appendChild(cell);
@@ -2614,7 +2614,6 @@
           transactionRulesTable.appendChild (objectsRow);
           if (Boolean(object.owner)) {
             refCoproperty.collection("Members").doc(object.owner).get().then(function(ownerFS) {
-              console.log("ownerFS is ",ownerFS.id);
               ownerCell.removeChild(ownerCell.firstChild);
               //ownerCell.appendChild(memberLink(ownerFS));
               var x = document.createTextNode("tttt");
