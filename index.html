@@ -2198,7 +2198,7 @@
       M.updateTextFields();  
     };
     function editTransaction(id,object) {
-      document.getElementById("transaction_type_add").value=TransType[object.type];
+      document.getElementById("transaction_type_add").value=object.type;
       document.getElementById("transaction_account_add").value=object.account;
       document.getElementById("transaction_name_add").value=object.name;
       document.getElementById("transaction_amount_add").value=object.amount;
