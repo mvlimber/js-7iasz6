@@ -1149,10 +1149,7 @@
                 <span class="helper-text" data-error="4 to 10 digts or capital letters. Example 99DB517508">4 to 10 digts or capital letters. Example 99DB517508</span>
               </div>
               <div class="input-field col s12 m4">
-                <select id="meter_status" required aria-required="true">
-                    <option selected>Active</option>
-                    <option>Removed</option>
-                  </select>
+                <select id="meter_status" required aria-required="true"></select>
                 <label for="meter_status">Status<b><font color='red'>*</font></b></label>
               </div>
               <div id="meter_firstReadingPanel" class="input-field col s12 m4">
@@ -1599,6 +1596,7 @@
       };
       Object.keys(keyValuePairs).forEach(function(key){
         var newEl = document.createElement("option");
+        if (key == defaultKey) {newEll.setAttribute("selected", "");};
         newEl.setAttribute("value", key);
         newEl.innerHTML = keyValuePairs[key];
         el.insertAdjacentElement('beforeend', newEl);
@@ -1608,6 +1606,7 @@
     insertSelectOptions("property_type_edit", PropType, "type");
     insertSelectOptions("transaction_type_add", TransType, "type");
     insertSelectOptions("transactionRule_type", TransType, "type");
+    insertSelectOptions("meter_status", MeterStatus, "", "ACTIF");
     </script>
     <!--   Home scripts start here -->
     <script>
@@ -3578,7 +3577,7 @@
         selectedMeterId = "";
         document.getElementById("meter_type").value="";
         document.getElementById("meter_id").value="";
-        document.getElementById("meter_status").value="Active";
+        document.getElementById("meter_status").value="ACTIF";
         document.getElementById("meter_firstReading").value="";
         document.getElementById("meter_firstReadingPanel").setAttribute("class", "input-field col s12 m12 displayBlock");
         var elems = document.querySelectorAll('select');
