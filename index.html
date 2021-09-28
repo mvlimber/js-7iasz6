@@ -2510,7 +2510,7 @@
     const arr = rows.map(function (row) {
       const values = row.split(delimiter);
       var resultRow = {};
-      resultRow.type = "to be classified";
+      resultRow.type = "TBSET";
       resultRow.account = values[8];
       resultRow.name = values[9];
       resultRow.amount = values[5].replace(".","").replace(",",".");
