@@ -1135,12 +1135,7 @@
             <h5> Enter meter</h5>
             <form class="col s12">
               <div class="input-field col s12 m4">
-                <select id="meter_type" required aria-required="true">
-                    <option value="" disabled selected>Select the type</option>
-                    <option>Cold Water</option>
-                    <option>Hot Water</option>
-                    <option>Heating</option>
-                  </select>
+                <select id="meter_type" required aria-required="true"></select>
                 <label for="meter_type">Type<b><font color='red'>*</font></b></label>
               </div>
               <div class="input-field col s12 m4">
@@ -1585,7 +1580,7 @@
     };
 
     var MeterType = {
-      COlWA: 'cold water',
+      COLWA: 'cold water',
       HOTWA: 'hot water',
       HEATI: 'heating'
     };
@@ -1611,6 +1606,7 @@
     insertSelectOptions("property_type_edit", PropType, "type");
     insertSelectOptions("transaction_type_add", TransType, "type");
     insertSelectOptions("transactionRule_type", TransType, "type");
+    insertSelectOptions("meter_type", MeterType, "type");
     insertSelectOptions("meter_status", MeterStatus, "", "ACTIF");
     </script>
     <!--   Home scripts start here -->
@@ -3595,7 +3591,7 @@
         var meterData = meterFS.data();
         var objectsRow= document.createElement('tr');
         var cell = document.createElement('td');
-        var cellContent = document.createTextNode(meterData.type);
+        var cellContent = document.createTextNode(MeterType[meterData.type]);
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell); 
 
