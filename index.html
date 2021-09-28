@@ -1562,6 +1562,19 @@
       GARAG: 'garage'
     };
 
+    var TransTypeRead = {
+      MAINT : 'repair/maintenance',
+      RENOV: 'installation/renovation',
+      INSUR: 'insurance building',
+      SERVI: 'services',
+      EQUIP: 'small equipment',
+      ELECT: 'electricity',
+      WATER: 'water',
+      HEATI: 'heating',
+      PRIVA: 'private',
+      TBSET: 'to be set'
+    };
+
     var TransType = {
       MAINT : 'repair/maintenance',
       RENOV: 'installation/renovation',
@@ -1969,7 +1982,7 @@
           cellButtonIcon.setAttribute('class','material-icons right');
           cellButtonIcon.innerHTML="add";           
           cellContent.appendChild(cellButtonIcon);
-          cellContent.innerHTML = "<font color='blue'>" + TransType[object.type] + "</font>";
+          cellContent.innerHTML = "<font color='blue'>" + TransTypeRead[object.type] + "</font>";
           var cell = document.createElement('td');
           cell.appendChild(cellContent);
           objectsRow.appendChild(cell);   
@@ -2124,7 +2137,7 @@
     function setSelectedTransaction(id,object) {
       selectedTransactionId = id;
       transaction = object;
-      document.getElementById("transaction_type").value=TransType[object.type];
+      document.getElementById("transaction_type").value=TransTypeRead[object.type];
       document.getElementById("transaction_account").value=object.account;
       document.getElementById("transaction_name").value=object.name;
       document.getElementById("transaction_amount").value=Number(object.amount).toLocaleString("nl-BE", currencyStyle);
@@ -2607,7 +2620,7 @@
           cell.appendChild(cellContent);
           objectsRow.appendChild(cell); 
 
-          cellContent = document.createTextNode(TransType[object.type]);
+          cellContent = document.createTextNode(TransTypeRead[object.type]);
           cell = document.createElement('td');
           cell.appendChild(cellContent);
           objectsRow.appendChild(cell);
