@@ -1582,13 +1582,21 @@
       PRIVA: 'private'
     };
 
+    var MeterStatus = {
+      ACTIF: 'active',
+      PASSI: 'removed'
+    };
 
-    function insertSelectOptions (elBeforeID, keyValuePairs, defaultString) {
+
+    function insertSelectOptions (elBeforeID, keyValuePairs, defaultString, defaultKey) {
+      // either defaulString or defaultKey should be nul
       var el = document.getElementById(elBeforeID);
-      var defaultt = document.createElement("option");
-      defaultt.setAttribute("value", "");
-      defaultt.innerHTML = "Select " + defaultString;
-      el.insertAdjacentElement('beforeend', defaultt);
+      if (defaultString) {
+        var defaultt = document.createElement("option");
+        defaultt.setAttribute("value", "");
+        defaultt.innerHTML = "Select " + defaultString;
+        el.insertAdjacentElement('beforeend', defaultt);
+      };
       Object.keys(keyValuePairs).forEach(function(key){
         var newEl = document.createElement("option");
         newEl.setAttribute("value", key);
