@@ -1596,7 +1596,7 @@
       };
       Object.keys(keyValuePairs).forEach(function(key){
         var newEl = document.createElement("option");
-        if (key == defaultKey) {newEll.setAttribute("selected", "");};
+        if (key == defaultKey) {newEl.setAttribute("selected", "");};
         newEl.setAttribute("value", key);
         newEl.innerHTML = keyValuePairs[key];
         el.insertAdjacentElement('beforeend', newEl);
