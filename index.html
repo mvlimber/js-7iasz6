@@ -2147,10 +2147,10 @@
       if (object.type == "PRIVA") {
         console.log("PRIVA herkend");
         transaction.distribution = object.distribution;
-        document.getElementById("transaction_properties_frame").style.diplay = "block";
+        document.getElementById("transaction_properties_frame").style.display = "block";
         showTransactionDistribution();
       } else {console.log("PRIVA niet herkend");
-        document.getElementById("transaction_properties_frame").style.diplay = "none";
+        document.getElementById("transaction_properties_frame").style.display = "none";
       };
       if (checkBookDate(object.bookDate)){document.getElementById("transaction_edit_button").disabled = false}
       else {document.getElementById("transaction_edit_button").disabled = true};
