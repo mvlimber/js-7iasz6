@@ -2170,7 +2170,7 @@
       
         refCoproperty.collection("Properties").doc(dis.property).get().then(function(prFS){
           var objectsRow= document.createElement('tr');
-          var cellContent = propertyLink2(prFS.data());
+          var cellContent = propertyLink(prFS.data());
           var cell = document.createElement('td');
           cell.appendChild(cellContent);
           objectsRow.appendChild(cell);
@@ -2815,7 +2815,7 @@
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);  
 
-        if (propertyFS) {cellContent = propertyLink2(propertyFS.data());}
+        if (propertyFS) {cellContent = propertyLink(propertyFS.data());}
         else {
             /*cellContent = document.createElement();
             cellContent.innerHTML ="Common <br> Parts";*/
@@ -3292,7 +3292,7 @@
         addProperty: function(prop){propertiesArray.push(prop)},
       };
 
-      function propertyLink2(property) {
+      function propertyLink(property) {
         var elA = document.createElement('button');
         elA.setAttribute("data-target", "propertyView");
         elA.setAttribute('class','modal-trigger');
@@ -3304,7 +3304,7 @@
 
       function makePropertyLink(propertyId) {
         refCoproperty.collection("Properties").doc(propertyId).get().then(function(objectFS){
-          return propertyLink2(objectFS.data());
+          return propertyLink(objectFS.data());
         }).catch(function(error) {
           console.log("Error getting document:", error);
             return document.createTextNode("error");
@@ -3316,7 +3316,7 @@
 
       function loadProperty (object){
         var objectsRow= document.createElement('tr');
-        var cellContent = propertyLink2(object);
+        var cellContent = propertyLink(object);
         var cell = document.createElement('td');
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);
