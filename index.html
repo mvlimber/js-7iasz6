@@ -3986,10 +3986,12 @@
     </script>
     <!--   Settings scripts start here -->
     <script>
-      var settingsLoaded = false;
+      var costCentersLoaded = false;
+      var copropertyMetersLoaded = false;
+      
       var copropertyMetersTable = document.getElementById("coproperty_meters");
       
-      function refreshSettings() {
+      function refreshCopropertyMeters() {
         emptyHTMLSet(copropertyMetersTable);
         refCoproperty.collection("Meters").get().then( function (querySnapshot) {
           if (Boolean(querySnapshot)) {
@@ -3998,13 +4000,24 @@
         });  
 
       };
+
+      function refreshCostCenters() {
+        emptyHTMLSet(costCentersTable);
+        refCoproperty.collection("CostCenters").get().then( function (costCentersFS) {
+          querySnapshot.forEach(function(meterFS) {displayMeter(meterFS);});
+        });  
+      };
       
       function loadSettings() {
         hideMenu();
         document.getElementById("logo-container").innerHTML = "MyCondos: Settings";
-        if (!settingsLoaded) {
-          refreshSettings();
-          settingsLoaded = true;
+        if (!copropertyMetersLoaded) {
+          refreshCopropertyMeters();
+          copropertyMetersLoaded = true;
+        };
+        if (!costCentersLoaded) {
+          refreshCostCenters();
+          costCentersLoaded = true;
         };
       };
 
