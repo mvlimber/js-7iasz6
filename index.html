@@ -692,7 +692,7 @@
                 <select id="transactionRule_owner" >
                   <option value="" disabled selected>Select Owner</option>
                 </select>
-                <label for="transactionRule__owner">Then:Owner<b></label>
+                <label for="transactionRule__owner">Then:Owner</label>
               </div>
                 
               </form>
@@ -2145,11 +2145,10 @@
       document.getElementById("transaction_bookDate").value=object.bookDate;
       document.getElementById("transaction_communication").value=object.communication;
       if (object.type == "PRIVA") {
-        console.log("PRIVA herkend");
         transaction.distribution = object.distribution;
         document.getElementById("transaction_properties_frame").style.display = "block";
         showTransactionDistribution();
-      } else {console.log("PRIVA niet herkend");
+      } else {
         document.getElementById("transaction_properties_frame").style.display = "none";
       };
       if (checkBookDate(object.bookDate)){document.getElementById("transaction_edit_button").disabled = false}
@@ -2171,7 +2170,7 @@
       
         refCoproperty.collection("Properties").doc(dis.property).get().then(function(prFS){
           var objectsRow= document.createElement('tr');
-          var cellContent = propertyLink(prFS);
+          var cellContent = propertyLink2(prFS.data());
           var cell = document.createElement('td');
           cell.appendChild(cellContent);
           objectsRow.appendChild(cell);
@@ -2869,7 +2868,7 @@
           propertyFSArray.forEach(function(propertyFS){
             refCoproperty.collection("Properties").doc(propertyFS.id).collection("Meters").orderBy("type").get().then(function(meterFSArray){
               meterFSArray.forEach(function(meterFS){
-                if (meterFS.data().status.normalize() === "Active".normalize()) {loadMeterReading(propertyFS,meterFS);};
+                if (meterFS.data().status.normalize() === "ACTIF".normalize()) {loadMeterReading(propertyFS,meterFS);};
               });
             });
           });  
