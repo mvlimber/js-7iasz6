@@ -3284,6 +3284,12 @@
     </script>
     <!--   Properties scripts start here -->
     <script>
+      var properties = {
+        propertiesArray : [],
+        reset: function(){propertiesArray = [];},
+        addProperty: function(prop){propertiesArray.push(prop)},
+      };
+
       function propertyLink(propertyFS) {
         var elA = document.createElement('button');
         elA.setAttribute("data-target", "propertyView");
@@ -3291,6 +3297,16 @@
         elA.setAttribute('style','border:none;background-color:Transparent');
         elA.setAttribute('onclick','setSelectedProperty('+JSON.stringify(propertyFS.id)+','+JSON.stringify(propertyFS.data())+',"")');
         elA.innerHTML = "<font color='#0000FF'>"+propertyFS.data().code+"</font>";
+        return elA;
+      };
+
+      function propertyLink2(property) {
+        var elA = document.createElement('button');
+        elA.setAttribute("data-target", "propertyView");
+        elA.setAttribute('class','modal-trigger');
+        elA.setAttribute('style','border:none;background-color:Transparent');
+        elA.setAttribute('onclick','setSelectedProperty('+JSON.stringify(property.idFS)+','+JSON.stringify(property)+',"")');
+        elA.innerHTML = "<font color='#0000FF'>"+property.code+"</font>";
         return elA;
       };
 
@@ -3304,14 +3320,11 @@
           });
       };
 
-
-      var totalQuotas = 0;
       var propertiesTable = document.getElementById("propertiesTable");
 
-      function loadProperty (objectFS){
-        var object = objectFS.data();
+      function loadProperty (object){
         var objectsRow= document.createElement('tr');
-        var cellContent = propertyLink(objectFS);
+        var cellContent = propertyLink2(object);
         var cell = document.createElement('td');
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);
@@ -3347,12 +3360,14 @@
 
       function refreshProperties() {
         emptyHTMLSet(propertiesTable);
-        totalQuotas = 0;
+        properties.reset();
         refCoproperty.collection("Properties").orderBy("code").get().then(function(objectsFSArray){
           objectsFSArray.forEach(function(objectFS){
-            loadProperty(objectFS);
-          });
-          document.getElementById("totalQuotas").innerHTML = "Total Quotas = " + totalQuotas;  
+            var thisProp = objectFS.data();
+            thisProp.idFS = objectFS.id;
+            properties.addProperty(thisProp);
+            loadProperty(thisProp);
+          });  
         });    
       };
 
