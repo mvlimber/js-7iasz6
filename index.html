@@ -2815,7 +2815,7 @@
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);  
 
-        if (propertyFS) {cellContent = propertyLink(propertyFS);}
+        if (propertyFS) {cellContent = propertyLink2(propertyFS.data());}
         else {
             /*cellContent = document.createElement();
             cellContent.innerHTML ="Common <br> Parts";*/
@@ -3292,16 +3292,6 @@
         addProperty: function(prop){propertiesArray.push(prop)},
       };
 
-      function propertyLink(propertyFS) {
-        var elA = document.createElement('button');
-        elA.setAttribute("data-target", "propertyView");
-        elA.setAttribute('class','modal-trigger');
-        elA.setAttribute('style','border:none;background-color:Transparent');
-        elA.setAttribute('onclick','setSelectedProperty('+JSON.stringify(propertyFS.id)+','+JSON.stringify(propertyFS.data())+',"")');
-        elA.innerHTML = "<font color='#0000FF'>"+propertyFS.data().code+"</font>";
-        return elA;
-      };
-
       function propertyLink2(property) {
         var elA = document.createElement('button');
         elA.setAttribute("data-target", "propertyView");
@@ -3314,7 +3304,7 @@
 
       function makePropertyLink(propertyId) {
         refCoproperty.collection("Properties").doc(propertyId).get().then(function(objectFS){
-          return propertyLink(objectFS);
+          return propertyLink2(objectFS.data());
         }).catch(function(error) {
           console.log("Error getting document:", error);
             return document.createTextNode("error");
