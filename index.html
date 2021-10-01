@@ -2049,7 +2049,7 @@
       function writeTransaction() {
         if (validateTransactionAdd()) { 
           var entries =  getTransactionEntriesAdd();
-          if (entries.type == "PRIVAT") {entries.distribution = transaction.distribution;};
+          if (entries.type == "PRIVA") {entries.distribution = transaction.distribution;};
           if (selectedTransactionId) {
             refCoproperty.collection("Transactions").doc(selectedTransactionId).set(entries).then(function(docref) {
               refreshTransactions();
@@ -2111,7 +2111,7 @@
         M.toast({html:"Please enter valid communication"});
         valid=false;
       };
-      if (document.getElementById("transaction_type_add").value == "PRIVAT") {
+      if (document.getElementById("transaction_type_add").value == "PRIVA") {
         var amount = parseFloat(document.getElementById("transaction_amount_add").value);
         if (!(((amount >= distributedAmount) && ((amount - distributedAmount) < 0.05)) ||  ((amount <= distributedAmount) && ((distributedAmount - amount) < 0.05)))) {
           M.toast({html:"Transactaction amount too differnt from total assigned amounts: please correct"});
@@ -2144,11 +2144,12 @@
       document.getElementById("transaction_date").value=object.date;
       document.getElementById("transaction_bookDate").value=object.bookDate;
       document.getElementById("transaction_communication").value=object.communication;
-      if (object.type == "PRIVAT") {
+      if (object.type == "PRIVA") {
+        console.log("PRIVA herkend");
         transaction.distribution = object.distribution;
         document.getElementById("transaction_properties_frame").style.diplay = "block";
         showTransactionDistribution();
-      } else {
+      } else {console.log("PRIVA niet herkend");
         document.getElementById("transaction_properties_frame").style.diplay = "none";
       };
       if (checkBookDate(object.bookDate)){document.getElementById("transaction_edit_button").disabled = false}
@@ -2196,7 +2197,9 @@
             objectsRow.appendChild(cell);     
             htmlTable.appendChild(objectsRow);
           };
-         }); 
+         }).catch(function(error) {
+            M.toast({html:"System error loading property in distribution list: " + error});
+         });
       });     
     };
     
@@ -4026,7 +4029,7 @@
         else {trData.communication = trData.communication.substr(0,62);};
         trData.name=trData.name.substr(0,25);
         var amount = Number(trData.amount);
-        if (trData.type == "PRIVAT") {trData.amount = amount;}
+        if (trData.type == "PRIVA") {trData.amount = amount;}
         else {trData.amount = amount.toLocaleString("nl-BE",currencyStyle);};            
         return amount;
       };
@@ -4136,7 +4139,7 @@
         refCoproperty.collection("Transactions").where("bookDate", ">", lastCloseDate).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){
           transactionsFS.forEach(function(transactionFS){
             var trData = transactionFS.data();
-            if (trData.type == "PRIVAT") {
+            if (trData.type == "PRIVA") {
               buildingPrivate += reportTransaction(trData);
               dataPrivate.push(trData);
             } else if (trData.type == "Water") {
@@ -4674,8 +4677,6 @@
         });
       };
       
-      /* bekeken op */
-        
     </script>
 </body>
 
