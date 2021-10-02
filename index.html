@@ -3979,13 +3979,11 @@
       var costCenters = {
         costCentersArray : null,
         addCostCenter: function(cc){costCentersArray.push(cc)},
-        get:  function(){
+        get:  async function(){
           if (this.costCentersArray) {return this.costCentersArray}
           else {
-            return readCostCenters().then(function(ccs){
-              this.costCentersArray =  ccs;
-              return this.costCentersArray;
-              
+            wait this.costCentersArray =readCostCenters();
+            return this.costCentersArray;
             });
           };
         },
@@ -4022,12 +4020,13 @@
         var headerCol = document.createElement("th");
         headerCol.innerHTML = "Property";
         ccHeadEl.appendChild(headerCol);
-        var ccs = costCenters.get();
-        console.log("ccs is ",ccs);
-        ccs.forEach(function(cc){
-          headerCol = document.createElement("th");
-          headerCol.innerHTML = cc.name;
-          ccHeadEl.appendChild(headerCol);
+        costCenters.get().then(function (ccs)){
+          console.log("ccs is ",ccs);
+          ccs.forEach(function(cc){
+            headerCol = document.createElement("th");
+            headerCol.innerHTML = cc.name;
+            ccHeadEl.appendChild(headerCol);
+          };
         });
       };
       
