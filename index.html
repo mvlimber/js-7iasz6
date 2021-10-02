@@ -1322,6 +1322,13 @@
           </div>
         </div>
         <div id="Settings" class="col s12">
+          <h5>Cost Centers</h5>
+          <table class="striped">
+          <thead id="costCenters_tableHead">
+          </thead>
+          <tbody id="costCenters_tableBody">
+          </tbody>
+        </table>
           <h5>Meters common parts</h5>
           <table class="striped">
             <thead>
@@ -3972,13 +3979,14 @@
       var costCenters = {
         costCentersArray : null,
         addCostCenter: function(cc){costCentersArray.push(cc)},
-        get: function(cc){
+        get:  function(){
           if (this.costCentersArray) {return this.costCentersArray}
           else {
-            //costCentersArray = readCostCenters();
-            //return costCentersArray;
-            //return readCostCenters();
-            return "kilimanjaro";
+            return readCostCenters().then(function(ccs){
+              this.costCentersArray =  ccs;
+              return this.costCentersArray;
+              
+            });
           };
         },
         reset: function(){costCentersArray = null;},
@@ -3997,8 +4005,8 @@
 
       };
 
-      function readCostCenters(){
-        refCoproperty.collection("CostCenters").get().then( function (querySnapshot) {
+      async function readCostCenters(){
+        var querySnapshot = await refCoproperty.collection("CostCenters").get();
           var objects = [];
           querySnapshot.forEach(function(objectFS) {
             var thisObject = objectFS.data();
@@ -4006,13 +4014,21 @@
             objects.push(thisObject);
           });
           return objects;
-        });
-      };
-      
+      };      
       
       function refreshCostCenters() {
-        //emptyHTMLSet(costCentersTable);
-        console.log("costcenters zijn ", costCenters.get());
+        var ccHeadEl = document.getElementById("costCenters_tableHead");
+        emptyHTMLSet(ccHeadEl);
+        var headerCol = document.createElement("th");
+        headerCol.innerHTML = "Property";
+        ccHeadEl.appendChild(headerCol);
+        var ccs = costCenters.get();
+        console.log("ccs is ",ccs);
+        ccs.forEach(function(cc){
+          headerCol = document.createElement("th");
+          headerCol.innerHTML = cc.name;
+          ccHeadEl.appendChild(headerCol);
+        });
       };
       
       function loadSettings() {
