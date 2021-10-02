@@ -4009,7 +4009,7 @@
         if (costCenters) {return costCenters;}
         else {
           var querySnapshot = await refCoproperty.collection("CostCenters").get();
-          costcenters = [];
+          costCenters = [];
           querySnapshot.forEach(function(objectFS) {
             var thisObject = objectFS.data();
             thisObject.idFS = objectFS.id;
