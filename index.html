@@ -3975,20 +3975,21 @@
     </script>
     <!--   Settings scripts start here -->
     <script>
-      var costCentersLoaded = false;
+      
+      /*
       var costCenters = {
         costCentersArray : null,
         addCostCenter: function(cc){costCentersArray.push(cc)},
         get:  async function(){
-          if (this.costCentersArray) {return this.costCentersArray}
+          if (costCentersArray) {return costCentersArray}
           else {
-            wait this.costCentersArray =readCostCenters();
-            return this.costCentersArray;
+            wait costCentersArray =readCostCenters();
+            return costCentersArray;
             });
           };
         },
         reset: function(){costCentersArray = null;},
-      };
+      };*/
       
       var copropertyMetersLoaded = false;
       var copropertyMetersTable = document.getElementById("coproperty_meters");
@@ -4002,16 +4003,20 @@
         });  
 
       };
-
-      async function readCostCenters(){
-        var querySnapshot = await refCoproperty.collection("CostCenters").get();
-          var objects = [];
+      var costCentersLoaded = false;
+      var costCenters = null;
+      async function costCentersGet(){
+        if (costCenters) {return costCenters;}
+        else {
+          var querySnapshot = await refCoproperty.collection("CostCenters").get();
+          costcenters = [];
           querySnapshot.forEach(function(objectFS) {
             var thisObject = objectFS.data();
             thisObject.idFS = objectFS.id;
-            objects.push(thisObject);
+            costCenters.push(thisObject);
           });
-          return objects;
+          return costCenters;
+        };
       };      
       
       function refreshCostCenters() {
@@ -4020,13 +4025,13 @@
         var headerCol = document.createElement("th");
         headerCol.innerHTML = "Property";
         ccHeadEl.appendChild(headerCol);
-        costCenters.get().then(function (ccs)){
+        costCentersGet().then(function (ccs){
           console.log("ccs is ",ccs);
           ccs.forEach(function(cc){
             headerCol = document.createElement("th");
             headerCol.innerHTML = cc.name;
             ccHeadEl.appendChild(headerCol);
-          };
+          });
         });
       };
       
