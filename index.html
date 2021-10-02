@@ -3040,14 +3040,6 @@
         });
       };
       
-      function memberName(memberId){
-        var x;
-        refCoproperty.collection("Members").doc(memberId).get().then(function(memberFS){
-          x = memberFS.data().lastName+" "+memberFS.data().firstName;
-          return x;
-        });
-      };
-      
       function memberLink(memberFS) {
         var memberData = memberFS.data();
         var elA = document.createElement('button');
@@ -3300,16 +3292,6 @@
         elA.setAttribute('onclick','setSelectedProperty('+JSON.stringify(property.idFS)+','+JSON.stringify(property)+',"")');
         elA.innerHTML = "<font color='#0000FF'>"+property.code+"</font>";
         return elA;
-      };
-
-      function makePropertyLink(propertyId) {
-        refCoproperty.collection("Properties").doc(propertyId).get().then(function(objectFS){
-          return propertyLink(objectFS.data());
-        }).catch(function(error) {
-          console.log("Error getting document:", error);
-            return document.createTextNode("error");
-            
-          });
       };
 
       var propertiesTable = document.getElementById("propertiesTable");
@@ -3995,7 +3977,8 @@
           else {
             //costCentersArray = readCostCenters();
             //return costCentersArray;
-            return readCostCenters();
+            //return readCostCenters();
+            return "kilimanjaro";
           };
         },
         reset: function(){costCentersArray = null;},
@@ -4024,7 +4007,7 @@
           });
           return objects;
         });
-       };
+      };
       
       
       function refreshCostCenters() {
