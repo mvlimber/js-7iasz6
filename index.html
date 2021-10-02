@@ -3991,10 +3991,11 @@
         costCentersArray : null,
         addCostCenter: function(cc){costCentersArray.push(cc)},
         get: function(cc){
-          if (costCentersArray) {return costCentersArray}
+          if (this.costCentersArray) {return this.costCentersArray}
           else {
-            costCentersArray = readCostCenters();
-            return costCentersArray;
+            //costCentersArray = readCostCenters();
+            //return costCentersArray;
+            return readCostCenters();
           };
         },
         reset: function(){costCentersArray = null;},
@@ -4028,7 +4029,7 @@
       
       function refreshCostCenters() {
         //emptyHTMLSet(costCentersTable);
-        
+        console.log("costcenters zijn ", costCenters.get());
       };
       
       function loadSettings() {
