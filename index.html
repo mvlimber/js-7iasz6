@@ -4208,12 +4208,12 @@
                 row.appendChild(cell);
                 if (currentUser.role == roleAdministrator) {
                   cell = document.createElement("th");
-                  cellContent = document.createTextNode("");
-                  /*var cellContent = document.createElement('button');
-                  cellContent.setAttribute("data-target", "costCenterNameEdit");
+                  cellContent = document.createElement('button');
+                  cellContent.setAttribute("style", "float:left");
+                  cellContent.setAttribute("data-target", "costCenterQuotaEdit");
                   cellContent.setAttribute('class','btn-small waves-light modal-trigger');
-                  cellContent.setAttribute('onclick','costCenterNameEditPrepare('+JSON.stringify(cc.idFS)+')');
-                  cellContent.innerHTML = "Edit";*/
+                  cellContent.setAttribute('onclick','costCenterQuotaEditPrepare('+JSON.stringify(cc.idFS)+','+JSON.stringify(p.idFS)+','+JSON.stringify(cc.distribution[p.idFS].quota)+')');
+                  cellContent.innerHTML = "Edit";
                   cell.appendChild(cellContent);
                   row.appendChild(cell);
                 };
