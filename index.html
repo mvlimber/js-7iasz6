@@ -1361,6 +1361,8 @@
               class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
           </div>
           </div>
+          <div id="costCenterNameEdit" class="modal">
+          </div>
         </div>
       </div>
     </main>
@@ -4088,6 +4090,7 @@
               cellContent.setAttribute('onclick','costCenterNameEditPrepare('+JSON.stringify(cc.idFS)+')');
               cellContent.innerHTML = "Edit";
               headerCol.appendChild(cellContent);
+              ccHeadEl.appendChild(headerCol);
             };
           });
           var ccBodyEl = document.getElementById("costCenters_tableBody");
@@ -4109,14 +4112,15 @@
                 };
                 row.appendChild(cell);
                 if (currentUser.role == roleAdministrator) {
-                  headerCol = document.createElement("th");
-                  var cellContent = document.createTextNode("");
+                  cell = document.createElement("th");
+                  cellContent = document.createTextNode("");
                   /*var cellContent = document.createElement('button');
                   cellContent.setAttribute("data-target", "costCenterNameEdit");
                   cellContent.setAttribute('class','btn-small waves-light modal-trigger');
                   cellContent.setAttribute('onclick','costCenterNameEditPrepare('+JSON.stringify(cc.idFS)+')');
                   cellContent.innerHTML = "Edit";*/
-                  headerCol.appendChild(cellContent);
+                  cell.appendChild(cellContent);
+                  row.appendChild(cell);
                 };
               });
 
@@ -4130,6 +4134,12 @@
               var cell = document.createElement("td");
               cell.innerHTML = totals[cc.name];
               totalsRow.appendChild(cell);
+              if (currentUser.role == roleAdministrator) {
+                  cell = document.createElement("th");
+                  cellContent = document.createTextNode("");
+                  cell.appendChild(cellContent);
+                  totalsRow.appendChild(cell);
+              };
             });
             ccBodyEl.appendChild(totalsRow);
           });
