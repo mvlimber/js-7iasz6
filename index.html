@@ -4130,7 +4130,7 @@
       function costCenterQuotaSelect(ccId, pId, quota){
         selectedCostCenterId = ccId;
         selectedCCPropertyId = pId;
-        if (quota== null) {quota = 0};
+        if (quota == null) {quota = 0};
         document.getElementById("costCenter_quota_edit").value = quota ;
         M.updateTextFields();
       };
@@ -4213,9 +4213,7 @@
                   cellContent.setAttribute("style", "float:left");
                   cellContent.setAttribute("data-target", "costCenterQuotaEdit");
                   cellContent.setAttribute('class','btn-small waves-light modal-trigger');
-                  var d = cc.distribution[p.idFS];
-                  if (!d) {quota = 0}
-                  else {quota = d.quota};
+                  if (!quota) {quota = 0};
                   cellContent.setAttribute('onclick','costCenterQuotaSelect('+JSON.stringify(cc.idFS)+','+JSON.stringify(p.idFS)+','+JSON.stringify(quota)+')');
                   cellContent.innerHTML = "Edit";
                   cell.appendChild(cellContent);
