@@ -4051,6 +4051,15 @@
               var cell = document.createElement("td");
               cell.innerHTML = p.code;
               row.appendChild(cell);
+
+              ccs.forEach(function(cc){
+                cell = document.createElement("td");
+                var quota = cc.distribution[p.idFS];
+                if (quota) {cell.innerHTML = quota;}
+                else {cell.innerHTML = "";};
+                row.appendChild(cell);
+              });
+
               ccBodyEl.appendChild(row);
             });
           });
