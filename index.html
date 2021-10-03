@@ -1378,6 +1378,23 @@
             class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
           </div>
           </div>
+          <div id="costCenterQuotaEdit" class="modal">
+          <div class="modal-content">
+          <a style="float: right"
+            class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+          <h5> Enter quota</h5>
+          <form class="col s12">
+            <div class="input-field col s6 m6">
+            <input id="costCenter_quota_edit" type="number" class="validate" min="0" max="999" required aria-required="true">
+            <label for="costCenter_quota_edit">Quota<b><font color='red'>*</font></b></label>
+            <span class="helper-text" data-error="A number of max 3 digits. Example: 22">A number of max 3 digits. Example: 22</span>
+            </div>
+          </form>
+          <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="costCenterQuotaEditPrepare()">Save<i class="material-icons right">send</i></button>
+          <a style="float: right;margin-bottom: 3px"
+            class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+          </div>
+          </div>
         </div>
       </div>
     </main>
@@ -4100,6 +4117,8 @@
           M.toast({html:"Please enter new name"});
         };
       };
+
+      function costCenterQuotaEditPrepare(){};
 
       var selectedCostCenterId = null;
       function costCenterSelect(idFS, name){
