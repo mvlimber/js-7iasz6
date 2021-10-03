@@ -3362,7 +3362,7 @@
       async function propertiesGet(){
         if (properties) {return properties;}
         else {
-          var querySnapshot = await refCoproperty.collection("Properties").get();
+          var querySnapshot = await refCoproperty.collection("Properties").orderBy("code").get();
           properties = [];
           querySnapshot.forEach(function(objectFS) {
             var thisObject = objectFS.data();
