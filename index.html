@@ -1328,7 +1328,8 @@
           </thead>
           <tbody id="costCenters_tableBody">
           </tbody>
-        </table>
+          </table>
+          <br><br><br>
           <h5>Meters common parts</h5>
           <table class="striped">
             <thead>
@@ -4050,7 +4051,8 @@
             ps.forEach(function(p){
               var row = document.createElement("tr");
               var cell = document.createElement("td");
-              cell.innerHTML = p.code;
+              var cellContent = propertyLink(p);
+              cell.appendChild(cellContent);
               row.appendChild(cell);
 
               ccs.forEach(function(cc){
@@ -4059,12 +4061,22 @@
                 if (quota) {
                   cell.innerHTML = quota;
                   totals[cc.name] += quota;
+                };
                 row.appendChild(cell);
               });
 
               ccBodyEl.appendChild(row);
             });
-            
+            var totalsRow = document.createElement("tr");
+            var cell = document.createElement("td");
+            cell.innerHTML = "<b>Total quotas</b>";
+            totalsRow.appendChild(cell);
+            ccs.forEach(function(cc){
+              var cell = document.createElement("td");
+              cell.innerHTML = totals[cc.name];
+              totalsRow.appendChild(cell);
+            });
+            ccBodyEl.appendChild(totalsRow);
           });
         });
       };
