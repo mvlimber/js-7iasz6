@@ -4056,12 +4056,16 @@
           distribution: {},
         };
         refCoproperty.collection("CostCenters").add(cc).then(function(newCC) {
-          coscenters=null;
+          costCenters=null;
           refreshCostCenters();
         });
       };
 
-      function costCenterAddPrepare(){};
+      function costCenterAddPrepare(){
+        costCenterAdd(document.getElementById("costCenter_name").value).then(function(cc) {
+          M.Modal.getInstance(document.getElementById("costCenterAdd")).close();
+        });
+      };
       
       function refreshCostCenters() {
         var ccHeadEl = document.getElementById("costCenters_tableHead");
