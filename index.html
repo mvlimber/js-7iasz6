@@ -4084,11 +4084,15 @@
       };
 
       function costCenterAddPrepare(){
-        costCenterAdd(document.getElementById("costCenter_name_add").value).then(function(cc) {
-          costCenters=null;
-          refreshCostCenters();
-          M.Modal.getInstance(document.getElementById("costCenterAdd")).close();
-        });
+        if (document.getElementById("costCenter_name_add").checkValidity()) {
+          costCenterAdd(document.getElementById("costCenter_name_add").value).then(function(cc) {
+            costCenters=null;
+            refreshCostCenters();
+            M.Modal.getInstance(document.getElementById("costCenterAdd")).close();
+          })
+        }  else {
+          M.toast({html:"Please enter new name"});
+        };
       };
 
       var selectedCostCenterId = null;
