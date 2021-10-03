@@ -1351,17 +1351,32 @@
             <h5> New Cost Center</h5>
             <form class="col s12">
               <div class="input-field col s6 m6">
-                <input id="costCenter_name" type="text" class="validate" required aria-required="true">
-                <label for="costCenter_name">Name<b><font color='red'>*</font></b></label>
+                <input id="costCenter_name_add" type="text" class="validate" required aria-required="true">
+                <label for="costCenter_name_add">Name<b><font color='red'>*</font></b></label>
                 <span class="helper-text" data-error="Required field"></span>
               </div>
             </form>
             <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="costCenterAddPrepare()">Save<i class="material-icons right">send</i></button>
             <a style="float: right;margin-bottom: 3px"
               class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
-          </div>
+            </div>
           </div>
           <div id="costCenterNameEdit" class="modal">
+          <div class="modal-content">
+          <a style="float: right"
+            class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+          <h5> Enter name cost center</h5>
+          <form class="col s12">
+            <div class="input-field col s6 m6">
+              <input id="costCenter_name_edit" type="text" class="validate" required aria-required="true">
+              <label for="costCenter_name_edit">Name<b><font color='red'>*</font></b></label>
+              <span class="helper-text" data-error="Required field"></span>
+            </div>
+          </form>
+          <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="costCenterNameEditPrepare()">Save<i class="material-icons right">send</i></button>
+          <a style="float: right;margin-bottom: 3px"
+            class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+          </div>
           </div>
         </div>
       </div>
@@ -4063,11 +4078,33 @@
         });
       };
 
-      function costCenterAddPrepare(){
-        costCenterAdd(document.getElementById("costCenter_name").value).then(function(cc) {
-          M.Modal.getInstance(document.getElementById("costCenterAdd")).close();
+      async function costCenterEditName(id, newName){
+        refCoproperty.collection("CostCenters").doc(id).update({name: newName}).then(function(newCC) {  
         });
       };
+
+      function costCenterAddPrepare(){
+        costCenterAdd(document.getElementById("costCenter_name_add").value).then(function(cc) {
+        costCenters=null;
+        refreshCostCenters();
+        M.Modal.getInstance(document.getElementById("costCenterAdd")).close();
+        });
+      };
+
+      var selectedCostCenterId = null;
+      function costCenterSelect(idFS, name){
+        selectedCostCenterId = idFS;
+        document.getElementById("costCenter_name_edit").value = name };
+      };
+
+      function costCenterNameEditPrepare(){
+        costCenterEditName(selectedCostCenterId, document.getElementById("costCenter_name_edit").value).then(function(cc) {
+        selectedCostCenterId = null;
+        costCenters = null;
+        refreshCostCenters();
+        M.Modal.getInstance(document.getElementById("costCenterNameEdit")).close();
+        });
+      }; 
       
       function refreshCostCenters() {
         var ccHeadEl = document.getElementById("costCenters_tableHead");
@@ -4087,7 +4124,7 @@
               var cellContent = document.createElement('button');
               cellContent.setAttribute("data-target", "costCenterNameEdit");
               cellContent.setAttribute('class','btn-small waves-light modal-trigger');
-              cellContent.setAttribute('onclick','costCenterNameEditPrepare('+JSON.stringify(cc.idFS)+')');
+              cellContent.setAttribute('onclick','costCenterSelect('+JSON.stringify(cc.idFS)+','+JSON.stringify(cc.name)+')');
               cellContent.innerHTML = "Edit";
               headerCol.appendChild(cellContent);
               ccHeadEl.appendChild(headerCol);
@@ -4145,9 +4182,8 @@
           });
         });
       };
-      var selectedCostCenterId = null;
-      function costCenterNameEditPrepare(idFS){selectedCostCenterId = idFS; };
-      
+    
+     
       function loadSettings() {
         hideMenu();
         document.getElementById("logo-container").innerHTML = "MyCondos: Settings";
