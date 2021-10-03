@@ -535,7 +535,11 @@
                     <input id="transaction_type" type="text" readonly>
                     <label for="transaction_type">type</label>
                   </div>
-                  <div class="input-field col s12 m8">
+                  <div class="input-field col s12 m4">
+                    <input id="transaction_costCenter" type="text" readonly>
+                    <label for="transaction_type">cost center</label>
+                  </div>
+                  <div class="input-field col s12 m4">
                     <input id="transaction_name" type="text" readonly>
                     <label for="transaction_name">Counterparty</label>
                   </div>
@@ -2228,9 +2232,7 @@
       var elems = document.querySelectorAll('select');
       M.FormSelect.init(elems);
       M.updateTextFields();
-    };
-    
-
+    };    
 
     function showTransactionDistribution(){
       var htmlTable = document.getElementById("transaction_distribution_table");
