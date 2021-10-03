@@ -4101,8 +4101,9 @@
       };
 
       async function costCenterQuotaEdit(ccId, pId, newQuota){
-        var s = "distribution."+pId;
-        refCoproperty.collection("CostCenters").doc(ccId).update({s: newName}).then(function(newCC) {  
+        var update = {};
+        update["distribution."+pId] = newQuota;
+        refCoproperty.collection("CostCenters").doc(ccId).update(update).then(function() {  
         });
       };
 
@@ -4136,7 +4137,7 @@
 
       function costCenterNameEditPrepare(){
         if (document.getElementById("costCenter_name_edit").checkValidity()) {
-          costCenterNameEdit(selectedCostCenterId, document.getElementById("costCenter_name_edit").value).then(function(cc) {
+          costCenterNameEdit(selectedCostCenterId, document.getElementById("costCenter_name_edit").value).then(function() {
             selectedCostCenterId = null;
             costCenters = null;
             refreshCostCenters();
@@ -4149,8 +4150,8 @@
 
       function costCenterQuotaEditPrepare(){
         if (document.getElementById("costCenter_quota_edit").checkValidity()) {
-          costCenterQuotaEdit(selectedCostCenterId, selectedCCPropertyid, document.getElementById("costCenter_quota_edit").value).then(function(cc) {
-            selectedCostCenterId = null; selectedCCPropertyid = null;
+          costCenterQuotaEdit(selectedCostCenterId, selectedCCPropertyId, document.getElementById("costCenter_quota_edit").value).then(function() {
+            selectedCostCenterId = null; selectedCCPropertyId = null;
             costCenters = null;
             refreshCostCenters();
             M.Modal.getInstance(document.getElementById("costCenterQuotaEdit")).close();
@@ -4215,7 +4216,7 @@
                   var d = cc.distribution[p.idFS];
                   if (!d) {quota = 0}
                   else {quota = d.quota};
-                  cellContent.setAttribute('onclick','costCenterQuotaEditPrepare('+JSON.stringify(cc.idFS)+','+JSON.stringify(p.idFS)+','+JSON.stringify(quota)+')');
+                  cellContent.setAttribute('onclick','costCenterQuotaSelect('+JSON.stringify(cc.idFS)+','+JSON.stringify(p.idFS)+','+JSON.stringify(quota)+')');
                   cellContent.innerHTML = "Edit";
                   cell.appendChild(cellContent);
                   row.appendChild(cell);
