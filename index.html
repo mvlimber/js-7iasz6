@@ -2175,9 +2175,9 @@
       var total = 0;
       transaction.distribution.forEach(function(dis){
       
-        refCoproperty.collection("Properties").doc(dis.property).get().then(function(prFS){
+        propertyGet(dis.property).then(function(p){
           var objectsRow= document.createElement('tr');
-          var cellContent = propertyLink(prFS.data());
+          var cellContent = propertyLink(p);
           var cell = document.createElement('td');
           cell.appendChild(cellContent);
           objectsRow.appendChild(cell);
@@ -3318,6 +3318,11 @@
           return properties;
         };
       }; 
+      async function propertyGet(idFS){
+        function checkId(p){return p.idFS == idFS};
+        await propertiesGet();
+        return properties.find(checkId);
+      };
       
       var propertiesTable = document.getElementById("propertiesTable");
 
