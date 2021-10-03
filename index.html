@@ -4037,11 +4037,12 @@
         headerCol.innerHTML = "Property";
         ccHeadEl.appendChild(headerCol);
         costCentersGet().then(function (ccs){
-          console.log("ccs is ",ccs);
-          ccs.forEach(function(cc){
+            var totals = [];
+            ccs.forEach(function(cc){
             headerCol = document.createElement("th");
             headerCol.innerHTML = cc.name;
             ccHeadEl.appendChild(headerCol);
+            totals[cc.name]=0;
           });
           var ccBodyEl = document.getElementById("costCenters_tableBody");
           emptyHTMLSet(ccBodyEl);
@@ -4055,13 +4056,15 @@
               ccs.forEach(function(cc){
                 cell = document.createElement("td");
                 var quota = cc.distribution[p.idFS];
-                if (quota) {cell.innerHTML = quota;}
-                else {cell.innerHTML = "";};
+                if (quota) {
+                  cell.innerHTML = quota;
+                  totals[cc.name] += quota;
                 row.appendChild(cell);
               });
 
               ccBodyEl.appendChild(row);
             });
+            
           });
         });
       };
