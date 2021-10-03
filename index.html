@@ -4125,12 +4125,14 @@
             var totals = [];
             ccs.forEach(function(cc){
             headerCol = document.createElement("th");
+            headerCol.setAttribute("style","text-align: right");
             headerCol.innerHTML = cc.name;
             ccHeadEl.appendChild(headerCol);
             totals[cc.name]=0;
             if (currentUser.role == roleAdministrator) {
               headerCol = document.createElement("th");
               var cellContent = document.createElement('button');
+              cellContent.setAttribute("style", "float:left");
               cellContent.setAttribute("data-target", "costCenterNameEdit");
               cellContent.setAttribute('class','btn-small waves-light modal-trigger');
               cellContent.setAttribute('onclick','costCenterSelect('+JSON.stringify(cc.idFS)+','+JSON.stringify(cc.name)+')');
@@ -4151,6 +4153,7 @@
 
               ccs.forEach(function(cc){
                 cell = document.createElement("td");
+                cell.setAttribute("style","text-align: right");
                 var quota = cc.distribution[p.idFS];
                 if (quota) {
                   cell.innerHTML = quota;
@@ -4178,6 +4181,7 @@
             totalsRow.appendChild(cell);
             ccs.forEach(function(cc){
               var cell = document.createElement("td");
+              cell.setAttribute("style","text-align: right");
               cell.innerHTML = totals[cc.name];
               totalsRow.appendChild(cell);
               if (currentUser.role == roleAdministrator) {
