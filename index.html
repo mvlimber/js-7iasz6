@@ -4118,12 +4118,19 @@
         };
       };
 
-      function costCenterQuotaEditPrepare(){};
-
+      
       var selectedCostCenterId = null;
-      function costCenterSelect(idFS, name){
-        selectedCostCenterId = idFS;
+      function costCenterSelect(id, name){
+        selectedCostCenterId = id;
         document.getElementById("costCenter_name_edit").value = name ;
+        M.updateTextFields();
+      };
+      var selectedCCPropertyId = null;
+      function costCenterQuotaSelect(ccId, pId, quota){
+        selectedCostCenterId = ccId;
+        selectedCCPropertyId = pId;
+        if (quota== null) {quota = 0};
+        document.getElementById("costCenter_quota_edit").value = quota ;
         M.updateTextFields();
       };
 
@@ -4139,6 +4146,20 @@
           M.toast({html:"Please enter new name"});
         };
       }; 
+
+      function costCenterQuotaEditPrepare(){
+        if (document.getElementById("costCenter_quota_edit").checkValidity()) {
+          costCenterQuotaEdit(selectedCostCenterId, selectedCCPropertyid, document.getElementById("costCenter_quota_edit").value).then(function(cc) {
+            selectedCostCenterId = null; selectedCCPropertyid = null;
+            costCenters = null;
+            refreshCostCenters();
+            M.Modal.getInstance(document.getElementById("costCenterQuotaEdit")).close();
+          })
+        } else {
+          M.toast({html:"Please enter valid quota"});
+        };
+      };
+
       
       function refreshCostCenters() {
         var ccHeadEl = document.getElementById("costCenters_tableHead");
