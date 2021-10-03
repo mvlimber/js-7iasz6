@@ -4043,6 +4043,17 @@
             headerCol.innerHTML = cc.name;
             ccHeadEl.appendChild(headerCol);
           });
+          var ccBodyEl = document.getElementById("costCenters_tableBody");
+          emptyHTMLSet(ccBodyEl);
+          propertiesGet().then(function(ps){
+            ps.forEach(function(p){
+              var row = document.createElement("tr");
+              var cell = document.createElement("td");
+              cell.innerHTML = p.code;
+              row.appendChild(cell);
+              ccBodyEl.appendChild(row);
+            });
+          });
         });
       };
       
