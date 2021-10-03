@@ -4052,14 +4052,16 @@
 
       async function costCenterAdd(ccName){
         var cc = {
-          name: ccName;
-          distribution: {};
+          name: ccName,
+          distribution: {},
         };
         refCoproperty.collection("CostCenters").add(cc).then(function(newCC) {
           coscenters=null;
           refreshCostCenters();
         });
       };
+
+      function costCenterAddPrepare(){};
       
       function refreshCostCenters() {
         var ccHeadEl = document.getElementById("costCenters_tableHead");
