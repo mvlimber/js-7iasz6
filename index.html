@@ -4213,7 +4213,7 @@
                   cellContent.setAttribute("data-target", "costCenterQuotaEdit");
                   cellContent.setAttribute('class','btn-small waves-light modal-trigger');
                   var d = cc.distribution[p.idFS];
-                  if (!q) {quota = 0}
+                  if (!d) {quota = 0}
                   else {quota = d.quota};
                   cellContent.setAttribute('onclick','costCenterQuotaEditPrepare('+JSON.stringify(cc.idFS)+','+JSON.stringify(p.idFS)+','+JSON.stringify(quota)+')');
                   cellContent.innerHTML = "Edit";
