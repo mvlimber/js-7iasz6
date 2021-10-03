@@ -1329,6 +1329,8 @@
           <tbody id="costCenters_tableBody">
           </tbody>
           </table>
+          <br>
+          <button style="float: right;margin-bottom: 3px" class="btn-small waves-light modal-trigger" data-target="costCenterAdd" ">New Cost Center<i class="material-icons right">add</i></button>
           <br><br><br>
           <h5>Meters common parts</h5>
           <table class="striped">
@@ -1342,6 +1344,23 @@
           </table>
           <br>
           <button style="float: right;margin-bottom: 3px" class="btn-small waves-light modal-trigger" data-target="meterWrite" onclick="addCopropertyMeter()">Add Meter<i class="material-icons right">add</i></button>
+          <div id="costCenterAdd" class="modal">
+            <div class="modal-content">
+            <a style="float: right"
+              class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+            <h5> New Cost Center</h5>
+            <form class="col s12">
+              <div class="input-field col s6 m6">
+                <input id="costCenter_name" type="text" class="validate" required aria-required="true">
+                <label for="costCenter_name">Name<b><font color='red'>*</font></b></label>
+                <span class="helper-text" data-error="Max 4 capitals or numbers. Example: A1">Max 4 capitals or numbers. Example: A1</span>
+              </div>
+            </form>
+            <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="costCenterAddPrepare()">Save<i class="material-icons right">send</i></button>
+            <a style="float: right;margin-bottom: 3px"
+              class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+          </div>
+          </div>
         </div>
       </div>
     </main>
