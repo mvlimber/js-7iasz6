@@ -4150,7 +4150,7 @@
 
       function costCenterQuotaEditPrepare(){
         if (document.getElementById("costCenter_quota_edit").checkValidity()) {
-          costCenterQuotaEdit(selectedCostCenterId, selectedCCPropertyId, document.getElementById("costCenter_quota_edit").value).then(function() {
+          costCenterQuotaEdit(selectedCostCenterId, selectedCCPropertyId, Number(document.getElementById("costCenter_quota_edit").value)).then(function() {
             selectedCostCenterId = null; selectedCCPropertyId = null;
             costCenters = null;
             refreshCostCenters();
