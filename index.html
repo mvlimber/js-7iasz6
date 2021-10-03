@@ -2279,6 +2279,7 @@
       selectedTransactionId = null;
       transaction = new TransactionObject();
       document.getElementById("transaction_type_add").value="";
+      document.getElementById("transaction_costCenter_add").value="";
       document.getElementById("transaction_account_add").value="";
       document.getElementById("transaction_name_add").value="";
       document.getElementById("transaction_amount_add").value="";
@@ -2294,7 +2295,10 @@
     };
     function editTransaction(id,object) {
       document.getElementById("transaction_type_add").value=object.type;
-      listCostCenters(document.getElementById("transaction_costCenter_add"), object.costCenter);
+      var selectedCC;
+      if (object) {selectedCC = object.costCenter}
+      else {selectedCC = ""};
+      listCostCenters(document.getElementById("transaction_costCenter_add"), selectedCC);
       document.getElementById("transaction_account_add").value=object.account;
       document.getElementById("transaction_name_add").value=object.name;
       document.getElementById("transaction_amount_add").value=object.amount;
