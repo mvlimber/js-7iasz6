@@ -4079,7 +4079,13 @@
       };
 
       async function costCenterNameEdit(id, newName){
-        refCoproperty.collection("CostCenters").doc(id).update({name: newName}).then(function(newCC) {  
+        refCoproperty.collection("CostCenters").doc(id).update({"name": newName}).then(function(newCC) {  
+        });
+      };
+
+      async function costCenterQuotaEdit(ccId, pId, newQuota){
+        var s = "distribution."+pId;
+        refCoproperty.collection("CostCenters").doc(ccId).update({s: newName}).then(function(newCC) {  
         });
       };
 
