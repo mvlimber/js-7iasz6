@@ -3285,22 +3285,22 @@
     </script>
     <!--   Properties scripts start here -->
     <script>
-      var properties = {
-        propertiesArray : [],
-        reset: function(){propertiesArray = [];},
-        addProperty: function(prop){propertiesArray.push(prop)},
-      };
-
-      function propertyLink(property) {
-        var elA = document.createElement('button');
-        elA.setAttribute("data-target", "propertyView");
-        elA.setAttribute('class','modal-trigger');
-        elA.setAttribute('style','border:none;background-color:Transparent');
-        elA.setAttribute('onclick','setSelectedProperty('+JSON.stringify(property.idFS)+','+JSON.stringify(property)+',"")');
-        elA.innerHTML = "<font color='#0000FF'>"+property.code+"</font>";
-        return elA;
-      };
-
+      var propertiesLoaded = false;
+      var properties = null;
+      async function propertiesGet(){
+        if (properties) {return properties;}
+        else {
+          var querySnapshot = await refCoproperty.collection("Properties").get();
+          properties = [];
+          querySnapshot.forEach(function(objectFS) {
+            var thisObject = objectFS.data();
+            thisObject.idFS = objectFS.id;
+            properties.push(thisObject);
+          });
+          return properties;
+        };
+      }; 
+      
       var propertiesTable = document.getElementById("propertiesTable");
 
       function loadProperty (object){
@@ -3341,15 +3341,9 @@
 
       function refreshProperties() {
         emptyHTMLSet(propertiesTable);
-        properties.reset();
-        refCoproperty.collection("Properties").orderBy("code").get().then(function(objectsFSArray){
-          objectsFSArray.forEach(function(objectFS){
-            var thisProp = objectFS.data();
-            thisProp.idFS = objectFS.id;
-            properties.addProperty(thisProp);
-            loadProperty(thisProp);
-          });  
-        });    
+        propertiesGet().then(function(ps){
+          ccs.forEach(function(p){loadProperty(p);});
+        });
       };
 
       var propertiesLoaded = false;
@@ -3360,6 +3354,16 @@
           refreshProperties();
           propertiesLoaded = true;
         };
+      };
+
+      function propertyLink(property) {
+        var elA = document.createElement('button');
+        elA.setAttribute("data-target", "propertyView");
+        elA.setAttribute('class','modal-trigger');
+        elA.setAttribute('style','border:none;background-color:Transparent');
+        elA.setAttribute('onclick','setSelectedProperty('+JSON.stringify(property.idFS)+','+JSON.stringify(property)+',"")');
+        elA.innerHTML = "<font color='#0000FF'>"+property.code+"</font>";
+        return elA;
       };
 
       function addProperty(){
@@ -3975,22 +3979,6 @@
     </script>
     <!--   Settings scripts start here -->
     <script>
-      
-      /*
-      var costCenters = {
-        costCentersArray : null,
-        addCostCenter: function(cc){costCentersArray.push(cc)},
-        get:  async function(){
-          if (costCentersArray) {return costCentersArray}
-          else {
-            wait costCentersArray =readCostCenters();
-            return costCentersArray;
-            });
-          };
-        },
-        reset: function(){costCentersArray = null;},
-      };*/
-      
       var copropertyMetersLoaded = false;
       var copropertyMetersTable = document.getElementById("coproperty_meters");
       
