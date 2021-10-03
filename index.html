@@ -4084,6 +4084,32 @@
         };
       };   
 
+      function listCostCenters(el, selectedOption) {
+        var option;
+        emptyHTMLSet(el);
+        if (!Boolean(selectedOption)) {
+          option = document.createElement("option");
+          option.setAttribute("value","");
+          option.setAttribute("disabled",true);
+          option.setAttribute("selected",true);
+          option.innerHTML = "Select Cost Center";
+          el.appendChild(option);
+        };
+        costCentersGet().then(function(querySnapshot) {
+          querySnapshot.forEach(function(cc) {
+              option = document.createElement("option");
+              option.setAttribute("value",cc.idFS);
+              if (cc.idFS == selectedOption) {option.setAttribute("selected",true);};
+              option.innerHTML = cc.name;
+              el.appendChild(option);
+            });
+          var elems = document.querySelectorAll('select');
+          M.FormSelect.init(elems);
+        });
+        
+      };
+      
+      
       async function costCenterAdd(ccName){
         var cc = {
           name: ccName,
