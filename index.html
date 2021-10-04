@@ -2771,7 +2771,7 @@
       function setSelectedTransactionRule(id,object) {
         selectedTransactionRuleId = id;
         document.getElementById("transactionRule_type").value=object.type;
-        listCostCenters(getElementById("transactionRule_costCenter"),object.costCenter)
+        listCostCenters(document.getElementById("transactionRule_costCenter"),object.costCenter)
         document.getElementById("transactionRule_account").value=object.account;
         document.getElementById("transactionRule_name").value=object.name;
         document.getElementById("transactionRule_communication").value=object.communication;
