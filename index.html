@@ -2198,7 +2198,7 @@
     function getTransactionEntriesAdd() {
       return {
         type: document.getElementById("transaction_type_add").value,
-        costCenter:document.getElementById("transaction_type_add").value,
+        costCenter:document.getElementById("transaction_costCenter_add").value,
         account: document.getElementById("transaction_account_add").value,
         name: document.getElementById("transaction_name_add").value,
         amount: document.getElementById("transaction_amount_add").value,
@@ -2212,7 +2212,6 @@
       selectedTransactionId = id;
       transaction = object;
       document.getElementById("transaction_type").value=TransTypeRead[object.type];
-      document.getElementById("transaction_costCenter").value=object.costCenter;
       document.getElementById("transaction_account").value=object.account;
       document.getElementById("transaction_name").value=object.name;
       document.getElementById("transaction_amount").value=Number(object.amount).toLocaleString("nl-BE", currencyStyle);
@@ -2228,10 +2227,14 @@
       };
       if (checkBookDate(object.bookDate)){document.getElementById("transaction_edit_button").disabled = false}
       else {document.getElementById("transaction_edit_button").disabled = true};
-      refreshTransactionEvidence()
-      var elems = document.querySelectorAll('select');
-      M.FormSelect.init(elems);
-      M.updateTextFields();
+      costCenterGet(object.costCenter).then(function (cc){
+        document.getElementById("transaction_costCenter").value = cc.name;
+        refreshTransactionEvidence();
+      
+        var elems = document.querySelectorAll('select');
+        M.FormSelect.init(elems);
+        M.updateTextFields();
+      });
     };    
 
     function showTransactionDistribution(){
@@ -2279,7 +2282,7 @@
       selectedTransactionId = null;
       transaction = new TransactionObject();
       document.getElementById("transaction_type_add").value="";
-      document.getElementById("transaction_costCenter_add").value="";
+      listCostCenters(document.getElementById("transaction_costCenter_add"), "");
       document.getElementById("transaction_account_add").value="";
       document.getElementById("transaction_name_add").value="";
       document.getElementById("transaction_amount_add").value="";
@@ -2295,10 +2298,7 @@
     };
     function editTransaction(id,object) {
       document.getElementById("transaction_type_add").value=object.type;
-      var selectedCC;
-      if (object) {selectedCC = object.costCenter}
-      else {selectedCC = ""};
-      listCostCenters(document.getElementById("transaction_costCenter_add"), selectedCC);
+      listCostCenters(document.getElementById("transaction_costCenter_add"), object.costCenter);
       document.getElementById("transaction_account_add").value=object.account;
       document.getElementById("transaction_name_add").value=object.name;
       document.getElementById("transaction_amount_add").value=object.amount;
@@ -3391,8 +3391,8 @@
       }; 
       async function propertyGet(idFS){
         function checkId(p){return p.idFS == idFS};
-        await propertiesGet();
-        return properties.find(checkId);
+        var ps = await propertiesGet();
+        return ps.find(checkId);
       };
       
       var propertiesTable = document.getElementById("propertiesTable");
@@ -4100,6 +4100,12 @@
           return costCenters;
         };
       };   
+
+      async function costCenterGet(id){
+        function checkId(cc){return cc.idFS == id};
+        var ccs = await costCentersGet();
+        return ccs.find(checkId);
+      };
 
       function listCostCenters(el, selectedOption) {
         var option;
