@@ -395,7 +395,7 @@
                   <label>Type<b><font color='red'>*</font></b></label>
                 </div>
                 <div class="input-field col s12 m4">
-                  <select id="transaction_costCenter_add" required required="true" "></select>
+                  <select id="transaction_costCenter_add" required required="true"></select>
                   <label>Cost Center<b><font color='red'>*</font></b></label>
                 </div>
                 <div class="input-field col s12 m4">
@@ -692,16 +692,20 @@
                   <label for="transactionRule_communication">If:Communication</label>
                   <span class="helper-text" data-error="Maximum 80 characters"></span>
                 </div>
-                <div class="input-field col s12 m6">
+                <div class="input-field col s12 m4">
                   <select id="transactionRule_type" required required="true"></select>
                   <label>Then:Type<b><font color='red'>*</font></b></label>
                 </div>
-                <div class="input-field col s12 m6">
-                <select id="transactionRule_owner" >
-                  <option value="" disabled selected>Select Owner</option>
-                </select>
-                <label for="transactionRule__owner">Then:Owner</label>
-              </div>
+                <div class="input-field col s12 m4">
+                  <select id="transactionRule_costCenter" required required="true"></select>
+                  <label>Cost Center<b><font color='red'>*</font></b></label>
+                </div>
+                <div class="input-field col s12 m4">
+                  <select id="transactionRule_owner" >
+                    <option value="" disabled selected>Select Owner</option>
+                  </select>
+                  <label for="transactionRule__owner">Then:Owner</label>
+                </div>
                 
               </form>
               <br>
@@ -2754,6 +2758,7 @@
         var trR = 
           {
           type: "",
+          costCenter:"",
           account: "",
           name: "",
           communication:"",
@@ -2766,6 +2771,7 @@
       function setSelectedTransactionRule(id,object) {
         selectedTransactionRuleId = id;
         document.getElementById("transactionRule_type").value=object.type;
+        listCostCenters(getElementById("transactionRule_costCenter"),object.costCenter)
         document.getElementById("transactionRule_account").value=object.account;
         document.getElementById("transactionRule_name").value=object.name;
         document.getElementById("transactionRule_communication").value=object.communication;
@@ -2780,6 +2786,10 @@
       function validateTransactionRule(){
         var valid = true;
         if (!document.getElementById("transactionRule_type").checkValidity()) {
+          M.toast({html:"Please enter type"});
+          valid=false;
+        };
+        if (!document.getElementById("transactionRule_costCenter").checkValidity()) {
           M.toast({html:"Please enter type"});
           valid=false;
         };
@@ -2809,6 +2819,7 @@
       function getTransactionRuleEntries(){
         return {
           type: document.getElementById("transactionRule_type").value,
+          costCenter: document.getElementById("transactionRule_costCenter").value,
           account: document.getElementById("transactionRule_account").value,
           name: document.getElementById("transactionRule_name").value,
           communication:document.getElementById("transactionRule_communication").value,
