@@ -4114,7 +4114,7 @@
 
       async function costCenterGet(id){
         function checkId(cc){return cc.idFS == id};
-        if (id == "PRIVAT") {return {name: "private"}}
+        if (id == "PRIVA") {return {name: "private"}}
         else {
           var ccs = await costCentersGet();
           return ccs.find(checkId);
@@ -4141,7 +4141,7 @@
               el.appendChild(option);
             });
           option = document.createElement("option");
-          option.setAttribute("value","PRIVAT");
+          option.setAttribute("value","PRIVA");
           option.innerHTML = "private";
           el.appendChild(option);
           var elems = document.querySelectorAll('select');
