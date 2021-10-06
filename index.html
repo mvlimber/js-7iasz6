@@ -4114,8 +4114,11 @@
 
       async function costCenterGet(id){
         function checkId(cc){return cc.idFS == id};
-        var ccs = await costCentersGet();
-        return ccs.find(checkId);
+        if (id = "PRIVAT") {return {name: "private"}}
+        else {
+          var ccs = await costCentersGet();
+          return ccs.find(checkId);
+        };
       };
 
       function listCostCenters(el, selectedOption) {
@@ -4137,6 +4140,10 @@
               option.innerHTML = cc.name;
               el.appendChild(option);
             });
+          option = document.createElement("option");
+          option.setAttribute("value","PRIVAT");
+          option.innerHTML = "private";
+          el.appendChild(option);
           var elems = document.querySelectorAll('select');
           M.FormSelect.init(elems);
         });       
