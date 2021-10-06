@@ -4114,7 +4114,7 @@
 
       async function costCenterGet(id){
         function checkId(cc){return cc.idFS == id};
-        if (id = "PRIVAT") {return {name: "private"}}
+        if (id == "PRIVAT") {return {name: "private"}}
         else {
           var ccs = await costCentersGet();
           return ccs.find(checkId);
