@@ -4408,9 +4408,7 @@
       var buildingCommon = 0; /* must be global because adpated in procedure calcConsumptionRegusOwners */
       function generateChargesReport(closeDateTransactions, metersIncluded){  
         var buildingWater = 0;
-        var buildingWaterPeriod = 0;
         var buildingHeating = 0;
-        var buildingHeatingPeriod = 0;
         buildingCommon = 0;
         var buildingPrivate = 0;
 
@@ -4424,8 +4422,6 @@
        
         var dataCommon = {};
         var dataPrivate = [];
-        var dataWaterPeriod = [];
-        var dataHeatingPeriod = [];
         var dataWater = [];
         var dataHeating = [];
         var dataConsumption = [];
@@ -4446,20 +4442,16 @@
             if (trData.type == "PRIVA") {
               buildingPrivate += reportTransaction(trData);
               dataPrivate.push(trData);
-            } else if (trData.type == "Water") {
-              buildingWaterPeriod += reportTransaction(trData);
-              dataWaterPeriod.push(trData);
-            } else if (trData.type == "Heating") {
-              buildingHeatingPeriod += reportTransaction(trData);
-              dataHeatingPeriod.push(trData);
             } else {
-              buildingCommon += reportTransaction(trData);
-              dataCommon.push(trData);
+              if (!buildingCommon[trData.costCenter]) {
+                buildingCommon[trData.costCenter].total = 0;
+                buildingCommon[trData.costCenter].transactions = [];
+              };
+              buildingCommon[trData.costCenter].total += reportTransaction(trData);
+              dataCommon[trData.costCenter].transactions.push(trData);
             };
           });
-          dataWaterPeriod.push({type:" ",name:"Total",date:" ",communication:" ",amount:buildingWaterPeriod.toLocaleString("nl-BE",currencyStyle)});
-          dataHeatingPeriod.push({type:" ",name:"Total",date:" ",communication:" ",amount:buildingHeatingPeriod.toLocaleString("nl-BE",currencyStyle)});
-
+          
           refCoproperty.collection("Transactions").where("type", "==", "Water").where("bookDate", ">", lastReguDate).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){
             transactionsFS.forEach(function(transactionFS){
               var trData = transactionFS.data();
