@@ -4422,7 +4422,7 @@
         var totalQuotaWater = 0;
         var totalQuotaHeating = 0;
        
-        var dataCommon = [];
+        var dataCommon = {};
         var dataPrivate = [];
         var dataWaterPeriod = [];
         var dataHeatingPeriod = [];
@@ -4434,7 +4434,7 @@
         refCoproperty.collection("Meters").where("type", "==", "Cold Water").get().then(function(meterFSArray){
           meterFSArray.forEach(function(meterFS){
             var meterFSData = meterFS.data();
-            if (meterFSData.status.normalize() === "Active".normalize()) {
+            if (meterFSData.status.normalize() === "ACTIF".normalize()) {
               coldWaterDifferenceCommon += meterFSData.readings[0].reading - meterFSData.readings[1].reading;
             };
           });
