@@ -4332,9 +4332,7 @@
         if (!trData.communication) { trData.communication= " ";} 
         else {trData.communication = trData.communication.substr(0,62);};
         trData.name=trData.name.substr(0,25);
-        var amount = Number(trData.amount);
-        if (trData.type == "PRIVA") {trData.amount = amount;}
-        else {trData.amount = amount.toLocaleString("nl-BE",currencyStyle);};            
+        var amount = Number(trData.amount);       
         return amount;
       };
 
@@ -4375,19 +4373,7 @@
         {id:"heating_regu",name:"heating_regu",prompt:"heating regularisation",width: 27,align: "center",padding: 0},
       ];
       var emptyConsumptionLine = {owner:"", property:"", meter:"", type:"", last_reading:"", reading:"", difference:"", water:"", water_payed:"", water_regu:"", heating:"", heating_payed:"", heating_regu:""};
-      var headerQuota =[
-        {id:"owner",name:"owner",prompt:"owner",width: 70,align: "center",padding: 0},
-        {id:"property",name:"property",prompt:"property",width: 30,align: "center",padding: 0},
-        /*{id:"quota",name:"quota",prompt:"quota",width: 25,align: "center",padding: 0},
-        {id:"period",name:"period",prompt:"period",width: 30,align: "center",padding: 0},*/
-        {id:"quota_period",name:"quota_period",prompt:"quota",width: 30,align: "center",padding: 0},
-        {id:"common",name:"common",prompt:"common charges",width: 40,align: "center",padding: 0},
-        {id:"water_pro",name:"water_pro",prompt:"provision water",width: 40,align: "center",padding: 0},
-        {id:"heating_pro",name:"heating_pro",prompt:"provision heating",width: 40,align: "center",padding: 0},
-        {id:"private",name:"private",prompt:"private",width: 40,align: "center",padding: 0},
-        {id:"total",name:"total",prompt:"Total",width: 40,align: "right",padding: 0}
-      ];
-      var headerChargesMetersIncluded = [
+     var headerChargesMetersIncluded = [
         {id:"owner",name:"owner",prompt:"owner",width: 60,align: "center",padding: 0},
         {id:"common",name:"common",prompt:"common charges",width: 40,align: "center",padding: 0},
         {id:"private",name:"private",prompt:"private charges",width: 40,align: "center",padding: 0},
@@ -4405,53 +4391,35 @@
         {id:"private",name:"private",prompt:"private charges",width: 35,align: "right",padding: 0},
         {id:"Total",name:"Total",prompt:"Total",width: 35,align: "right",padding: 0}
       ];
-      var buildingCommon = 0; /* must be global because adpated in procedure calcConsumptionRegusOwners */
+      
       function generateChargesReport(closeDateTransactions, metersIncluded){  
-        var buildingWater = 0;
-        var buildingHeating = 0;
-        buildingCommon = 0;
-        var buildingPrivate = 0;
-
-        var totalColdWaterDifference = 0;
-        var coldWaterDifferenceCommon = 0;
-        var totalHeatingDifference = 0; 
-        var totalHotWaterDifference = 0; 
-        var totalQuota = 0;
-        var totalQuotaWater = 0;
-        var totalQuotaHeating = 0;
-       
-        var dataCommon = {};
-        var dataPrivate = [];
-        var dataWater = [];
-        var dataHeating = [];
-        var dataConsumption = [];
-        var dataQuota = [];
-        var dataCharges = [];
-        refCoproperty.collection("Meters").where("type", "==", "Cold Water").get().then(function(meterFSArray){
-          meterFSArray.forEach(function(meterFS){
-            var meterFSData = meterFS.data();
-            if (meterFSData.status.normalize() === "ACTIF".normalize()) {
-              coldWaterDifferenceCommon += meterFSData.readings[0].reading - meterFSData.readings[1].reading;
-            };
-          });
+        var commonCharges = {};
         
+        costCentersGet().then(function(querySnapshot) {
+          querySnapshot.forEach(function(cc) {
+            commonCharges[cc].total = 0;
+            commonCharges[cc].transactions = [];
+          });
+       
         
         refCoproperty.collection("Transactions").where("bookDate", ">", lastCloseDate).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){
           transactionsFS.forEach(function(transactionFS){
             var trData = transactionFS.data();
             if (trData.type == "PRIVA") {
+              /*
               buildingPrivate += reportTransaction(trData);
               dataPrivate.push(trData);
+              */
             } else {
-              if (!buildingCommon[trData.costCenter]) {
-                buildingCommon[trData.costCenter].total = 0;
-                buildingCommon[trData.costCenter].transactions = [];
-              };
-              buildingCommon[trData.costCenter].total += reportTransaction(trData);
-              dataCommon[trData.costCenter].transactions.push(trData);
+              commonCharges[trData.costCenter].total += reportTransaction(trData);
+              commonCharges[trData.costCenter].transactions.push(trData);
             };
           });
-          
+
+          hier nu gewoon elke commonChargestabel amounts omzetten naar strings
+          dan doorgeven aan printer 
+
+          /*
           refCoproperty.collection("Transactions").where("type", "==", "Water").where("bookDate", ">", lastReguDate).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){
             transactionsFS.forEach(function(transactionFS){
               var trData = transactionFS.data();
@@ -4520,7 +4488,6 @@
                     
                       if (!stop)  {
                         if ((iteratorMeter == metersFS.docs.length) && (iteratorProp == propertiesFS.docs.length)) {                         
-                          /* ook testen op ingave coproperty meters ??*/
                           var totalledConsumption = dataConsumption;
                           if (metersIncluded) {
                             totalledConsumption = calcTotalConsumption (totalQuota, totalQuotaWater, totalQuotaHeating, coldWaterDifferenceCommon, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating, dataCommon, dataConsumption, dataCharges);
@@ -4851,7 +4818,7 @@
         return result;
       };
       
-      function writePDF (closeDateTransactions, metersIncludedHere, dataWaterPeriod, dataWater, dataHeatingPeriod, dataHeating, dataCommon, dataPrivate, dataConsumption,  dataQuota, tableCharges){
+      function writePDF (closeDateTransactions, metersIncludedHere, dataWater, dataHeating, dataCommon, dataPrivate, dataConsumption,  tableCharges){
         const rowsLandscape =15;
         const rowsLandscapePrivate =11;
         const rowsPortrait =17;
@@ -4928,6 +4895,7 @@
         doc.text("List of tables:", 15, 135);
         doc.setFontSize(14);
         doc.text("Common charges:", 30, 145);doc.text("total building", 90, 145);
+        /*
         doc.text("Water:", 30, 155);doc.text("total building this period", 90, 155);
         doc.text("Heating:", 30, 165);doc.text("total building this period", 90, 165);
         
@@ -4971,6 +4939,7 @@
         }).catch(function(error) {
             M.toast({html:"Error saving charges report:" + error});
         });
+        */
       };
       
     </script>
