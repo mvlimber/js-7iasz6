@@ -4411,6 +4411,7 @@
           querySnapshot.forEach(function(cc) {
             commonCharges[cc] ={};
             commonCharges[cc].total = 0;
+            console.log("got here after ini");
             commonCharges[cc].transactions = [];
           });
        
@@ -4424,7 +4425,9 @@
               dataPrivate.push(trData);
               */
             } else {
+              console.log(trData);
               commonCharges[trData.costCenter].total += reportTransaction(trData);
+              console.log("got here after add");
               commonCharges[trData.costCenter].transactions.push(trData);
             };
           });
