@@ -4332,6 +4332,7 @@
       <script>
       
       function reportTransaction(trData){
+        trData.type = TransTypeRead[trData.type];
         if (!trData.communication) { trData.communication= " ";} 
         else {trData.communication = trData.communication.substr(0,62);};
         trData.name=trData.name.substr(0,25);
@@ -4404,11 +4405,11 @@
         {id:"Total",name:"Total",prompt:"Total",width: 35,align: "right",padding: 0}
       ];
       
+      var ccsInReport;
       async function generateChargesReport(closeDateTransactions, metersIncluded){  
         var commonCharges = {};
-        
-        var ccsHere = await costCentersGet(); 
-        ccsHere.forEach(function(cc) {
+        ccsInReport = await costCentersGet(); 
+        ccsInReport.forEach(function(cc) {
             var ccId = cc.idFS;
             commonCharges[ccId] ={};
             commonCharges[ccId].total = 0;
@@ -4433,7 +4434,9 @@
             };
           });
 
-          Object.keys(commonCharges).forEach(function(cc){convertToCurrency(commonCharges[cc].transactions, ["amount"]);});
+          Object.keys(commonCharges).forEach(function(cc){
+            commonCharges[cc].transactions.push({type:"Total",name:" ",date:" ",communication:" ",amount:commonCharges[cc].total});
+            convertToCurrency(commonCharges[cc].transactions, ["amount"]);});
           writePDF (closeDateTransactions,false,commonCharges);
         });
       
@@ -4924,7 +4927,9 @@
         };
         */
         printFooterPortrait();
-        Object.keys(commonCharges).forEach(function(cc){printTablePortrait("Common charges for cost center ", commonCharges[cc].transactions, headerCommon);});
+        Object.keys(commonCharges).forEach(function(cc){
+          function checkId(ccHere){return ccHere.idFS == cc};
+          printTablePortrait("Common charges for cost center " + ccsInReport.find(checkId).name, commonCharges[cc].transactions, headerCommon);});
         
         /*
         printTablePortrait("Water: total building this period", dataWaterPeriod, headerWH);
