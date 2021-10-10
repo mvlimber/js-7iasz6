@@ -4409,6 +4409,7 @@
         
         costCentersGet().then(function(querySnapshot) {
           querySnapshot.forEach(function(cc) {
+            commonCharges[cc] ={};
             commonCharges[cc].total = 0;
             commonCharges[cc].transactions = [];
           });
@@ -4428,7 +4429,7 @@
             };
           });
 
-          commonCharges.forEach(ccItem){convertToCurrency(ccItem.transactions, ["amount"])};
+          commonCharges.forEach(function(ccItem){convertToCurrency(ccItem.transactions, ["amount"]);});
           writePDF (closeDateTransactions,false,commonCharges);
         });
         });
@@ -4919,7 +4920,7 @@
         };
         */
         printFooterPortrait();
-        commonCharges.forEach(cc){printTablePortrait("Common charges for cost center " + , dataCommon, headerCommon);}
+        commonCharges.forEach(function(ccItem){printTablePortrait("Common charges for cost center ", ccItem.transactions, headerCommon);});
         
         /*
         printTablePortrait("Water: total building this period", dataWaterPeriod, headerWH);
