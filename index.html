@@ -4406,8 +4406,10 @@
       ];
       
       var ccsInReport;
+      var propertiesInReport;
       async function generateChargesReport(closeDateTransactions, metersIncluded){  
         ccsInReport = await costCentersGet(); 
+        propertiesInReport = await propertiesGet();
         var commonCharges = {}; 
         ccsInReport.forEach(function(cc) {
             var ccId = cc.idFS;
@@ -4422,7 +4424,10 @@
           transactionsFS.forEach(function(transactionFS){
             var trData = transactionFS.data();
             if (trData.type == "PRIVA") {
-              trData.distribution = " ";
+              var distributionString = " ";
+              trData.distribution.forEach(function (ds){
+                
+              });
               privateTotal += reportTransaction(trData);
               privateCharges.push(trData);
             } else {
