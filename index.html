@@ -4925,7 +4925,7 @@
         };
         */
         printFooterPortrait();
-        commonCharges.forEach(function(ccItem){printTablePortrait("Common charges for cost center ", ccItem.transactions, headerCommon);});
+        Object.keys(commonCharges).forEach(function(cc){printTablePortrait("Common charges for cost center ", commonCharges[cc].transactions, headerCommon);});
         
         /*
         printTablePortrait("Water: total building this period", dataWaterPeriod, headerWH);
