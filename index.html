@@ -4407,29 +4407,25 @@
       
       var ccsInReport;
       async function generateChargesReport(closeDateTransactions, metersIncluded){  
-        var commonCharges = {};
         ccsInReport = await costCentersGet(); 
+        var commonCharges = {}; 
         ccsInReport.forEach(function(cc) {
             var ccId = cc.idFS;
             commonCharges[ccId] ={};
             commonCharges[ccId].total = 0;
-            console.log("got here after ini");
             commonCharges[ccId].transactions = [];
         });
+        var privateCharges = {};
+        var privateTotal = 0;
        
         refCoproperty.collection("Transactions").where("bookDate", ">", lastCloseDate).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){
           transactionsFS.forEach(function(transactionFS){
             var trData = transactionFS.data();
             if (trData.type == "PRIVA") {
-              /*
-              buildingPrivate += reportTransaction(trData);
-              dataPrivate.push(trData);
-              */
+              privateTotal += reportTransaction(trData);
+              privateCharges.push(trData);
             } else {
-              console.log("trdata is ", trData);
-              console.log("commonCharges is ", commonCharges);
               commonCharges[trData.costCenter].total += reportTransaction(trData);
-              console.log("got here after add");
               commonCharges[trData.costCenter].transactions.push(trData);
             };
           });
@@ -4437,7 +4433,9 @@
           Object.keys(commonCharges).forEach(function(cc){
             commonCharges[cc].transactions.push({type:"Total",name:" ",date:" ",communication:" ",amount:commonCharges[cc].total});
             convertToCurrency(commonCharges[cc].transactions, ["amount"]);});
-          writePDF (closeDateTransactions,false,commonCharges);
+          privateCharges.push({name: "Total", date: " ", communication: " ", distribution: " ", amount: privateTotal});
+          convertToCurrency(privateCharges.transactions, ["amount"]);});
+          writePDF (closeDateTransactions,false,commonCharges,privateCharges);
         });
       
       };
@@ -4832,7 +4830,7 @@
         return result;
       };*/
       
-      function writePDF (closeDateTransactions, metersIncludedHere, commonCharges){
+      function writePDF (closeDateTransactions, metersIncludedHere, commonCharges ,privateCharges){
         const rowsLandscape =15;
         const rowsLandscapePrivate =11;
         const rowsPortrait =17;
@@ -4911,6 +4909,7 @@
         doc.text("List of tables:", 15, 135);
         doc.setFontSize(14);
         doc.text("Common charges per cost center", 30, 145);
+        doc.text("Private charges", 30, 155);
         /*
         doc.text("Water:", 30, 155);doc.text("total building this period", 90, 155);
         doc.text("Heating:", 30, 165);doc.text("total building this period", 90, 165);
@@ -4930,7 +4929,7 @@
         Object.keys(commonCharges).forEach(function(cc){
           function checkId(ccHere){return ccHere.idFS == cc};
           printTablePortrait("Common charges for cost center " + ccsInReport.find(checkId).name, commonCharges[cc].transactions, headerCommon);});
-        
+        printTablePortrait("private charges" , priavetCharges, headerPrivate)
         /*
         printTablePortrait("Water: total building this period", dataWaterPeriod, headerWH);
         printTablePortrait("Heating: total building this period", dataHeatingPeriod, headerWH);
