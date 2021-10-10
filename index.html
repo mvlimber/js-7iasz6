@@ -4345,6 +4345,7 @@
             aRow[anAmountField] = aRow[anAmountField].toLocaleString("nl-BE",currencyStyle);
           });        
         });
+        return aTable;
       };
 
       var headerCommon = [
@@ -4427,9 +4428,14 @@
             };
           });
 
-          hier nu gewoon elke commonChargestabel amounts omzetten naar strings
-          dan doorgeven aan printer 
-
+          commonCharges.forEach(cc){convertToCurrency(commonCharges[cc], ["amount"])};
+          writePDF (closeDateTransactions,false,commonCharges);
+        });
+        });
+      };
+      
+          
+         
           /*
           refCoproperty.collection("Transactions").where("type", "==", "Water").where("bookDate", ">", lastReguDate).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){
             transactionsFS.forEach(function(transactionFS){
@@ -4529,7 +4535,7 @@
         var totalledPrivateData = calcPrivate(dataQuota, dataPrivate, dataCharges);
         var totalledQuotaData = makeSubtotals(dataQuota,totalQuota, totalQuotaWater,totalQuotaHeating, buildingCommon, buildingWaterPeriod, buildingHeatingPeriod, dataCharges);
         dataCommon.push({type:"Total",name:" ",date:" ",communication:" ",amount:buildingCommon.toLocaleString("nl-BE",currencyStyle)});
-        /*var totalledPrivateData = calcPrivate(totalledQuotaData, dataPrivate, dataCharges);*/
+        var totalledPrivateData = calcPrivate(totalledQuotaData, dataPrivate, dataCharges);
         var dataChargesCurrency = putChargesCurrency(Object.values(dataCharges), metersIncluded);
         writePDF(closeDateTransactions, metersIncluded, dataWaterPeriod, dataWater, dataHeatingPeriod, dataHeating,  dataCommon, totalledPrivateData, totalledConsumptionData, putQuotaCurreny(totalledQuotaData), dataChargesCurrency);
       };
@@ -4619,7 +4625,6 @@
             thisPropertyId = ds.property;
             var thisQR = dataQuota.find(findQR);         
             distributionString += thisQR.property + ": " + ds.amount.toLocaleString("nl-BE",currencyStyle) + " | ";
-            /*dataCharges[thisQR.ownerId].private += ds.amount;*/
             thisQR.private += ds.amount;
           });
           result.push({name: dp.name, date: dp.date, communication: dp.communication, distribution: distributionString, amount: dp.amount.toLocaleString("nl-BE",currencyStyle)});
@@ -4632,7 +4637,6 @@
       function calcConsumptionAmounts (dataConsumption, coldWaterDifferenceCommon, totalHotWaterDifference, totalHeatingDifference, buildingWater, buildingHeating) {
         dataConsumption.forEach(function(arrayEl) {
           if (arrayEl.type != "Heating") {
-            /*var amountWaterString = (buildingWater * arrayEl.difference / (totalColdWaterDifference + totalHotWaterDifference)).toFixed(2);*/
             var amountWaterString = (buildingWater * arrayEl.difference / (coldWaterDifferenceCommon)).toFixed(2);
             arrayEl.water = Number(amountWaterString);
           };
@@ -4651,7 +4655,6 @@
       };
 
       function calcConsumptionRegusProperties (totalQuota, totalQuotaWater, totalQuotaHeating, dataConsumption, buildingWater, buildingHeating) {
-        /* per property */
         var i=0;
         var count = 0;
         var totalWaterCons = 0;
@@ -4663,7 +4666,6 @@
           totalWaterCons = totalWaterCons + dataConsumption[i].water;
           totalHeatingCons = totalHeatingCons + dataConsumption[i].heating;
           if (((count == 1) && ((i + 1) != arraylength) && (dataConsumption[i].property != dataConsumption[i+1].property)) || ((count == 1) && ((i + 1) == arraylength))){
-            /* solitary regularisation line */
             dataConsumption[i].water_payed = Number((buildingWater * dataConsumption[i].quota / totalQuotaWater).toFixed(2));
             dataConsumption[i].water_regu = dataConsumption[i].water - dataConsumption[i].water_payed;
             dataConsumption[i].heating_payed = Number((buildingHeating * dataConsumption[i].quota / totalQuotaHeating).toFixed(2));
@@ -4673,10 +4675,8 @@
             totalHeatingCons = 0;
             count = 0;
           } else if (((i + 1) != arraylength) && (dataConsumption[i].property == dataConsumption[i+1].property)){
-            /* intermediary regularisation line */
             result.push(dataConsumption[i]);
           } else {
-            /* last regularisation line newReading new totalling line */
             result.push(dataConsumption[i]);
             var waterPayed = Number((buildingWater * dataConsumption[i].quota / totalQuotaWater).toFixed(2));
             var heatingPayed = Number((buildingHeating * dataConsumption[i].quota / totalQuotaHeating).toFixed(2));
@@ -4722,17 +4722,14 @@
           if ((dataConsumption[i].water_regu) && (dataConsumption[i].water_regu !== " ")){
             count = count+1;
             if (((count == 1) && ((i + 1) != arraylength) && (dataConsumption[i].ownerId != dataConsumption[i+1].ownerId)) || ((count == 1) && ((i + 1) == arraylength))){
-              /* solitary regularisation line */
               waterOwners += dataConsumption[i].water;
               result.push(emptyConsumptionLine);
               dataCharges[dataConsumption[i].ownerId].water_regu = dataConsumption[i].water_regu;
               dataCharges[dataConsumption[i].ownerId].heating_regu = dataConsumption[i].heating_regu;
               count = 0;             
             } else if (((i + 1) != arraylength) && (dataConsumption[i].ownerId == dataConsumption[i+1].ownerId)){
-              /* intermediary regularisation line */
               sumIt(dataConsumption[i]);
           } else {
-              /* last regularisation line needed new totalling line */
               sumIt(dataConsumption[i]);
               waterOwners += totalWaterCons;
               result.push({ownerId:dataConsumption[i].ownerId, owner:dataConsumption[i].owner, property:"Total", meter:"", type:"", last_reading:"", reading:"", difference:"", water:totalWaterCons, water_payed:totalWaterPayed, water_regu: totalWaterRegu, heating:totalHeatingCons, heating_payed:totalHeatingPayed, heating_regu: totalHeatingRegu});
@@ -4805,7 +4802,6 @@
             count = count + 1;
             writeData(arrayEl);
           } else {
-            /* we are treating another owner */
             if (count > 1) {
               result.push({ownerId:currentOwnerId, owner:"Total", property:"", quota:"", period:"", quota_period: "", common:subtotalCommon,water_pro:subtotalWater,heating_pro:subtotalHeating, private: subtotalPrivate, total:0});
             };
@@ -4820,16 +4816,15 @@
           totalHeating += amountHeating;
           totalPrivate += arrayEl.private;
         });
-        /* all owners treated. possibly add last summation*/
         if (count > 1) {
               result.push({ownerId:currentOwnerId, owner:"Total", property:"", quota:"", period:"", quota_period: "", common:subtotalCommon,water_pro:subtotalWater,tHeating_pro:subtotalHeating, private: subtotalPrivate,total:0});
             };
             result.push({ownerId:" ", owner:"", property:"", quota:"", period:"", quota_period: "", common:"", water_pro:"", heating_pro:"", private: "", total:""});
             result.push({ownerId:" ", owner:"Total building", property:" ", quota:" ", period:" ", quota_period: totalQuota.toString(), common:totalCommon,water_pro:totalWater,heating_pro:totalHeating, private: totalPrivate,total:0});
         return result;
-      };
+      };*/
       
-      function writePDF (closeDateTransactions, metersIncludedHere, dataWater, dataHeating, dataCommon, dataPrivate, dataConsumption,  tableCharges){
+      function writePDF (closeDateTransactions, metersIncludedHere, commonCharges){
         const rowsLandscape =15;
         const rowsLandscapePrivate =11;
         const rowsPortrait =17;
@@ -4837,7 +4832,9 @@
         if (metersIncludedHere) {
            numPages = 1 + Math.ceil(dataWaterPeriod.length/rowsPortrait) + Math.ceil(dataWater.length/rowsPortrait) + Math.ceil(dataHeatingPeriod.length/rowsPortrait) + Math.ceil(dataHeating.length/rowsPortrait) + Math.ceil(dataConsumption.length/rowsLandscape) + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsLandscape) + Math.ceil(dataPrivate.length/rowsLandscapePrivate) + Math.ceil(tableCharges.length/rowsLandscape);
         } else {
-           numPages = 1 + Math.ceil(dataWaterPeriod.length/rowsPortrait) + Math.ceil(dataHeatingPeriod.length/rowsPortrait) + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsLandscape) + Math.ceil(dataPrivate.length/rowsPortrait) + Math.ceil(tableCharges.length/rowsPortrait);
+          numPages = 5;
+           /*numPages = 1 + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsLandscape) + Math.ceil(dataPrivate.length/rowsPortrait) + Math.ceil(tableCharges.length/rowsPortrait);
+           */
         };
         window.jsPDF = window.jspdf.jsPDF;
         var currentPage = 1;
@@ -4905,7 +4902,7 @@
         doc.setFontSize(16);
         doc.text("List of tables:", 15, 135);
         doc.setFontSize(14);
-        doc.text("Common charges:", 30, 145);doc.text("total building", 90, 145);
+        doc.text("Common charges per cost center", 30, 145);
         /*
         doc.text("Water:", 30, 155);doc.text("total building this period", 90, 155);
         doc.text("Heating:", 30, 165);doc.text("total building this period", 90, 165);
