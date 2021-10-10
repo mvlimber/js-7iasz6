@@ -4327,6 +4327,9 @@
         addMeter();
         handlingCopropertyMeter = true;
       }
+      </script>
+      <!-- Charges report ----------------------------------------------------->
+      <script>
       
       function reportTransaction(trData){
         if (!trData.communication) { trData.communication= " ";} 
@@ -4334,6 +4337,14 @@
         trData.name=trData.name.substr(0,25);
         var amount = Number(trData.amount);       
         return amount;
+      };
+
+      function convertToCurrency (aTable, listOfFields) {
+        aTable.forEach(function(aRow){
+          listOfFields.foreach(function(anAmountField){
+            aRow[anAmountField] = aRow[anAmountField].toLocaleString("nl-BE",currencyStyle);
+          });        
+        });
       };
 
       var headerCommon = [
