@@ -4404,19 +4404,18 @@
         {id:"Total",name:"Total",prompt:"Total",width: 35,align: "right",padding: 0}
       ];
       
-      function generateChargesReport(closeDateTransactions, metersIncluded){  
+      async function generateChargesReport(closeDateTransactions, metersIncluded){  
         var commonCharges = {};
         
-        costCentersGet().then(function(querySnapshot) {
-          querySnapshot.forEach(function(cc) {
+        var ccsHere = await costCentersGet(); 
+        ccsHere.forEach(function(cc) {
             var ccId = cc.idFS;
             commonCharges[ccId] ={};
             commonCharges[ccId].total = 0;
             console.log("got here after ini");
             commonCharges[ccId].transactions = [];
-          });
+        });
        
-        
         refCoproperty.collection("Transactions").where("bookDate", ">", lastCloseDate).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){
           transactionsFS.forEach(function(transactionFS){
             var trData = transactionFS.data();
@@ -4437,7 +4436,7 @@
           Object.keys(commonCharges).forEach(function(cc){convertToCurrency(commonCharges[cc].transactions, ["amount"]);});
           writePDF (closeDateTransactions,false,commonCharges);
         });
-        });
+      
       };
       
           
