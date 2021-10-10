@@ -4341,7 +4341,7 @@
 
       function convertToCurrency (aTable, listOfFields) {
         aTable.forEach(function(aRow){
-          listOfFields.foreach(function(anAmountField){
+          listOfFields.forEach(function(anAmountField){
             aRow[anAmountField] = aRow[anAmountField].toLocaleString("nl-BE",currencyStyle);
           });        
         });
