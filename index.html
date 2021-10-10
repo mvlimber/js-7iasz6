@@ -4413,7 +4413,7 @@
             commonCharges[ccId] ={};
             commonCharges[ccId].total = 0;
             console.log("got here after ini");
-            commonCharges[cc].transactions = [];
+            commonCharges[ccId].transactions = [];
           });
        
         
@@ -4434,7 +4434,7 @@
             };
           });
 
-          commonCharges.forEach(function(ccItem){convertToCurrency(ccItem.transactions, ["amount"]);});
+          Object.keys(commonCharges).forEach(function(cc){convertToCurrency(commonCharges[cc].transactions, ["amount"]);});
           writePDF (closeDateTransactions,false,commonCharges);
         });
         });
