@@ -4360,7 +4360,7 @@
         {id:"name",name:"name",prompt:"counter party",width: 50,align: "center",padding: 0},
         {id:"date",name:"date",prompt:"date",width: 35,align: "center",padding: 0},
         {id:"communication",name:"communication",prompt:"communication",width: 87,align: "center",padding: 0},
-        {id:"distribution",name:"distribution",prompt:"assigned to",width: 145,align: "center",padding: 0},
+        {id:"assignments",name:"assignments",prompt:"assigned to",width: 145,align: "center",padding: 0},
         {id:"amount",name:"amount",prompt:"amount",width: 38,align: "right",padding: 0}
       ];
       var headerWH = [
@@ -4406,10 +4406,10 @@
       ];
       
       var ccsInReport;
-      var propertiesInReport;
+      /*var propertiesInReport;*/
       async function generateChargesReport(closeDateTransactions, metersIncluded){  
         ccsInReport = await costCentersGet(); 
-        propertiesInReport = await propertiesGet();
+        /* propertiesInReport = await propertiesGet(); */
         var commonCharges = {}; 
         ccsInReport.forEach(function(cc) {
             var ccId = cc.idFS;
@@ -4424,10 +4424,11 @@
           transactionsFS.forEach(function(transactionFS){
             var trData = transactionFS.data();
             if (trData.type == "PRIVA") {
-              var distributionString = " ";
+              var distributionStringHere = " ";
               trData.distribution.forEach(function (ds){
-                
+                distributionStringHere += ds.propertyCode + ": " + ds.amount.toLocaleString("nl-BE",currencyStyle) + " | ";
               });
+              trData.assignments = distributionStringHere;
               privateTotal += reportTransaction(trData);
               privateCharges.push(trData);
             } else {
@@ -4440,7 +4441,7 @@
             commonCharges[cc].transactions.push({type:"Total",name:" ",date:" ",communication:" ",amount:commonCharges[cc].total});
             convertToCurrency(commonCharges[cc].transactions, ["amount"]);
           });
-          privateCharges.push({name: "Total", date: " ", communication: " ", distribution: " ", amount: privateTotal});
+          privateCharges.push({name: "Total", date: " ", communication: " ", assignments: " ", amount: privateTotal});
           convertToCurrency(privateCharges, ["amount"]);
           writePDF (closeDateTransactions,false,commonCharges,privateCharges);
         });
