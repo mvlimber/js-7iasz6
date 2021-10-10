@@ -4428,7 +4428,7 @@
             };
           });
 
-          commonCharges.forEach(cc){convertToCurrency(commonCharges[cc], ["amount"])};
+          commonCharges.forEach(ccItem){convertToCurrency(ccItem.transactions, ["amount"])};
           writePDF (closeDateTransactions,false,commonCharges);
         });
         });
@@ -4917,9 +4917,11 @@
         } else {
           doc.text("Total Charges:", 30, 200);doc.text("total charges per owner", 90, 200);
         };
-        
+        */
         printFooterPortrait();
-        printTablePortrait("Common charges: total building", dataCommon, headerCommon);
+        commonCharges.forEach(cc){printTablePortrait("Common charges for cost center " + , dataCommon, headerCommon);}
+        
+        /*
         printTablePortrait("Water: total building this period", dataWaterPeriod, headerWH);
         printTablePortrait("Heating: total building this period", dataHeatingPeriod, headerWH);
         printTableLandscape("Private expenses", dataPrivate, headerPrivate,10);
