@@ -4409,8 +4409,9 @@
         
         costCentersGet().then(function(querySnapshot) {
           querySnapshot.forEach(function(cc) {
-            commonCharges[cc] ={};
-            commonCharges[cc].total = 0;
+            var ccId = cc.idFS;
+            commonCharges[ccId] ={};
+            commonCharges[ccId].total = 0;
             console.log("got here after ini");
             commonCharges[cc].transactions = [];
           });
@@ -4425,7 +4426,8 @@
               dataPrivate.push(trData);
               */
             } else {
-              console.log(trData);
+              console.log("trdata is ", trData);
+              console.log("commonCharges is ", commonCharges);
               commonCharges[trData.costCenter].total += reportTransaction(trData);
               console.log("got here after add");
               commonCharges[trData.costCenter].transactions.push(trData);
