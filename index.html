@@ -4424,12 +4424,14 @@
           transactionsFS.forEach(function(transactionFS){
             var trData = transactionFS.data();
             if (trData.type == "PRIVA") {
+              privateTotal += reportTransaction(trData);
               var distributionStringHere = " ";
+              /*
               trData.distribution.forEach(function (ds){
                 distributionStringHere += ds.propertyCode + ": " + ds.amount.toLocaleString("nl-BE",currencyStyle) + " | ";
               });
+              */
               trData.assignments = distributionStringHere;
-              privateTotal += reportTransaction(trData);
               privateCharges.push(trData);
             } else {
               commonCharges[trData.costCenter].total += reportTransaction(trData);
@@ -4441,7 +4443,7 @@
             commonCharges[cc].transactions.push({type:"Total",name:" ",date:" ",communication:" ",amount:commonCharges[cc].total});
             convertToCurrency(commonCharges[cc].transactions, ["amount"]);
           });
-          privateCharges.push({name: "Total", date: " ", communication: " ", assignments: " ", amount: privateTotal});
+          /*privateCharges.push({name: "Total", date: " ", communication: " ", assignments: " ", amount: privateTotal});*/
           convertToCurrency(privateCharges, ["amount"]);
           writePDF (closeDateTransactions,false,commonCharges,privateCharges);
         });
@@ -4917,7 +4919,7 @@
         doc.text("List of tables:", 15, 135);
         doc.setFontSize(14);
         doc.text("Common charges per cost center", 30, 145);
-        doc.text("Private charges", 30, 155);
+        doc.text("Private expenses", 30, 155);
         /*
         doc.text("Water:", 30, 155);doc.text("total building this period", 90, 155);
         doc.text("Heating:", 30, 165);doc.text("total building this period", 90, 165);
@@ -4937,7 +4939,8 @@
         Object.keys(commonCharges).forEach(function(cc){
           function checkId(ccHere){return ccHere.idFS == cc};
           printTablePortrait("Common charges for cost center " + ccsInReport.find(checkId).name, commonCharges[cc].transactions, headerCommon);});
-        printTablePortrait("Private charges" , privateCharges, headerPrivate);
+        console.log(privateCharges);
+        printTableLandscape("Private expenses" , privateCharges, headerPrivate, 10);
         /*
         printTablePortrait("Water: total building this period", dataWaterPeriod, headerWH);
         printTablePortrait("Heating: total building this period", dataHeatingPeriod, headerWH);
