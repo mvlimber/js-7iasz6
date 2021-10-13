@@ -4425,12 +4425,13 @@
             if (trData.type == "PRIVA") {
               privateTotal += reportTransaction(trData);
               var distributionStringHere = " ";
-              /*
+              
               trData.distribution.forEach(function (ds){
                 distributionStringHere += ds.propertyCode + ": " + ds.amount.toLocaleString("nl-BE",currencyStyle) + " | ";
               });
-              */
+              
               trData.assignments = distributionStringHere;
+              trData.distribution = distributionStringHere;
               privateCharges.push(trData);
             } else {
               commonCharges[trData.costCenter].total += reportTransaction(trData);
