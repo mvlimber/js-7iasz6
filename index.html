@@ -4336,7 +4336,6 @@
         if (!trData.communication) { trData.communication= " ";} 
         else {trData.communication = trData.communication.substr(0,62);};
         trData.name=trData.name.substr(0,25);
-        trData.amount = Number(trData.amount);       
         return trData.amount;
       };
 
@@ -4940,7 +4939,7 @@
           function checkId(ccHere){return ccHere.idFS == cc};
           printTablePortrait("Common charges for cost center " + ccsInReport.find(checkId).name, commonCharges[cc].transactions, headerCommon);});
         console.log(privateCharges);
-        printTableLandscape("Private expenses" , privateCharges, headerPrivate, 10);
+        printTableLandscape("Private expenses", privateCharges, headerPrivate, 10);
         /*
         printTablePortrait("Water: total building this period", dataWaterPeriod, headerWH);
         printTablePortrait("Heating: total building this period", dataHeatingPeriod, headerWH);
