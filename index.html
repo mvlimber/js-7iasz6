@@ -4420,7 +4420,7 @@
           if (!metersIncluded){
             headerChargesMetersExcluded.splice(2+i, 0, {id:"ccId",name:"ccId",prompt:ccsInReport.find(checkId).name,width: 40,align: "center",padding: 0});
           };
-          i += 1,
+          i += 1;
         });
         var privateCharges = [];
         var privateTotal = 0;
@@ -4451,7 +4451,7 @@
           });
           /*privateCharges.push({name: "Total", date: " ", communication: " ", assignments: " ", amount: privateTotal});*/
           convertToCurrency(privateCharges, ["amount"]);
-          writePDF (closeDateTransactions,false,commonCharges,privateCharges, []);
+          writePDF (closeDateTransactions,false,commonCharges,privateCharges, [{owner:" ",property:" ",private:" ",total: " ",itxxrPNtUWkH2omdiqNe:" ", qfdhC9zaS9W9iGZ6EnqJ: " ",uRenBj8T1f6UkTu5CiLP: " " }]);
         });
       
       };
@@ -4846,7 +4846,7 @@
         return result;
       };*/
       
-      function writePDF (closeDateTransactions, metersIncludedHere, commonCharges ,privateCharges, totalcharges){
+      function writePDF (closeDateTransactions, metersIncludedHere, commonCharges ,privateCharges, totalCharges){
         const rowsLandscape =15;
         const rowsLandscapePrivate =11;
         const rowsPortrait =17;
@@ -4854,7 +4854,7 @@
         if (metersIncludedHere) {
            numPages = 1 + Math.ceil(dataWaterPeriod.length/rowsPortrait) + Math.ceil(dataWater.length/rowsPortrait) + Math.ceil(dataHeatingPeriod.length/rowsPortrait) + Math.ceil(dataHeating.length/rowsPortrait) + Math.ceil(dataConsumption.length/rowsLandscape) + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsLandscape) + Math.ceil(dataPrivate.length/rowsLandscapePrivate) + Math.ceil(tableCharges.length/rowsLandscape);
         } else {
-          numPages = 5;
+          numPages = 6;
            /*numPages = 1 + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsLandscape) + Math.ceil(dataPrivate.length/rowsPortrait) + Math.ceil(tableCharges.length/rowsPortrait);
            */
         };
@@ -4926,6 +4926,7 @@
         doc.setFontSize(14);
         doc.text("Common charges per cost center", 30, 145);
         doc.text("Private expenses", 30, 155);
+        doc.text("Total charges", 30, 165);
         /*
         doc.text("Water:", 30, 155);doc.text("total building this period", 90, 155);
         doc.text("Heating:", 30, 165);doc.text("total building this period", 90, 165);
@@ -4945,7 +4946,6 @@
         Object.keys(commonCharges).forEach(function(cc){
           function checkId(ccHere){return ccHere.idFS == cc};
           printTablePortrait("Common charges for cost center " + ccsInReport.find(checkId).name, commonCharges[cc].transactions, headerCommon);});
-        console.log(privateCharges);
         printTableLandscape("Private expenses", privateCharges, headerPrivate, 10);
         printTableLandscape("Total charges", totalCharges, headerChargesMetersExcluded, 10);
         
