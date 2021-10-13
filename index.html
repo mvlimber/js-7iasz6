@@ -2066,7 +2066,7 @@
           cell.appendChild(cellContent);
           objectsRow.appendChild(cell); 
 
-          var amount = Number(object.amount);
+          var amount = object.amount;
           /* totalAmount = totalAmount + amount;*/
           cellContent = document.createTextNode(amount.toLocaleString("nl-BE", currencyStyle));
           cell = document.createElement('td');
@@ -2205,7 +2205,7 @@
         costCenter:document.getElementById("transaction_costCenter_add").value,
         account: document.getElementById("transaction_account_add").value,
         name: document.getElementById("transaction_name_add").value,
-        amount: document.getElementById("transaction_amount_add").value,
+        amount: Number(document.getElementById("transaction_amount_add").value),
         date: document.getElementById("transaction_date_add").value,
         bookDate: document.getElementById("transaction_bookDate_add").value,
         communication:document.getElementById("transaction_communication_add").value,
@@ -2218,7 +2218,7 @@
       document.getElementById("transaction_type").value=TransTypeRead[object.type];
       document.getElementById("transaction_account").value=object.account;
       document.getElementById("transaction_name").value=object.name;
-      document.getElementById("transaction_amount").value=Number(object.amount).toLocaleString("nl-BE", currencyStyle);
+      document.getElementById("transaction_amount").value=object.amount.toLocaleString("nl-BE", currencyStyle);
       document.getElementById("transaction_date").value=object.date;
       document.getElementById("transaction_bookDate").value=object.bookDate;
       document.getElementById("transaction_communication").value=object.communication;
