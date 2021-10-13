@@ -4397,24 +4397,30 @@
       ];
       var headerChargesMetersExcluded = [
         {id:"owner",name:"owner",prompt:"owner",width: 60,align: "center",padding: 0},
-        {id:"common",name:"common",prompt:"common charges",width: 35,align: "right",padding: 0},
-        {id:"water_pro",name:"water_pro",prompt:"provision water",width: 35,align: "center",padding: 0},
-        {id:"heating_pro",name:"heating_pro",prompt:"provision heating",width: 35,align: "center",padding: 0},
+        {id:"property",name:"property",prompt:"property",width: 20,align: "center",padding: 0},
         {id:"private",name:"private",prompt:"private charges",width: 35,align: "right",padding: 0},
         {id:"Total",name:"Total",prompt:"Total",width: 35,align: "right",padding: 0}
       ];
       
       var ccsInReport;
+      
       /*var propertiesInReport;*/
       async function generateChargesReport(closeDateTransactions, metersIncluded){  
         ccsInReport = await costCentersGet(); 
         /* propertiesInReport = await propertiesGet(); */
         var commonCharges = {}; 
+        var totalCharges = [];
+        var i = 0;
         ccsInReport.forEach(function(cc) {
-            var ccId = cc.idFS;
-            commonCharges[ccId] ={};
-            commonCharges[ccId].total = 0;
-            commonCharges[ccId].transactions = [];
+          var ccId = cc.idFS;
+          function checkId(ccHere){return ccHere.idFS == ccId};
+          commonCharges[ccId] ={};
+          commonCharges[ccId].total = 0;
+          commonCharges[ccId].transactions = [];
+          if (!metersIncluded){
+            headerChargesMetersExcluded.splice(2+i, 0, {id:"ccId",name:"ccId",prompt:ccsInReport.find(checkId).name,width: 40,align: "center",padding: 0}, )
+          };
+          i += 1,
         });
         var privateCharges = [];
         var privateTotal = 0;
@@ -4445,7 +4451,7 @@
           });
           /*privateCharges.push({name: "Total", date: " ", communication: " ", assignments: " ", amount: privateTotal});*/
           convertToCurrency(privateCharges, ["amount"]);
-          writePDF (closeDateTransactions,false,commonCharges,privateCharges);
+          writePDF (closeDateTransactions,false,commonCharges,privateCharges, []);
         });
       
       };
@@ -4840,7 +4846,7 @@
         return result;
       };*/
       
-      function writePDF (closeDateTransactions, metersIncludedHere, commonCharges ,privateCharges){
+      function writePDF (closeDateTransactions, metersIncludedHere, commonCharges ,privateCharges, totalcharges){
         const rowsLandscape =15;
         const rowsLandscapePrivate =11;
         const rowsPortrait =17;
@@ -4941,6 +4947,8 @@
           printTablePortrait("Common charges for cost center " + ccsInReport.find(checkId).name, commonCharges[cc].transactions, headerCommon);});
         console.log(privateCharges);
         printTableLandscape("Private expenses", privateCharges, headerPrivate, 10);
+        printTableLandscape("Total charges", totalCharges, headerChargesMetersExcluded, 10);
+        
         /*
         printTablePortrait("Water: total building this period", dataWaterPeriod, headerWH);
         printTablePortrait("Heating: total building this period", dataHeatingPeriod, headerWH);
