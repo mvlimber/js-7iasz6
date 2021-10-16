@@ -3135,6 +3135,39 @@
     </script>
     <!--   Members scripts start here -->
     <script>
+      var membersLoaded = false;
+      var members = null;
+
+      async function membersget() {
+      if (members) {return members;}
+        else {
+          var querySnapshot = await refCoproperty.collection("Members").orderBy("firstName").get();
+          members = [];
+          querySnapshot.forEach(function(objectFS) {
+            var thisObject = objectFS.data();
+            thisObject.idFS = objectFS.id;
+            members.push(thisObject);
+          });
+          return members;
+        };
+      }; 
+      function refreshMembers() {
+        emptyHTMLSet(membersTable);
+        membersget().then(function(objectsFSArray){
+          objectsFSArray.forEach(function(thisObject){loadMember(thisObject);});  
+        });    
+      };
+
+      function loadMembers(){
+        hideMenu();
+        document.getElementById("logo-container").innerHTML = "MyCondos: Members";
+        if (!membersLoaded) {
+          refreshMembers();
+          membersLoaded = true;
+        };
+      };
+
+
       function insertAdrressCoproperty(){
         refCoproperty.get().then(function(copropertyFS){
           var object = copropertyFS.data();
@@ -3147,33 +3180,31 @@
         });
       };
       
-      function memberLink(memberFS) {
-        var memberData = memberFS.data();
+      function memberLink(m) {
         var elA = document.createElement('button');
         elA.setAttribute("data-target", "memberView");
         elA.setAttribute('class','modal-trigger');
         elA.setAttribute('style','border:none;background-color:Transparent');
-        elA.setAttribute('onclick','setSelectedMember('+JSON.stringify(memberFS.id)+','+JSON.stringify(memberData)+',"")');
-        elA.innerHTML = "<font color='#0000FF'>"+memberData.firstName+"   "+memberData.lastName+"</font>";
+        elA.setAttribute('onclick','setSelectedMember('+JSON.stringify(m)+',"")');
+        elA.innerHTML = "<font color='#0000FF'>"+m.firstName+"   "+m.lastName+"</font>";
         return elA;
       };
 
       var membersTable = document.getElementById("membersTable");
-      function loadMember (objectFS){
-        var object = objectFS.data();
+      function loadMember (m){
         var objectsRow= document.createElement('tr');
-        var cellContent = memberLink(objectFS);
+        var cellContent = memberLink(m);
         var cell = document.createElement('td');
         cell.setAttribute("style","white-space: nowrap");
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);
         
-        cellContent = document.createTextNode(object.email);
+        cellContent = document.createTextNode(m.email);
         cell = document.createElement('td');
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);  
 
-        cellContent = document.createTextNode(object.phoneMobile);
+        cellContent = document.createTextNode(m.phoneMobile);
         cell = document.createElement('td');
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);  
@@ -3181,24 +3212,7 @@
         membersTable.appendChild (objectsRow);
       };
       
-      function refreshMembers() {
-        emptyHTMLSet(membersTable);
-        refCoproperty.collection("Members").orderBy("firstName").get().then(function(objectsFSArray){
-          objectsFSArray.forEach(function(objectFS){
-            loadMember(objectFS);
-          });  
-        });    
-      };
-
-      var membersLoaded = false;
-      function loadMembers(){
-        hideMenu();
-        document.getElementById("logo-container").innerHTML = "MyCondos: Members";
-        if (!membersLoaded) {
-          refreshMembers();
-          membersLoaded = true;
-        };
-      };
+      
 
       function addMember(member){
         refCoproperty.collection("Members").add(member)
@@ -3294,8 +3308,8 @@
         var mode;
         var selectedMemberId;
         var selectedMemberObject;
-        function setSelectedMember(id,object,modeArg) {
-          selectedMemberId=id;
+        function setSelectedMember(object,modeArg) {
+          selectedMemberId=object.idFS;
           selectedMemberObject=object;
           mode="edit";
           document.getElementById("member_firstName"+modeArg).value=object.firstName;
@@ -3312,7 +3326,7 @@
           if (!modeArg) {
             var ownerOfEl = document.getElementById("member_ownerOf");
             emptyHTMLSet(ownerOfEl);
-            refCoproperty.collection("Properties").where("owner", "==", id).get().then (function (querySnapshot){
+            refCoproperty.collection("Properties").where("owner", "==", object.idFS).get().then (function (querySnapshot){
               querySnapshot.forEach (function (property) {
                 ownerOfEl.appendChild(propertyLinkFromMemberView(property));
               });
@@ -3321,7 +3335,7 @@
             emptyHTMLSet(occupantOfEl);
             refCoproperty.collection("Properties").get().then (function (querySnapshotProperties){
               querySnapshotProperties.forEach (function (property) {
-                property.ref.collection("Occupants").where("occupant", "==", id).get().then (function (querySnapshotOccupants){
+                property.ref.collection("Occupants").where("occupant", "==", object.idFS).get().then (function (querySnapshotOccupants){
                   if (querySnapshotOccupants.docs.length > 0) {
                     occupantOfEl.appendChild(propertyLinkFromMemberView(property));
                   };
