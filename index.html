@@ -4418,7 +4418,7 @@
           commonCharges[ccId].total = 0;
           commonCharges[ccId].transactions = [];
           if (!metersIncluded){
-            headerChargesMetersExcluded.splice(2+i, 0, {id:"ccId",name:"ccId",prompt:ccsInReport.find(checkId).name,width: 40,align: "center",padding: 0});
+            headerChargesMetersExcluded.splice(2+i, 0, {id:ccId,name:ccId,prompt:ccsInReport.find(checkId).name,width: 40,align: "center",padding: 0});
           };
           i += 1;
         });
@@ -4451,7 +4451,7 @@
           });
           /*privateCharges.push({name: "Total", date: " ", communication: " ", assignments: " ", amount: privateTotal});*/
           convertToCurrency(privateCharges, ["amount"]);
-          writePDF (closeDateTransactions,false,commonCharges,privateCharges, [{owner:" ",property:" ",private:" ",total: " ",itxxrPNtUWkH2omdiqNe:" ", qfdhC9zaS9W9iGZ6EnqJ: " ",uRenBj8T1f6UkTu5CiLP: " " }]);
+          writePDF (closeDateTransactions,false,commonCharges,privateCharges, [{owner:" ",property:" ",private:" ",Total: " ",itxxrPNtUWkH2omdiqNe:" ", qfdhC9zaS9W9iGZ6EnqJ: " ",uRenBj8T1f6UkTu5CiLP: " " }]);
         });
       
       };
@@ -4947,6 +4947,8 @@
           function checkId(ccHere){return ccHere.idFS == cc};
           printTablePortrait("Common charges for cost center " + ccsInReport.find(checkId).name, commonCharges[cc].transactions, headerCommon);});
         printTableLandscape("Private expenses", privateCharges, headerPrivate, 10);
+        console.log("header ",headerChargesMetersExcluded);
+        console.log("data ",totalCharges);
         printTableLandscape("Total charges", totalCharges, headerChargesMetersExcluded, 10);
         
         /*
