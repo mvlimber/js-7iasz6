@@ -4495,7 +4495,7 @@
             var thisOwner= membersInReport.find(checkMemberId);
             rowTotalCharges.owner = thisOwner.firstName + " " + thisOwner.lastName;
             rowTotalCharges.private = " ";
-            ccsInReport.forEach(function(cc) {rowTotalCharges[cc.idFS] = " ";});
+            ccsInReport.forEach(function(cc) {rowTotalCharges[cc.idFS] = commonCharges[trData[cc.idFS]].total*cc.distribution[cc.idFS]/cc.totalQuota;});
             rowTotalCharges.Total = " ";
             totalCharges.push(rowTotalCharges);
           });
