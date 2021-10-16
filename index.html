@@ -4486,7 +4486,9 @@
             rowTotalCharges.propertyCode = p.code; 
             rowTotalCharges.ownerId = p.owner;
             rowTotalCharges.ownerName = memberGet(p.owner).firstName + " " + memberGet(p.owner).lastName;
-            
+            rowTotalCharges.private = " ";
+            ccsInReport.forEach(function(cc) {rowTotalCharges[cc] = " ";});
+            totalCharges.push(rowTotalCharges);
           });
           writePDF (closeDateTransactions,false,commonCharges,privateCharges,totalCharges);
         });
