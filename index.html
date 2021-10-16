@@ -4436,6 +4436,11 @@
       
       async function generateChargesReport(closeDateTransactions, metersIncluded){  
         ccsInReport = await costCentersGet(); 
+        ccsInReport.forEach(function(cc){
+          var totalQuota =0;
+          Object.values(cc.distribution).forEach(function(quota){totalQuota +=quota;});
+          cc.totalQuota = totalQuota;
+        });
         propertiesInReport = await propertiesGet(); 
         membersInReport = await membersGet();
         var commonCharges = {}; 
@@ -4479,7 +4484,7 @@
             commonCharges[cc].transactions.push({type:"Total",name:" ",date:" ",communication:" ",amount:commonCharges[cc].total});
             convertToCurrency(commonCharges[cc].transactions, ["amount"]);
           });
-          /*privateCharges.push({name: "Total", date: " ", communication: " ", assignments: " ", amount: privateTotal});*/
+          privateCharges.push({name: "Total", date: " ", communication: " ", assignments: " ", amount: privateTotal});
           convertToCurrency(privateCharges, ["amount"]);
           propertiesInReport.forEach(function (p){
             function checkMemberId(thisM) {return thisM.idFS == p.owner};
@@ -4489,7 +4494,6 @@
             rowTotalCharges.ownerId = p.owner;
             var thisOwner= membersInReport.find(checkMemberId);
             rowTotalCharges.owner = thisOwner.firstName + " " + thisOwner.lastName;
-            /*rowTotalCharges.ownerName = memberGet(p.owner).firstName + " " + memberGet(p.owner).lastName;*/
             rowTotalCharges.private = " ";
             ccsInReport.forEach(function(cc) {rowTotalCharges[cc.idFS] = " ";});
             rowTotalCharges.Total = " ";
