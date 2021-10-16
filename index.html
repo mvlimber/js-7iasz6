@@ -4430,11 +4430,13 @@
       ];
       
       var ccsInReport;
+      var propertiesInReport;
+      var membersInReport;
       
-      /*var propertiesInReport;*/
       async function generateChargesReport(closeDateTransactions, metersIncluded){  
         ccsInReport = await costCentersGet(); 
-        /* propertiesInReport = await propertiesGet(); */
+        propertiesInReport = await propertiesGet(); 
+        membersInReport = await membersGet();
         var commonCharges = {}; 
         var totalCharges = [];
         var i = 0;
