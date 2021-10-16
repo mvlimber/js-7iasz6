@@ -3194,7 +3194,7 @@
         elA.setAttribute('class','modal-trigger');
         elA.setAttribute('style','border:none;background-color:Transparent');
         elA.setAttribute('onclick','setSelectedMember('+JSON.stringify(m)+',"")');
-        elA.innerHTML = "<font color='#0000FF'>"+m.firstName+"   "+m.lastName+"</font>";
+        elA.innerHTML = "<font color='#0000FF'>"+m.firstName+" "+m.lastName+"</font>";
         return elA;
       };
 
@@ -3574,7 +3574,8 @@
       var handlingCopropertyMeter = false;
         
       function displayOccupant(propertyId,occupant){
-        refCoproperty.collection("Members").doc(occupant.data().occupant).get().then(function(member) {
+        /*refCoproperty.collection("Members").doc(occupant.data().occupant).get().then(function(member) {*/
+        memberGet(occupant.data().occupant).then(function(member) {
           var objectsRow= document.createElement('tr');
           var cell = document.createElement('td');
           var cellContent = memberLink(member);
