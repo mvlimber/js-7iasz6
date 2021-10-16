@@ -4480,6 +4480,14 @@
           });
           /*privateCharges.push({name: "Total", date: " ", communication: " ", assignments: " ", amount: privateTotal});*/
           convertToCurrency(privateCharges, ["amount"]);
+          propertiesInReport.forEach(function (p){
+            var rowTotalCharges= {};
+            rowTotalCharges.propertyId = p.idFS;
+            rowTotalCharges.propertyCode = p.code; 
+            rowTotalCharges.ownerId = p.owner;
+            rowTotalCharges.ownerName = memberGet(p.owner).firstName + " " + memberGet(p.owner).lastName;
+            
+          });
           writePDF (closeDateTransactions,false,commonCharges,privateCharges,totalCharges);
         });
       
