@@ -957,7 +957,7 @@
                   <label for="member_bus">Bus</label>
                 </div>
                 <div id="Members_Edit" class="displayHidden">
-                  <button style="float: right;margin-bottom: 3px" data-target="memberWrite" class="btn-small waves-light modal-trigger" onclick="setSelectedMember(selectedMemberId, selectedMemberObject,editMode)">Edit<i class="material-icons right">edit</i></button>
+                  <button style="float: right;margin-bottom: 3px" data-target="memberWrite" class="btn-small waves-light modal-trigger" onclick="setSelectedMember(selectedMemberObject,editMode)">Edit<i class="material-icons right">edit</i></button>
                 </div>
               </form>
             </div>
@@ -3138,7 +3138,7 @@
       var membersLoaded = false;
       var members = null;
 
-      async function membersget() {
+      async function membersGet() {
       if (members) {return members;}
         else {
           var querySnapshot = await refCoproperty.collection("Members").orderBy("firstName").get();
@@ -3151,9 +3151,17 @@
           return members;
         };
       }; 
+      
+      async function memberGet(idFS){
+        function checkId(o){return o.idFS == idFS};
+        var ms = await membersGet();
+        return ms.find(checkId);
+      };
+
       function refreshMembers() {
         emptyHTMLSet(membersTable);
-        membersget().then(function(objectsFSArray){
+        members = null;
+        membersGet().then(function(objectsFSArray){
           objectsFSArray.forEach(function(thisObject){loadMember(thisObject);});  
         });    
       };
@@ -3227,8 +3235,10 @@
       function updateMember(member){
         refCoproperty.collection("Members").doc(selectedMemberId).update(member)
           .then(function(docref) {
+            var updatedSelectedMember = getMemberEntries();
+            updatedSelectedMember.idFS = selectedMemberId;
+            setSelectedMember(updatedSelectedMember,"");
             refreshMembers();
-            setSelectedMember(selectedMemberId,getMemberEntries(),"");
             M.Modal.getInstance(document.getElementById("memberWrite")).close();
           }).catch(function(error) {
             M.toast({html:"Error occurred updating this member:" + error}); 
