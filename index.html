@@ -3152,8 +3152,8 @@
         };
       }; 
       
-      async function memberGet(idFS){
-        function checkId(o){return o.idFS == idFS};
+      async function memberGet(id){
+        function checkId(m){return m.idFS == id};
         var ms = await membersGet();
         return ms.find(checkId);
       };
@@ -3239,6 +3239,7 @@
             updatedSelectedMember.idFS = selectedMemberId;
             setSelectedMember(updatedSelectedMember,"");
             refreshMembers();
+            refreshProperties();
             M.Modal.getInstance(document.getElementById("memberWrite")).close();
           }).catch(function(error) {
             M.toast({html:"Error occurred updating this member:" + error}); 
@@ -3459,9 +3460,9 @@
         propertiesTable.appendChild (objectsRow);
 
         if (Boolean(object.owner)) {
-          refCoproperty.collection("Members").doc(object.owner).get().then(function(ownerFS) {
+          memberGet(object.owner).then(function(thisOwner) {
             ownerCell.removeChild(ownerCell.firstChild);
-            ownerCell.appendChild(memberLink(ownerFS));
+            ownerCell.appendChild(memberLink(thisOwner));
           }).catch(function(error) {
             console.log("Error getting document:", error);
           });
