@@ -4485,10 +4485,10 @@
             function checkMemberId(thisM) {return thisM.idFS == p.owner};
             var rowTotalCharges= {};
             rowTotalCharges.propertyId = p.idFS;
-            rowTotalCharges.propertyCode = p.code; 
+            rowTotalCharges.property = p.code; 
             rowTotalCharges.ownerId = p.owner;
             var thisOwner= membersInReport.find(checkMemberId);
-            rowTotalCharges.ownerName = thisOwner.firstName + " " + thisOwner.lastName;
+            rowTotalCharges.owner = thisOwner.firstName + " " + thisOwner.lastName;
             /*rowTotalCharges.ownerName = memberGet(p.owner).firstName + " " + memberGet(p.owner).lastName;*/
             rowTotalCharges.private = " ";
             ccsInReport.forEach(function(cc) {rowTotalCharges[cc.idFS] = " ";});
