@@ -4398,7 +4398,7 @@
       var headerChargesMetersExcluded = [
         {id:"owner",name:"owner",prompt:"owner",width: 60,align: "center",padding: 0},
         {id:"property",name:"property",prompt:"property",width: 20,align: "center",padding: 0},
-        {id:"private",name:"private",prompt:"private charges",width: 35,align: "right",padding: 0},
+        {id:"private",name:"private",prompt:"private charges",width: 35,align: "center",padding: 0},
         {id:"Total",name:"Total",prompt:"Total",width: 35,align: "right",padding: 0}
       ];
       
@@ -4451,7 +4451,7 @@
           });
           /*privateCharges.push({name: "Total", date: " ", communication: " ", assignments: " ", amount: privateTotal});*/
           convertToCurrency(privateCharges, ["amount"]);
-          writePDF (closeDateTransactions,false,commonCharges,privateCharges, [{owner:" ",property:" ",private:" ",Total: " ",itxxrPNtUWkH2omdiqNe:" ", qfdhC9zaS9W9iGZ6EnqJ: " ",uRenBj8T1f6UkTu5CiLP: " " }]);
+          writePDF (closeDateTransactions,false,commonCharges,privateCharges, totalCharges);
         });
       
       };
