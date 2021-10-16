@@ -4482,11 +4482,14 @@
           /*privateCharges.push({name: "Total", date: " ", communication: " ", assignments: " ", amount: privateTotal});*/
           convertToCurrency(privateCharges, ["amount"]);
           propertiesInReport.forEach(function (p){
+            function checkMemberId(thisM) {return thisM.idFS == p.owner};
             var rowTotalCharges= {};
             rowTotalCharges.propertyId = p.idFS;
             rowTotalCharges.propertyCode = p.code; 
             rowTotalCharges.ownerId = p.owner;
-            rowTotalCharges.ownerName = memberGet(p.owner).firstName + " " + memberGet(p.owner).lastName;
+            var thisOwner= membersInReport.find(checkMemberId);
+            rowTotalCharges.ownerName = thisOwner.firstName + " " + thisOwner.lastName;
+            /*rowTotalCharges.ownerName = memberGet(p.owner).firstName + " " + memberGet(p.owner).lastName;*/
             rowTotalCharges.private = " ";
             ccsInReport.forEach(function(cc) {rowTotalCharges[cc.idFS] = " ";});
             rowTotalCharges.Total = " ";
