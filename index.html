@@ -4495,10 +4495,15 @@
             var thisOwner= membersInReport.find(checkMemberId);
             rowTotalCharges.owner = thisOwner.firstName + " " + thisOwner.lastName;
             rowTotalCharges.private = " ";
-            ccsInReport.forEach(function(cc) {rowTotalCharges[cc.idFS] = (commonCharges[cc.idFS].total)*(cc.distribution[cc.idFS])/(cc.totalQuota);});
+            ccsInReport.forEach(function(cc) {
+              var quotaHere = cc.distribution[p.idFS];
+              if (!quotaHere) {quotaHere = 0};
+              rowTotalCharges[cc.idFS] = Number(((commonCharges[cc.idFS].total)*(cc.distribution[p.idFS])/(cc.totalQuota)).toFixed(2));});
             rowTotalCharges.Total = " ";
             totalCharges.push(rowTotalCharges);
           });
+          function getId(cc){return cc.idFS};
+          convertToCurrency(totalCharges, ccsInReport.map(getId));
           writePDF (closeDateTransactions,false,commonCharges,privateCharges,totalCharges);
         });
       
