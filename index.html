@@ -4463,29 +4463,12 @@
         refCoproperty.collection("Transactions").where("bookDate", ">", lastCloseDate).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){
           transactionsFS.forEach(function(transactionFS){
             var trData = transactionFS.data();
-            if (trData.type == "PRIVA") {
-              privateTotal += reportTransaction(trData);
-              var distributionStringHere = " ";
-              
-              trData.distribution.forEach(function (ds){
-                distributionStringHere += ds.propertyCode + ": " + ds.amount.toLocaleString("nl-BE",currencyStyle) + " | ";
-              });
-              
-              trData.assignments = distributionStringHere;
-              trData.distribution = distributionStringHere;
-              privateCharges.push(trData);
-            } else {
+            if (trData.type != "PRIVA") {
               commonCharges[trData.costCenter].total += reportTransaction(trData);
               commonCharges[trData.costCenter].transactions.push(trData);
             };
           });
 
-          Object.keys(commonCharges).forEach(function(cc){
-            commonCharges[cc].transactions.push({type:"Total",name:" ",date:" ",communication:" ",amount:commonCharges[cc].total});
-            convertToCurrency(commonCharges[cc].transactions, ["amount"]);
-          });
-          privateCharges.push({name: "Total", date: " ", communication: " ", assignments: " ", amount: privateTotal});
-          convertToCurrency(privateCharges, ["amount"]);
           propertiesInReport.forEach(function (p){
             function checkMemberId(thisM) {return thisM.idFS == p.owner};
             var rowTotalCharges= {};
@@ -4502,6 +4485,31 @@
             rowTotalCharges.Total = " ";
             totalCharges.push(rowTotalCharges);
           });
+
+          Object.keys(commonCharges).forEach(function(cc){
+            commonCharges[cc].transactions.push({type:"Total",name:" ",date:" ",communication:" ",amount:commonCharges[cc].total});
+            convertToCurrency(commonCharges[cc].transactions, ["amount"]);
+          });
+
+          transactionsFS.forEach(function(transactionFS){
+            var trData = transactionFS.data();
+            if (trData.type == "PRIVA") {
+              privateTotal += reportTransaction(trData);
+              var distributionStringHere = " ";
+              
+              trData.distribution.forEach(function (ds){
+                distributionStringHere += ds.propertyCode + ": " + ds.amount.toLocaleString("nl-BE",currencyStyle) + " | ";
+              });
+              
+              trData.assignments = distributionStringHere;
+              trData.distribution = distributionStringHere;
+              privateCharges.push(trData);
+            };
+          });
+
+          privateCharges.push({name: "Total", date: " ", communication: " ", assignments: " ", amount: privateTotal});
+          convertToCurrency(privateCharges, ["amount"]);
+          
           function getId(cc){return cc.idFS};
           convertToCurrency(totalCharges, ccsInReport.map(getId));
           writePDF (closeDateTransactions,false,commonCharges,privateCharges,totalCharges);
