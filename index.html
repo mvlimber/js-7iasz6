@@ -4969,7 +4969,8 @@
         const rowsPortrait =17;
         var numPages;
         if (metersIncludedHere) {
-           numPages = 1 + Math.ceil(dataWaterPeriod.length/rowsPortrait) + Math.ceil(dataWater.length/rowsPortrait) + Math.ceil(dataHeatingPeriod.length/rowsPortrait) + Math.ceil(dataHeating.length/rowsPortrait) + Math.ceil(dataConsumption.length/rowsLandscape) + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsLandscape) + Math.ceil(dataPrivate.length/rowsLandscapePrivate) + Math.ceil(tableCharges.length/rowsLandscape);
+          numPages = 9;
+           /*numPages = 1 + Math.ceil(dataWaterPeriod.length/rowsPortrait) + Math.ceil(dataWater.length/rowsPortrait) + Math.ceil(dataHeatingPeriod.length/rowsPortrait) + Math.ceil(dataHeating.length/rowsPortrait) + Math.ceil(dataConsumption.length/rowsLandscape) + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsLandscape) + Math.ceil(dataPrivate.length/rowsLandscapePrivate) + Math.ceil(tableCharges.length/rowsLandscape);*/
         } else {
           numPages = 6;
            /*numPages = 1 + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsLandscape) + Math.ceil(dataPrivate.length/rowsPortrait) + Math.ceil(tableCharges.length/rowsPortrait);
@@ -5043,7 +5044,14 @@
         doc.setFontSize(14);
         doc.text("Common charges per cost center", 30, 145);
         doc.text("Private expenses", 30, 155);
-        doc.text("Total charges", 30, 165);
+        if (!metersIncludedHere) {
+          doc.text("Total charges", 30, 165);
+        ] else {
+          doc.text("Expenses Water since previous regularisation", 30, 165);
+          doc.text("Expenses Heating since previous regularisation", 30, 175);
+          doc.text("Regulation Water and Heating per property", 30, 185);
+          doc.text("Total charges", 30, 195);
+        };
         /*
         doc.text("Water:", 30, 155);doc.text("total building this period", 90, 155);
         doc.text("Heating:", 30, 165);doc.text("total building this period", 90, 165);
