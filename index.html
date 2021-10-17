@@ -4529,31 +4529,25 @@
           /* add totalling lines in total charges */
           function generateNewRowTotalledCharges() {
             var result = {};
-            result.owner = "";
-            result.ownerid = "";
-            result.property = "";
+            result.owner = "";result.ownerid = "";result.property = "";
             ccsInReport.forEach(function(cc){result[cc.idFS] = 0});
-            result.private = 0;
-            result.Total = 0;
+            result.private = 0;result.Total = 0;
             return result;
           };
           function generateEmptyRowTotalledCharges() {
             var result = {};
-            result.owner = "";
-            result.ownerid = "";
-            result.property = "";
+            result.owner = "";result.ownerid = "";result.property = "";
             ccsInReport.forEach(function(cc){result[cc.idFS] = ""});
-            result.private = "";
-            result.Total = "";
+            result.private = "";result.Total = "";
             return result;
           };
           var totallsRow = generateNewRowTotalledCharges();
           var positionTotalCharges = 1;
           var nrOfProperties = 0;
           totalCharges.forEach(function(tc){
-            if ((nrOfProperties > 0) && (tc.ownerId != totallsRow.ownerId)){
-              totalledCharges.push(totallsRow);
-              if (positionTotalCharges < totalCharges.length) {totalledCharges.push(generateEmptyRowTotalledCharges());};
+            if (tc.ownerId != totallsRow.ownerId) {
+              if (nrOfProperties > 1){totalledCharges.push(totallsRow);};
+              if (positionTotalCharges > 1) {totalledCharges.push(generateEmptyRowTotalledCharges());};
               totallsRow = generateNewRowTotalledCharges();
               nrOfProperties = 0;
             };
@@ -4565,8 +4559,9 @@
             totallsRow.private += tc.private;
             totallsRow.Total += tc.Total;
             nrOfProperties += 1;
-            
+            if ((nrOfProperties > 1) && (positionTotalCharges ==  totalCharges.length)) {totalledCharges.push(totallsRow);};
             positionTotalCharges += 1;
+            
           });
           function getId(cc){return cc.idFS};
           var totalChargesAmountFields = ccsInReport.map(getId);
