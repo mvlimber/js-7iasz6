@@ -4485,7 +4485,8 @@
             ccsInReport.forEach(function(cc) {
               var quotaHere = cc.distribution[p.idFS];
               if (!quotaHere) {quotaHere = 0};
-              rowTotalCharges[cc.idFS] = Number(((commonCharges[cc.idFS].total)*quotaHere/(cc.totalQuota)).toFixed(2));});
+              rowTotalCharges[cc.idFS] = Number(((commonCharges[cc.idFS].total)*quotaHere/(cc.totalQuota)).toFixed(2));
+            });
             totalCharges.push(rowTotalCharges);
           });
 
@@ -4524,7 +4525,7 @@
           /* sort total charges */
           function compareTC(tc1, tc2){if (tc1.owner < tc2.owner) {return -1} else {return 1}};
           totalCharges.sort(compareTC);
-
+          /* add totalling lines in total charges */
           function generateEmptyRowTotalledCharges() {
             var result = {};
             result.owner = " ";
@@ -4537,10 +4538,11 @@
           };
           var totallsRow = generateEmptyRowTotalledCharges();
           var positionTotalCharges = 1;
+          var nrOfProperties = 0;
           totalCharges.forEach(function(tc){
             if ((nrOfProperties > 0) && (tc.ownerId != totallsRow.ownerId)){
               totalledCharges.push(totallsRow);
-              if (positionTotalCharges < totalCharges.length()) {totalledCharges.push(generateEmptyRowTotalledCharges());};
+              if (positionTotalCharges < totalCharges.length) {totalledCharges.push(generateEmptyRowTotalledCharges());};
               totallsRow = generateEmptyRowTotalledCharges();
               nrOfProperties = 0;
             };
@@ -4552,15 +4554,15 @@
             totallsRow.private += tc.private;
             totallsRow.Total += tc.Total;
             nrOfProperties += 1;
-            }
+            
             positionTotalCharges += 1;
           });
           function getId(cc){return cc.idFS};
           var totalChargesAmountFields = ccsInReport.map(getId);
           totalChargesAmountFields.push("private");
           totalChargesAmountFields.push("Total");
-          convertToCurrency(totalCharges, totalChargesAmountFields);
-          writePDF (closeDateTransactions,false,commonCharges,privateCharges,totalCharges);
+          convertToCurrency(totalledCharges, totalChargesAmountFields);
+          writePDF (closeDateTransactions,false,commonCharges,privateCharges,totalledCharges);
         });
       
       };
