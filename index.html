@@ -4528,9 +4528,9 @@
           /* add totalling lines in total charges */
           function generateEmptyRowTotalledCharges() {
             var result = {};
-            result.owner = " ";
+            result.owner = "";
             result.ownerid = "";
-            result.property = " ";
+            result.property = "";
             ccsInReport.forEach(function(cc){result[cc.idFS] = 0});
             result.private = 0;
             result.Total = 0;
@@ -4548,7 +4548,7 @@
             };
             
             totalledCharges.push(tc);
-            totallsRow.owner = tc.owner;
+            totallsRow.owner = "Total";
             totallsRow.ownerId = tc.ownerId;
             ccsInReport.forEach(function(cc){totallsRow[cc.idFS] += tc[cc.idFS]});
             totallsRow.private += tc.private;
