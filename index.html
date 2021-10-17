@@ -4498,7 +4498,7 @@
             ccsInReport.forEach(function(cc) {
               var quotaHere = cc.distribution[p.idFS];
               if (!quotaHere) {quotaHere = 0};
-              rowTotalCharges[cc.idFS] = Number(((commonCharges[cc.idFS].total)*(cc.distribution[p.idFS])/(cc.totalQuota)).toFixed(2));});
+              rowTotalCharges[cc.idFS] = Number(((commonCharges[cc.idFS].total)*quotaHere/(cc.totalQuota)).toFixed(2));});
             rowTotalCharges.Total = " ";
             totalCharges.push(rowTotalCharges);
           });
