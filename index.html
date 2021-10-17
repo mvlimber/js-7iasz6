@@ -4370,7 +4370,8 @@
       function convertToCurrency (aTable, listOfFields) {
         aTable.forEach(function(aRow){
           listOfFields.forEach(function(anAmountField){
-            if (aRow[anAmountField] == 0) {aRow[anAmountField]=" ";}
+            if (aRow[anAmountField] === 0) {aRow[anAmountField]=" ";}
+            else if (aRow[anAmountField] == "") {aRow[anAmountField]="";}
             else {aRow[anAmountField] = aRow[anAmountField].toLocaleString("nl-BE",currencyStyle);};
           });        
         });
@@ -4526,7 +4527,7 @@
           function compareTC(tc1, tc2){if (tc1.owner < tc2.owner) {return -1} else {return 1}};
           totalCharges.sort(compareTC);
           /* add totalling lines in total charges */
-          function generateEmptyRowTotalledCharges() {
+          function generateNewRowTotalledCharges() {
             var result = {};
             result.owner = "";
             result.ownerid = "";
@@ -4536,14 +4537,24 @@
             result.Total = 0;
             return result;
           };
-          var totallsRow = generateEmptyRowTotalledCharges();
+          function generateEmptyRowTotalledCharges() {
+            var result = {};
+            result.owner = "";
+            result.ownerid = "";
+            result.property = "";
+            ccsInReport.forEach(function(cc){result[cc.idFS] = ""});
+            result.private = "";
+            result.Total = "";
+            return result;
+          };
+          var totallsRow = generateNewRowTotalledCharges();
           var positionTotalCharges = 1;
           var nrOfProperties = 0;
           totalCharges.forEach(function(tc){
             if ((nrOfProperties > 0) && (tc.ownerId != totallsRow.ownerId)){
               totalledCharges.push(totallsRow);
               if (positionTotalCharges < totalCharges.length) {totalledCharges.push(generateEmptyRowTotalledCharges());};
-              totallsRow = generateEmptyRowTotalledCharges();
+              totallsRow = generateNewRowTotalledCharges();
               nrOfProperties = 0;
             };
             
