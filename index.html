@@ -4519,6 +4519,8 @@
             totalRow += tC.private;
             tC.Total = totalRow; 
           })
+          function compareTC(tc1, tc2){if (tc1.owner < tc2.owner) {return -1} else {return 1}};
+          totalCharges.sort(compareTC);
           function getId(cc){return cc.idFS};
           var totalChargesAmountFields = ccsInReport.map(getId);
           totalChargesAmountFields.push("private");
