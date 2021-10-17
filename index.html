@@ -4472,7 +4472,7 @@
               commonCharges[trData.costCenter].transactions.push(trData);
             };
           });
-          /* build empty total charges table */
+          /* build empty total charges table and fill totalled common charges*/
           propertiesInReport.forEach(function (p){
             function checkMemberId(thisM) {return thisM.idFS == p.owner};
             var rowTotalCharges= {};
@@ -4489,7 +4489,7 @@
             totalCharges.push(rowTotalCharges);
           });
 
-          /* fill private charges table and fill private in total charges */ 
+          /* fill private charges table and fill totalled private charges */ 
           transactionsFS.forEach(function(transactionFS){
             var trData = transactionFS.data();
             if (trData.type == "PRIVA") {
@@ -4507,7 +4507,6 @@
               privateCharges.push(trData);
             };
           });
-
           privateCharges.push({name: "Total", date: " ", communication: " ", assignments: " ", amount: privateTotal});
           convertToCurrency(privateCharges, ["amount"]);
           
@@ -4515,13 +4514,14 @@
             commonCharges[cc].transactions.push({type:"Total",name:" ",date:" ",communication:" ",amount:commonCharges[cc].total});
             convertToCurrency(commonCharges[cc].transactions, ["amount"]);
           });
-          
+          /* total each line in total charges */
           totalCharges.forEach(function(tC){
             var totalRow = 0;
             ccsInReport.forEach(function(cc){totalRow += tC[cc.idFS]});
             totalRow += tC.private;
             tC.Total = totalRow; 
-          })
+          });
+          /* sort total charges */
           function compareTC(tc1, tc2){if (tc1.owner < tc2.owner) {return -1} else {return 1}};
           totalCharges.sort(compareTC);
 
