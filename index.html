@@ -4482,7 +4482,6 @@
               var quotaHere = cc.distribution[p.idFS];
               if (!quotaHere) {quotaHere = 0};
               rowTotalCharges[cc.idFS] = Number(((commonCharges[cc.idFS].total)*quotaHere/(cc.totalQuota)).toFixed(2));});
-            rowTotalCharges.Total = " ";
             totalCharges.push(rowTotalCharges);
           });
 
@@ -4514,9 +4513,16 @@
             convertToCurrency(commonCharges[cc].transactions, ["amount"]);
           });
           
+          totalCharges.forEach(function(tC){
+            var totalRow = 0;
+            ccsInReport.forEach(function(cc){totalRow += tC[cc.idFS]});
+            totalRow += tC.private;
+            tC.Total = totalRow; 
+          })
           function getId(cc){return cc.idFS};
           var totalChargesAmountFields = ccsInReport.map(getId);
           totalChargesAmountFields.push("private");
+          totalChargesAmountFields.push("Total");
           convertToCurrency(totalCharges, totalChargesAmountFields);
           writePDF (closeDateTransactions,false,commonCharges,privateCharges,totalCharges);
         });
