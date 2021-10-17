@@ -4523,7 +4523,6 @@
           totalCharges.sort(compareTC);
 
           var totalledCharges = [];
-          var totallsRow = {};
           function generateEmptyRowTotalledCharges() {
             var result = {};
             result.owner = " ";
@@ -4534,36 +4533,23 @@
             result.Total = 0;
             return result;
           };
-          function swapToOtherOwner(){
-            totallsRow.ownerId = "";
-            ccsInReport.forEach(function(cc){totallsRow[cc.idFS] = 0});
-            totallsRow.private = 0;
-            totallsRow.Total = 0;
-            var nrOfProperties = 0;
-          };
-          swapToOtherOwner();
+          var totallsRow = generateEmptyRowTotalledCharges();
           var positionTotalCharges = 1;
           totalCharges.forEach(function(tc){
             if ((nrOfProperties > 0) && (tc.ownerId != totallsRow.ownerId)){
               totalledCharges.push(totallsRow);
-              if (positionTotalCharges < totalCharges.length()) {}
-              swapToOtherOwner();
+              if (positionTotalCharges < totalCharges.length()) {totalledCharges.push(generateEmptyRowTotalledCharges());};
+              totallsRow = generateEmptyRowTotalledCharges();
+              nrOfProperties = 0;
             };
             
             totalledCharges.push(tc);
-            rowTotalCharges.property = " "; 
-            rowTotalCharges.owner = tc.owner;
+            totallsRow.owner = tc.owner;
+            totallsRow.ownerId = tc.ownerId;
             ccsInReport.forEach(function(cc){totallsRow[cc.idFS] += tc[cc.idFS]});
             totallsRow.private += tc.private;
             totallsRow.Total += tc.Total;
             nrOfProperties += 1;
-            
-              if (nrOfProperties > 0) {
-                totalledCharges.push(totallsRow);
-                swapToOtherOwner();
-
-              };
-              hier lege lijn invullen
             }
             positionTotalCharges += 1;
           });
