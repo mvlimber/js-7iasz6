@@ -4521,6 +4521,20 @@
           })
           function compareTC(tc1, tc2){if (tc1.owner < tc2.owner) {return -1} else {return 1}};
           totalCharges.sort(compareTC);
+          var totalledCharges = [];
+          var totallsRow = {};
+          If (totalCharges[0]) {totallsRow.ownerId = totalCharges[0].ownerId;};
+          ccsInReport.forEach(function(cc){totallsRow[cc.idFS] = 0});
+          totallsRow.private = 0;
+          totallsRow.Total = 0;
+          totalCharges.forEach(function(tc){
+            if (tc.ownerId == totallsRow.ownerId) {
+              totalledCharges.push(tc);
+              ccsInReport.forEach(function(cc){totallsRow[cc.idFS] += tc[cc.idFS]});
+              totallsRow.private += tc.private;
+              totallsRow.Total += tc.Total;
+            }
+          });
           function getId(cc){return cc.idFS};
           var totalChargesAmountFields = ccsInReport.map(getId);
           totalChargesAmountFields.push("private");
