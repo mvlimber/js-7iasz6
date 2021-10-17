@@ -4370,7 +4370,8 @@
       function convertToCurrency (aTable, listOfFields) {
         aTable.forEach(function(aRow){
           listOfFields.forEach(function(anAmountField){
-            aRow[anAmountField] = aRow[anAmountField].toLocaleString("nl-BE",currencyStyle);
+            if (aRow[anAmountField] == 0) {aRow[anAmountField]=" ";}
+            else {aRow[anAmountField] = aRow[anAmountField].toLocaleString("nl-BE",currencyStyle);};
           });        
         });
         return aTable;
@@ -4444,7 +4445,11 @@
         propertiesInReport = await propertiesGet(); 
         membersInReport = await membersGet();
         var commonCharges = {}; 
+        var privateCharges = [];
+        var privateTotal = 0;
         var totalCharges = [];
+        var totalledCharges = [];
+        /* initialise common charges holder tabels*/
         var i = 0;
         ccsInReport.forEach(function(cc) {
           var ccId = cc.idFS;
@@ -4457,10 +4462,9 @@
           };
           i += 1;
         });
-        var privateCharges = [];
-        var privateTotal = 0;
-       
+        
         refCoproperty.collection("Transactions").where("bookDate", ">", lastCloseDate).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){
+          /* fill common charges tables */
           transactionsFS.forEach(function(transactionFS){
             var trData = transactionFS.data();
             if (trData.type != "PRIVA") {
@@ -4468,7 +4472,7 @@
               commonCharges[trData.costCenter].transactions.push(trData);
             };
           });
-
+          /* build empty total charges table */
           propertiesInReport.forEach(function (p){
             function checkMemberId(thisM) {return thisM.idFS == p.owner};
             var rowTotalCharges= {};
@@ -4485,8 +4489,7 @@
             totalCharges.push(rowTotalCharges);
           });
 
-          
-
+          /* fill private charges table and fill private in total charges */ 
           transactionsFS.forEach(function(transactionFS){
             var trData = transactionFS.data();
             if (trData.type == "PRIVA") {
@@ -4522,7 +4525,6 @@
           function compareTC(tc1, tc2){if (tc1.owner < tc2.owner) {return -1} else {return 1}};
           totalCharges.sort(compareTC);
 
-          var totalledCharges = [];
           function generateEmptyRowTotalledCharges() {
             var result = {};
             result.owner = " ";
