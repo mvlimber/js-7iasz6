@@ -4534,14 +4534,14 @@
             var result = {};
             result.owner = "";result.ownerid = "";result.property = "";
             ccsInReport.forEach(function(cc){result[cc.idFS] = 0});
-            result.private = 0;result.Total = 0;
+            result.private = 0;result.water_regu = 0;result.heating_regu = 0;result.Total = 0;
             return result;
           };
           function generateEmptyRowTotalledCharges() {
             var result = {};
             result.owner = "";result.ownerid = "";result.property = "";
             ccsInReport.forEach(function(cc){result[cc.idFS] = ""});
-            result.private = "";result.Total = "";
+            result.private = "";result.water_regu = "";result.heating_regu = "";result.Total = "";
             return result;
           };
           var totallsRow = generateNewRowTotalledCharges();
@@ -5087,6 +5087,9 @@
           function checkId(ccHere){return ccHere.idFS == cc};
           printTablePortrait("Common charges for cost center " + ccsInReport.find(checkId).name, commonCharges[cc].transactions, headerCommon);});
         printTableLandscape("Private expenses", privateCharges, headerPrivate, 10);
+        console.log("total charges is ", totalCharges);
+        console.log("headerCol charges is ", headerCharges);
+        
         printTableLandscape("Total charges", totalCharges, headerCharges, 10);
         
         /*
