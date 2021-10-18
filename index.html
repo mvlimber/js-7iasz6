@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 
@@ -4542,6 +4543,8 @@
             return result;
           };
           var totallsRow = generateNewRowTotalledCharges();
+          var grandTotalsRow = generateNewRowTotalledCharges();
+          grandTotalsRow.owner = "Grand Total";
           var positionTotalCharges = 1;
           var nrOfProperties = 0;
           totalCharges.forEach(function(tc){
@@ -4555,14 +4558,18 @@
             totalledCharges.push(tc);
             totallsRow.owner = "Total";
             totallsRow.ownerId = tc.ownerId;
-            ccsInReport.forEach(function(cc){totallsRow[cc.idFS] += tc[cc.idFS]});
-            totallsRow.private += tc.private;
-            totallsRow.Total += tc.Total;
+            ccsInReport.forEach(function(cc){
+              totallsRow[cc.idFS] += tc[cc.idFS];
+              grandTotalsRow[cc.idFS] += tc[cc.idFS];
+            });
+            totallsRow.private += tc.private; grandTotalsRow.private += tc.private;
+            totallsRow.Total += tc.Total; grandTotalsRow.Total += tc.Total;
             nrOfProperties += 1;
             if ((nrOfProperties > 1) && (positionTotalCharges ==  totalCharges.length)) {totalledCharges.push(totallsRow);};
-            positionTotalCharges += 1;
-            
+            positionTotalCharges += 1;  
           });
+          totalledCharges.push(generateEmptyRowTotalledCharges());
+          totalledCharges.push(grandTotalsRow);
           function getId(cc){return cc.idFS};
           var totalChargesAmountFields = ccsInReport.map(getId);
           totalChargesAmountFields.push("private");
@@ -4969,8 +4976,7 @@
         const rowsPortrait =17;
         var numPages;
         if (metersIncludedHere) {
-          numPages = 9;
-           /*numPages = 1 + Math.ceil(dataWaterPeriod.length/rowsPortrait) + Math.ceil(dataWater.length/rowsPortrait) + Math.ceil(dataHeatingPeriod.length/rowsPortrait) + Math.ceil(dataHeating.length/rowsPortrait) + Math.ceil(dataConsumption.length/rowsLandscape) + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsLandscape) + Math.ceil(dataPrivate.length/rowsLandscapePrivate) + Math.ceil(tableCharges.length/rowsLandscape);*/
+           numPages = 1 + Math.ceil(dataWaterPeriod.length/rowsPortrait) + Math.ceil(dataWater.length/rowsPortrait) + Math.ceil(dataHeatingPeriod.length/rowsPortrait) + Math.ceil(dataHeating.length/rowsPortrait) + Math.ceil(dataConsumption.length/rowsLandscape) + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsLandscape) + Math.ceil(dataPrivate.length/rowsLandscapePrivate) + Math.ceil(tableCharges.length/rowsLandscape);
         } else {
           numPages = 6;
            /*numPages = 1 + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsLandscape) + Math.ceil(dataPrivate.length/rowsPortrait) + Math.ceil(tableCharges.length/rowsPortrait);
@@ -5044,14 +5050,7 @@
         doc.setFontSize(14);
         doc.text("Common charges per cost center", 30, 145);
         doc.text("Private expenses", 30, 155);
-        if (!metersIncludedHere) {
-          doc.text("Total charges", 30, 165);
-        ] else {
-          doc.text("Expenses Water since previous regularisation", 30, 165);
-          doc.text("Expenses Heating since previous regularisation", 30, 175);
-          doc.text("Regulation Water and Heating per property", 30, 185);
-          doc.text("Total charges", 30, 195);
-        };
+        doc.text("Total charges", 30, 165);
         /*
         doc.text("Water:", 30, 155);doc.text("total building this period", 90, 155);
         doc.text("Heating:", 30, 165);doc.text("total building this period", 90, 165);
@@ -5072,8 +5071,6 @@
           function checkId(ccHere){return ccHere.idFS == cc};
           printTablePortrait("Common charges for cost center " + ccsInReport.find(checkId).name, commonCharges[cc].transactions, headerCommon);});
         printTableLandscape("Private expenses", privateCharges, headerPrivate, 10);
-        console.log("header ",headerChargesMetersExcluded);
-        console.log("data ",totalCharges);
         printTableLandscape("Total charges", totalCharges, headerChargesMetersExcluded, 10);
         
         /*
