@@ -5050,7 +5050,16 @@
         doc.setFontSize(14);
         doc.text("Common charges per cost center", 30, 145);
         doc.text("Private expenses", 30, 155);
-        doc.text("Total charges", 30, 165);
+        if (metersIncludedHere){
+          doc.text("Water expenses since previous regularisation", 30, 165);
+          doc.text("Heating expenses since previous regularisation", 30, 175);
+          doc.text("Regularisation Water and Heating", 30, 185);
+          doc.text("Total charges", 30, 195);
+        } else {
+          doc.text("Total charges", 30, 165);
+        };
+
+        
         /*
         doc.text("Water:", 30, 155);doc.text("total building this period", 90, 155);
         doc.text("Heating:", 30, 165);doc.text("total building this period", 90, 165);
