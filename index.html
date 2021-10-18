@@ -4418,6 +4418,7 @@
       var emptyConsumptionLine = {owner:"", property:"", meter:"", type:"", last_reading:"", reading:"", difference:"", water:"", water_payed:"", water_regu:"", heating:"", heating_payed:"", heating_regu:""};
      var headerChargesMetersIncluded = [
         {id:"owner",name:"owner",prompt:"owner",width: 60,align: "center",padding: 0},
+        {id:"property",name:"property",prompt:"property",width: 20,align: "center",padding: 0},
         {id:"private",name:"private",prompt:"private charges",width: 40,align: "center",padding: 0},
         {id:"water_regu",name:"water_regu",prompt:"regularisation water",width: 40,align: "center",padding: 0},
         {id:"heating_regu",name:"heating_regu",prompt:"regularisation heating",width: 40,align: "center",padding: 0},
@@ -4457,9 +4458,7 @@
           commonCharges[ccId] ={};
           commonCharges[ccId].total = 0;
           commonCharges[ccId].transactions = [];
-          if (!metersIncluded){
-            headerCharges.splice(2+i, 0, {id:ccId,name:ccId,prompt:"common charges " + ccsInReport.find(checkId).name,width: 40,align: "center",padding: 0});
-          };
+          headerCharges.splice(2+i, 0, {id:ccId,name:ccId,prompt:"common charges " + ccsInReport.find(checkId).name,width: 40,align: "center",padding: 0});
           i += 1;
         });
         
