@@ -4418,15 +4418,12 @@
       var emptyConsumptionLine = {owner:"", property:"", meter:"", type:"", last_reading:"", reading:"", difference:"", water:"", water_payed:"", water_regu:"", heating:"", heating_payed:"", heating_regu:""};
      var headerChargesMetersIncluded = [
         {id:"owner",name:"owner",prompt:"owner",width: 60,align: "center",padding: 0},
-        {id:"common",name:"common",prompt:"common charges",width: 40,align: "center",padding: 0},
         {id:"private",name:"private",prompt:"private charges",width: 40,align: "center",padding: 0},
-        {id:"water_pro",name:"water_pro",prompt:"provision water",width: 40,align: "center",padding: 0},
-        {id:"heating_pro",name:"heating_pro",prompt:"provision heating",width: 40,align: "center",padding: 0},
         {id:"water_regu",name:"water_regu",prompt:"regularisation water",width: 40,align: "center",padding: 0},
         {id:"heating_regu",name:"heating_regu",prompt:"regularisation heating",width: 40,align: "center",padding: 0},
         {id:"Total",name:"Total",prompt:"Total",width: 55,align: "right",padding: 0}
       ];
-      var headerChargesMetersExcluded = [
+      var headerCharges = [
         {id:"owner",name:"owner",prompt:"owner",width: 60,align: "center",padding: 0},
         {id:"property",name:"property",prompt:"property",width: 20,align: "center",padding: 0},
         {id:"private",name:"private",prompt:"private charges",width: 35,align: "center",padding: 0},
@@ -4451,6 +4448,7 @@
         var privateTotal = 0;
         var totalCharges = [];
         var totalledCharges = [];
+        if (metersIncluded){headerCharges = headerChargesMetersIncluded;}
         /* initialise common charges holder tabels*/
         var i = 0;
         ccsInReport.forEach(function(cc) {
@@ -4460,7 +4458,7 @@
           commonCharges[ccId].total = 0;
           commonCharges[ccId].transactions = [];
           if (!metersIncluded){
-            headerChargesMetersExcluded.splice(2+i, 0, {id:ccId,name:ccId,prompt:"common charges " + ccsInReport.find(checkId).name,width: 40,align: "center",padding: 0});
+            headerCharges.splice(2+i, 0, {id:ccId,name:ccId,prompt:"common charges " + ccsInReport.find(checkId).name,width: 40,align: "center",padding: 0});
           };
           i += 1;
         });
@@ -4489,6 +4487,10 @@
               if (!quotaHere) {quotaHere = 0};
               rowTotalCharges[cc.idFS] = Number(((commonCharges[cc.idFS].total)*quotaHere/(cc.totalQuota)).toFixed(2));
             });
+            if (metersIncluded){
+              rowTotalCharges.water_regu = 0;
+              rowTotalCharges.heating_regu = 0;
+            };
             totalCharges.push(rowTotalCharges);
           });
 
@@ -4563,6 +4565,10 @@
               grandTotalsRow[cc.idFS] += tc[cc.idFS];
             });
             totallsRow.private += tc.private; grandTotalsRow.private += tc.private;
+            if (metersIncluded){
+              totallsRow.water_regu += tc.water_regu; grandTotalsRow.water_regu += tc.water_regu;
+              totallsRow.heating_regu += tc.heating_regu; grandTotalsRow.heating_regu += tc.heating_regu;
+            };
             totallsRow.Total += tc.Total; grandTotalsRow.Total += tc.Total;
             nrOfProperties += 1;
             if ((nrOfProperties > 1) && (positionTotalCharges ==  totalCharges.length)) {totalledCharges.push(totallsRow);};
@@ -4575,7 +4581,7 @@
           totalChargesAmountFields.push("private");
           totalChargesAmountFields.push("Total");
           convertToCurrency(totalledCharges, totalChargesAmountFields);
-          writePDF (closeDateTransactions,false,commonCharges,privateCharges,totalledCharges);
+          writePDF (closeDateTransactions,metersIncluded,commonCharges,privateCharges,totalledCharges);
         });
       
       };
@@ -4976,7 +4982,8 @@
         const rowsPortrait =17;
         var numPages;
         if (metersIncludedHere) {
-           numPages = 1 + Math.ceil(dataWaterPeriod.length/rowsPortrait) + Math.ceil(dataWater.length/rowsPortrait) + Math.ceil(dataHeatingPeriod.length/rowsPortrait) + Math.ceil(dataHeating.length/rowsPortrait) + Math.ceil(dataConsumption.length/rowsLandscape) + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsLandscape) + Math.ceil(dataPrivate.length/rowsLandscapePrivate) + Math.ceil(tableCharges.length/rowsLandscape);
+          numPages = 9;
+           /*numPages = 1 + Math.ceil(dataWaterPeriod.length/rowsPortrait) + Math.ceil(dataWater.length/rowsPortrait) + Math.ceil(dataHeatingPeriod.length/rowsPortrait) + Math.ceil(dataHeating.length/rowsPortrait) + Math.ceil(dataConsumption.length/rowsLandscape) + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsLandscape) + Math.ceil(dataPrivate.length/rowsLandscapePrivate) + Math.ceil(tableCharges.length/rowsLandscape);*/
         } else {
           numPages = 6;
            /*numPages = 1 + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsLandscape) + Math.ceil(dataPrivate.length/rowsPortrait) + Math.ceil(tableCharges.length/rowsPortrait);
@@ -5080,7 +5087,7 @@
           function checkId(ccHere){return ccHere.idFS == cc};
           printTablePortrait("Common charges for cost center " + ccsInReport.find(checkId).name, commonCharges[cc].transactions, headerCommon);});
         printTableLandscape("Private expenses", privateCharges, headerPrivate, 10);
-        printTableLandscape("Total charges", totalCharges, headerChargesMetersExcluded, 10);
+        printTableLandscape("Total charges", totalCharges, headerCharges, 10);
         
         /*
         printTablePortrait("Water: total building this period", dataWaterPeriod, headerWH);
@@ -5095,7 +5102,7 @@
           printTableLandscape("Water and Heating: regularisation per property and owner (CW = Cold Water, HW= Hot Water, HE = heating)", dataConsumption, headerConsumption,8);
           printTableLandscape("Total charges: total charges per owner", tableCharges, headerChargesMetersIncluded,10);
         } else {
-          printTableLandscape("Total charges: total charges per owner", tableCharges, headerChargesMetersExcluded, 10);
+          printTableLandscape("Total charges: total charges per owner", tableCharges, headerCharges, 10);
         };
         */
         refCoproperty.collection("ChargesReports").add({startDate: startDateString, endDate: closeDateTransactions, metersIncluded: metersIncludedHere, confirmed: false }).then (function (chargesReportFS){
