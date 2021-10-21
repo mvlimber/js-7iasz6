@@ -4360,25 +4360,7 @@
       <!-- Charges report ----------------------------------------------------->
       <script>
       
-      function reportTransaction(trData){
-        trData.type = TransTypeRead[trData.type];
-        if (!trData.communication) { trData.communication= " ";} 
-        else {trData.communication = trData.communication.substr(0,62);};
-        trData.name=trData.name.substr(0,25);
-        return trData.amount;
-      };
-
-      function convertToCurrency (aTable, listOfFields) {
-        aTable.forEach(function(aRow){
-          listOfFields.forEach(function(anAmountField){
-            if (aRow[anAmountField] === 0) {aRow[anAmountField]=" ";}
-            else if (aRow[anAmountField] == "") {aRow[anAmountField]="";}
-            else {aRow[anAmountField] = aRow[anAmountField].toLocaleString("nl-BE",currencyStyle);};
-          });        
-        });
-        return aTable;
-      };
-
+      
       var headerCommon = [
         {id:"type",name:"type",prompt:"type",width: 35,align: "center",padding: 0},
         {id:"name",name:"name",prompt:"counter party",width: 50,align: "center",padding: 0},
@@ -4434,6 +4416,36 @@
       var ccsInReport;
       var propertiesInReport;
       var membersInReport;
+
+      function reportTransaction(trData){
+        trData.type = TransTypeRead[trData.type];
+        if (!trData.communication) { trData.communication= " ";} 
+        else {trData.communication = trData.communication.substr(0,62);};
+        trData.name=trData.name.substr(0,25);
+        return trData.amount;
+      };
+
+      function convertToCurrency (aTable, listOfFields) {
+        aTable.forEach(function(aRow){
+          listOfFields.forEach(function(anAmountField){
+            if (aRow[anAmountField] === 0) {aRow[anAmountField]=" ";}
+            else if (aRow[anAmountField] == "") {aRow[anAmountField]="";}
+            else {aRow[anAmountField] = aRow[anAmountField].toLocaleString("nl-BE",currencyStyle);};
+          });        
+        });
+        return aTable;
+      };
+
+      async function getConsumtionTransactions(consumptionType, consumptionTable){
+        refCoproperty.collection("Transactions").where("type", "==", consumptionType).where("bookDate", ">", lastReguDate).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){
+          var total = 0;
+          transactionsFS.forEach(function(transactionFS){
+            var resultRow = transactionFS.data();
+            total += reportTransaction(resultRow);
+            consumptionTable.push(resultRow);});      
+          return total;
+        });
+      }
       
       async function generateChargesReport(closeDateTransactions, metersIncluded){  
         ccsInReport = await costCentersGet(); 
@@ -4528,6 +4540,7 @@
           /* sort total charges */
           function compareTC(tc1, tc2){if (tc1.owner < tc2.owner) {return -1} else {return 1}};
           totalCharges.sort(compareTC);
+          
           /* add totalling lines in total charges */
           function generateNewRowTotalledCharges() {
             var result = {};
