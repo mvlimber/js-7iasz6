@@ -4436,15 +4436,17 @@
         return aTable;
       };
 
-      async function getConsumtionTransactions(consumptionType, consumptionTable){
-        refCoproperty.collection("Transactions").where("type", "==", consumptionType).where("bookDate", ">", lastReguDate).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){
-          var total = 0;
-          transactionsFS.forEach(function(transactionFS){
-            var resultRow = transactionFS.data();
-            total += reportTransaction(resultRow);
-            consumptionTable.push(resultRow);});      
-          return total;
-        });
+      async function getConsumtionTransactions(closeDateTransactions, metersIncluded, consumptionType, consumptionTable){
+        if (metersIncluded){
+          refCoproperty.collection("Transactions").where("type", "==", consumptionType).where("bookDate", ">", lastReguDate).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){
+            var total = 0;
+            transactionsFS.forEach(function(transactionFS){
+              var resultRow = transactionFS.data();
+              total += reportTransaction(resultRow);
+              consumptionTable.push(resultRow);});      
+            return total;
+          });
+        } else { return 0;};
       }
       
       async function generateChargesReport(closeDateTransactions, metersIncluded){  
@@ -4534,6 +4536,11 @@
             commonCharges[cc].transactions.push({type:"Total",name:" ",date:" ",communication:" ",amount:commonCharges[cc].total});
             convertToCurrency(commonCharges[cc].transactions, ["amount"]);
           });
+          /* water */
+          totalWater = await getConsumtionTransactions("WATER",waterCharges);
+          convertToCurrency(waterCharges, ["amount"]);
+          
+          
           /* total each line in total charges */
           totalCharges.forEach(function(tC){
             var totalRow = 0;
@@ -4597,7 +4604,7 @@
           totalChargesAmountFields.push("private");
           totalChargesAmountFields.push("Total");
           convertToCurrency(totalledCharges, totalChargesAmountFields);
-          writePDF (closeDateTransactions,metersIncluded,commonCharges,privateCharges,totalledCharges);
+          writePDF (closeDateTransactions,metersIncluded,commonCharges,privateCharges,totalledCharges,watercharges);
         });
       
       };
@@ -5103,9 +5110,9 @@
           function checkId(ccHere){return ccHere.idFS == cc};
           printTablePortrait("Common charges for cost center " + ccsInReport.find(checkId).name, commonCharges[cc].transactions, headerCommon);});
         printTableLandscape("Private expenses", privateCharges, headerPrivate, 10);
-        console.log("total charges is ", totalCharges);
-        console.log("headerCol charges is ", headerCharges);
-        
+        if (metersIncludedHere){
+          printTablePortrait("Water expenses since previous regularisation" , waterCharges, headerWH);});
+        }
         printTableLandscape("Total charges", totalCharges, headerCharges, 10);
         
         /*
