@@ -2861,8 +2861,41 @@
     </script>
     <!--   Meter readings scripts start here -->
     <script>
-      var meterReadingsTable = document.getElementById("meterReadingsTable");
       var meterReadingsLoaded = false;
+      var meterReadings = null;
+
+      async function meterReadingsGet(){
+        if (meterReadings){return meterReadings;}
+        else {
+          var result = {};
+          var ps = await propertiesGet();
+          var copropertyMeterReadingsFSArray = await refCoproperty.collection("Meters").orderBy("type").get();
+          copropertyMeterReadingsFSArray.forEach(function(objectFS){
+            if (objectFS.data().status.normalize() === "ACTIF".normalize()) {
+              var thisObject = objectFS.data();
+              thisObject.idFS = objectFS.id;
+              result.push(thisObject);
+            };
+          });
+          propertiesGet().then(function(ps){
+          ps.forEach(function(p){
+            refCoproperty.collection("Properties").doc(p.idFS).collection("Meters").orderBy("type").get().then(function(meterFSArray){
+              meterFSArray.forEach(function(meterFS){
+                if (meterFS.data().status.normalize() === "ACTIF".normalize()) {loadMeterReading(p,meterFS);};
+              });
+            });
+          });  
+          refCoproperty.collection("Meters").orderBy("type").get().then(function(meterFSArray){
+            meterFSArray.forEach(function(meterFS){
+              if (meterFS.data().status.normalize() === "ACTIF".normalize()) {loadMeterReading(null,meterFS);};
+            });
+          });
+        }); 
+        };
+      };
+
+      var meterReadingsTable = document.getElementById("meterReadingsTable");
+      
 
       function loadMeterReading(property, meterFS){
         var objectsRow= document.createElement('tr');
@@ -2969,25 +3002,7 @@
           });
         });    
       };
-      /*
-      function refreshMeterReadings(){
-        emptyHTMLSet(meterReadingsTable);
-        refCoproperty.collection("Properties").orderBy("code").get().then(function(propertyFSArray){
-          propertyFSArray.forEach(function(propertyFS){
-            refCoproperty.collection("Properties").doc(propertyFS.id).collection("Meters").orderBy("type").get().then(function(meterFSArray){
-              meterFSArray.forEach(function(meterFS){
-                if (meterFS.data().status.normalize() === "ACTIF".normalize()) {loadMeterReading(propertyFS,meterFS);};
-              });
-            });
-          });  
-          refCoproperty.collection("Meters").orderBy("type").get().then(function(meterFSArray){
-            meterFSArray.forEach(function(meterFS){
-              if (meterFS.data().status.normalize() === "Active".normalize()) {loadMeterReading(null,meterFS);};
-            });
-          });
-        });    
-      };
-      */
+      
       function loadMeterReadings() {
         hideMenu();
         document.getElementById("logo-container").innerHTML = "MyCondos:Meter Readings";
