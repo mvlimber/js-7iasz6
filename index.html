@@ -4436,18 +4436,19 @@
         return aTable;
       };
 
-      async function getConsumtionTransactions(closeDateTransactions, metersIncluded, consumptionType, consumptionTable){
+      async function getConsumptionTransactions(closeDateTransactions, metersIncluded, consumptionType, consumptionTable){
         if (metersIncluded){
           refCoproperty.collection("Transactions").where("type", "==", consumptionType).where("bookDate", ">", lastReguDate).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){
             var total = 0;
             transactionsFS.forEach(function(transactionFS){
               var resultRow = transactionFS.data();
               total += reportTransaction(resultRow);
-              consumptionTable.push(resultRow);});      
+              consumptionTable.push(resultRow);
+            });      
             return total;
           });
         } else { return 0;};
-      }
+      };
       
       async function generateChargesReport(closeDateTransactions, metersIncluded){  
         ccsInReport = await costCentersGet(); 
@@ -4464,8 +4465,9 @@
         var totalCharges = [];
         var totalledCharges = [];
         var waterCharges = [];
-        var heatingCharges = [];
         var totalWater = 0; 
+        totalWater = await getConsumptionTransactions(closeDateTransactions, metersIncluded,"WATER",waterCharges);
+        var heatingCharges = [];
         var totalheating = 0;
         if (metersIncluded){headerCharges = headerChargesMetersIncluded;}
         /* initialise common charges holder tabels*/
@@ -4537,7 +4539,7 @@
             convertToCurrency(commonCharges[cc].transactions, ["amount"]);
           });
           /* water */
-          totalWater = await getConsumtionTransactions("WATER",waterCharges);
+          
           convertToCurrency(waterCharges, ["amount"]);
           
           
@@ -4604,7 +4606,7 @@
           totalChargesAmountFields.push("private");
           totalChargesAmountFields.push("Total");
           convertToCurrency(totalledCharges, totalChargesAmountFields);
-          writePDF (closeDateTransactions,metersIncluded,commonCharges,privateCharges,totalledCharges,watercharges);
+          writePDF (closeDateTransactions,metersIncluded,commonCharges,privateCharges,totalledCharges,waterCharges);
         });
       
       };
@@ -4999,7 +5001,7 @@
         return result;
       };*/
       
-      function writePDF (closeDateTransactions, metersIncludedHere, commonCharges ,privateCharges, totalCharges){
+      function writePDF (closeDateTransactions, metersIncludedHere, commonCharges ,privateCharges, totalCharges, waterCharges){
         const rowsLandscape =15;
         const rowsLandscapePrivate =11;
         const rowsPortrait =17;
@@ -5111,8 +5113,8 @@
           printTablePortrait("Common charges for cost center " + ccsInReport.find(checkId).name, commonCharges[cc].transactions, headerCommon);});
         printTableLandscape("Private expenses", privateCharges, headerPrivate, 10);
         if (metersIncludedHere){
-          printTablePortrait("Water expenses since previous regularisation" , waterCharges, headerWH);});
-        }
+          printTablePortrait("Water expenses since previous regularisation" , waterCharges, headerWH);
+        };
         printTableLandscape("Total charges", totalCharges, headerCharges, 10);
         
         /*
