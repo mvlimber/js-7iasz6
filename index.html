@@ -2877,6 +2877,7 @@
               result.push(thisObject);
             };
           });
+          /* HIER VERDER METERREADINGS BEHANDELEN */
           propertiesGet().then(function(ps){
           ps.forEach(function(p){
             refCoproperty.collection("Properties").doc(p.idFS).collection("Meters").orderBy("type").get().then(function(meterFSArray){
@@ -2885,11 +2886,7 @@
               });
             });
           });  
-          refCoproperty.collection("Meters").orderBy("type").get().then(function(meterFSArray){
-            meterFSArray.forEach(function(meterFS){
-              if (meterFS.data().status.normalize() === "ACTIF".normalize()) {loadMeterReading(null,meterFS);};
-            });
-          });
+          
         }); 
         };
       };
