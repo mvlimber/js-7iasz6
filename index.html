@@ -4438,15 +4438,14 @@
 
       async function getConsumptionTransactions(closeDateTransactions, metersIncluded, consumptionType, consumptionTable){
         if (metersIncluded){
-          refCoproperty.collection("Transactions").where("type", "==", consumptionType).where("bookDate", ">", lastReguDate).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){
-            var total = 0;
-            transactionsFS.forEach(function(transactionFS){
-              var resultRow = transactionFS.data();
-              total += reportTransaction(resultRow);
-              consumptionTable.push(resultRow);
-            });      
-            return total;
+          var transactionsFS= await refCoproperty.collection("Transactions").where("type", "==", consumptionType).where("bookDate", ">", lastReguDate).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get();
+          var total = 0;
+          transactionsFS.forEach(function(transactionFS){
+            var resultRow = transactionFS.data();
+            total += reportTransaction(resultRow);
+            consumptionTable.push(resultRow);
           });
+          return total;
         } else { return 0;};
       };
       
@@ -4465,8 +4464,7 @@
         var totalCharges = [];
         var totalledCharges = [];
         var waterCharges = [];
-        var totalWater = 0; 
-        totalWater = await getConsumptionTransactions(closeDateTransactions, metersIncluded,"WATER",waterCharges);
+        var totalWater = await getConsumptionTransactions(closeDateTransactions, metersIncluded,"WATER",waterCharges);
         var heatingCharges = [];
         var totalheating = 0;
         if (metersIncluded){headerCharges = headerChargesMetersIncluded;}
@@ -4539,8 +4537,12 @@
             convertToCurrency(commonCharges[cc].transactions, ["amount"]);
           });
           /* water */
-          
-          convertToCurrency(waterCharges, ["amount"]);
+          if (metersIncluded) {
+            waterCharges.push({type:"Total",name:" ",date:" ",communication:" ",amount:totalWater});
+            console.log(totalWater);
+            convertToCurrency(waterCharges, ["amount"]);
+          };
+            
           
           
           /* total each line in total charges */
