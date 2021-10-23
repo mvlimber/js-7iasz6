@@ -2905,7 +2905,7 @@
         if (mr.readings[0].date.localeCompare(lastReguDate) < 1) {
           /* newest reading is in closed period: fake empty record */
           mr.readings.unshift({
-            counter : meterData.readings[0].counter + 1,
+            counter : mr.readings[0].counter + 1,
             picture : false,
             reading : "",
             date: "",
