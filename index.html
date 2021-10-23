@@ -2874,6 +2874,7 @@
             if (objectFS.data().status.normalize() === "ACTIF".normalize()) {
               var thisObject = objectFS.data();
               thisObject.idFS = objectFS.id;
+              thisObject.property = "";
               meterReadings.push(thisObject);
             };
           });
@@ -2884,23 +2885,13 @@
               if (objectFS.data().status.normalize() === "ACTIF".normalize()) {
               var thisObject = objectFS.data();
               thisObject.idFS = objectFS.id;
+              thisObject.property = p.idFS;
               meterReadings.push(thisObject);
+              };
             });
+          };
           return meterReadings;
-          }
-           
-          /* HIER VERDER METERREADINGS BEHANDELEN */
-          propertiesGet().then(function(ps){
-          ps.forEach(function(p){
-            refCoproperty.collection("Properties").doc(p.idFS).collection("Meters").orderBy("type").get().then(function(meterFSArray){
-              meterFSArray.forEach(function(meterFS){
-                if (meterFS.data().status.normalize() === "ACTIF".normalize()) {loadMeterReading(p,meterFS);};
-              });
-            });
-          });  
-          
-        }); 
-        };
+        }; 
       };
 
       var meterReadingsTable = document.getElementById("meterReadingsTable");
