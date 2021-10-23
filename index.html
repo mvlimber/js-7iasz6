@@ -3109,9 +3109,9 @@
       function writeMeterReading(){
         var pictureFileText = document.getElementById("meterReading_picture_text").value;
         if (validateMeterReading()) {
-          var thisReading = selectedReadingData.readings[0];
-          thisReading.reading = document.getElementById("meterReading_reading_edit").value;
-          thisReading.date = document.getElementById("meterReading_date_edit").value;
+          var thisReading = selectedReadingData.readings;
+          thisReading[0].reading = Number(document.getElementById("meterReading_reading_edit").value);
+          thisReading[0].date = document.getElementById("meterReading_date_edit").value;
           var thisRefFS;
           if (selectedReadingData.coproperty){thisRefFS = refCoproperty}
           else {thisRefFS = refCoproperty.collection("Properties").doc(selectedReadingPropertyId)};
