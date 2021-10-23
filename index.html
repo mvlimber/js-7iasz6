@@ -3014,7 +3014,7 @@
         selectedReadingPropertyId = propertyId;
         selectedReadingData = readingData;
         document.getElementById("meterReading_property_edit").value = propertyCode;
-        document.getElementById("meterReading_type_edit").value = readingData.type;
+        document.getElementById("meterReading_type_edit").value = MeterType[readingData.type];
         document.getElementById("meterReading_id_edit").value = readingData.meter;
         document.getElementById("meterReading_lastReading_edit").value = readingData.readings[1].reading;
         document.getElementById("meterReading_reading_edit").value = readingData.readings[0].reading;
