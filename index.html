@@ -4474,6 +4474,7 @@
         var totalWater = await getConsumptionTransactions(closeDateTransactions, metersIncluded,"WATER",waterCharges);
         var heatingCharges = [];
         var totalHeating = await getConsumptionTransactions(closeDateTransactions, metersIncluded,"HEATI",heatingCharges);
+        var regulations = [];
         if (metersIncluded){headerCharges = headerChargesMetersIncluded;}
         /* initialise common charges holder tabels*/
         var i = 0;
@@ -4549,6 +4550,12 @@
             convertToCurrency(waterCharges, ["amount"]);
             heatingCharges.push({type:"Total",name:" ",date:" ",communication:" ",amount:totalHeating});
             convertToCurrency(heatingCharges, ["amount"]);
+            var consumptions = await meterReadingsGet();
+            consumtions.forEach(function(mr){
+              var row = {};
+              row.property = propertyGetSynchrone(mr.property).code;
+              /* HIER VERDER ROW INVULLEN*/
+            });
           };
             
           
