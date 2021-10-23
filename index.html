@@ -2867,8 +2867,7 @@
       async function meterReadingsGet(){
         if (meterReadings){return meterReadings;}
         else {
-          var result = {};
-          var ps = await propertiesGet();
+          meterReadings = [];
           var copropertyMeterReadingsFSArray = await refCoproperty.collection("Meters").orderBy("type").get();
           copropertyMeterReadingsFSArray.forEach(function(objectFS){
             if (objectFS.data().status.normalize() === "ACTIF".normalize()) {
@@ -2878,17 +2877,20 @@
               meterReadings.push(thisObject);
             };
           });
+          console.log("meter readings coprop ", meterReadings);
           var i = 0;
+          var ps = await propertiesGet();
           while (i < ps.length) {
-            var propertyMeterReadingsFSArray = await refCoproperty.collection("Properties").doc(p.idFS).collection("Meters").orderBy("type").get();
+            var propertyMeterReadingsFSArray = await refCoproperty.collection("Properties").doc(ps[i].idFS).collection("Meters").orderBy("type").get();
             propertyMeterReadingsFSArray.forEach(function(objectFS){
               if (objectFS.data().status.normalize() === "ACTIF".normalize()) {
-              var thisObject = objectFS.data();
-              thisObject.idFS = objectFS.id;
-              thisObject.property = p.idFS;
-              meterReadings.push(thisObject);
+                var thisObject = objectFS.data();
+                thisObject.idFS = objectFS.id;
+                thisObject.property = ps[i].idFS;
+                meterReadings.push(thisObject);
               };
             });
+            i += 1; 
           };
           return meterReadings;
         }; 
@@ -2988,7 +2990,8 @@
         emptyHTMLSet(meterReadingsTable);
         meterReadings = null;
         meterReadingsGet().then(function(mrs){
-          mrs.forEach(function(thisObject){loadMeterreading(thisObject);});
+          console.log("meter readings ", mrs);
+          mrs.forEach(function(thisObject){loadMeterReading(thisObject);});
         });
       };
       
