@@ -2894,18 +2894,15 @@
         }; 
       };
 
-      var meterReadingsTable = document.getElementById("meterReadingsTable");
       
-
-      function loadMeterReading(property, meterFS){
+      function loadMeterReading(mr){
         var objectsRow= document.createElement('tr');
         var cellContent;
         var cell;
         
-        var meterData = meterFS.data();
-        if (meterData.readings[0].date.localeCompare(lastReguDate) < 1) {
+        if (mr.readings[0].date.localeCompare(lastReguDate) < 1) {
           /* newest reading is in closed period: fake empty record */
-          meterData.readings.unshift({
+          mr.readings.unshift({
             counter : meterData.readings[0].counter + 1,
             picture : false,
             reading : "",
@@ -2914,10 +2911,11 @@
         };
         cellContent = document.createElement('button');
         var isOwner;
-        if (property) {
-          isOwner = (currentUser.id == property.owner);
-          idHere = property.idFS;
-          codeHere = property.code}
+        if (mr.property) {
+          var p = propertyGetSynchrone(mr.property);
+          isOwner = (currentUser.id == p.owner);
+          idHere = p.idFS;
+          codeHere = p.code}
         else {
           isOwner = false;
           idHere =  currentCopropertyId;
@@ -2926,19 +2924,19 @@
 
         if (currentUser.role == roleAdministrator || isOwner) {
           cellContent.setAttribute("data-target", "meterReadingWrite");
-            cellContent.setAttribute('onclick','setSelectedMeterReading_edit('+JSON.stringify(idHere)+','+JSON.stringify(codeHere)+','+JSON.stringify(meterFS.id)+','+JSON.stringify(meterData)+')');
+            cellContent.setAttribute('onclick','setSelectedMeterReading_edit('+JSON.stringify(idHere)+','+JSON.stringify(codeHere)+','+JSON.stringify(mr.idFS)+','+JSON.stringify(mr)+')');
         } else {
           cellContent.setAttribute("data-target", "meterReadingRead");
-          cellContent.setAttribute('onclick','setSelectedMeterReading_readonly('+JSON.stringify(idHere)+','+JSON.stringify(codeHere)+','+JSON.stringify(meterFS.id)+','+JSON.stringify(meterData)+')');
+          cellContent.setAttribute('onclick','setSelectedMeterReading_readonly('+JSON.stringify(idHere)+','+JSON.stringify(codeHere)+','+JSON.stringify(mr.idFS)+','+JSON.stringify(mr)+')');
         };
         cellContent.setAttribute('class','modal-trigger');
         cellContent.setAttribute('style','border:none;background-color:Transparent');
-        cellContent.innerHTML = "<font color='blue'>" + MeterType[meterData.type] + "</font>";
+        cellContent.innerHTML = "<font color='blue'>" + MeterType[mr.type] + "</font>";
         cell = document.createElement('td');
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);  
 
-        if (property) {cellContent = propertyLink(property);}
+        if (mr.property) {cellContent = propertyLink(mr.property);}
         else {
             /*cellContent = document.createElement();
             cellContent.innerHTML ="Common <br> Parts";*/
@@ -2948,7 +2946,7 @@
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);
         
-        if (meterData.readings[0].reading) {
+        if (mr.readings[0].reading) {
            cellContent = document.createElement("i");
            cellContent.setAttribute("class","material-icons  green ");
            cellContent.innerHTML = "done";
@@ -2962,7 +2960,7 @@
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);  
 
-        if (meterData.readings[0].picture) {
+        if (mr.readings[0].picture) {
            /*cellContent = document.createTextNode("&#10060;");*/
            cellContent = document.createElement("i");
            cellContent.setAttribute("class","material-icons  green ");
@@ -2977,30 +2975,21 @@
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);  
 
-        cellContent = document.createTextNode(meterData.readings[0].date);
+        cellContent = document.createTextNode(mr.readings[0].date);
         cell = document.createElement('td');
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);
 
         meterReadingsTable.appendChild (objectsRow);
       };
-      
+
+      var meterReadingsTable = document.getElementById("meterReadingsTable");
       function refreshMeterReadings(){
         emptyHTMLSet(meterReadingsTable);
-        propertiesGet().then(function(ps){
-          ps.forEach(function(p){
-            refCoproperty.collection("Properties").doc(p.idFS).collection("Meters").orderBy("type").get().then(function(meterFSArray){
-              meterFSArray.forEach(function(meterFS){
-                if (meterFS.data().status.normalize() === "ACTIF".normalize()) {loadMeterReading(p,meterFS);};
-              });
-            });
-          });  
-          refCoproperty.collection("Meters").orderBy("type").get().then(function(meterFSArray){
-            meterFSArray.forEach(function(meterFS){
-              if (meterFS.data().status.normalize() === "ACTIF".normalize()) {loadMeterReading(null,meterFS);};
-            });
-          });
-        });    
+        meterReadings = null;
+        meterReadingsGet().then(function(mrs){
+          mrs.forEach(function(thisObject){loadMeterreading(thisObject);});
+        });
       };
       
       function loadMeterReadings() {
@@ -3445,6 +3434,10 @@
         function checkId(p){return p.idFS == idFS};
         var ps = await propertiesGet();
         return ps.find(checkId);
+      };
+      function propertyGetSynchrone(idFS){
+        function checkId(p){return p.idFS == idFS};
+        return properties.find(checkId);
       };
       
       var propertiesTable = document.getElementById("propertiesTable");
