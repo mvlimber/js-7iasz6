@@ -2915,6 +2915,7 @@
         var isOwner;
         if (mr.property) {
           var p = propertyGetSynchrone(mr.property);
+          console.log("gevonden property", p);
           isOwner = (currentUser.id == p.owner);
           idHere = p.idFS;
           codeHere = p.code}
@@ -2938,7 +2939,7 @@
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);  
 
-        if (mr.property) {cellContent = propertyLink(mr.property);}
+        if (mr.property) {cellContent = propertyLink(propertyGetSynchrone(mr.property));}
         else {
             /*cellContent = document.createElement();
             cellContent.innerHTML ="Common <br> Parts";*/
