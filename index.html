@@ -2868,16 +2868,6 @@
         if (meterReadings){return meterReadings;}
         else {
           meterReadings = [];
-          var copropertyMeterReadingsFSArray = await refCoproperty.collection("Meters").orderBy("type").get();
-          copropertyMeterReadingsFSArray.forEach(function(objectFS){
-            if (objectFS.data().status.normalize() === "ACTIF".normalize()) {
-              var thisObject = objectFS.data();
-              thisObject.idFS = objectFS.id;
-              thisObject.property = "";
-              meterReadings.push(thisObject);
-            };
-          });
-          console.log("meter readings coprop ", meterReadings);
           var i = 0;
           var ps = await propertiesGet();
           while (i < ps.length) {
@@ -2892,6 +2882,16 @@
             });
             i += 1; 
           };
+          var copropertyMeterReadingsFSArray = await refCoproperty.collection("Meters").orderBy("type").get();
+          copropertyMeterReadingsFSArray.forEach(function(objectFS){
+            if (objectFS.data().status.normalize() === "ACTIF".normalize()) {
+              var thisObject = objectFS.data();
+              thisObject.idFS = objectFS.id;
+              thisObject.property = "";
+              meterReadings.push(thisObject);
+            };
+          });
+          
           return meterReadings;
         }; 
       };
@@ -2915,7 +2915,6 @@
         var isOwner;
         if (mr.property) {
           var p = propertyGetSynchrone(mr.property);
-          console.log("gevonden property", p);
           isOwner = (currentUser.id == p.owner);
           idHere = p.idFS;
           codeHere = p.code}
@@ -2991,7 +2990,6 @@
         emptyHTMLSet(meterReadingsTable);
         meterReadings = null;
         meterReadingsGet().then(function(mrs){
-          console.log("meter readings ", mrs);
           mrs.forEach(function(thisObject){loadMeterReading(thisObject);});
         });
       };
