@@ -4559,6 +4559,12 @@
               row.lastReading= mr.readings[1].reading;
               row.reading= mr.readings[0].reading;
               row.difference= row.reading - row.lastReading;
+              row.water = "";
+              row.water_payed = "";
+              row.water_regu = "";
+              row.heating = "";
+              row.heating_payed = "";
+              row.heating_regu = "";
               
             });
           };
@@ -4628,7 +4634,7 @@
           totalChargesAmountFields.push("private");
           totalChargesAmountFields.push("Total");
           convertToCurrency(totalledCharges, totalChargesAmountFields);
-          writePDF (closeDateTransactions,metersIncluded,commonCharges,privateCharges,totalledCharges,waterCharges,heatingCharges);
+          writePDF (closeDateTransactions,metersIncluded,commonCharges,privateCharges,totalledCharges,waterCharges,heatingCharges,consumptions);
         });
       
       };
@@ -5023,7 +5029,7 @@
         return result;
       };*/
       
-      function writePDF (closeDateTransactions, metersIncludedHere, commonCharges ,privateCharges, totalCharges, waterCharges,heatingCharges){
+      function writePDF (closeDateTransactions, metersIncludedHere, commonCharges ,privateCharges, totalCharges, waterCharges,heatingCharges,consumptions){
         const rowsLandscape =15;
         const rowsLandscapePrivate =11;
         const rowsPortrait =17;
@@ -5137,6 +5143,7 @@
         if (metersIncludedHere){
           printTablePortrait("Water expenses since previous regularisation" , waterCharges, headerWH);
           printTablePortrait("Heating expenses since previous regularisation" , heatingCharges, headerWH);
+          printTableLandscape("Water and Heating: regularisation per property and owner (CW = Cold Water, HW= Hot Water, HE = heating)", consumptions, headerConsumption,8);
         };
         printTableLandscape("Total charges", totalCharges, headerCharges, 10);
         
