@@ -4573,17 +4573,25 @@
               row.last_reading= mr.readings[1].reading;
               row.reading= mr.readings[0].reading;
               row.difference= row.reading - row.last_reading;
-              if (meterData.type == "COLWA") {
+              if (mr.type == "COLWA") {
                 totalColdWaterDifference += row.difference;
-              } else if (meterData.type == "HEATI") {
+              } else if (mr.type == "HEATI") {
                 totalHeatingDifference += row.difference;
-              } else if (meterData.type == "HOTWA"){
+              } else if (mr.type == "HOTWA"){
                 totalHotWaterDifference += row.difference;
               };
-              row.water = "";
+              row.water = 0;
+              row.heating = 0;
+              if (mr.type != "Heating") {
+                  var amountWaterString = (totalWater * row.difference / (totalColdWaterDifference)).toFixed(2);
+                  row.water = Number(amountWaterString);
+                };
+                if (mr.type != "Cold Water") {
+                  var amountHeatingString = (totalHeating * row.difference / (totalHeatingDifference + totalHotWaterDifference)).toFixed(2);
+                  row.heating = Number(amountHeatingString);
+                };
               row.water_payed = "";
               row.water_regu = "";
-              row.heating = "";
               row.heating_payed = "";
               row.heating_regu = "";
               consumptions.push(row);
