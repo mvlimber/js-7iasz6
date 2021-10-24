@@ -4459,9 +4459,7 @@
             var resultRow = transactionFS.data();
             total += reportTransaction(resultRow);
             consumptionTable.push(resultRow);
-            if (consumptionType == "WATER") {
-              
-                costCenterWater = resultRow.costCenter;console.log("hier is costCenterWater ",costCenterWater);};
+            if (consumptionType == "WATER") {costCenterWater = resultRow.costCenter;};
             if (consumptionType == "HEATI") {costCenterHeating = resultRow.costCenter;};
           });
           return total;
@@ -4598,15 +4596,14 @@
                 var amountHeatingString = (totalHeating * row.difference / (totalHeatingDifference + totalHotWaterDifference)).toFixed(2);
                 row.heating = Number(amountHeatingString);
               };
-              console.log("costCenterWater ", costCenterWater);
               function checkIdWater(ccHere){return ccHere.idFS == costCenterWater};
               function checkIdHeating(ccHere){return ccHere.idFS == costCenterHeating};
               var ccsWater = ccsInReport.find(checkIdWater);
               var ccsHeating = ccsInReport.find(checkIdHeating);
-              row.water_payed = totalWater * ccsWater.distribution[mr.property]/ ccsWater.totalQuota;
-              row.water_regu = "";
-              row.heating_payed = totalWater * ccsHeating.distribution[mr.property]/ ccsHeating.totalQuota;;
-              row.heating_regu = "";
+              row.water_payed = Number((totalWater * ccsWater.distribution[mr.property]/ ccsWater.totalQuota).toFixed(2));
+              row.water_regu = row.water - row.water_payed;
+              row.heating_payed = Number((totalWater * ccsHeating.distribution[mr.property]/ ccsHeating.totalQuota).toFixed(2));
+              row.heating_regu = row.heating - row.heating_payed;;
               consumptions.push(row);
             });
             consumptions.forEach(function(c){
