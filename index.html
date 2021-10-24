@@ -4593,7 +4593,8 @@
               if (mr.type != "HEATI") {
                 var amountWaterString = (totalWater * row.difference / (totalColdWaterDifference+ totalHotWaterDifference)).toFixed(2);
                 row.water = Number(amountWaterString);
-                row.water_payed = -1 * Number((totalWater * costCenterWater.distribution[mr.property]/ costCenterWater.totalQuota).toFixed(2));
+                var amountWaterPayedString = (totalWater * costCenterWater.distribution[mr.property]/ costCenterWater.totalQuota).toFixed(2);
+                row.water_payed = -1 * Number(amountWaterPayedString);
                 row.water_regu = row.water_payed + row.water;
               };
               if (mr.type != "COLWA") {
