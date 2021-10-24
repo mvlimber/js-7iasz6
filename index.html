@@ -4402,7 +4402,7 @@
         {id:"type",name:"type",prompt:"type",width: 18,align: "center",padding: 0},
         {id:"last_reading",name:"last_reading",prompt:"last reading",width: 28,align: "center",padding: 0},
         {id:"reading",name:"reading",prompt:"new reading",width: 28,align: "center",padding: 0},
-        {id:"difference",name:"difference",prompt:"difference",width: 23,align: "center",padding: 0},
+        {id:"difference",name:"difference",prompt:"difference",width: 28,align: "center",padding: 0},
         {id:"water",name:"water",prompt:"water consumed",width: 30,align: "center",padding: 0},
         {id:"water_payed",name:"water_payed",prompt:"water payed",width: 30,align: "center",padding: 0},
         {id:"water_regu",name:"water_regu",prompt:"water regularisation",width: 27,align: "center",padding: 0},
@@ -4569,7 +4569,7 @@
               row.type = ConsumptionTableType[mr.type];  
               row.last_reading= mr.readings[1].reading;
               row.reading= mr.readings[0].reading;
-              row.difference= row.reading - row.lastReading;
+              row.difference= row.reading - row.last_reading;
               row.water = "";
               row.water_payed = "";
               row.water_regu = "";
