@@ -4561,13 +4561,13 @@
             convertToCurrency(waterCharges, ["amount"]);
             heatingCharges.push({type:"Total",name:" ",date:" ",communication:" ",amount:totalHeating});
             convertToCurrency(heatingCharges, ["amount"]);
-            consumptions.forEach(function(mr){
+            mrsInReport.forEach(function(mr){
               var row = {};
               if (mr.property) {row.property = propertyGetSynchrone(mr.property).code;}
               else {row.property = "Common"};
               row.meter = mr.meter;
               row.type = ConsumptionTableType[mr.type];  
-              row.lastReading= mr.readings[1].reading;
+              row.last_reading= mr.readings[1].reading;
               row.reading= mr.readings[0].reading;
               row.difference= row.reading - row.lastReading;
               row.water = "";
@@ -4579,7 +4579,7 @@
               consumptions.push(row);
             });
             consumptions.forEach(function(c){
-              c.lastReading= c.lastReading.toString();
+              c.last_reading= c.last_reading.toString();
               c.reading= c.reading.toString();
               c.difference= c.difference.toString();  
             });  
