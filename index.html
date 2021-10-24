@@ -4578,7 +4578,7 @@
               else {row.property = "Common"};
               row.propertyId = mr.property;
               row.meter = mr.meter;
-              row.type = ConsumptionTableType[mr.type];  
+              row.type = mr.type;  
               row.last_reading= mr.readings[1].reading;
               row.reading= mr.readings[0].reading;
               row.difference= row.reading - row.last_reading;
@@ -4604,10 +4604,12 @@
               if (c.type != "COLWA") {
                 var amountHeatingString = (totalHeating * c.difference / (totalHeatingDifference + totalHotWaterDifference)).toFixed(2);
                 c.heating = Number(amountHeatingString);
-                c.heating_payed = -1 * Number((totalWater * costCenterHeating.distribution[c.propertyId]/ costCenterHeating.totalQuota).toFixed(2));
+                var amountHeatingPayedString = (totalHeating * costCenterHeating.distribution[c.propertyId]/ costCenterHeating.totalQuota).toFixed(2);
+                c.heating_payed = -1 * Number(amountHeatingPayedString);
                 c.heating_regu = c.heating_payed + c.heating;
               };  
-            
+              c.type = ConsumptionTableType[c.type];  
+              
               function convertToString(n){if (n) {return n.toString()} else {return " "} };
               c.last_reading= convertToString(c.last_reading);
               c.reading= convertToString(c.reading);
