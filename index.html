@@ -4481,10 +4481,11 @@
         var heatingCharges = [];
         var totalHeating = await getConsumptionTransactions(closeDateTransactions, metersIncluded,"HEATI",heatingCharges);
         var regulations = [];
-        var consumptions;
+        var mrsInReport;
+        var consumptions = [];
         if (metersIncluded){
           headerCharges = headerChargesMetersIncluded;
-          consumptions = await meterReadingsGet();   
+          mrsInReport = await meterReadingsGet();   
         };
         /* initialise common charges holder tabels*/
         var i = 0;
@@ -4565,7 +4566,7 @@
               if (mr.property) {row.property = propertyGetSynchrone(mr.property).code;}
               else {row.property = "Common"};
               row.meter = mr.meter;
-              row.type = mr.type;
+              row.type = ConsumptionTableType[mr.type];  
               row.lastReading= mr.readings[1].reading;
               row.reading= mr.readings[0].reading;
               row.difference= row.reading - row.lastReading;
@@ -4575,8 +4576,13 @@
               row.heating = "";
               row.heating_payed = "";
               row.heating_regu = "";
-              
+              consumptions.push(row);
             });
+            consumptions.forEach(function(c){
+              c.lastReading= c.lastReading.toString();
+              c.reading= c.reading.toString();
+              c.difference= c.difference.toString();  
+            });  
           };
             
           
