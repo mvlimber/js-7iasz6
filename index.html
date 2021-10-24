@@ -4457,11 +4457,14 @@
             var resultRow = transactionFS.data();
             total += reportTransaction(resultRow);
             consumptionTable.push(resultRow);
+            if (consumptionType == "WATER") {costCenterWater = resultRow.costCenter;};
+            if (consumptionType == "HEATI") {costCenterHeating = resultRow.costCenter;};
           });
           return total;
         } else { return 0;};
       };
-      
+
+          
       async function generateChargesReport(closeDateTransactions, metersIncluded){  
         ccsInReport = await costCentersGet(); 
         ccsInReport.forEach(function(cc){
@@ -4490,6 +4493,8 @@
         var totalColdWaterDifference = 0;
         var totalHotWaterDifference = 0;
         var totalHeatingDifference = 0;
+        var costCenterWater;
+        var costCenterHeating;
         /* initialise common charges holder tabels*/
         var i = 0;
         ccsInReport.forEach(function(cc) {
@@ -4590,9 +4595,13 @@
                 var amountHeatingString = (totalHeating * row.difference / (totalHeatingDifference + totalHotWaterDifference)).toFixed(2);
                 row.heating = Number(amountHeatingString);
               };
-              row.water_payed = "";
+              function checkIdWater(ccHere){return ccHere.idFS == costCenterWater};
+              function checkIdHeating(ccHere){return ccHere.idFS == costCenterHeating};
+              var ccsWater = ccsInReport.find(checkIdWater);
+              var ccsHeating = ccsInReport.find(checkIdHeating);
+              row.water_payed = totalWater * ccsWater.distribution[mr.property]/ ccsWater.totalQuota;
               row.water_regu = "";
-              row.heating_payed = "";
+              row.heating_payed = totalWater * ccsHeating.distribution[mr.property]/ ccsHeating.totalQuota;;
               row.heating_regu = "";
               consumptions.push(row);
             });
