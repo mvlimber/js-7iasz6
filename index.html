@@ -4582,14 +4582,14 @@
               };
               row.water = 0;
               row.heating = 0;
-              if (mr.type != "Heating") {
-                  var amountWaterString = (totalWater * row.difference / (totalColdWaterDifference)).toFixed(2);
+              if (mr.type != "HEATI") {
+                  var amountWaterString = (totalWater * row.difference / totalColdWaterDifference+ totalHotWaterDifference).toFixed(2);
                   row.water = Number(amountWaterString);
-                };
-                if (mr.type != "Cold Water") {
-                  var amountHeatingString = (totalHeating * row.difference / (totalHeatingDifference + totalHotWaterDifference)).toFixed(2);
-                  row.heating = Number(amountHeatingString);
-                };
+              };
+              if (mr.type != "COLWA") {
+                var amountHeatingString = (totalHeating * row.difference / (totalHeatingDifference + totalHotWaterDifference)).toFixed(2);
+                row.heating = Number(amountHeatingString);
+              };
               row.water_payed = "";
               row.water_regu = "";
               row.heating_payed = "";
@@ -4597,9 +4597,12 @@
               consumptions.push(row);
             });
             consumptions.forEach(function(c){
-              c.last_reading= c.last_reading.toString();
-              c.reading= c.reading.toString();
-              c.difference= c.difference.toString();  
+              function convertToString(n){if (n) {return n.toString()} else {return " "} };
+              c.last_reading= convertToString(c.last_reading);
+              c.reading= convertToString(c.reading);
+              c.difference= convertToString(c.difference);  
+              c.water= convertToString(c.water);  
+              c.heating= convertToString(c.heating);                
             });  
           };
             
