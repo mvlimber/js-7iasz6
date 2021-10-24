@@ -4487,6 +4487,9 @@
           headerCharges = headerChargesMetersIncluded;
           mrsInReport = await meterReadingsGet();   
         };
+        var totalColdWaterDifference = 0;
+        var totalHotWaterDifference = 0;
+        var totalHeatingDifference = 0;
         /* initialise common charges holder tabels*/
         var i = 0;
         ccsInReport.forEach(function(cc) {
@@ -4570,6 +4573,13 @@
               row.last_reading= mr.readings[1].reading;
               row.reading= mr.readings[0].reading;
               row.difference= row.reading - row.last_reading;
+              if (meterData.type == "COLWA") {
+                totalColdWaterDifference += row.difference;
+              } else if (meterData.type == "HEATI") {
+                totalHeatingDifference += row.difference;
+              } else if (meterData.type == "HOTWA"){
+                totalHotWaterDifference += row.difference;
+              };
               row.water = "";
               row.water_payed = "";
               row.water_regu = "";
