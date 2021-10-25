@@ -4634,12 +4634,17 @@
             var positionInConsumptions = 1;
             var totalConsumptionRow = generateNewTotalledConsumption(consumptions[0].property);
             consumptions.forEach(function(c){
-              if (c.property != totalConsumptionRow.property){
-                totalConsumptionRow.water_payed= Number((totalWater * totalConsumptionRow.difference / (totalColdWaterDifference+ totalHotWaterDifference)).toFixed(2));
-                totalConsumptionRow.water_regu = -1 * Number((totalWater * costCenterWater.distribution[totalConsumptionRow.propertyId]/ costCenterWater.totalQuota).toFixed(2));
+              function completeAndPushTotal() {
+                totalConsumptionRow.water_payed= -1* Number((totalWater * costCenterWater.distribution[totalConsumptionRow.propertyId]/ costCenterWater.totalQuota).toFixed(2));
+                totalConsumptionRow.water_regu = Number((totalConsumptionRow.water_payed + totalConsumptionRow.water).toFixed(2));
+                totalConsumptionRow.heating_payed= -1* Number((totalHeating * costCenterHeating.distribution[totalConsumptionRow.propertyId]/ costCenterHeating.totalQuota).toFixed(2));
+                totalConsumptionRow.heating_regu = Number((totalConsumptionRow.heating_payed + totalConsumptionRow.heating).toFixed(2));
                 totalledConsumptions.push(totalConsumptionRow);
+              };
+              if (c.property != totalConsumptionRow.property){
+                completeAndPushTotal();
                 if (positionInConsumptions < consumptions.length){
-                  totalledConsumptions.generateEmptyRowTotalledConsumption();
+                  totalledConsumptions.push(generateEmptyRowTotalledConsumption());
                 };
                 var totalConsumptionRow = generateNewTotalledConsumption(c.property, c.propertyId);
               };
@@ -4648,24 +4653,8 @@
               totalConsumptionRow.water += c.water;
               totalConsumptionRow.heating += c.heating;
               totalConsumptionRow.differnce += c.differnce;
-
-              
-
-              if (c.type != "HEATI") {
-                var amountWaterString = (totalWater * c.difference / (totalColdWaterDifference+ totalHotWaterDifference)).toFixed(2);
-                c.water = Number(amountWaterString);
-                var amountWaterPayedString = (totalWater * costCenterWater.distribution[c.propertyId]/ costCenterWater.totalQuota).toFixed(2);
-                c.water_payed = -1 * Number(amountWaterPayedString);
-                c.water_regu = Number((c.water_payed + c.water).toFixed(2));
-              };
-              if (c.type != "COLWA") {
-                var amountHeatingString = (totalHeating * c.difference / (totalHeatingDifference + totalHotWaterDifference)).toFixed(2);
-                c.heating = Number(amountHeatingString);
-                var amountHeatingPayedString = (totalHeating * costCenterHeating.distribution[c.propertyId]/ costCenterHeating.totalQuota).toFixed(2);
-                c.heating_payed = -1 * Number(amountHeatingPayedString);
-                c.heating_regu = Number((c.heating_payed + c.heating).toFixed(2));
-              };  
-              c.type = ConsumptionTableType[c.type];  
+              if (positionInConsumptions == consumptions.length){completeAndPushTotal();};
+              positionInConsumptions +=1;
             });
             /* convert amounts to euro strings */
             consumptions.forEach(function(c){  
@@ -4749,7 +4738,7 @@
           totalChargesAmountFields.push("private");
           totalChargesAmountFields.push("Total");
           convertToCurrency(totalledCharges, totalChargesAmountFields);
-          writePDF (closeDateTransactions,metersIncluded,commonCharges,privateCharges,totalledCharges,waterCharges,heatingCharges,consumptions);
+          writePDF (closeDateTransactions,metersIncluded,commonCharges,privateCharges,totalledCharges,waterCharges,heatingCharges,totalledConsumptions);
         });
       
       };
