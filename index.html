@@ -4634,9 +4634,16 @@
             consumptions.forEach(function(c){
               if (c.property != totalConsumptionRow.property){
                 totalledConsumptions.push(totalConsumptionRow);
-                if (positionInConsumptions < consumptions.length) {generateEmptyRowTotalledConsumtion()}
-              }
+                if (positionInConsumptions < consumptions.length){
+                  totalledConsumptions.generateEmptyRowTotalledConsumption();
+                };
+                var totalConsumptionRow = generateNewTotalledConsumption(c.property);
+              };
+              totalledConsumptions.push(c);
+              /*HIER AANVULLEN ZIE BEWAARDE SNAPSJOT TOTALCHARGES */
+
               
+
               if (c.type != "HEATI") {
                 var amountWaterString = (totalWater * c.difference / (totalColdWaterDifference+ totalHotWaterDifference)).toFixed(2);
                 c.water = Number(amountWaterString);
