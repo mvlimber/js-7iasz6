@@ -4572,6 +4572,7 @@
             convertToCurrency(waterCharges, ["amount"]);
             heatingCharges.push({type:"Total",name:" ",date:" ",communication:" ",amount:totalHeating});
             convertToCurrency(heatingCharges, ["amount"]);
+            /* caculate individual differnces and total differences */
             mrsInReport.forEach(function(mr){
               var row = {};
               if (mr.property) {row.property = propertyGetSynchrone(mr.property).code;}
@@ -4591,6 +4592,18 @@
               };
               consumptions.push(row);
             });
+            /* calculate individual comsumed amounts */
+            consumptions.forEach(function(c){
+              c.water = 0;
+              c.heating = 0;
+              if (c.type != "HEATI") {
+                c.water = Number((totalWater * c.difference / (totalColdWaterDifference+ totalHotWaterDifference)).toFixed(2));
+              };
+              if (c.type != "COLWA") {
+                c.heating = Number((totalHeating * c.difference / (totalHeatingDifference + totalHotWaterDifference)).toFixed(2));
+              };
+            });
+            /* calculate totals including payed and regu */
             consumptions.forEach(function(c){
               c.water = 0;c.water_payed = 0;c.water_regu = 0;
               c.heating = 0;c.heating_payed = 0;c.heating_regu = 0;
@@ -4599,18 +4612,20 @@
                 c.water = Number(amountWaterString);
                 var amountWaterPayedString = (totalWater * costCenterWater.distribution[c.propertyId]/ costCenterWater.totalQuota).toFixed(2);
                 c.water_payed = -1 * Number(amountWaterPayedString);
-                c.water_regu = c.water_payed + c.water;
+                c.water_regu = Number((c.water_payed + c.water).toFixed(2));
               };
               if (c.type != "COLWA") {
                 var amountHeatingString = (totalHeating * c.difference / (totalHeatingDifference + totalHotWaterDifference)).toFixed(2);
                 c.heating = Number(amountHeatingString);
                 var amountHeatingPayedString = (totalHeating * costCenterHeating.distribution[c.propertyId]/ costCenterHeating.totalQuota).toFixed(2);
                 c.heating_payed = -1 * Number(amountHeatingPayedString);
-                c.heating_regu = c.heating_payed + c.heating;
+                c.heating_regu = Number((c.heating_payed + c.heating).toFixed(2));
               };  
               c.type = ConsumptionTableType[c.type];  
             });
+            /* convert amounts to euro strings */
             consumptions.forEach(function(c){  
+              c.type = ConsumptionTableType[c.type]; 
               function convertToString(n){if (n) {return n.toString()} else {return " "} };
               c.last_reading= convertToString(c.last_reading);
               c.reading= convertToString(c.reading);
