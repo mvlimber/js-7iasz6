@@ -4609,7 +4609,8 @@
                 c.heating_regu = c.heating_payed + c.heating;
               };  
               c.type = ConsumptionTableType[c.type];  
-              
+            });
+            consumptions.forEach(function(c){  
               function convertToString(n){if (n) {return n.toString()} else {return " "} };
               c.last_reading= convertToString(c.last_reading);
               c.reading= convertToString(c.reading);
