@@ -4576,14 +4576,16 @@
             /* caculate individual differnces and total differences */
             mrsInReport.forEach(function(mr){
               var row = {};
-              if (mr.property) {row.property = propertyGetSynchrone(mr.property).code;}
-              else {row.property = "Common"};
-              row.propertyId = mr.property;
               row.meter = mr.meter;
               row.type = mr.type;  
               row.last_reading= mr.readings[1].reading;
               row.reading= mr.readings[0].reading;
               row.difference= row.reading - row.last_reading;
+              if (mr.property) {
+                row.property = propertyGetSynchrone(mr.property).code;
+                row.propertyId = mr.property;
+              }
+              else {row.property = "Common",row.propertyId = null; };
               if (mr.type == "COLWA") {
                 totalColdWaterDifference += row.difference;
               } else if (mr.type == "HEATI") {
@@ -4632,7 +4634,7 @@
               return result;
             };
             var positionInConsumptions = 1;
-            var totalConsumptionRow = generateNewTotalledConsumption(consumptions[0].property);
+            var totalConsumptionRow = generateNewTotalledConsumption(consumptions[0].property,consumptions[0].propertyId);
             consumptions.forEach(function(c){
               function completeAndPushTotal() {
                 totalConsumptionRow.water_payed= -1* Number((totalWater * costCenterWater.distribution[totalConsumptionRow.propertyId]/ costCenterWater.totalQuota).toFixed(2));
@@ -4641,7 +4643,8 @@
                 totalConsumptionRow.heating_regu = Number((totalConsumptionRow.heating_payed + totalConsumptionRow.heating).toFixed(2));
                 totalledConsumptions.push(totalConsumptionRow);
               };
-              if (c.property != totalConsumptionRow.property){
+              
+              if ((c.property != totalConsumptionRow.property)&& (c.property != "Commons")){
                 completeAndPushTotal();
                 if (positionInConsumptions < consumptions.length){
                   totalledConsumptions.push(generateEmptyRowTotalledConsumption());
@@ -4649,11 +4652,12 @@
                 var totalConsumptionRow = generateNewTotalledConsumption(c.property, c.propertyId);
               };
               totalledConsumptions.push(c);
-              /*HIER AANVULLEN ZIE BEWAARDE SNAPSJOT TOTALCHARGES */
+            
               totalConsumptionRow.water += c.water;
               totalConsumptionRow.heating += c.heating;
               totalConsumptionRow.differnce += c.differnce;
-              if (positionInConsumptions == consumptions.length){completeAndPushTotal();};
+              if ((positionInConsumptions == consumptions.length)&& (c.property != "Commons")){completeAndPushTotal();};
+              
               positionInConsumptions +=1;
             });
             /* convert amounts to euro strings */
