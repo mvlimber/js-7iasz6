@@ -4490,6 +4490,7 @@
         var regulations = [];
         var mrsInReport;
         var consumptions = [];
+        var totalledConsumptions = [];
         if (metersIncluded){
           headerCharges = headerChargesMetersIncluded;
           mrsInReport = await meterReadingsGet();   
@@ -4594,8 +4595,8 @@
             });
             /* calculate individual comsumed amounts */
             consumptions.forEach(function(c){
-              c.water = 0;
-              c.heating = 0;
+              c.water = 0;c.water_payed = 0;c.water_regu = 0;
+              c.heating = 0;c.heating_payed = 0;c.heating_regu = 0;
               if (c.type != "HEATI") {
                 c.water = Number((totalWater * c.difference / (totalColdWaterDifference+ totalHotWaterDifference)).toFixed(2));
               };
@@ -4604,9 +4605,20 @@
               };
             });
             /* calculate totals including payed and regu */
+            function generateNewTotalledConsumtion(propertyCode){
+              var result = {};
+              result.property = propertyCode;
+              result.meter = "Total";
+              result.water = "0";
+              return result;
+            }
+            var position = 1;
+            var totalConsumtionRow = generateNewTotalledConsumtion(consumptions[0].property);
             consumptions.forEach(function(c){
-              c.water = 0;c.water_payed = 0;c.water_regu = 0;
-              c.heating = 0;c.heating_payed = 0;c.heating_regu = 0;
+              if (c.property != totalConsumtionRow.property){
+
+              }
+              
               if (c.type != "HEATI") {
                 var amountWaterString = (totalWater * c.difference / (totalColdWaterDifference+ totalHotWaterDifference)).toFixed(2);
                 c.water = Number(amountWaterString);
