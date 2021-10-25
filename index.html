@@ -4622,25 +4622,32 @@
               result.heating_regu="";
               return result;
             };
-            function generateNewTotalledConsumption(propertyCode){
+            function generateNewTotalledConsumption(propertyCode, propertyId){
               var result = {};
               result.property = propertyCode;
+              result.propertyId = propertyId;
               result.meter = "Total";
               result.water = "0";
+              result.heating = "0";
               return result;
             };
             var positionInConsumptions = 1;
             var totalConsumptionRow = generateNewTotalledConsumption(consumptions[0].property);
             consumptions.forEach(function(c){
               if (c.property != totalConsumptionRow.property){
+                totalConsumptionRow.water_payed= Number((totalWater * totalConsumptionRow.difference / (totalColdWaterDifference+ totalHotWaterDifference)).toFixed(2));
+                totalConsumptionRow.water_regu = -1 * Number((totalWater * costCenterWater.distribution[totalConsumptionRow.propertyId]/ costCenterWater.totalQuota).toFixed(2));
                 totalledConsumptions.push(totalConsumptionRow);
                 if (positionInConsumptions < consumptions.length){
                   totalledConsumptions.generateEmptyRowTotalledConsumption();
                 };
-                var totalConsumptionRow = generateNewTotalledConsumption(c.property);
+                var totalConsumptionRow = generateNewTotalledConsumption(c.property, c.propertyId);
               };
               totalledConsumptions.push(c);
               /*HIER AANVULLEN ZIE BEWAARDE SNAPSJOT TOTALCHARGES */
+              totalConsumptionRow.water += c.water;
+              totalConsumptionRow.heating += c.heating;
+              totalConsumptionRow.differnce += c.differnce;
 
               
 
