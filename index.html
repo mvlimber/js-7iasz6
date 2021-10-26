@@ -4672,32 +4672,44 @@
             });
             /* convert amounts to euro strings */
             totalledConsumptions.forEach(function(c){  
-              if (c.property == "") {
-              c.meter="";
-              c.type = "";
-              c.reading= "";
-              c.last_reading= "";
-              c.difference= "";  
-              c.water= "";  
-              c.heating= "";     
-              c.water_payed= "";  
-              c.heating_payed= "";     
-              c.water_regu= "";  
-              c.heating_regu= "";
-              } else {
-                if (c.property == "Common")  {c.property = "C"};
-              if (c.type) {c.type = ConsumptionTableType[c.type]; } else {c.type = " "};
               function convertToStringHere(n){if (n) {return n.toString()} else {return " "} };
               function convertNumberToStringHere(n){if (n) {return n.toFixed(2);} else {return " "} };
-              c.reading= convertToStringHere(c.reading);
-              c.last_reading= convertToStringHere(c.last_reading);
-              c.difference= convertToStringHere(c.difference);  
-              c.water= convertNumberToStringHere(c.water);  
-              c.heating= convertNumberToStringHere(c.heating);     
-              c.water_payed= convertNumberToStringHere(c.water_payed);  
-              c.heating_payed= convertNumberToStringHere(c.heating_payed);     
-              c.water_regu= convertNumberToStringHere(c.water_regu);  
-              c.heating_regu= convertNumberToStringHere(c.heating_regu);     
+              
+              if (c.property == "") {
+                c.meter="";
+                c.type = "";
+                c.reading= "";
+                c.last_reading= "";
+                c.difference= "";  
+                c.water= "";  
+                c.heating= "";     
+                c.water_payed= "";  
+                c.heating_payed= "";     
+                c.water_regu= "";  
+                c.heating_regu= "";
+              } else if (c.property == "Common")  {
+                c.property = "C"; c.propertyId=" ";
+                c.type = ConsumptionTableType[c.type];
+                c.reading= convertToStringHere(c.reading);
+                c.last_reading= convertToStringHere(c.last_reading);
+                c.difference= convertToStringHere(c.difference);  
+                c.water= " ";  
+                c.heating= " ";     
+                c.water_payed= " ";  
+                c.heating_payed= " ";     
+                c.water_regu= " ";  
+                c.heating_regu= " ";
+              }else {
+                if (c.type) {c.type = ConsumptionTableType[c.type]; } else {c.type = " "};
+                c.reading= convertToStringHere(c.reading);
+                c.last_reading= convertToStringHere(c.last_reading);
+                c.difference= convertToStringHere(c.difference);  
+                c.water= convertNumberToStringHere(c.water);  
+                c.heating= convertNumberToStringHere(c.heating);     
+                c.water_payed= convertNumberToStringHere(c.water_payed);  
+                c.heating_payed= convertNumberToStringHere(c.heating_payed);     
+                c.water_regu= convertNumberToStringHere(c.water_regu);  
+                c.heating_regu= convertNumberToStringHere(c.heating_regu);     
               };           
             });  
           };
