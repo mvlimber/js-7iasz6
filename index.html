@@ -5163,8 +5163,8 @@
       };*/
       
       function writePDF (closeDateTransactions, metersIncludedHere, commonCharges ,privateCharges, totalCharges, waterCharges,heatingCharges,totalledConsumptionsHere){
-        const rowsLandscape =15;
-        const rowsLandscapePrivate =11;
+        const rowsLandscape =13;
+        const rowsLandscapePrivate =16;
         const rowsPortrait =17;
         var numPages;
         if (metersIncludedHere) {
@@ -5280,7 +5280,7 @@
           printTablePortrait("Water expenses since previous regularisation" , waterCharges, headerWH);
           printTablePortrait("Heating expenses since previous regularisation" , heatingCharges, headerWH);
           console.log("totalledConsumptionsHere ", totalledConsumptionsHere);
-          printTableLandscape("Regularisation Water and Heating (CW = Cold Water, HW= Hot Water, HE = Heating)", totalledConsumptionsHere, headerConsumption,8);
+          printTableLandscape("Regularisation Water and Heating (CW = Cold Water, HW= Hot Water, HE = Heating)", totalledConsumptionsHere, headerConsumption,6);
         };
         printTableLandscape("Total charges", totalCharges, headerCharges, 10);
         
