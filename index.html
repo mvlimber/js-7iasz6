@@ -4573,7 +4573,7 @@
             convertToCurrency(waterCharges, ["amount"]);
             heatingCharges.push({type:"Total",name:" ",date:" ",communication:" ",amount:totalHeating});
             convertToCurrency(heatingCharges, ["amount"]);
-            /* caculate individual differnces and total differences */
+            /* caculate individual differences and total differences */
             mrsInReport.forEach(function(mr){
               var row = {};
               row.meter = mr.meter;
@@ -4611,17 +4611,17 @@
               var result = {};
               result.property = "";
               result.meter = "";
-              result.water = "";
+              result.water = 0;
               result.type="";
-              result.lastReading="";
-              result.reading="";
-              result.difference="";
-              result.water="";
-              result.water_payed="";
-              result.water_regu="";
-              result.heating="";
-              result.heating_payed="";
-              result.heating_regu="";
+              result.lastReading=0;
+              result.reading=0;
+              result.difference=0;
+              result.water=0;
+              result.water_payed=0;
+              result.water_regu=0;
+              result.heating=0;
+              result.heating_payed=0;
+              result.heating_regu=0;
               return result;
             };
             function generateNewTotalledConsumption(propertyCode, propertyId){
@@ -4629,8 +4629,16 @@
               result.property = propertyCode;
               result.propertyId = propertyId;
               result.meter = "Total";
+              result.type="";
+              result.lastReading="";
+              result.difference=0;
               result.water = 0;
+              result.water_payed=0;
+              result.water_regu=0;
               result.heating = 0;
+              result.heating_payed=0;
+              result.heating_regu=0;
+              
               return result;
             };
             var positionInConsumptions = 1;
@@ -4644,27 +4652,32 @@
                 totalConsumptionRow.heating_regu = Number((totalConsumptionRow.heating_payed + totalConsumptionRow.heating).toFixed(2));
                 totalledConsumptions.push(totalConsumptionRow);
               };
-              if ((c.property != totalConsumptionRow.property)&& (c.property != "Commons")){
+              if ((c.property != totalConsumptionRow.property)&& (c.property != "Common")){
                 completeAndPushTotal();
                 if (positionInConsumptions < consumptions.length){
                   totalledConsumptions.push(generateEmptyRowTotalledConsumption());
                 };
                 totalConsumptionRow = generateNewTotalledConsumption(c.property, c.propertyId);
               };
+              if (c.property == "Common") {
+                c.water_payed = 0; c.water_regu = 0;
+                c.heating_payed = 0; c.heating_regu = 0;
+              };
               totalledConsumptions.push(c);
             
               totalConsumptionRow.water += c.water;
               totalConsumptionRow.heating += c.heating;
-              totalConsumptionRow.differnce += c.differnce;
-              if ((positionInConsumptions == consumptions.length)&& (c.property != "Commons")){completeAndPushTotal();};
+              totalConsumptionRow.difference += c.difference;
+              
+              if ((positionInConsumptions == consumptions.length)&& (c.property != "Common")){completeAndPushTotal();};
               
               positionInConsumptions +=1;
             });
             /* convert amounts to euro strings */
-            consumptions.forEach(function(c){  
+            totalledConsumptions.forEach(function(c){  
               c.type = ConsumptionTableType[c.type]; 
               function convertToString(n){if (n) {return n.toString()} else {return " "} };
-              c.last_reading= convertToString(c.last_reading);
+              c.last_reading= convertToString(c.last_reading)
               c.reading= convertToString(c.reading);
               c.difference= convertToString(c.difference);  
               c.water= convertToString(c.water);  
