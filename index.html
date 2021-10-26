@@ -4613,7 +4613,7 @@
               result.meter = "";
               result.water = 0;
               result.type="";
-              result.lastReading=0;
+              result.last_reading=0;
               result.reading=0;
               result.difference=0;
               result.water=0;
@@ -4630,7 +4630,7 @@
               result.propertyId = propertyId;
               result.meter = "Total";
               result.type="";
-              result.lastReading="";
+              result.last_reading="";
               result.difference=0;
               result.water = 0;
               result.water_payed=0;
@@ -4652,7 +4652,7 @@
                 totalConsumptionRow.heating_regu = Number((totalConsumptionRow.heating_payed + totalConsumptionRow.heating).toFixed(2));
                 totalledConsumptions.push(totalConsumptionRow);
               };
-              if ((c.property != totalConsumptionRow.property)&& (c.property != "Common")){
+              if (c.property != totalConsumptionRow.property){
                 completeAndPushTotal();
                 if (positionInConsumptions < consumptions.length){
                   totalledConsumptions.push(generateEmptyRowTotalledConsumption());
@@ -4678,7 +4678,7 @@
               if (c.type) {c.type = ConsumptionTableType[c.type]; } else {c.type = " "};
               function convertToString(n){if (n) {return n.toString()} else {return " "} };
               c.reading= convertToString(c.reading);
-              c.lastReading= convertToString(c.reading);
+              c.last_reading= convertToString(c.last_reading);
               c.difference= convertToString(c.difference);  
               c.water= convertToString(c.water);  
               c.heating= convertToString(c.heating);     
@@ -5265,7 +5265,7 @@
         if (metersIncludedHere){
           printTablePortrait("Water expenses since previous regularisation" , waterCharges, headerWH);
           printTablePortrait("Heating expenses since previous regularisation" , heatingCharges, headerWH);
-          printTableLandscape("Regularisation Water and Heating (CW = Cold Water, HW= Hot Water, HE = Heating)", consumptions, headerConsumption,8);
+          /*printTableLandscape("Regularisation Water and Heating (CW = Cold Water, HW= Hot Water, HE = Heating)", consumptions, headerConsumption,8);*/
         };
         printTableLandscape("Total charges", totalCharges, headerCharges, 10);
         
