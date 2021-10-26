@@ -4654,9 +4654,7 @@
               };
               if (c.property != totalConsumptionRow.property){
                 completeAndPushTotal();
-                if (positionInConsumptions < consumptions.length){
-                  totalledConsumptions.push(generateEmptyRowTotalledConsumption());
-                };
+                totalledConsumptions.push(generateEmptyRowTotalledConsumption());
                 totalConsumptionRow = generateNewTotalledConsumption(c.property, c.propertyId);
               };
               if (c.property == "Common") {
@@ -4667,7 +4665,6 @@
             
               totalConsumptionRow.water += c.water;
               totalConsumptionRow.heating += c.heating;
-              totalConsumptionRow.difference += c.difference;
               
               if ((positionInConsumptions == consumptions.length)&& (c.property != "Common")){completeAndPushTotal();};
               
@@ -4675,18 +4672,32 @@
             });
             /* convert amounts to euro strings */
             totalledConsumptions.forEach(function(c){  
+              if (c.property == "") {
+              c.meter="";
+              c.type = "";
+              c.reading= "";
+              c.last_reading= "";
+              c.difference= "";  
+              c.water= "";  
+              c.heating= "";     
+              c.water_payed= "";  
+              c.heating_payed= "";     
+              c.water_regu= "";  
+              c.heating_regu= "";
+              } else {
               if (c.type) {c.type = ConsumptionTableType[c.type]; } else {c.type = " "};
-              function convertToString(n){if (n) {return n.toString()} else {return " "} };
-              c.reading= convertToString(c.reading);
-              c.last_reading= convertToString(c.last_reading);
-              c.difference= convertToString(c.difference);  
-              c.water= convertToString(c.water);  
-              c.heating= convertToString(c.heating);     
-              c.water_payed= convertToString(c.water_payed);  
-              c.heating_payed= convertToString(c.heating_payed);     
-              c.water_regu= convertToString(c.water_regu);  
-              c.heating_regu= convertToString(c.heating_regu);     
-                         
+              function convertToStringHere(n){if (n) {return n.toString()} else {return " "} };
+              function convertNumberToStringHere(n){if (n) {return n.toFixed(2);} else {return " "} };
+              c.reading= convertToStringHere(c.reading);
+              c.last_reading= convertToStringHere(c.last_reading);
+              c.difference= convertToStringHere(c.difference);  
+              c.water= convertNumberToStringHere(c.water);  
+              c.heating= convertNumberToStringHere(c.heating);     
+              c.water_payed= convertNumberToStringHere(c.water_payed);  
+              c.heating_payed= convertNumberToStringHere(c.heating_payed);     
+              c.water_regu= convertNumberToStringHere(c.water_regu);  
+              c.heating_regu= convertNumberToStringHere(c.heating_regu);     
+              };           
             });  
           };
             
@@ -4755,8 +4766,7 @@
           totalChargesAmountFields.push("private");
           totalChargesAmountFields.push("Total");
           convertToCurrency(totalledCharges, totalChargesAmountFields);
-          console.log(totalledConsumptions);
-          writePDF (closeDateTransactions,metersIncluded,commonCharges,privateCharges,totalledCharges,waterCharges,heatingCharges,totalledConsumptions);
+          writePDF (closeDateTransactions,metersIncluded,commonCharges,privateCharges,totalledCharges,waterCharges,heatingCharges,totalledConsumptions.slice(0,5));
         });
       
       };
@@ -5157,7 +5167,7 @@
         const rowsPortrait =17;
         var numPages;
         if (metersIncludedHere) {
-          numPages = 9;
+          numPages = 11;
            /*numPages = 1 + Math.ceil(dataWaterPeriod.length/rowsPortrait) + Math.ceil(dataWater.length/rowsPortrait) + Math.ceil(dataHeatingPeriod.length/rowsPortrait) + Math.ceil(dataHeating.length/rowsPortrait) + Math.ceil(dataConsumption.length/rowsLandscape) + Math.ceil(dataCommon.length/rowsPortrait) + Math.ceil(dataQuota.length/rowsLandscape) + Math.ceil(dataPrivate.length/rowsLandscapePrivate) + Math.ceil(tableCharges.length/rowsLandscape);*/
         } else {
           numPages = 6;
@@ -5265,7 +5275,7 @@
         if (metersIncludedHere){
           printTablePortrait("Water expenses since previous regularisation" , waterCharges, headerWH);
           printTablePortrait("Heating expenses since previous regularisation" , heatingCharges, headerWH);
-          
+          console.log("totalledConsumptionsHere ", totalledConsumptionsHere);
           printTableLandscape("Regularisation Water and Heating (CW = Cold Water, HW= Hot Water, HE = Heating)", totalledConsumptionsHere, headerConsumption,8);
         };
         printTableLandscape("Total charges", totalCharges, headerCharges, 10);
