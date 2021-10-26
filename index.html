@@ -4646,7 +4646,7 @@
             consumptions.forEach(function(c){
               
               function completeAndPushTotal() {
-                checkPropInTotals(prop) {return (prop == c.propertyId);};
+                checkPropInTotals(tc) {return (tc.propertyId == c.propertyId);};
                 var totalChargesRow = totalCharges.find(checkPropInTotals);
                 totalConsumptionRow.water_payed= -1* Number((totalWater * costCenterWater.distribution[totalConsumptionRow.propertyId]/ costCenterWater.totalQuota).toFixed(2));
                 totalConsumptionRow.water_regu = Number((totalConsumptionRow.water_payed + totalConsumptionRow.water).toFixed(2));
