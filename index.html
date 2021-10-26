@@ -4766,7 +4766,7 @@
           totalChargesAmountFields.push("private");
           totalChargesAmountFields.push("Total");
           convertToCurrency(totalledCharges, totalChargesAmountFields);
-          writePDF (closeDateTransactions,metersIncluded,commonCharges,privateCharges,totalledCharges,waterCharges,heatingCharges,totalledConsumptions.slice(0,5));
+          writePDF (closeDateTransactions,metersIncluded,commonCharges,privateCharges,totalledCharges,waterCharges,heatingCharges,totalledConsumptions);
         });
       
       };
@@ -5212,7 +5212,9 @@
             doc.addPage("a4", "landscape");
             doc.setFontSize(16);
             doc.text(title, 15, 15);
-            doc.table(10, 20, table.slice(i*rowsLandscape, (i+1)*rowsLandscape), header,{fontSize:fontSizeP});
+            console.log("title ",title);
+            console.log("math min ", Math.min(((i+1)*rowsLandscape-1),table.length-1));
+            doc.table(10, 20, table.slice(i*rowsLandscape, Math.min(((i+1)*rowsLandscape-1),table.length-1)), header,{fontSize:fontSizeP});
             printFooterLandscape ();
           };
         };
