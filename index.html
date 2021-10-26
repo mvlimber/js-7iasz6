@@ -4646,7 +4646,7 @@
             consumptions.forEach(function(c){
               
               function completeAndPushTotal() {
-                checkPropInTotals(tc) {return (tc.propertyId == c.propertyId);};
+                function checkPropInTotals(tc) {return (tc.propertyId == c.propertyId);};
                 var totalChargesRow = totalCharges.find(checkPropInTotals);
                 totalConsumptionRow.water_payed= -1* Number((totalWater * costCenterWater.distribution[totalConsumptionRow.propertyId]/ costCenterWater.totalQuota).toFixed(2));
                 totalConsumptionRow.water_regu = Number((totalConsumptionRow.water_payed + totalConsumptionRow.water).toFixed(2));
@@ -4680,30 +4680,18 @@
               function convertNumberToStringHere(n){if (n) {return n.toFixed(2);} else {return " "} };
               
               if (c.property == "") {
-                c.meter="";
-                c.type = "";
-                c.reading= "";
-                c.last_reading= "";
-                c.difference= "";  
-                c.water= "";  
-                c.heating= "";     
-                c.water_payed= "";  
-                c.heating_payed= "";     
-                c.water_regu= "";  
-                c.heating_regu= "";
+                c.meter="";c.type = "";c.reading= "";c.last_reading= "";c.difference= "";  
+                c.water= "";c.water_payed= "";c.water_regu= "";  
+                c.heating= "";c.heating_payed= "";c.heating_regu= "";
               } else if (c.property == "Common")  {
                 c.propertyId=" ";
                 c.type = ConsumptionTableType[c.type];
                 c.reading= convertToStringHere(c.reading);
                 c.last_reading= convertToStringHere(c.last_reading);
                 c.difference= convertToStringHere(c.difference);  
-                c.water= " ";  
-                c.heating= " ";     
-                c.water_payed= " ";  
-                c.heating_payed= " ";     
-                c.water_regu= " ";  
-                c.heating_regu= " ";
-              }else {
+                c.water= " ";c.water_payed= " ";c.water_regu= " ";  
+                c.heating= " ";c.heating_payed= " ";c.heating_regu= " ";
+              } else {
                 if (c.type) {c.type = ConsumptionTableType[c.type]; } else {c.type = " "};
                 c.reading= convertToStringHere(c.reading);
                 c.last_reading= convertToStringHere(c.last_reading);
