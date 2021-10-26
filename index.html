@@ -4675,10 +4675,10 @@
             });
             /* convert amounts to euro strings */
             totalledConsumptions.forEach(function(c){  
-              c.type = ConsumptionTableType[c.type]; 
+              if (c.type) {c.type = ConsumptionTableType[c.type]; } else {c.type = " "};
               function convertToString(n){if (n) {return n.toString()} else {return " "} };
-              c.last_reading= convertToString(c.last_reading)
               c.reading= convertToString(c.reading);
+              c.lastReading= convertToString(c.reading);
               c.difference= convertToString(c.difference);  
               c.water= convertToString(c.water);  
               c.heating= convertToString(c.heating);     
