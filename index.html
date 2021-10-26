@@ -4781,6 +4781,10 @@
           function getId(cc){return cc.idFS};
           var totalChargesAmountFields = ccsInReport.map(getId);
           totalChargesAmountFields.push("private");
+          if (metersIncluded) {
+            totalChargesAmountFields.push("water_regu");
+            totalChargesAmountFields.push("heating_regu");
+          };
           totalChargesAmountFields.push("Total");
           convertToCurrency(totalledCharges, totalChargesAmountFields);
           writePDF (closeDateTransactions,metersIncluded,commonCharges,privateCharges,totalledCharges,waterCharges,heatingCharges,totalledConsumptions);
