@@ -4689,7 +4689,8 @@
                 c.reading= convertToStringHere(c.reading);
                 c.last_reading= convertToStringHere(c.last_reading);
                 c.difference= convertToStringHere(c.difference);  
-                c.water= " ";c.water_payed= " ";c.water_regu= " ";  
+                c.water= convertNumberToCurrencyHere(c.water);
+                c.water_payed= " ";c.water_regu= " ";  
                 c.heating= " ";c.heating_payed= " ";c.heating_regu= " ";
               } else {
                 if (c.type) {c.type = ConsumptionTableType[c.type]; } else {c.type = " "};
