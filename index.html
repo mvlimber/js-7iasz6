@@ -4643,16 +4643,32 @@
             };
             var positionInConsumptions = 1;
             var totalConsumptionRow = generateNewTotalledConsumption(consumptions[0].property,consumptions[0].propertyId);
+            var grandTotalConsumtions = {};
+            grandTotalConsumtions.property = " ";
+            grandTotalConsumtions.meter = "Grand Total";
+            grandTotalConsumtions.type="";
+            grandTotalConsumtions.last_reading="";
+            grandTotalConsumtions.difference=0;
+            grandTotalConsumtions.water = 0;
+            grandTotalConsumtions.water_payed=0;
+            grandTotalConsumtions.water_regu=0;
+            grandTotalConsumtions.heating = 0;
+            grandTotalConsumtions.heating_payed=0;
+            grandTotalConsumtions.heating_regu=0;
             consumptions.forEach(function(c){
               
               function completeAndPushTotal() {
                 function checkPropInTotals(tc) {return (tc.propertyId == totalConsumptionRow.propertyId);};
                 var totalChargesRow = totalCharges.find(checkPropInTotals);
                 totalConsumptionRow.water_payed= -1* Number((totalWater * costCenterWater.distribution[totalConsumptionRow.propertyId]/ costCenterWater.totalQuota).toFixed(2));
+                grandTotalConsumtions.water_payed += totalConsumptionRow.water_payed;
                 totalConsumptionRow.water_regu = Number((totalConsumptionRow.water_payed + totalConsumptionRow.water).toFixed(2));
                 totalChargesRow.water_regu = totalConsumptionRow.water_regu;
+                grandTotalConsumtions.water_regu += totalConsumptionRow.water_regu;
                 totalConsumptionRow.heating_payed= -1* Number((totalHeating * costCenterHeating.distribution[totalConsumptionRow.propertyId]/ costCenterHeating.totalQuota).toFixed(2));
+                grandTotalConsumtions.heating_payed += totalConsumptionRow.heating_payed;
                 totalConsumptionRow.heating_regu = Number((totalConsumptionRow.heating_payed + totalConsumptionRow.heating).toFixed(2));
+                grandTotalConsumtions.heating_regu += totalConsumptionRow.heating_regu;
                 totalChargesRow.heating_regu = totalConsumptionRow.heating_regu;
                 totalledConsumptions.push(totalConsumptionRow);
               };
@@ -4667,8 +4683,8 @@
               };
               totalledConsumptions.push(c);
             
-              totalConsumptionRow.water += c.water;
-              totalConsumptionRow.heating += c.heating;
+              totalConsumptionRow.water += c.water;grandTotalConsumtions.water += c.water;
+              totalConsumptionRow.heating += c.heating;grandTotalConsumtions.heating += c.heating;
               
               if ((positionInConsumptions == consumptions.length)&& (c.property != "Common")){completeAndPushTotal();};
               
