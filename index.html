@@ -4678,7 +4678,7 @@
             totalledConsumptions.forEach(function(c){  
               function convertToStringHere(n){if (n) {return n.toString()} else {return " "} };
               function convertNumberToStringHere(n){if (n) {return n.toFixed(2);} else {return " "} };
-              
+              function convertNumberToCurrencyHere(n){if (n) {return n.toLocaleString("nl-BE",currencyStyle);} else {return " "} };
               if (c.property == "") {
                 c.meter="";c.type = "";c.reading= "";c.last_reading= "";c.difference= "";  
                 c.water= "";c.water_payed= "";c.water_regu= "";  
@@ -4696,12 +4696,12 @@
                 c.reading= convertToStringHere(c.reading);
                 c.last_reading= convertToStringHere(c.last_reading);
                 c.difference= convertToStringHere(c.difference);  
-                c.water= convertNumberToStringHere(c.water);  
-                c.heating= convertNumberToStringHere(c.heating);     
-                c.water_payed= convertNumberToStringHere(c.water_payed);  
-                c.heating_payed= convertNumberToStringHere(c.heating_payed);     
-                c.water_regu= convertNumberToStringHere(c.water_regu);  
-                c.heating_regu= convertNumberToStringHere(c.heating_regu);     
+                c.water= convertNumberToCurrencyHere(c.water);  
+                c.heating= convertNumberToCurrencyHere(c.heating);     
+                c.water_payed= convertNumberToCurrencyHere(c.water_payed);  
+                c.heating_payed= convertNumberToCurrencyHere(c.heating_payed);     
+                c.water_regu= convertNumberToCurrencyHere(c.water_regu);  
+                c.heating_regu= convertNumberToCurrencyHere(c.heating_regu);     
               };           
             });  
           };
