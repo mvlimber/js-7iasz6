@@ -219,6 +219,7 @@
             </li>
           </ul>
           <ul class="collapsible" id="notificationsTable">
+            <li></li>
           </ul>
           <br>
           <h6 style="font-size:20px "><b>Condomynium</b></h6>
@@ -1684,6 +1685,10 @@
       HEATI: 'HE'
     };
 
+    var HeaderIcon = {
+      NOTIF: 'account_balance'
+    };
+
     function insertSelectOptions (elBeforeID, keyValuePairs, defaultString, defaultKey) {
       // either defaulString or defaultKey should be nul
       var el = document.getElementById(elBeforeID);
@@ -1763,11 +1768,12 @@
       function refreshNotifications() {
         emptyHTMLSet(notificationsTable);
         notifications = null;
-        notificationsGet().then(function(objectsFSArray){
+        /*notificationsGet().then(function(objectsFSArray){
           objectsFSArray.forEach(function(thisObject){loadNotification(thisObject);});  
-        });    
+        }); 
+        */  
       };
-
+      /*
       function loadNotification (n){
         var objectsRow= document.createElement('li');
         var header = document.createElement('div');
@@ -1785,7 +1791,7 @@
         
         notificationsTable.appendChild (objectsRow);
       };
-
+      */
     </script>
     <!--   Reports scripts start here -->
     <script>
