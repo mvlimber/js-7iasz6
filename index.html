@@ -4441,8 +4441,13 @@
       function convertToCurrency (aTable, listOfFields) {
         aTable.forEach(function(aRow){
           listOfFields.forEach(function(anAmountField){
-            if (aRow[anAmountField] === 0) {aRow[anAmountField]=" ";}
-            else if (aRow[anAmountField] == "") {aRow[anAmountField]="";}
+            if (aRow[anAmountField] === 0) {
+              if (aRow.owner) { 
+                if ((aRow.owner == "Grand Total") && (anAmountField == "heating_regu")){
+                  aRow[anAmountField]=aRow[anAmountField].toLocaleString("nl-BE",currencyStyle);
+                } else {aRow[anAmountField]=" ";};
+              } else {aRow[anAmountField]=" ";};
+            } else if (aRow[anAmountField] == "") {aRow[anAmountField]="";}
             else {aRow[anAmountField] = aRow[anAmountField].toLocaleString("nl-BE",currencyStyle);};
           });        
         });
