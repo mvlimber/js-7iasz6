@@ -4646,9 +4646,10 @@
             var grandTotalConsumtions = {};
             grandTotalConsumtions.property = " ";
             grandTotalConsumtions.meter = "Grand Total";
-            grandTotalConsumtions.type="";
-            grandTotalConsumtions.last_reading="";
-            grandTotalConsumtions.difference=0;
+            grandTotalConsumtions.type=" ";
+            grandTotalConsumtions.reading=" ";
+            grandTotalConsumtions.last_reading=" ";
+            grandTotalConsumtions.difference=" ";
             grandTotalConsumtions.water = 0;
             grandTotalConsumtions.water_payed=0;
             grandTotalConsumtions.water_regu=0;
@@ -4721,10 +4722,15 @@
                 c.heating_regu= convertNumberToCurrencyHere(c.heating_regu);     
               };           
             });  
+            totalledConsumptions.push(generateEmptyRowTotalledConsumption());
+            grandTotalConsumtions.water= grandTotalConsumtions.water.toLocaleString("nl-BE",currencyStyle);  
+            grandTotalConsumtions.heating= grandTotalConsumtions.heating.toLocaleString("nl-BE",currencyStyle);     
+            grandTotalConsumtions.water_payed= grandTotalConsumtions.water_payed.toLocaleString("nl-BE",currencyStyle);  
+            grandTotalConsumtions.heating_payed= grandTotalConsumtions.heating_payed.toLocaleString("nl-BE",currencyStyle);     
+            grandTotalConsumtions.water_regu= grandTotalConsumtions.water_regu.toLocaleString("nl-BE",currencyStyle);  
+            grandTotalConsumtions.heating_regu= grandTotalConsumtions.heating_regu.toLocaleString("nl-BE",currencyStyle);   
+            totalledConsumptions.push(grandTotalConsumtions);
           };
-            
-          
-          
           /* total each line in total charges */
           totalCharges.forEach(function(tC){
             var totalRow = 0;
