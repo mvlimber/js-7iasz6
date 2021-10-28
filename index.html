@@ -218,6 +218,8 @@
               </div>
             </li>
           </ul>
+          <ul class="collapsible" id="notificationsTable">
+          </ul>
           <br>
           <h6 style="font-size:20px "><b>Condomynium</b></h6>
           <div class="row">
@@ -1732,6 +1734,7 @@
         document.getElementById("logo-container").innerHTML = "MyCondos: Home";
         if (!homeLoaded) {
           refreshHome();
+          refreshNotifications();
           homeLoaded = true;
         };
       };
@@ -1739,6 +1742,48 @@
       function checkBookDate (bookDate){
         if (bookDate.localeCompare(lastCloseDate) < 1) { return false} 
         else { return true};
+      };
+
+      var notifications = null;
+      async function notificationsGet(){
+        if (notifications) {return notifications;}
+        else {
+          var querySnapshot = await refCoproperty.collection("Notifications").where("type", ""==", NOTIF")orderBy("date").get();
+          notifications = [];
+          querySnapshot.forEach(function(objectFS) {
+            var thisObject = objectFS.data();
+            thisObject.idFS = objectFS.id;
+            notifications.push(thisObject);
+          });
+          return notifications;
+        };
+      };
+
+      var notificationsTable = document.getElementById("notificationsTable");
+      function refreshNotifications() {
+        emptyHTMLSet(notificationsTable);
+        notifications = null;
+        notificationsGet().then(function(objectsFSArray){
+          objectsFSArray.forEach(function(thisObject){loadNotification(thisObject);});  
+        });    
+      };
+
+      function loadNotification (n){
+        var objectsRow= document.createElement('li');
+        var header = document.createElement('div');
+        header.setAttribute("class","collapsible-header");
+        var headerIcon = document.createElement('i');
+        headerIcon.setAttribute("class","material-icons");
+        headerIcon.innerHTML = HeaderIcon[n.icon];
+        header.appendChild(headerIcon);
+        objectsRow.appendChild(header);
+        var body= document.createElement('div');
+        body.setAttribute("class","collapsible-body");
+        var bodytext = document.createElement('span');
+        bodyText.innerHTML = n.text;
+        body.appendChild (bodyText);
+        
+        notificationsTable.appendChild (objectsRow);
       };
 
     </script>
