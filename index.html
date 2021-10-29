@@ -204,10 +204,10 @@
               <div class="row">
                 <form>
                   <div class="input-field col s12 m4">
-                    <select id="notification_subType" required required="true"></select>
+                    <select id="notification_type" required required="true"></select>
                     <label>Type<b><font color='red'>*</font></b></label>
                   </div>
-                  <div class="input-field col s12 m6">
+                  <div class="input-field col s12 m4">
                     <input id="notification_title" type="text" required required="true" maxlength="30">
                     <label for="notification_title">Title<b><font color='red'>*</font></b></label>
                     <span class="helper-text" data-error="maximum 30 characters" >maximum 30 characters</span>
@@ -1725,8 +1725,8 @@
     };
 
     var NotificationType = {
-      ADMIN: 'account_balance',
-      WORKS: 'build'
+      ADMIN: 'administration',
+      WORKS: 'works'
     };
 
 
@@ -1815,7 +1815,22 @@
           
       };
 
-      function emptyNotificationFields(){};
+      function emptyNotificationFields(){
+        setSelectedNotification({idFS:null,type:"", title:"",text:""});
+      };
+      var notification;
+      function setSelectedNotification(object){
+        document.getElementById("notification_type").value=object.type;
+        document.getElementById("notification_title").value=object.title;
+        document.getElementById("notification_text").value=object.text;
+        notification = object;
+        var elems = document.querySelectorAll('select');
+        M.FormSelect.init(elems);
+        M.updateTextFields();
+      };
+
+
+
     </script>
     <!--   Reports scripts start here -->
     <script>
