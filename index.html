@@ -218,9 +218,15 @@
               </div>
             </li>
           </ul>
-          <ul class="collapsible" id="notificationsTable">
-            <li></li>
-          </ul>
+          <!--<ul class="collapsible" id="notificationsTable">
+          <li>
+            <div class="collapsible-header"><i class="material-icons">build</i>Travaux Update Mar 29, 2020</div>
+            <div class="collapsible-body">
+              <span>Chère / Cher Copropriétaire,
+          Le réamenagement du jardin démarrera le mois de Mai. Veuillez nous excuser pour des éventuels inconvénients ayant la vision de retrouver après un jardin bien plus joli.</span>
+            </div>
+          </li>
+          </ul>-->
           <br>
           <h6 style="font-size:20px "><b>Condomynium</b></h6>
           <div class="row">
@@ -1685,7 +1691,7 @@
       HEATI: 'HE'
     };
 
-    var HeaderIcon = {
+    var HeaderIconType = {
       NOTIF: 'account_balance'
     };
 
@@ -1780,7 +1786,7 @@
         header.setAttribute("class","collapsible-header");
         var headerIcon = document.createElement('i');
         headerIcon.setAttribute("class","material-icons");
-        headerIcon.innerHTML = HeaderIcon[n.icon];
+        headerIcon.innerHTML = HeaderIconType[n.icon];
         header.appendChild(headerIcon);
         objectsRow.appendChild(header);
         var body= document.createElement('div');
