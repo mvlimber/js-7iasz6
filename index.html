@@ -1091,19 +1091,15 @@
             <h5> View property</h5>
             <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
               <form class="col s12">
-                <div class="input-field col s6 m6">
+                <div class="input-field col s6 m4">
                   <input id="property_code" type="text" readonly>
                   <label for="property_code">Code</label>
                 </div>
-                <div class="input-field col s6 m6">
-                  <input id="property_quota" type="number" readonly>
-                  <label for="property_quota">Quota</label>
-                </div>
-                <div class="input-field col s6 m6">
+                <div class="input-field col s6 m4">
                   <input id="property_type" type="text" readonly>
                   <label for="property_type">Type</label>
                 </div>
-                <div class="input-field col s6 m6">
+                <div class="input-field col s6 m4">
                   <input id="property_cellar" type="text" readonly>
                   <label for="property_cellar">Cellar(s)</label>
                 </div>
@@ -1207,7 +1203,6 @@
             <thead>
               <tr>
                 <th>Code</th>
-                <th>Quota</th>
                 <th>Type</th>
                 <th>Owner</th>
               </tr>
@@ -1215,7 +1210,6 @@
             <tbody id="propertiesTable">
             </tbody>
           </table>
-          <h6><b id="totalQuotas"></b></h6>
           <div id="Properties_Add" class="displayHidden">
             <button style="float: right" data-target="propertyAdd" class="btn-small waves-light modal-trigger" onclick="resetSelectedProperty()"><i class="material-icons right">add</i>New Property</button>
           </div>
@@ -1247,18 +1241,13 @@
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
               <h5> New Property</h5>
               <form class="col s12">
-                <div class="input-field col s6 m6">
+                <div class="input-field col s6 m4">
                   <input id="property_code_add" type="text" pattern="([A-Z]|[0-9]){1,4}" class="validate" required aria-required="true">
                   <label for="property_code_add">Code<b><font color='red'>*</font></b></label>
                   <span class="helper-text" data-error="Max 4 capitals or numbers. Example: A1">Max 4 capitals or numbers. Example: A1</span>
                 </div>
-                <div class="input-field col s6 m6">
-                  <input id="property_quota_add" type="number" class="validate" min="0" max="999" required aria-required="true">
-                  <label for="property_quota_add">Quota<b><font color='red'>*</font></b></label>
-                  <span class="helper-text" data-error="A number of max 3 digits. Example: 22">A number of max 3 digits. Example: 22</span>
-                </div>
-                <div class="row">
-                  <div class="input-field col s6 m6">
+                
+                  <div class="input-field col s6 m4">
                     <select id="property_type_add" required aria-required="true"></select>
                     <label for="property_type_add">Type<b><font color='red'>*</font></b></label>
                   </div>
@@ -1268,7 +1257,7 @@
                     </select>
                     <label for="property_owner_add">Owner<b><font color='red'>*</font></b></label>
                   </div>
-                </div>
+                
                 <div class="input-field col s6 m6">
                   <input id="property_cellar_add" type="text" maxlength="10" class="validate">
                   <label for="property_cellar_add">Cellar(s)</label>
@@ -1335,27 +1324,22 @@
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
               <h5> Edit property data</h5>
               <form class="col s12">
-                <div class="input-field col s6 m6">
+                <div class="input-field col s6 m4">
                   <input id="property_code_edit" type="text" pattern="([A-Z]|[0-9]){1,4}" class="validate" required aria-required="true">
                   <label for="property_code_edit">Code<b><font color='red'>*</font></b></label>
                   <span class="helper-text" data-error="Max 4 capitals or numbers. Example: A1">Max 4 capitals or numbers. Example: A1</span>
                 </div>
-                <div class="input-field col s6 m6">
-                  <input id="property_quota_edit" type="number" class="validate" min="0" max="999" required aria-required="true">
-                  <label for="property_quota_edit">Quota<b><font color='red'>*</font></b></label>
-                  <span class="helper-text" data-error="A number of max 3 digits. Example: 22">A number of max 3 digits. Example: 22</span>
-                </div>
-                <div class="row">
-                  <div class="input-field col s6 m6">
+               
+                  <div class="input-field col s6 m4">
                     <select id="property_type_edit" required aria-required="true"></select>
                     <label for="property_type_edit">Type<b><font color='red'>*</font></b></label>
                   </div>
-                  <div class="input-field col s6 m6">
+                  <div class="input-field col s6 m4">
                     <input id="property_cellar_edit" type="text" maxlength="10" class="validate">
                     <label for="property_cellar_edit">Cellar(s)</label>
                     <span class="helper-text" data-error="A string of max 10 digits: Example: C1, C2">A string of max 10 digits: Example: C1,C2</span>
                   </div>
-                </div>
+                
               </form>
               <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeProperty()">Submit<i class="material-icons right">send</i></button>
               <a style="float: right;margin-bottom: 3px"
@@ -3654,12 +3638,6 @@
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);
         
-        totalQuotas = totalQuotas + parseInt(object.quota);
-        cellContent = document.createTextNode(object.quota);
-        cell = document.createElement('td');
-        cell.appendChild(cellContent);
-        objectsRow.appendChild(cell);  
-        
         cellContent = document.createTextNode(PropType[object.type]);
         cell = document.createElement('td');
         cell.appendChild(cellContent);
@@ -3737,11 +3715,9 @@
           .then(function(docref) {
             refreshProperties();
             selectedPropertyObject.code=property.code;
-            selectedPropertyObject.quota=property.quota;
             selectedPropertyObject.type=property.type;
             selectedPropertyObject.cellar=property.cellar;
             document.getElementById("property_code").value=property.code;
-            document.getElementById("property_quota").value=property.quota;
             document.getElementById("property_type").value=PropType[property.type];
             document.getElementById("property_cellar").value=property.cellar;
             M.Modal.getInstance(document.getElementById("propertyWrite")).close();
@@ -4086,7 +4062,6 @@
           document.getElementById("Properties_OccupantsAdd").setAttribute("class","displayHidden");
         };
         document.getElementById("property_code").value=object.code;
-        document.getElementById("property_quota").value=object.quota;
         document.getElementById("property_type").value=PropType[object.type];
         document.getElementById("property_cellar").value=object.cellar;
         var ownerEl = document.getElementById("property_owner");
@@ -4113,7 +4088,6 @@
         selectedPropertyId=null;
         selectedPropertyObject=null;
         document.getElementById("property_code_add").value="";
-        document.getElementById("property_quota_add").value="";
         document.getElementById("property_type_add").value="";
         document.getElementById("property_cellar_add").value="";
         document.getElementById("property_owner_add").value="";
@@ -4126,10 +4100,6 @@
         var valid= true;
         if (!document.getElementById("property_code_add").checkValidity()) {
           M.toast({html:"Please enter Code"});
-          valid=false;
-        };
-        if (!document.getElementById("property_quota_add").checkValidity()) {
-          M.toast({html:"Please enter valid Quota"});
           valid=false;
         };
         if (!document.getElementById("property_type_add").checkValidity()) {
@@ -4149,10 +4119,6 @@
           M.toast({html:"Please enter Code"});
           valid=false;
         };
-        if (!document.getElementById("property_quota_edit").checkValidity()) {
-          M.toast({html:"Please enter valid Quota"});
-          valid=false;
-        };
         if (!document.getElementById("property_type_edit").checkValidity()) {
           M.toast({html:"Please enter valid Type"});
           valid=false;
@@ -4163,7 +4129,6 @@
       function getAddPropertyEntries() {
         return {
               code: document.getElementById("property_code_add").value,
-              quota: document.getElementById("property_quota_add").value,
               type: document.getElementById("property_type_add").value,
               cellar: document.getElementById("property_cellar_add").value,
               owner: document.getElementById("property_owner_add").value,
@@ -4173,7 +4138,6 @@
       function getEditPropertyEntries() {
         return {
               code: document.getElementById("property_code_edit").value,
-              quota: document.getElementById("property_quota_edit").value,
               type: document.getElementById("property_type_edit").value,
               cellar: document.getElementById("property_cellar_edit").value,
             };
@@ -4181,7 +4145,6 @@
 
       function setEditPropertyEntries() {
         document.getElementById("property_code_edit").value=selectedPropertyObject.code;
-        document.getElementById("property_quota_edit").value=selectedPropertyObject.quota;
         document.getElementById("property_type_edit").value=selectedPropertyObject.type;
         document.getElementById("property_cellar_edit").value=selectedPropertyObject.cellar;
         M.updateTextFields();
