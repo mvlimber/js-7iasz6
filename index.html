@@ -3360,8 +3360,8 @@
       function refreshMembers() {
         emptyHTMLSet(membersTable);
         members = null;
-        membersGet().then(function(objectsFSArray){
-          objectsFSArray.forEach(function(thisObject){loadMember(thisObject);});  
+        membersGet().then(function(objectsArray){
+          objectsArray.forEach(function(thisObject){loadMember(thisObject);});  
         });    
       };
 
@@ -3405,18 +3405,25 @@
         cell.setAttribute("style","white-space: nowrap");
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);
-        
+        /*
         cellContent = document.createTextNode(m.email);
         cell = document.createElement('td');
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);  
-
-        cellContent = document.createTextNode(m.phoneMobile);
+        */
         cell = document.createElement('td');
-        cell.appendChild(cellContent);
-        objectsRow.appendChild(cell);  
+        propertiesBy(m).then(function(propertiesByResult){
+          propertiesByResult.owns.forEach (function (property) {cell.appendChild(propertyLinkFromMemberView(property));});
+        
+          objectsRow.appendChild(cell);  
 
-        membersTable.appendChild (objectsRow);
+          cellContent = document.createTextNode(m.phoneMobile);
+          cell = document.createElement('td');
+          cell.appendChild(cellContent);
+          objectsRow.appendChild(cell);  
+
+          membersTable.appendChild (objectsRow);
+        });
       };
       
       
@@ -3632,6 +3639,13 @@
       function propertyGetSynchrone(idFS){
         function checkId(p){return p.idFS == idFS};
         return properties.find(checkId);
+      };
+      async function propertiesBy(aMember) {
+        function checkOwnership(p){return p.owner == aMember.idfs};
+        var ps = await propertiesGet();
+        return {
+          owns: ps.filter(checkOwnership),
+        } ;
       };
       
       var propertiesTable = document.getElementById("propertiesTable");
