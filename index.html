@@ -195,7 +195,7 @@
     <main>
       <div class="row">
         <div id="Home" class="col s12">
-          <div id="notificationAdd" class="modal">
+          <div id="notificationEdit" class="modal">
             <div class="modal-content">
               <a style="float: right"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
@@ -252,7 +252,7 @@
           </ul>
           <ul class="collapsible" id="notificationsTable">
           </ul>
-          <button style="float: right" data-target="notificationAdd" class="btn-small waves-light modal-trigger" onclick="emptyNotificationFields()"><i class="material-icons right">add</i>New Announcement</button>
+          <button style="float: right" data-target="notificationEdit" class="btn-small waves-light modal-trigger" onclick="emptyNotificationFields()"><i class="material-icons right">add</i>New Announcement</button>
           <br>
           <h6 style="font-size:20px "><b>Condomynium</b></h6>
           <div class="row">
@@ -1829,7 +1829,55 @@
         M.updateTextFields();
       };
 
+      function validateNotification(){
+        var valid = true;
+        if (!document.getElementById("notification_type").checkValidity()) {
+          M.toast({html:"Please enter type"});
+          valid=false;
+        };
+        if (!document.getElementById("notification_title").checkValidity()) {
+          M.toast({html:"Please enter title"});
+          valid=false;
+        };
+        if (!document.getElementById("notification_text").checkValidity()) {
+          M.toast({html:"Please enter text"});
+          valid=false;
+        };
+        return valid;
+      };
 
+      function getNotificationEntries(){
+        var d = newDate();
+        return {
+          type: document.getElementById("notification_type").value,
+          title: document.getElementById("notification_title").value,
+          text: document.getElementById("notification_text").value,
+          updatedOn: d.toDateString();
+          editedby: currentUser.id;
+        };
+      };
+      
+      function writeNotification(){
+        if (validateNotification()) {
+          var entries =  getNotificationEntries(); 
+          if (notification.idFS) {
+            refCoproperty.collection("Notifications").doc(notification.idFS).set(entries).then(function(docref) {
+              refreshNotifications();
+              M.Modal.getInstance(document.getElementById("notificationEdit")).close();
+            }).catch(function(error) {
+              M.toast({html:"Error updating notification: " + error});
+            });
+          } else {
+            refCoproperty.collection("Notifications").add(entries).then(function(docref) {
+              refreshTransactionRules();
+              M.Modal.getInstance(document.getElementById("transactionRuleEdit")).close();
+            }).catch(function(error) {
+              M.toast({html:"Error adding notification: " + error});
+            });
+          };
+
+        }
+      };
 
     </script>
     <!--   Reports scripts start here -->
