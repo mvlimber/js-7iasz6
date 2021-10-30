@@ -1806,15 +1806,16 @@
         objectsRow.appendChild(header);
         var body= document.createElement('div');
         body.setAttribute("class","collapsible-body");
-        var text = document.createElement('span');
-        text.innerHTML = n.text + "<br><b>Updated on: </b>" + n.updatedOn + "<br><b>Edited by: </b><br><br>";
-        body.appendChild(text);
+        var text = document.createElement('DIV');
+        text.innerHTML = n.text + "<br><b>Updated on: </b>" + n.updatedOn + "<br><b>Edited by: </b>";
         memberGet(n.editedBy).then (function(author){
-          body.append(memberLink(author));
-          objectsRow.appendChild(body);
+          text.appendChild(memberLink(author));
+          body.appendChild(text);
+          var buttons = document.createElement('DIV');
+        
           if ((currentUser.role == roleAdministrator) || (currentUser.id == n.editedBy)){
             var removeButton = document.createElement('button');
-            removeButton.setAttribute('style','float: right');
+            removeButton.setAttribute('style','float: right;margin-bottom: 3px');
             removeButton.setAttribute('class','modal-trigger btn-small waves-light red');
             removeButton.setAttribute("data-target", "notificationRemove");
             removeButton.setAttribute('onclick','popupRemoveNotification('+JSON.stringify(n)+')');
@@ -1823,9 +1824,9 @@
             cellButtonIcon.innerHTML="delete";           
             removeButton.appendChild(cellButtonIcon);
             removeButton.innerHTML = "Remove";
-            body.append(removeButton);
+            buttons.appendChild(removeButton);
             var editButton = document.createElement('button');
-            editButton.setAttribute('style','float: right;margin-right: 5px');
+            editButton.setAttribute('style','float: right;margin-right: 5px;margin-bottom: 3px');
             editButton.setAttribute('class','modal-trigger btn-small waves-light');
             editButton.setAttribute("data-target", "notificationEdit");
             editButton.setAttribute('onclick','selectNotification('+JSON.stringify(n)+')');
@@ -1834,7 +1835,12 @@
             cellButtonIcon.innerHTML="edit";           
             editButton.appendChild(cellButtonIcon);
             editButton.innerHTML = "Edit";
-            body.append(editButton);
+            buttons.appendChild(editButton);
+            body.appendChild(buttons);
+            var br = document.createElement('br');
+            body.appendChild(br);
+            objectsRow.appendChild(body);
+          
           };
           notificationsTable.appendChild (objectsRow);
         })
