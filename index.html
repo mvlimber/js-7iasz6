@@ -195,6 +195,17 @@
     <main>
       <div class="row">
         <div id="Home" class="col s12">
+          <div id="notificationRemove" class="modal">
+            <div class="modal-content">
+              <h5> You are about to permanently remove this announcement. Please Confirm.</h5>  
+            </div>
+            <div class="modal-footer">
+              <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="removeNotification()">Confirm<i class="material-icons right">send</i></button>
+              <a style="float: right"
+                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
+                Cancel</a>
+            </div>
+          </div>
           <div id="notificationEdit" class="modal">
             <div class="modal-content">
               <a style="float: right"
@@ -1818,15 +1829,38 @@
         memberGet(n.editedBy).then (function(author){
           body.append(memberLink(author));
           objectsRow.appendChild(body);
+          var removeButton = document.createElement('button');
+          removeButton.setAttribute('style','float: right');
+          removeButton.setAttribute('class','modal-trigger btn-small waves-light red');
+          removeButton.setAttribute("data-target", "reportRemove");
+          removeButton.setAttribute('onclick','popupRemoveNotification('+JSON.stringify(n)+')');
+          var cellButtonIcon = document.createElement('i');
+          cellButtonIcon.setAttribute('class','material-icons right');
+          cellButtonIcon.innerHTML="delete";           
+          removeButton.appendChild(cellButtonIcon);
+          removeButton.innerHTML = "Remove";
+          body.append(removeButton);
           notificationsTable.appendChild (objectsRow);
         })
-        
-        
       };
+      
+      
+      
       function emptyNotificationFields(){
         setSelectedNotification({idFS:null,type:"", title:"",text:""});
       };
       var notification;
+
+      function popupRemoveNotification(n){notification=n;};
+      function removeNotification(n) {
+        refCoproperty.collection("Notifications").doc(notification.idFS).delete().then(function(){
+          refreshNotifications();
+          M.Modal.getInstance(document.getElementById("notificationRemove")).close();
+        }).catch(function(error) {
+            M.toast({html:"System error removing notification:" + error});
+        });
+      }
+
       function setSelectedNotification(object){
         document.getElementById("notification_type").value=object.type;
         document.getElementById("notification_title").value=object.title;
