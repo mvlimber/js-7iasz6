@@ -229,27 +229,6 @@
           </div>
           <h6 style="font-size:20px "><b>Announcements</b></h6>
           <br>
-          <ul class="collapsible">
-            <li>
-              <div class="collapsible-header"><i class="material-icons">account_balance</i>Assemblée Générale Update Apr
-                2, 2020</div>
-              <div class="collapsible-body"><span>Chère / Cher Copropriétaire,
-            A défaut d'une Assemblée Générale au cours de laquelle nous pouvions vous tenir au courant de la
-            situation générale de notre immeuble et des travaux en cours, nous vous proposons de trouver ici touts les
-            infos sur notre immeuble.</span>
-            <br>
-            <span><b>author:</b>marc</span>
-            <button style="float: right" data-target="reportAdd" class="btn-small waves-light modal-trigger" onclick="emptyReportFields()"><i class="material-icons right">add</i>New Report</button>
-              </div>
-            </li>
-            <li>
-              <div class="collapsible-header"><i class="material-icons">build</i>Travaux Update Mar 29, 2020</div>
-              <div class="collapsible-body">
-                <span>Chère / Cher Copropriétaire,
-            Le réamenagement du jardin démarrera le mois de Mai. Veuillez nous excuser pour des éventuels inconvénients ayant la vision de retrouver après un jardin bien plus joli.</span>
-              </div>
-            </li>
-          </ul>
           <ul class="collapsible" id="notificationsTable">
           </ul>
           <button style="float: right" data-target="notificationEdit" class="btn-small waves-light modal-trigger" onclick="emptyNotificationFields()"><i class="material-icons right">add</i>New Announcement</button>
@@ -268,7 +247,7 @@
                 </tr>
                 <tr>
                   <td>Administrator</td>
-                  <td>Marc Van Limberghen</td>
+                  <td id = "home_administrator"></td>
                 </tr>
               </table>
             </div>
@@ -1769,8 +1748,11 @@
           document.getElementById("Home_CopropertyName").appendChild(textN);
           textN = document.createTextNode(currentCoproperty.street + " " + currentCoproperty.houseNumber + ", "+ currentCoproperty.zip + " " + currentCoproperty.town);
           document.getElementById("Home_CopropertyAddress").appendChild(textN);
-          refCoproperty.collection("ChargesReports").orderBy("endDate","desc").get().then(function(chargesReportsFS){
-            readCloseAndReguDate(chargesReportsFS);
+          memberGet(currentCoproperty.administrator).then (function(a){
+            document.getElementById("home_administrator").appendChild(memberLink(a));
+            refCoproperty.collection("ChargesReports").orderBy("endDate","desc").get().then(function(chargesReportsFS){
+              readCloseAndReguDate(chargesReportsFS);
+            });
           });
         });
       };
