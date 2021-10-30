@@ -1840,6 +1840,17 @@
           removeButton.appendChild(cellButtonIcon);
           removeButton.innerHTML = "Remove";
           body.append(removeButton);
+          var editButton = document.createElement('button');
+          editButton.setAttribute('style','float: right;margin-right: 5px');
+          editButton.setAttribute('class','modal-trigger btn-small waves-light');
+          editButton.setAttribute("data-target", "notificationEdit");
+          editButton.setAttribute('onclick','selectNotification('+JSON.stringify(n)+')');
+          cellButtonIcon = document.createElement('i');
+          cellButtonIcon.setAttribute('class','material-icons right');
+          cellButtonIcon.innerHTML="edit";           
+          editButton.appendChild(cellButtonIcon);
+          editButton.innerHTML = "Edit";
+          body.append(editButton);
           notificationsTable.appendChild (objectsRow);
         })
       };
@@ -1847,7 +1858,7 @@
       
       
       function emptyNotificationFields(){
-        setSelectedNotification({idFS:null,type:"", title:"",text:""});
+        selectNotification({idFS:null,type:"", title:"",text:""});
       };
       var notification;
 
@@ -1861,7 +1872,7 @@
         });
       }
 
-      function setSelectedNotification(object){
+      function selectNotification(object){
         document.getElementById("notification_type").value=object.type;
         document.getElementById("notification_title").value=object.title;
         document.getElementById("notification_text").value=object.text;
