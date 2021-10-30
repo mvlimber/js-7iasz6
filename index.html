@@ -1780,6 +1780,7 @@
         hideMenu();
         document.getElementById("logo-container").innerHTML = "MyCondos: Home";
         if (!homeLoaded) {
+          refreshNotifications();
           refreshHome();
           homeLoaded = true;
         };
@@ -1794,7 +1795,7 @@
       async function notificationsGet(){
         if (notifications) {return notifications;}
         else {
-          var querySnapshot = await refCoproperty.collection("Notifications").where("type", ""==", NOTIF").orderBy("date").get();
+          var querySnapshot = await refCoproperty.collection("Notifications").orderBy("updatedOn").get();
           notifications = [];
           querySnapshot.forEach(function(objectFS) {
             var thisObject = objectFS.data();
@@ -1815,6 +1816,31 @@
           
       };
 
+      function loadNotification (n){
+        var objectsRow= document.createElement('li');
+        var header = document.createElement('div');
+        header.setAttribute("class","collapsible-header");
+        var headerIcon = document.createElement('i');
+        headerIcon.setAttribute("class","material-icons");
+        headerIcon.innerHTML = HeaderIconType[n.type];
+        header.appendChild(headerIcon);
+        var title = document.createElement('span');
+        title.innerHTML = n.title;
+        header.appendChild (title);
+        objectsRow.appendChild(header);
+        var body= document.createElement('div');
+        body.setAttribute("class","collapsible-body");
+        var text = document.createElement('span');
+        text.innerHTML = n.text + "<br><b>Updated on: </b>" + n.updatedOn + "<br><b>Edited by: </b>";
+        body.appendChild(text);
+        memberGet(n.editedBy).then (function(author){
+          body.append(memberLink(author));
+          objectsRow.appendChild(body);
+          notificationsTable.appendChild (objectsRow);
+        })
+        
+        
+      };
       function emptyNotificationFields(){
         setSelectedNotification({idFS:null,type:"", title:"",text:""});
       };
@@ -1847,13 +1873,13 @@
       };
 
       function getNotificationEntries(){
-        var d = newDate();
+        var d = new Date();
         return {
           type: document.getElementById("notification_type").value,
           title: document.getElementById("notification_title").value,
           text: document.getElementById("notification_text").value,
-          updatedOn: d.toDateString();
-          editedby: currentUser.id;
+          updatedOn: d.toDateString(),
+          editedBy: currentUser.id
         };
       };
       
@@ -1869,8 +1895,8 @@
             });
           } else {
             refCoproperty.collection("Notifications").add(entries).then(function(docref) {
-              refreshTransactionRules();
-              M.Modal.getInstance(document.getElementById("transactionRuleEdit")).close();
+              refreshNotifications();
+              M.Modal.getInstance(document.getElementById("notificationEdit")).close();
             }).catch(function(error) {
               M.toast({html:"Error adding notification: " + error});
             });
