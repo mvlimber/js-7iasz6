@@ -916,7 +916,7 @@
             <thead>
               <tr>
                 <th style="white-space: nowrap"> First and Last Name </th>
-                <th> Email </th>
+                <!--<th> Email </th>-->
                 <th> Mobile </th>
               </tr>
             </thead>
@@ -1839,9 +1839,8 @@
             body.appendChild(buttons);
             var br = document.createElement('br');
             body.appendChild(br);
-            objectsRow.appendChild(body);
-          
           };
+          objectsRow.appendChild(body);
           notificationsTable.appendChild (objectsRow);
         })
       };
@@ -3411,7 +3410,12 @@
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);  
         */
+        cellContent = document.createTextNode(m.phoneMobile);
         cell = document.createElement('td');
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell);
+        membersTable.appendChild (objectsRow);
+        /*cell = document.createElement('td');
         propertiesBy(m).then(function(propertiesByResult){
           propertiesByResult.owns.forEach (function (property) {cell.appendChild(propertyLinkFromMemberView(property));});
         
@@ -3423,7 +3427,7 @@
           objectsRow.appendChild(cell);  
 
           membersTable.appendChild (objectsRow);
-        });
+        });*/
       };
       
       
