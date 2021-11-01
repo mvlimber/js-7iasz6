@@ -1706,7 +1706,7 @@
     };
 
     var ReportType = {
-      GEASS: 'Generale Assembly',
+      GEASS: 'General Assembly',
       CHARR: 'Charges and consumption',
       CHARS: 'Charges',
       OTHER:  'Other'
@@ -1736,7 +1736,7 @@
     insertSelectOptions("meter_type", MeterType, "type");
     insertSelectOptions("meter_status", MeterStatus, "", "ACTIF");
     insertSelectOptions("notification_type", NotificationType, "type");
-    insertSelectOptions("report_type", ReportType, "type");
+    insertSelectOptions("report_type_structured", ReportType, "type");
     </script>
     <!--   Home scripts start here -->
     <script>
@@ -1946,7 +1946,11 @@
         M.updateTextFields();
       };
       
-      function showFreeTypeReport(){document.getElementById("report_freeType_frame").style.display = "block"; };
+      function showFreeTypeReport(){
+        if (document.getElementById("report_type_structured").value == "OTHER") {
+          document.getElementById("report_freeType_frame").style.display = "block"; 
+        } else {document.getElementById("report_freeType_frame").style.display = "none"; };
+      };
       
       function showReport(url) {
           window.open(url,"_blank");
@@ -2017,8 +2021,12 @@
       var reportFile;
       function validateReportEntries() {
         var valid = true
-        if (!(document.getElementById("report_type_edit").value)) {
+        if (!(document.getElementById("report_type_structured").value)) {
           M.toast({html:"Please enter Type"});
+          valid=false;
+        };
+        if (!(document.getElementById("report_type_free").value)) {
+          M.toast({html:"Please enter free text type"});
           valid=false;
         };
       
