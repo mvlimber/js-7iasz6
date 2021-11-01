@@ -302,13 +302,13 @@
                 </form>
                 <form>
                   <div class="input-field col s12 m4">
-                    <select id="report_type_structured" required required="true"></select>
+                    <select id="report_type_structured" required required="true" onchange="showFreeTypeReport()"></select>
                     <label>Type<b><font color='red'>*</font></b></label>
                   </div>
-                  <div class="input-field col s12 m6">
-                    <input id="report_type_free" type="text" required required="true" maxlength="40" style="display:none">
+                  <div id = "report_freeType_frame" class="input-field col s12 m6" style="display:none">
+                    <input id="report_type_free" type="text" required required="true" maxlength="40" >
                     <label for="report_type_free">Type<b><font color='red'>*</font></b></label>
-                    <span class="helper-text" data-error="maximum 50 characters" ></span>
+                    <span class="helper-text" data-error="maximum 40 characters" ></span>
                   </div>
                 </form>
               </div>
@@ -1706,7 +1706,7 @@
     };
 
     var ReportType = {
-      GEASS: 'Generale Assemby',
+      GEASS: 'Generale Assembly',
       CHARR: 'Charges and consumption',
       CHARS: 'Charges',
       OTHER:  'Other'
@@ -1736,6 +1736,7 @@
     insertSelectOptions("meter_type", MeterType, "type");
     insertSelectOptions("meter_status", MeterStatus, "", "ACTIF");
     insertSelectOptions("notification_type", NotificationType, "type");
+    insertSelectOptions("report_type", ReportType, "type");
     </script>
     <!--   Home scripts start here -->
     <script>
@@ -1938,8 +1939,14 @@
         document.getElementById("reportFile").value = "";
         document.getElementById("reportFileText").value = "";
         document.getElementById("report_type_structured").value = "";
+        document.getElementById("report_freeType_frame").style.display = "none";
         document.getElementById("report_type_free").value = "";
+        var elems = document.querySelectorAll('select');
+        M.FormSelect.init(elems);
+        M.updateTextFields();
       };
+      
+      function showFreeTypeReport(){document.getElementById("report_freeType_frame").style.display = "block"; };
       
       function showReport(url) {
           window.open(url,"_blank");
