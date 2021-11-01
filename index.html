@@ -2072,9 +2072,11 @@
           refCoproperty.collection("Reports").add(entries).then(function(docref) {
             if (reportFile) {
               var fileRef = refCopropertyFiles.child("Reports").child(docref.id);  
-              fileRef.put(reportFile).then (function (){});
-              M.Modal.getInstance(document.getElementById("reportAdd")).close();
-              refreshReports();
+              fileRef.put(reportFile).then (function (){
+                refreshReports();
+                M.Modal.getInstance(document.getElementById("reportAdd")).close();
+              });
+              
             } else {
               M.toast({html:"System error writing file"});
             };
