@@ -304,11 +304,12 @@
                   <div class="input-field col s12 m4">
                     <select id="report_type_structured" required required="true" onchange="showFreeTypeReport()"></select>
                     <label>Type<b><font color='red'>*</font></b></label>
+                    <span class="helper-text" data-error="required field" ></span>
                   </div>
                   <div id = "report_freeType_frame" class="input-field col s12 m6" style="display:none">
-                    <input id="report_type_free" type="text" required required="true" maxlength="40" >
-                    <label for="report_type_free">Type<b><font color='red'>*</font></b></label>
-                    <span class="helper-text" data-error="maximum 40 characters" ></span>
+                    <input id="report_type_free" type="text" maxlength="40" >
+                    <label for="report_type_free">Free Text Type<b><font color='red'>*</font></b></label>
+                    <span class="helper-text" data-error="maximum 40 characters" >maximum 40 characters</span>
                   </div>
                 </form>
               </div>
@@ -2021,12 +2022,17 @@
       var reportFile;
       function validateReportEntries() {
         var valid = true
-        if (!(document.getElementById("report_type_structured").value)) {
+        if (!(document.getElementById("report_type_structured").checkValidity())) {
           M.toast({html:"Please enter Type"});
           valid=false;
         };
-        if (!(document.getElementById("report_type_free").value)) {
-          M.toast({html:"Please enter free text type"});
+        if (!(document.getElementById("report_type_free").checkValidity())) {
+          M.toast({html:"Please valid free text type"});
+          valid=false;
+        };
+
+        if ((document.getElementById("report_type_structured").value == "OTHER") && (!document.getElementById("report_type_free").value)) {
+          M.toast({html:"when Type = Other, Free Text Type is required"});
           valid=false;
         };
       
