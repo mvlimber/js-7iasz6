@@ -1670,6 +1670,7 @@
       WATER: 'water',
       HEATI: 'heating',
       PRIVA: 'private',
+      OWNER: 'owner payment',
       TBSET: 'to be set'
     };
 
@@ -1682,7 +1683,8 @@
       ELECT: 'electricity',
       WATER: 'water',
       HEATI: 'heating',
-      PRIVA: 'private'
+      PRIVA: 'private',
+      OWNER: 'owner payment'
     };
 
     var MeterStatus = {
@@ -2914,62 +2916,94 @@
     </script>
     <!-- TransactionRules scripts start here-->
     <script>
-      function loadTransactionRule(objectFS){
-        var object = objectFS.data();
-          var objectsRow= document.createElement('tr');
-          
-          var cellContent = document.createElement('button');
-          cellContent.setAttribute("data-target", "transactionRuleEdit");
-          cellContent.setAttribute('class','modal-trigger');
-          cellContent.setAttribute('style','border:none;background-color:Transparent');
-          cellContent.setAttribute('onclick','setSelectedTransactionRule('+JSON.stringify(objectFS.id)+','+JSON.stringify(object)+')');
-          cellContent.innerHTML = "<font color='blue'>" + object.account + "</font>";
-          var cell = document.createElement('td');
-          cell.appendChild(cellContent);
-          objectsRow.appendChild(cell);   
-
-          if (object.communication) {cellContent = document.createTextNode(object.communication);}
-          else {cellContent = document.createTextNode("");};
-          cell = document.createElement('td');
-          cell.appendChild(cellContent);
-          objectsRow.appendChild(cell); 
-
-          cellContent = document.createTextNode(TransTypeRead[object.type]);
-          cell = document.createElement('td');
-          cell.appendChild(cellContent);
-          objectsRow.appendChild(cell);
-          
-          cellContent = document.createTextNode("");
-          var ownerCell = document.createElement('td');
-          ownerCell.setAttribute("style","white-space: nowrap");
-          ownerCell.appendChild(cellContent);
-          objectsRow.appendChild(cell);
-          
-          transactionRulesTable.appendChild (objectsRow);
-          if (Boolean(object.owner)) {
-            refCoproperty.collection("Members").doc(object.owner).get().then(function(ownerFS) {
-              ownerCell.removeChild(ownerCell.firstChild);
-              //ownerCell.appendChild(memberLink(ownerFS));
-              var x = document.createTextNode("tttt");
-              ownerCell.appendChild(x);
-            }).catch(function(error) {
-              console.log("Error getting owner:", error);
-            });
-          };
-
-      };
-      
-      
-      var transactionRules = [];
-      function refreshTransactionRules(){
-        emptyHTMLSet(transactionRulesTable);
-        transactionRules = [];
-        refCoproperty.collection("TransactionRules").get().then(function(objectsFSArray){
-          objectsFSArray.forEach(function(objectFS){
-            loadTransactionRule(objectFS);
-            transactionRules.push(objectFS.data());
+      var transactionRules = null;
+      async function transactionRulesGet(){
+        if (transactionRules) {return transactionRules;}
+        else {
+          var querySnapshot = await refCoproperty.collection("TransactionRules").get();
+          transactionRules = [];
+          querySnapshot.forEach(function(objectFS) {
+            var thisObject = objectFS.data();
+            thisObject.idFS = objectFS.id;
+            transactionRules.push(thisObject);
           });
+          return transactionRules;
+        };
+      };
+
+      var transactionRulesList = document.getElementById("transactionRulesList");
+      function refreshTransactionRules(){
+        emptyHTMLSet(transactionRulesList);
+        transactionRules = null;
+        transactionRulesGet().then(function(objectsFSArray){
+          objectsFSArray.forEach(function(objectFS){loadTransactionRule(objectFS);});
         });
+      };
+
+      function loadTransactionRule(tR){
+        var objectsRow= document.createElement('li');
+        var header = document.createElement('div');
+        header.setAttribute("class","collapsible-header");
+        var title = document.createElement('span');
+        header.appendChild (title);
+        objectsRow.appendChild(header);
+        var body= document.createElement('div');
+        body.setAttribute("class","collapsible-body");
+        var text = document.createElement('DIV');
+        text.innerHTML = "<b>If</b> Account =" +tr.account + "<b> Then</b> expense classification =  " + TransTypeRead[tr.type];
+        body.appendChild(text);
+        objectsRow.appendChild(body);
+        transactionRulesList.appendChild (objectsRow);
+        
+        if (tr.type != "OWNER"){title.innerHTML = "Expense " + tr.counterPart;}
+        else {
+          memberGet(tR.owner).then (function(owner){
+            title.innerHTML = "Owner payment " + owner.firstName + " " + owner.lastName ;
+          });
+        };
+        
+
+        
+        /*
+        var cellContent = document.createElement('button');
+        cellContent.setAttribute("data-target", "transactionRuleEdit");
+        cellContent.setAttribute('class','modal-trigger');
+        cellContent.setAttribute('style','border:none;background-color:Transparent');
+        cellContent.setAttribute('onclick','setSelectedTransactionRule('+JSON.stringify(objectFS.id)+','+JSON.stringify(object)+')');
+        cellContent.innerHTML = "<font color='blue'>" + object.account + "</font>";
+        var cell = document.createElement('td');
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell);   
+
+        if (object.communication) {cellContent = document.createTextNode(object.communication);}
+        else {cellContent = document.createTextNode("");};
+        cell = document.createElement('td');
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell); 
+
+        cellContent = document.createTextNode(TransTypeRead[object.type]);
+        cell = document.createElement('td');
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell);
+        
+        cellContent = document.createTextNode("");
+        var ownerCell = document.createElement('td');
+        ownerCell.setAttribute("style","white-space: nowrap");
+        ownerCell.appendChild(cellContent);
+        objectsRow.appendChild(cell);
+        
+        transactionRulesTable.appendChild (objectsRow);
+        if (Boolean(object.owner)) {
+          refCoproperty.collection("Members").doc(object.owner).get().then(function(ownerFS) {
+            ownerCell.removeChild(ownerCell.firstChild);
+            //ownerCell.appendChild(memberLink(ownerFS));
+            var x = document.createTextNode("tttt");
+            ownerCell.appendChild(x);
+          }).catch(function(error) {
+            console.log("Error getting owner:", error);
+          });
+        };
+        */
       };
 
       var transactionRulesLoaded = false;
