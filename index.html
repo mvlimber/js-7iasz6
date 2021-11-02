@@ -2950,12 +2950,12 @@
         var body= document.createElement('div');
         body.setAttribute("class","collapsible-body");
         var text = document.createElement('DIV');
-        text.innerHTML = "<b>If</b> Account =" +tr.account + "<b> Then</b> expense classification =  " + TransTypeRead[tr.type];
+        text.innerHTML = "<b>If</b> Account =" +tR.account + "<b> Then</b> expense classification =  " + TransTypeRead[tR.type];
         body.appendChild(text);
         objectsRow.appendChild(body);
         transactionRulesList.appendChild (objectsRow);
         
-        if (tr.type != "OWNER"){title.innerHTML = "Expense " + tr.counterPart;}
+        if (tR.type != "OWNER"){title.innerHTML = "Expense " + tR.counterPart;}
         else {
           memberGet(tR.owner).then (function(owner){
             title.innerHTML = "Owner payment " + owner.firstName + " " + owner.lastName ;
