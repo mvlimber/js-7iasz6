@@ -3718,10 +3718,11 @@
             console.log("Error getting document:", error);
           });
         }; 
-      };
+      }; 
 
       function refreshProperties() {
         emptyHTMLSet(propertiesTable);
+        properties = null;
         propertiesGet().then(function(ps){
           ps.forEach(function(p){loadProperty(p);});
         });
@@ -3755,14 +3756,26 @@
               M.toast({html:"Error: property with this code already exists"}); 
             } else {
               refCoproperty.collection("Properties").add(entries).then(function(pFS) {
-                  refreshProperties();
-                  setSelectedProperty(pFS.id, entries);
-                  var docUserRef = firestore.collection("Users").doc(email);
-                  docUserRef.get().then(function(user){
-                    if (!user.exists)  {firestore.collection("Users").doc(email).set({});}
+                  memberGet(entries.owner).then(function (ownerHere){
+                    var docUserRef = firestore.collection("Users").doc(ownerHere.email);
+                    docUserRef.get().then(function(user){
+                      if (!user.exists)  {
+                        firestore.collection("Users").doc(ownerHere.email).set({}).then(function(x){
+                          refreshProperties();
+                          setSelectedProperty(pFS.id, entries);
+                          M.Modal.getInstance(document.getElementById("propertyAdd")).close();
+                          M.Modal.getInstance(document.getElementById("propertyView")).open();
+                        });
+                      }else {
+                        refreshProperties();
+                        setSelectedProperty(pFS.id, entries);
+                        M.Modal.getInstance(document.getElementById("propertyAdd")).close();
+                        M.Modal.getInstance(document.getElementById("propertyView")).open();
+                      };
+                    });
+                      
+                    
                   });
-                  M.Modal.getInstance(document.getElementById("propertyAdd")).close();
-                  M.Modal.getInstance(document.getElementById("propertyView")).open();
                 }).catch(function(error) {
                   M.toast({html:"Error occurred adding this property:" + error}); 
                 });
