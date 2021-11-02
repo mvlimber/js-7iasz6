@@ -1244,32 +1244,36 @@
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
               <h5> New Property</h5>
               <form class="col s12">
-                <div class="input-field col s6 m4">
+                <div class="row">
+                <div class="input-field col s6 m6">
                   <input id="property_code_add" type="text" pattern="([A-Z]|[0-9]){1,4}" class="validate" required aria-required="true">
                   <label for="property_code_add">Code<b><font color='red'>*</font></b></label>
                   <span class="helper-text" data-error="Max 4 capitals or numbers. Example: A1">Max 4 capitals or numbers. Example: A1</span>
                 </div>
-                
-                  <div class="input-field col s6 m4">
-                    <select id="property_type_add" required aria-required="true"></select>
-                    <label for="property_type_add">Type<b><font color='red'>*</font></b></label>
-                  </div>
-                  <div class="input-field col s12 m6">
-                    <select id="property_owner_add" required aria-required="true">
-                      <option value="" disabled selected>Select the owner</option>
-                    </select>
-                    <label for="property_owner_add">Owner<b><font color='red'>*</font></b></label>
-                  </div>
-                
+                <div class="input-field col s6 m6">
+                  <select id="property_type_add" required aria-required="true"></select>
+                  <label for="property_type_add">Type<b><font color='red'>*</font></b></label>
+                </div>
+                </div>
+                <div class="row">
+                <div class="input-field col s6 m6">
+                  <select id="property_owner_add" required aria-required="true">
+                    <option value="" disabled selected>Select the owner</option>
+                  </select>
+                  <label for="property_owner_add">Owner<b><font color='red'>*</font></b></label>
+                </div>
                 <div class="input-field col s6 m6">
                   <input id="property_cellar_add" type="text" maxlength="10" class="validate">
                   <label for="property_cellar_add">Cellar(s)</label>
                   <span class="helper-text" data-error="A string of max 10 digits: Example: C1, C2">A string of max 10 digits: Example: C1,C2</span>
                 </div>
+                </div>
+                
               </form>
               <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="addProperty()">Save and complete by adding meters<i class="material-icons right">send</i></button>
               <a style="float: right;margin-bottom: 3px"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+              
             </div>
           </div>
 
@@ -3753,6 +3757,10 @@
               refCoproperty.collection("Properties").add(entries).then(function(pFS) {
                   refreshProperties();
                   setSelectedProperty(pFS.id, entries);
+                  var docUserRef = firestore.collection("Users").doc(email);
+                  docUserRef.get().then(function(user){
+                    if (!user.exists)  {firestore.collection("Users").doc(email).set({});}
+                  });
                   M.Modal.getInstance(document.getElementById("propertyAdd")).close();
                   M.Modal.getInstance(document.getElementById("propertyView")).open();
                 }).catch(function(error) {
