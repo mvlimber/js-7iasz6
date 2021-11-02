@@ -689,20 +689,10 @@
         </div>
         <!------------------------------------------------------------------------------------------------------>
         <div id="TransactionRules" class="col s12">
-        <ul class="collapsible" id="transactionRulesList">
-        </ul>
-          <table class="striped">
-            <thead>
-              <tr>
-                <th>If:Account</th>
-                <th>If:Communication</th>
-                <th>Then:Type</th>
-                <th>Then:Owner</th>
-              </tr>
-            </thead>
-            <tbody id="transactionRulesTable">
-            </tbody>
-          </table>
+          <h6 style="font-size:20px "><b>Rules to auto-classify uploaded transactions</b></h6>
+          <ul class="collapsible" id="transactionRulesList">
+          </ul>
+          <br>
           <button style="float: right" data-target="transactionRuleEdit" class="btn-small waves-light modal-trigger" onclick="resetSelectedTransactionRule()"><i class="material-icons right">add</i>New transaction rule</button>
           <div id="transactionRuleEdit" class="modal">
             <div class="modal-content">
@@ -752,15 +742,15 @@
             </div>
           </div>
           <div id="transactionRuleRemove" class="modal">
-          <div class="modal-content">
-            <h5> Please confirm you want to permanently remove this transaction rule</h5>
-          </div>
-          <div class="modal-footer">
-            <button style="float: right;margin-left: 20px" class="modal-close btn-small waves-light" type="submit" onclick="deleteTransactionRule()">Confirm<i class="material-icons right">send</i></button>
-            <a style="float: right"
-              class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
-              Cancel</a>
-          </div>
+            <div class="modal-content">
+              <h5> Please confirm you want to permanently remove this transaction rule</h5>
+            </div>
+            <div class="modal-footer">
+              <button style="float: right;margin-left: 20px" class="modal-close btn-small waves-light" type="submit" onclick="removeTransactionRule()">Confirm<i class="material-icons right">send</i></button>
+              <a style="float: right"
+                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
+                Cancel</a>
+            </div>
           </div>  
         </div>
         <!------------------------------------------------------------------------------------------------------>
@@ -2943,6 +2933,10 @@
       function loadTransactionRule(tR){
         var objectsRow= document.createElement('li');
         var header = document.createElement('div');
+        var headerIcon = document.createElement('i');
+        headerIcon.setAttribute("class","material-icons");
+        header.appendChild(headerIcon);
+        
         header.setAttribute("class","collapsible-header");
         var title = document.createElement('span');
         header.appendChild (title);
@@ -2952,13 +2946,45 @@
         var text = document.createElement('DIV');
         text.innerHTML = "<b>If</b> Account =" +tR.account + "<b> Then</b> expense classification =  " + TransTypeRead[tR.type];
         body.appendChild(text);
+        if (currentUser.role == roleAdministrator) {
+          var buttons = document.createElement('DIV');
+          var removeButton = document.createElement('button');
+          removeButton.setAttribute('style','float: right;margin-bottom: 3px');
+          removeButton.setAttribute('class','modal-trigger btn-small waves-light red');
+          removeButton.setAttribute("data-target", "notificationRemove");
+          removeButton.setAttribute('onclick','popupRemoveNotification('+JSON.stringify(tR)+')');
+          var cellButtonIcon = document.createElement('i');
+          cellButtonIcon.setAttribute('class','material-icons right');
+          cellButtonIcon.innerHTML="delete";           
+          removeButton.appendChild(cellButtonIcon);
+          removeButton.innerHTML = "Remove";
+          buttons.appendChild(removeButton);
+          var editButton = document.createElement('button');
+          editButton.setAttribute('style','float: right;margin-right: 5px;margin-bottom: 3px');
+          editButton.setAttribute('class','modal-trigger btn-small waves-light');
+          editButton.setAttribute("data-target", "notificationEdit");
+          editButton.setAttribute('onclick','selectNotification('+JSON.stringify(tR)+')');
+          cellButtonIcon = document.createElement('i');
+          cellButtonIcon.setAttribute('class','material-icons right');
+          cellButtonIcon.innerHTML="edit";           
+          editButton.appendChild(cellButtonIcon);
+          editButton.innerHTML = "Edit";
+          buttons.appendChild(editButton);
+          body.appendChild(buttons);
+          var br = document.createElement('br');
+          body.appendChild(br);
+        };
         objectsRow.appendChild(body);
         transactionRulesList.appendChild (objectsRow);
         
-        if (tR.type != "OWNER"){title.innerHTML = "Expense " + tR.counterPart;}
+        if (tR.type != "OWNER"){
+          title.innerHTML = "Expense " + tR.name;
+          headerIcon.innerHTML = "payment";
+        }
         else {
           memberGet(tR.owner).then (function(owner){
             title.innerHTML = "Owner payment " + owner.firstName + " " + owner.lastName ;
+            headerIcon.innerHTML = "input";
           });
         };
         
@@ -3016,7 +3042,20 @@
           };
         };
 
-      var selectedTransactionRuleId;
+      var transactionRule;
+
+      function popupRemoveTransactionRule(tR){transactionRule=tr;};
+      function removeTransactionRule(){
+        refCoproperty.collection("TransactionRules").doc(transactionRule.idFS).delete().then(function(){
+          refreshTransactionRules();
+          M.Modal.getInstance(document.getElementById("transactionRuleRemove")).close();
+        }).catch(function(error) {
+            M.toast({html:"System error removing transaction rule:" + error});
+        });
+      };
+      
+      
+        var selectedTransactionRuleId;
       var transactionRule;
       function resetSelectedTransactionRule(){
         var trR = 
@@ -3112,14 +3151,7 @@
         };
       };
 
-      function deleteTransactionRule(){
-        refCoproperty.collection("TransactionRules").doc(selectedTransactionRuleId).delete().then(function(){
-          refreshTransactionRules();
-          M.Modal.getInstance(document.getElementById("transactionRuleEdit")).close();
-        }).catch(function(error) {
-            M.toast({html:"System error removing transaction rule:" + error});
-        });
-      };
+      
 
     </script>
     <!--   Meter readings scripts start here -->
