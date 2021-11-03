@@ -1359,7 +1359,19 @@
           </table>
           <br>
           <button style="float: right;margin-bottom: 3px" class="btn-small waves-light modal-trigger" data-target="meterWrite" onclick="addCopropertyMeter()">Add Meter<i class="material-icons right">add</i></button>
-          <div id="costCenterAdd" class="modal">
+          <div id="costCenterPrepareRemove" class="modal">
+          <div class="modal-content">
+            <a style="float: right"
+              class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+              <h5> You are about to permanently remove the cost center</h5>
+              <p id="costCenter_to_remove"> </p>
+            
+            <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="costCenterAddPrepare()">Confirm<i class="material-icons right">send</i></button>
+            <a style="float: right;margin-bottom: 3px"
+              class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+          </div>
+        </div>
+        <div id="costCenterAdd" class="modal">
             <div class="modal-content">
             <a style="float: right"
               class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
@@ -1377,21 +1389,21 @@
             </div>
           </div>
           <div id="costCenterNameEdit" class="modal">
-          <div class="modal-content">
-          <a style="float: right"
-            class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
-          <h5> Enter name cost center</h5>
-          <form class="col s12">
-            <div class="input-field col s6 m6">
-              <input id="costCenter_name_edit" type="text" class="validate" required aria-required="true">
-              <label for="costCenter_name_edit">Name<b><font color='red'>*</font></b></label>
-              <span class="helper-text" data-error="Required field"></span>
+            <div class="modal-content">
+              <a style="float: right"
+                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+              <h5> Enter name cost center</h5>
+              <form class="col s12">
+                <div class="input-field col s6 m6">
+                  <input id="costCenter_name_edit" type="text" class="validate" required aria-required="true">
+                  <label for="costCenter_name_edit">Name<b><font color='red'>*</font></b></label>
+                  <span class="helper-text" data-error="Required field"></span>
+                </div>
+              </form>
+              <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="costCenterNameEditPrepare()">Save<i class="material-icons right">send</i></button>
+              <a style="float: right;margin-bottom: 3px"
+                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
             </div>
-          </form>
-          <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="costCenterNameEditPrepare()">Save<i class="material-icons right">send</i></button>
-          <a style="float: right;margin-bottom: 3px"
-            class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
-          </div>
           </div>
           <div id="costCenterQuotaEdit" class="modal">
           <div class="modal-content">
@@ -4537,6 +4549,11 @@
         document.getElementById("costCenter_quota_edit").value = quota ;
         M.updateTextFields();
       };
+      var costcenter_to_remove;
+      function prepareRemoveCostCenter(cc){
+        document.getElementById("costCenter_to_remove").innerHTML=cc.name;
+        costcenter_to_remove = cc};
+      function removeCostCenter(){};
 
       function costCenterNameEditPrepare(){
         if (document.getElementById("costCenter_name_edit").checkValidity()) {
@@ -4594,9 +4611,9 @@
 
               cellContent = document.createElement('button');
               cellContent.setAttribute("style", "float:left");
-              cellContent.setAttribute("data-target", "costCenterNameEdit");
+              cellContent.setAttribute("data-target", "costCenterPrepareRemove");
               cellContent.setAttribute('class','btn-floating waves-light modal-trigger red');
-              cellContent.setAttribute('onclick','costCenterSelect('+JSON.stringify(cc.idFS)+','+JSON.stringify(cc.name)+')');
+              cellContent.setAttribute('onclick','prepareRemoveCostCenter('+JSON.stringify(cc.idFS)+')');
               var cellButtonIcon = document.createElement('i');
               cellButtonIcon.setAttribute('class','material-icons right');
               cellButtonIcon.innerHTML="delete";         
