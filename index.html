@@ -3054,8 +3054,6 @@
         });
       };
       
-      
-        var selectedTransactionRuleId;
       var transactionRule;
       function resetSelectedTransactionRule(){
         var trR = 
@@ -3066,21 +3064,23 @@
           name: "",
           communication:"",
           owner:"",
+          idFS:null
           };
-          setSelectedTransactionRule(null,trR)
+          selectTransactionRule(trR)
 
       };
 
-      function selectTransactionRule(id,object) {
-        selectedTransactionRuleId = id;
+      function selectTransactionRule(object) {
+        transactionRule = object;
         document.getElementById("transactionRule_type").value=object.type;
         listCostCenters(document.getElementById("transactionRule_costCenter"),object.costCenter)
         document.getElementById("transactionRule_account").value=object.account;
         document.getElementById("transactionRule_name").value=object.name;
         document.getElementById("transactionRule_communication").value=object.communication;
         listMembers(document.getElementById("transactionRule_owner"), object.owner);
-        if (id) {document.getElementById("transactionRuleDeleteButton").style = "float: right;margin-left: 20px;margin-bottom: 3px;display:block"}
-        else {document.getElementById("transactionRuleDeleteButton").style = "float: right;margin-left: 20px;margin-bottom: 3px;display:none"};
+        if (currentUser.role == roleAdministrator) {
+          document.getElementById("transactionRuleDeleteButton").style = "float: right;margin-left: 20px;margin-bottom: 3px;display:block";
+        } else {document.getElementById("transactionRuleDeleteButton").style = "float: right;margin-left: 20px;margin-bottom: 3px;display:none"};
         var elems = document.querySelectorAll('select');
         M.FormSelect.init(elems);
         M.updateTextFields();
@@ -3133,8 +3133,8 @@
       function writeTransactionRule(){
         if (validateTransactionRule()) { 
           var entries =  getTransactionRuleEntries();
-          if (selectedTransactionRuleId) {
-            refCoproperty.collection("TransactionRules").doc(selectedTransactionRuleId).set(entries).then(function(docref) {
+          if (transactionRule.idFS) {
+            refCoproperty.collection("TransactionRules").doc(transactionRule.idFS).set(entries).then(function(docref) {
               refreshTransactionRules();
               M.Modal.getInstance(document.getElementById("transactionRuleEdit")).close();
             }).catch(function(error) {
