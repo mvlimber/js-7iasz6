@@ -3917,14 +3917,13 @@
             cell = document.createElement('td');
             cellContent = document.createElement('a'); 
             cellContent.setAttribute('style',"float: right");
-            cellContent.setAttribute('class','waves-light btn-small red');
+            cellContent.setAttribute('class','waves-light btn-floating red');
             cellContent.setAttribute('onclick','removeOccupant('+JSON.stringify(propertyId)+',' +JSON.stringify(occupant.id)+')');
             objectsRow.setAttribute("id", occupant.id)
             cellButtonIcon = document.createElement('i');
             cellButtonIcon.setAttribute('class','material-icons right');
             cellButtonIcon.innerHTML="delete";           
-            cellContent.appendChild(cell);
-            cellContent.innerHTML = "Remove Occupant";
+            cellContent.appendChild(cellButtonIcon);
             cell.appendChild(cellContent);
             objectsRow.appendChild(cell); 
           };
@@ -4084,10 +4083,13 @@
         if (currentUser.role == roleAdministrator) {
           cell = document.createElement('td');
           cellContent = document.createElement('button'); 
-          cellContent.setAttribute('class','waves-light btn-small modal-trigger');
+          cellContent.setAttribute('class','waves-light btn-floating modal-trigger');
           cellContent.setAttribute("data-target", "meterWrite");
           cellContent.setAttribute('onclick','editMeter('+JSON.stringify(meterFS.id)+',' +JSON.stringify(meterData)+')');
-          cellContent.innerHTML = "Edit";
+          var cellButtonIcon = document.createElement('i');
+          cellButtonIcon.setAttribute('class','material-icons right');
+          cellButtonIcon.innerHTML="edit";         
+          cellContent.appendChild(cellButtonIcon);
           cell.appendChild(cellContent);
           objectsRow.appendChild(cell); 
         };
