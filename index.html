@@ -4591,6 +4591,18 @@
               cellButtonIcon.innerHTML="edit";         
               cellContent.appendChild(cellButtonIcon);
               headerCol.appendChild(cellContent);
+
+              cellContent = document.createElement('button');
+              cellContent.setAttribute("style", "float:left");
+              cellContent.setAttribute("data-target", "costCenterNameEdit");
+              cellContent.setAttribute('class','btn-floating waves-light modal-trigger red');
+              cellContent.setAttribute('onclick','costCenterSelect('+JSON.stringify(cc.idFS)+','+JSON.stringify(cc.name)+')');
+              var cellButtonIcon = document.createElement('i');
+              cellButtonIcon.setAttribute('class','material-icons right');
+              cellButtonIcon.innerHTML="delete";         
+              cellContent.appendChild(cellButtonIcon);
+              headerCol.appendChild(cellContent);
+
               ccHeadEl.appendChild(headerCol);
             };
           });
