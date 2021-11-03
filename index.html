@@ -4595,13 +4595,17 @@
             ccs.forEach(function(cc){
             headerCol = document.createElement("th");
             headerCol.setAttribute("style","text-align: right");
-            headerCol.innerHTML = cc.name;
+            /*headerCol.setAttribute("align","right");*/
+            var headerText = document.createElement("b");
+            headerText.setAttribute("style","writing-mode: vertical-rl");
+            headerText.innerHTML = cc.name;
+            headerCol.appendChild(headerText);
             ccHeadEl.appendChild(headerCol);
             totals[cc.name]=0;
             if (currentUser.role == roleAdministrator) {
               headerCol = document.createElement("th");
               var cellContent = document.createElement('button');
-              cellContent.setAttribute("style", "float:left;writing-mode: vertical-rl");
+              cellContent.setAttribute("style", "float:left");
               cellContent.setAttribute("data-target", "costCenterNameEdit");
               cellContent.setAttribute('class','btn-floating waves-light modal-trigger');
               cellContent.setAttribute('onclick','costCenterSelect('+JSON.stringify(cc.idFS)+','+JSON.stringify(cc.name)+')');
@@ -4637,6 +4641,7 @@
 
               ccs.forEach(function(cc){
                 cell = document.createElement("td");
+                cell.setAttribute("align","Center");
                 cell.setAttribute("style","text-align: right");
                 var quota = cc.distribution[p.idFS];
                 if (quota) {
