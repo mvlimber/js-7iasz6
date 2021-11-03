@@ -1980,14 +1980,14 @@
         objectsRow.appendChild(cell); 
         if (currentUser.role == roleAdministrator) {
           cellContent = document.createElement('button');
-          cellContent.setAttribute('class','modal-trigger btn-small waves-light red');
+          cellContent.setAttribute('class','modal-trigger btn-floating waves-light red');
           cellContent.setAttribute("data-target", "reportRemove");
           cellContent.setAttribute('onclick','popupRemoveReport('+JSON.stringify(objectFS.id)+','+JSON.stringify(typeShown)+')');
           var cellButtonIcon = document.createElement('i');
           cellButtonIcon.setAttribute('class','material-icons right');
           cellButtonIcon.innerHTML="delete";           
           cellContent.appendChild(cellButtonIcon);
-          cellContent.innerHTML = "Remove";
+          /*cellContent.innerHTML = "Remove";*/
 
           cell = document.createElement('td');
           cell.appendChild(cellContent);
