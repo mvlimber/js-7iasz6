@@ -631,8 +631,7 @@
 
           <div id="transactionEvidenceRemove" class="modal">
             <div class="modal-content">
-              <h5> You are about to permanently remove the evidence</h5>
-              <p id="transactionEvidence_to_remove"> </p>
+            <h5> You are about to permanently remove the transaction evidence <i id="transactionEvidence_to_remove"> </h5>
             </div>
             <div class="modal-footer">
               <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="removeTransactionEvidence(transactionEvidence_to_remove)">Confirm<i class="material-icons right">send</i></button>
@@ -2675,14 +2674,14 @@
         objectsRow.appendChild(cell);  
         if (currentUser.role == roleAdministrator) {
           cellContent = document.createElement('button');
-          cellContent.setAttribute('class','modal-trigger btn-small waves-light red');
+          cellContent.setAttribute('class','modal-trigger btn-floating waves-light red');
           cellContent.setAttribute("data-target", "transactionEvidenceRemove");
           cellContent.setAttribute('onclick','popupRemoveTransactionEvidence('+JSON.stringify(objectFS.id)+','+JSON.stringify(object.fileName)+')');
           var cellButtonIcon = document.createElement('i');
           cellButtonIcon.setAttribute('class','material-icons right');
           cellButtonIcon.innerHTML="delete";           
           cellContent.appendChild(cellButtonIcon);
-          cellContent.innerHTML = "Remove";
+          
 
           cell = document.createElement('td');
           cell.appendChild(cellContent);
