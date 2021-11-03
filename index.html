@@ -1825,25 +1825,25 @@
           if ((currentUser.role == roleAdministrator) || (currentUser.id == n.editedBy)){
             var removeButton = document.createElement('button');
             removeButton.setAttribute('style','float: right;margin-bottom: 3px');
-            removeButton.setAttribute('class','modal-trigger btn-small waves-light red');
+            removeButton.setAttribute('class','modal-trigger btn-floating waves-light red');
             removeButton.setAttribute("data-target", "notificationRemove");
             removeButton.setAttribute('onclick','popupRemoveNotification('+JSON.stringify(n)+')');
             var cellButtonIcon = document.createElement('i');
             cellButtonIcon.setAttribute('class','material-icons right');
             cellButtonIcon.innerHTML="delete";           
             removeButton.appendChild(cellButtonIcon);
-            removeButton.innerHTML = "Remove";
+            /*removeButton.innerHTML = "Remove";*/
             buttons.appendChild(removeButton);
             var editButton = document.createElement('button');
             editButton.setAttribute('style','float: right;margin-right: 5px;margin-bottom: 3px');
-            editButton.setAttribute('class','modal-trigger btn-small waves-light');
+            editButton.setAttribute('class','modal-trigger btn-floating waves-light');
             editButton.setAttribute("data-target", "notificationEdit");
             editButton.setAttribute('onclick','selectNotification('+JSON.stringify(n)+')');
             cellButtonIcon = document.createElement('i');
             cellButtonIcon.setAttribute('class','material-icons right');
             cellButtonIcon.innerHTML="edit";           
             editButton.appendChild(cellButtonIcon);
-            editButton.innerHTML = "Edit";
+            /*editButton.innerHTML = "Edit";*/
             buttons.appendChild(editButton);
             body.appendChild(buttons);
             var br = document.createElement('br');
