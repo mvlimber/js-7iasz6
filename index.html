@@ -4548,7 +4548,14 @@
       function prepareRemoveCostCenter(cc){
         document.getElementById("costCenter_to_remove").innerHTML=cc.name;
         costCenter_to_remove = cc};
-      function removeCostCenter(){};
+      function removeCostCenter(){
+        refCoproperty.collection("CostCenters").doc(costCenter_to_remove.idFS).delete().then(function(){
+          refreshCostCenters();
+          M.Modal.getInstance(document.getElementById("reportRemove")).close();
+        }).catch(function(error) {
+            M.toast({html:"System error removing cost center:" + error});
+        });
+      }; 
 
       function costCenterNameEditPrepare(){
         if (document.getElementById("costCenter_name_edit").checkValidity()) {
