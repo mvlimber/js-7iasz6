@@ -4601,7 +4601,7 @@
             if (currentUser.role == roleAdministrator) {
               headerCol = document.createElement("th");
               var cellContent = document.createElement('button');
-              cellContent.setAttribute("style", "float:left");
+              cellContent.setAttribute("style", "float:left;writing-mode: vertical-rl");
               cellContent.setAttribute("data-target", "costCenterNameEdit");
               cellContent.setAttribute('class','btn-floating waves-light modal-trigger');
               cellContent.setAttribute('onclick','costCenterSelect('+JSON.stringify(cc.idFS)+','+JSON.stringify(cc.name)+')');
