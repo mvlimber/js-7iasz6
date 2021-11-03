@@ -2951,8 +2951,8 @@
           var removeButton = document.createElement('button');
           removeButton.setAttribute('style','float: right;margin-bottom: 3px');
           removeButton.setAttribute('class','modal-trigger btn-small waves-light red');
-          removeButton.setAttribute("data-target", "notificationRemove");
-          removeButton.setAttribute('onclick','popupRemoveNotification('+JSON.stringify(tR)+')');
+          removeButton.setAttribute("data-target", "transactionRuleRemove");
+          removeButton.setAttribute('onclick','popupRemoveTransactionRule('+JSON.stringify(tR)+')');
           var cellButtonIcon = document.createElement('i');
           cellButtonIcon.setAttribute('class','material-icons right');
           cellButtonIcon.innerHTML="delete";           
@@ -2962,8 +2962,8 @@
           var editButton = document.createElement('button');
           editButton.setAttribute('style','float: right;margin-right: 5px;margin-bottom: 3px');
           editButton.setAttribute('class','modal-trigger btn-small waves-light');
-          editButton.setAttribute("data-target", "notificationEdit");
-          editButton.setAttribute('onclick','selectNotification('+JSON.stringify(tR)+')');
+          editButton.setAttribute("data-target", "transactionRuleEdit");
+          editButton.setAttribute('onclick','selectTransactionRule('+JSON.stringify(tR)+')');
           cellButtonIcon = document.createElement('i');
           cellButtonIcon.setAttribute('class','material-icons right');
           cellButtonIcon.innerHTML="edit";           
@@ -3044,7 +3044,7 @@
 
       var transactionRule;
 
-      function popupRemoveTransactionRule(tR){transactionRule=tr;};
+      function popupRemoveTransactionRule(tR){transactionRule=tR;};
       function removeTransactionRule(){
         refCoproperty.collection("TransactionRules").doc(transactionRule.idFS).delete().then(function(){
           refreshTransactionRules();
@@ -3071,7 +3071,7 @@
 
       };
 
-      function setSelectedTransactionRule(id,object) {
+      function selectTransactionRule(id,object) {
         selectedTransactionRuleId = id;
         document.getElementById("transactionRule_type").value=object.type;
         listCostCenters(document.getElementById("transactionRule_costCenter"),object.costCenter)
