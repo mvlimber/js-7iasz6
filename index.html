@@ -388,19 +388,16 @@
           <table class="striped">
             <thead>
               <tr>
-                <th>Counterparty</th>
-                <th>
-                  <p style="text-align: right">Amount</p>
-                </th>
-                <th>
-                  <p style="text-align: right">Date</p>
-                </th>
-                <th>
+                <th align=center>Counterparty</th>
+                <th align=center>
                   <p style="writing-mode: vertical-rl">Classified?</p>
                 </th>
-                <th>
+                <th align=center>
                   <p style="writing-mode: vertical-rl">Evidence?</p>
                 </th>
+                <th align=center>Amount</th>
+                <th align=center>Date</th>
+                
               </tr>
             </thead>
             <tbody id="transactionsTable">
@@ -2282,21 +2279,9 @@
           cell.appendChild(cellContent);
           objectsRow.appendChild(cell);   
 
-          var amount = object.amount;
-          /* totalAmount = totalAmount + amount;*/
-          cellContent = document.createTextNode(amount.toLocaleString("nl-BE", currencyStyle));
-          cell = document.createElement('td');
-          cell.setAttribute("style", "text-align: right"); 
-          cell.appendChild(cellContent);
-          objectsRow.appendChild(cell);  
-          
-          cellContent = document.createTextNode(object.bookDate);
-          cell = document.createElement('td');
-          cell.setAttribute("style", "text-align: right"); 
-          cell.appendChild(cellContent);
-          objectsRow.appendChild(cell); 
           
           cell = document.createElement('td');
+          cell.setAttribute("align","center");
           cell.appendChild(cellContent);
           if (object.type !="TBSET") {
               cellContent = document.createElement("i");
@@ -2322,9 +2307,21 @@
             };
           
           cell = document.createElement('td');
+          cell.setAttribute("align","center");
+        
           cell.appendChild(cellContent);
           objectsRow.appendChild(cell);
           
+          var amount = object.amount;
+          cellContent = document.createTextNode(amount.toLocaleString("nl-BE", currencyStyle));
+          cell = document.createElement('td');
+          cell.appendChild(cellContent);
+          objectsRow.appendChild(cell);  
+          
+          cellContent = document.createTextNode(object.bookDate);
+          cell = document.createElement('td');
+          cell.appendChild(cellContent);
+          objectsRow.appendChild(cell); 
           
           transactionsTable.appendChild (objectsRow);
           });
