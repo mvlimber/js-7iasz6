@@ -4597,6 +4597,10 @@
               cellContent.setAttribute('class','btn-small waves-light modal-trigger');
               cellContent.setAttribute('onclick','costCenterSelect('+JSON.stringify(cc.idFS)+','+JSON.stringify(cc.name)+')');
               cellContent.innerHTML = "Edit";
+              var cellButtonIcon = document.createElement('i');
+              cellButtonIcon.setAttribute('class','material-icons right');
+              cellButtonIcon.innerHTML="edit";           
+              cellContent.appendChild(cellButtonIcon);
               headerCol.appendChild(cellContent);
               ccHeadEl.appendChild(headerCol);
             };
