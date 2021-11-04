@@ -1360,9 +1360,9 @@
           <div id="costCenterPrepareRemove" class="modal">
           <div class="modal-content">
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
-            <h5> You are about to permanently remove the cost center <i id="costCenter_to_remove"> </h5>
+            <h5> You are about to permanently remove the cost center <i id="costCenter_to_remove"></i> </h5>
             
-            <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="costCenterremove()">Confirm<i class="material-icons right">send</i></button>
+            <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="removeCostCenter()">Confirm<i class="material-icons right">send</i></button>
             <a style="float: right;margin-bottom: 3px"
               class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
           </div>
@@ -4561,14 +4561,22 @@
       var costCenter_to_remove;
       function prepareRemoveCostCenter(cc){
         document.getElementById("costCenter_to_remove").innerHTML=cc.name;
-        costCenter_to_remove = cc};
+        costCenter_to_remove = cc;
+      };
       function removeCostCenter(){
-        refCoproperty.collection("CostCenters").doc(costCenter_to_remove.idFS).delete().then(function(){
-          refreshCostCenters();
-          M.Modal.getInstance(document.getElementById("reportRemove")).close();
-        }).catch(function(error) {
-            M.toast({html:"System error removing cost center:" + error});
+        refCoproperty.collection("Transactions").where("costCenter","==",costCenter_to_remove.idFS).get().then(function(trArray){
+          if (trArray.length>0) {
+            M.toast({html:"Cost Center is in use and cannot be removed"});
+          }else {
+            refCoproperty.collection("CostCenters").doc(costCenter_to_remove.idFS).delete().then(function(){
+              refreshCostCenters();
+              M.Modal.getInstance(document.getElementById("costCenterPrepareRemove")).close();
+            }).catch(function(error) {
+                M.toast({html:"System error removing cost center:" + error});
+            });
+          };
         });
+      
       }; 
 
       function costCenterNameEditPrepare(){
@@ -4599,6 +4607,7 @@
 
       
       function refreshCostCenters() {
+        costCenters = null;
         var ccHeadEl = document.getElementById("costCenters_tableHead");
         emptyHTMLSet(ccHeadEl);
         var headerCol = document.createElement("th");
