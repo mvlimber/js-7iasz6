@@ -2,7 +2,7 @@ a:link { text-transform: none}
       
 
       body {
-        border-left: 5px solid white;
+        border-left: solid white;
       } 
       .modal {
         max-height: 90%;
