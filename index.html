@@ -4610,7 +4610,7 @@
         var ccHeadEl = document.getElementById("costCenters_tableHead");
         emptyHTMLSet(ccHeadEl);
         var headerCol = document.createElement("th");
-        headerCol.innerHTML = "Property";
+        headerCol.innerHTML = "";
         ccHeadEl.appendChild(headerCol);
         costCentersGet().then(function (ccs){
             var totals = [];
