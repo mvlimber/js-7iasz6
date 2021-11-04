@@ -4460,7 +4460,7 @@
       async function costCentersGet(){
         if (costCenters) {return costCenters;}
         else {
-          var querySnapshot = await refCoproperty.collection("CostCenters").get();
+          var querySnapshot = await refCoproperty.collection("CostCenters").orderBy("name").get();
           costCenters = [];
           querySnapshot.forEach(function(objectFS) {
             var thisObject = objectFS.data();
