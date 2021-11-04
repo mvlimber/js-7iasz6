@@ -2521,6 +2521,10 @@
       document.getElementById("transaction_communication_add").value="";
       document.getElementById("transaction_properties_add_frame").style.display = "none";
       document.getElementById("transaction_save_button").innerHTML = "Save and go to adding evidence";
+      var buttonIcon = document.createElement("i");
+      buttonIcon.setAttribute("class","material-icons right");
+      buttonIcon.innerHTML = "send";
+      document.getElementById("transaction_save_button").appendChild(buttonIcon);
       emptyHTMLSet(document.getElementById("transaction_distribution_table_add"));
       var elems = document.querySelectorAll('select');
       M.FormSelect.init(elems);
@@ -2536,6 +2540,10 @@
       document.getElementById("transaction_bookDate_add").value=object.bookDate;
       document.getElementById("transaction_communication_add").value=object.communication;
       document.getElementById("transaction_save_button").innerHTML = "Save";
+      var buttonIcon = document.createElement("i");
+      buttonIcon.setAttribute("class","material-icons right");
+      buttonIcon.innerHTML = "send";
+      document.getElementById("transaction_save_button").appendChild(buttonIcon);
       enableSelectProperties();
       var elems = document.querySelectorAll('select');
       M.FormSelect.init(elems);
@@ -2615,14 +2623,13 @@
         objectsRow.appendChild(cell);
 
         cellContent = document.createElement('button');
-        cellContent.setAttribute('class','btn-small waves-light red');
+        cellContent.setAttribute('class','btn-floating waves-light red');
         cellContent.setAttribute('style','float: right;margin-left: 20px;margin-bottom: 3px');
         cellContent.setAttribute('onclick','removeTransactionDistribution('+JSON.stringify(i)+')');
         var cellButtonIcon = document.createElement('i');
         cellButtonIcon.setAttribute('class','material-icons right');
         cellButtonIcon.innerHTML="delete";           
         cellContent.appendChild(cellButtonIcon);
-        cellContent.innerHTML = "Remove";
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);
 
