@@ -583,9 +583,9 @@
                     <input id="transaction_bookDate" type="text" readonly>
                     <label for="transaction_bookDate">Accountancy Date</label>
                   </div>
-                  <div id="transaction_properties_frame" style="display:none">
-                    <h6><b>Private transaction: Amount assigned to:</b></h6>
+                  <div id="transaction_properties_frame" style="display:none" >
                     <table class="striped">
+                      <caption><b>Private transaction: Amount distributed to following properties:</b></caption>
                       <thead>
                         <tr>
                           <th>Property</th>
@@ -2448,12 +2448,12 @@
       else {document.getElementById("transaction_edit_button").disabled = true};
       refreshTransactionEvidence();
       if ((object.type == "PRIVA") || (object.type == "OWNER")) {
-        document.getElementById("transaction_costCenter_field").style.visibility = "hidden";
+        document.getElementById("transaction_costCenter_field").style.display = "none";
         var elems = document.querySelectorAll('select');
         M.FormSelect.init(elems);
         M.updateTextFields();
       } else {
-        document.getElementById("transaction_costCenter_field").style.visibility = "visible";
+        document.getElementById("transaction_costCenter_field").style.display = "block";
         costCenterGet(object.costCenter).then(function (cc){
           document.getElementById("transaction_costCenter").value=cc.name;
           var elems = document.querySelectorAll('select');
