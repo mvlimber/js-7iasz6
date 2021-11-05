@@ -1661,6 +1661,18 @@
       OWNER: 'owner payment'
     };
 
+    var TransRuleType = {
+      MAINT : 'repair maintenance',
+      RENOV: 'installation renovation',
+      INSUR: 'insurance building',
+      SERVI: 'services',
+      EQUIP: 'small equipment',
+      ELECT: 'electricity',
+      WATER: 'water',
+      HEATI: 'heating',
+      OWNER: 'owner payment'
+    };
+
     var MeterStatus = {
       ACTIF: 'active',
       PASSI: 'removed'
@@ -1715,7 +1727,7 @@
     insertSelectOptions("property_type_add", PropType, "type");
     insertSelectOptions("property_type_edit", PropType, "type");
     insertSelectOptions("transaction_type_add", TransType, "type");
-    insertSelectOptions("transactionRule_type", TransType, "type");
+    insertSelectOptions("transactionRule_type", TransRuleType, "type");
     insertSelectOptions("meter_type", MeterType, "type");
     insertSelectOptions("meter_status", MeterStatus, "", "ACTIF");
     insertSelectOptions("notification_type", NotificationType, "type");
