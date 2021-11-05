@@ -709,7 +709,7 @@
                     <label><b>THEN </b>Type<b><font color='red'>*</font></b></label>
                   </div>
                   <div class="input-field col s12 m4" id="transactionRule_costCenter_field">
-                    <select id="transactionRule_costCenter" required required="true"></select>
+                    <select id="transactionRule_costCenter"></select>
                     <label><b>THEN </b>Cost Center<b><font color='red'>*</font></b></label>
                   </div>
                   <div class="input-field col s12 m4" id="transactionRule_owner_field" >
@@ -2932,7 +2932,7 @@
       async function transactionRulesGet(){
         if (transactionRules) {return transactionRules;}
         else {
-          var querySnapshot = await refCoproperty.collection("TransactionRules").get();
+          var querySnapshot = await refCoproperty.collection("TransactionRules").orderBy("owner").get();
           transactionRules = [];
           querySnapshot.forEach(function(objectFS) {
             var thisObject = objectFS.data();
@@ -2953,7 +2953,7 @@
       };
 
       function loadTransactionRule(tR){
-        /*
+        
         var objectsRow= document.createElement('li');
         var header = document.createElement('div');
         var headerIcon = document.createElement('i');
@@ -3007,12 +3007,13 @@
             text.innerHTML += " <b>AND</b><br>   owner = "+tR.owner;
           });
         } else {
+          headerIcon.innerHTML = "payment";
           title.innerHTML = "Expense " + tR.name;
           
           costCenterGet(tR.costCenter).then(function(cc){text.innerHTML += " <b>AND</b><br>   cost center = "+ cc.name;})
           
         };
-        */ 
+        
       };
 
       var transactionRulesLoaded = false;
