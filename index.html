@@ -2663,7 +2663,8 @@
     };
     
     function enableSelectProperties(){
-      if (document.getElementById("transaction_type_add").value == "PRIVA") {
+      var typeElement = document.getElementById("transaction_type_add");
+      if (typeElement.value == "PRIVA") {
         document.getElementById("transaction_properties_add_frame").style.display = "block";
         document.getElementById("transaction_distribution_amount_add").value = "";
         listProperties(document.getElementById("transaction_properties_add"), "");
@@ -2672,6 +2673,12 @@
       } else {
         document.getElementById("transaction_properties_add_frame").style.display = "none";
       };
+      if ((typeElement.value == "PRIVA") || (typeElement.value == "OWNER")) {
+        document.getElementById("transaction_costCenter_add_field").style.visibility = "hidden";
+      } else {
+        document.getElementById("transaction_costCenter_add_field").style.visibility = "visible";
+      };
+
     };
 
       function emptyTransactionEvidenceFields(){
@@ -3008,50 +3015,7 @@
             title.innerHTML = "Owner payment " + owner.firstName + " " + owner.lastName ;
             headerIcon.innerHTML = "input";
           });
-        };
-        
-
-        
-        /*
-        var cellContent = document.createElement('button');
-        cellContent.setAttribute("data-target", "transactionRuleEdit");
-        cellContent.setAttribute('class','modal-trigger');
-        cellContent.setAttribute('style','border:none;background-color:Transparent');
-        cellContent.setAttribute('onclick','setSelectedTransactionRule('+JSON.stringify(objectFS.id)+','+JSON.stringify(object)+')');
-        cellContent.innerHTML = "<font color='blue'>" + object.account + "</font>";
-        var cell = document.createElement('td');
-        cell.appendChild(cellContent);
-        objectsRow.appendChild(cell);   
-
-        if (object.communication) {cellContent = document.createTextNode(object.communication);}
-        else {cellContent = document.createTextNode("");};
-        cell = document.createElement('td');
-        cell.appendChild(cellContent);
-        objectsRow.appendChild(cell); 
-
-        cellContent = document.createTextNode(TransTypeRead[object.type]);
-        cell = document.createElement('td');
-        cell.appendChild(cellContent);
-        objectsRow.appendChild(cell);
-        
-        cellContent = document.createTextNode("");
-        var ownerCell = document.createElement('td');
-        ownerCell.setAttribute("style","white-space: nowrap");
-        ownerCell.appendChild(cellContent);
-        objectsRow.appendChild(cell);
-        
-        transactionRulesTable.appendChild (objectsRow);
-        if (Boolean(object.owner)) {
-          refCoproperty.collection("Members").doc(object.owner).get().then(function(ownerFS) {
-            ownerCell.removeChild(ownerCell.firstChild);
-            //ownerCell.appendChild(memberLink(ownerFS));
-            var x = document.createTextNode("tttt");
-            ownerCell.appendChild(x);
-          }).catch(function(error) {
-            console.log("Error getting owner:", error);
-          });
-        };
-        */
+        };  
       };
 
       var transactionRulesLoaded = false;
