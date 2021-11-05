@@ -684,7 +684,7 @@
               <h5>Enter transaction rule </h5>
               <form>
                 <div class="w3-panel ">
-                  <h6><b>IF:</b> rule fires if all if-values match</h6>
+                  <h6><b>IF:</b> rule fires when all if-values match</h6>
                   <div class="input-field col s6 m4">
                     <input id="transactionRule_account" type="text" maxlength="19" class="validate"
                       pattern="^BE\d{14}$|^BE\d{2}\s\d{4}\s\d{4}\s\d{4}$" required required="true">
@@ -704,16 +704,16 @@
                 
                 <div>
                 <div class="w3-panel ">
-                  <h6><b>THEN:</b>then-field will be set with value given</h6> 
+                  <h6><b>THEN:</b>below fields will be set with value given</h6> 
                   <div class="input-field col s12 m4">
-                    <select id="transactionRule_type" required required="true"></select>
+                    <select id="transactionRule_type" required required="true" onchange="toggleTransactionRule()"></select>
                     <label><b>THEN </b>Type<b><font color='red'>*</font></b></label>
                   </div>
-                  <div class="input-field col s12 m4">
+                  <div class="input-field col s12 m4" id="transactionRule_costCenter_field">
                     <select id="transactionRule_costCenter" required required="true"></select>
                     <label><b>THEN </b>Cost Center<b><font color='red'>*</font></b></label>
                   </div>
-                  <div class="input-field col s12 m4">
+                  <div class="input-field col s12 m4" id="transactionRule_owner_field" >
                     <select id="transactionRule_owner" >
                       <option value="" disabled selected>Select Owner</option>
                     </select>
@@ -3056,9 +3056,25 @@
         document.getElementById("transactionRule_name").value=object.name;
         document.getElementById("transactionRule_communication").value=object.communication;
         listMembers(document.getElementById("transactionRule_owner"), object.owner);
+        toggleTransactionRule();
         var elems = document.querySelectorAll('select');
         M.FormSelect.init(elems);
         M.updateTextFields();
+      };
+
+      function toggleTransactionRule(){
+        var typeElement = document.getElementById("transactionRule_type");
+        if ((!typeElement.value) ||(typeElement.value == "PRIVA")) {
+          document.getElementById("transactionRule_costCenter_field").style.display = "none";
+          document.getElementById("transactionRule_owner_field").style.display = "none";
+        } else if (typeElement.value == "OWNER"){
+          document.getElementById("transactionRule_costCenter_field").style.display = "none";
+          document.getElementById("transactionRule_owner_field").style.display = "block";
+        } else {
+          document.getElementById("transactionRule_costCenter_field").style.display = "block";
+          document.getElementById("transactionRule_owner_field").style.display = "none";
+        };
+        
       };
 
       function validateTransactionRule(){
