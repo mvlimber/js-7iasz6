@@ -421,7 +421,7 @@
                   <select id="transaction_type_add" required required="true" onchange="enableSelectProperties()"></select>
                   <label>Type<b><font color='red'>*</font></b></label>
                 </div>
-                <div class="input-field col s12 m4">
+                <div class="input-field col s12 m4" id="transaction_costCenter_add_field">
                   <select id="transaction_costCenter_add" required required="true"></select>
                   <label>Cost Center<b><font color='red'>*</font></b></label>
                 </div>
@@ -559,7 +559,7 @@
                     <input id="transaction_type" type="text" readonly>
                     <label for="transaction_type">type</label>
                   </div>
-                  <div class="input-field col s12 m4">
+                  <div class="input-field col s12 m4" id="transaction_costCenter_field">
                     <input id="transaction_costCenter" type="text" readonly>
                     <label for="transaction_type">cost center</label>
                   </div>
@@ -2457,14 +2457,22 @@
       };
       if (checkBookDate(object.bookDate)){document.getElementById("transaction_edit_button").disabled = false}
       else {document.getElementById("transaction_edit_button").disabled = true};
-      costCenterGet(object.costCenter).then(function (cc){
-        document.getElementById("transaction_costCenter").value = cc.name;
-        refreshTransactionEvidence();
-      
+      refreshTransactionEvidence();
+      if ((object.type == "PRIVA") || (object.type == "OWNER")) {
+        document.getElementById("transaction_costCenter_field").style.visibility = "hidden";
         var elems = document.querySelectorAll('select');
         M.FormSelect.init(elems);
         M.updateTextFields();
-      });
+      } else {
+        document.getElementById("transaction_costCenter_field").style.visibility = "visible";
+        costCenterGet(object.costCenter).then(function (cc){
+          document.getElementById("transaction_costCenter").value=cc.name;
+          var elems = document.querySelectorAll('select');
+          M.FormSelect.init(elems);
+          M.updateTextFields();
+        });
+      };
+      
     };    
 
     function showTransactionDistribution(){
@@ -2544,6 +2552,11 @@
       buttonIcon.setAttribute("class","material-icons right");
       buttonIcon.innerHTML = "send";
       document.getElementById("transaction_save_button").appendChild(buttonIcon);
+      if ((object.type == "PRIVA") || (object.type == "OWNER")) {
+        document.getElementById("transaction_costCenter_add_field").style.visibility = "hidden";
+      } else {
+        document.getElementById("transaction_costCenter_add_field").style.visibility = "visible";
+      };
       enableSelectProperties();
       var elems = document.querySelectorAll('select');
       M.FormSelect.init(elems);
@@ -4499,10 +4512,6 @@
               option.innerHTML = cc.name;
               el.appendChild(option);
             });
-          option = document.createElement("option");
-          option.setAttribute("value","PRIVA");
-          option.innerHTML = "private";
-          el.appendChild(option);
           var elems = document.querySelectorAll('select');
           M.FormSelect.init(elems);
         });       
