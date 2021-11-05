@@ -676,51 +676,55 @@
           <ul class="collapsible" id="transactionRulesList">
           </ul>
           <br>
-          <button style="float: right" data-target="transactionRuleEdit" class="btn-small waves-light modal-trigger" onclick="resetSelectedTransactionRule()"><i class="material-icons right">add</i>New transaction rule</button>
+          <button style="float: right" data-target="transactionRuleEdit" class="btn-small waves-light modal-trigger" onclick="resetTransactionRule()"><i class="material-icons right">add</i>New transaction rule</button>
           <div id="transactionRuleEdit" class="modal">
             <div class="modal-content">
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
               
-              <h5>Enter transaction rule data</h5>
+              <h5>Enter transaction rule </h5>
               <form>
-                <div class="input-field col s12 m4">
-                  <input id="transactionRule_account" type="text" maxlength="19" class="validate"
-                    pattern="^BE\d{14}$|^BE\d{2}\s\d{4}\s\d{4}\s\d{4}$" required required="true">
-                  <label for="transactionRule_account">If:Account<b><font color='red'>*</font></b></label>
-                  <span class="helper-text" data-error="BE followed by 14 digits, blancs for printing format allowed. Example: BE40 9799 2578 3625">BE followed by max 14 digits, blancs allowed. Example: BE40 9799 2578 3625</span>
-                </div>
-                <div class="input-field col s12 m8">
+                <div class="w3-panel ">
+                  <h6><b>IF:</b> rule fires if all if-values match</h6>
+                  <div class="input-field col s6 m4">
+                    <input id="transactionRule_account" type="text" maxlength="19" class="validate"
+                      pattern="^BE\d{14}$|^BE\d{2}\s\d{4}\s\d{4}\s\d{4}$" required required="true">
+                    <label for="transactionRule_account"><b>IF</b> Account<b><font color='red'>*</font></b></label>
+                    <span class="helper-text" data-error="BE followed by 14 digits, blancs for printing format allowed. Example: BE40 9799 2578 3625">BE followed by max 14 digits, blancs allowed. Example: BE40 9799 2578 3625</span>
+                  </div>
+                  <div class="input-field col s12 m6">
+                    <input id="transactionRule_communication" type="text" class="validate" maxlength="80" >
+                    <label for="transactionRule_communication"><b>IF</b> Communication</label>
+                    <span class="helper-text" data-error="Maximum 80 characters"></span>
+                  </div>
+                  <div class="input-field col s6 m6">
                   <input id="transactionRule_name" type="text" class="validate" maxlength="50">
-                  <label for="transactionRule_name">Info:Counterpart</label>
+                  <label for="transactionRule_name"><b>For info only</b> Counterpart</label>
                   <span class="helper-text" data-error="Maximum 50 characters"></span>
                 </div>
-                <div class="input-field col s12 m12">
-                  <input id="transactionRule_communication" type="text" class="validate" maxlength="80" >
-                  <label for="transactionRule_communication">If:Communication</label>
-                  <span class="helper-text" data-error="Maximum 80 characters"></span>
-                </div>
-                <div class="input-field col s12 m4">
-                  <select id="transactionRule_type" required required="true"></select>
-                  <label>Then:Type<b><font color='red'>*</font></b></label>
-                </div>
-                <div class="input-field col s12 m4">
-                  <select id="transactionRule_costCenter" required required="true"></select>
-                  <label>Cost Center<b><font color='red'>*</font></b></label>
-                </div>
-                <div class="input-field col s12 m4">
-                  <select id="transactionRule_owner" >
-                    <option value="" disabled selected>Select Owner</option>
-                  </select>
-                  <label for="transactionRule__owner">Then:Owner</label>
-                </div>
                 
+                <div>
+                <div class="w3-panel ">
+                  <h6><b>THEN:</b>then-field will be set with value given</h6> 
+                  <div class="input-field col s12 m4">
+                    <select id="transactionRule_type" required required="true"></select>
+                    <label><b>THEN </b>Type<b><font color='red'>*</font></b></label>
+                  </div>
+                  <div class="input-field col s12 m4">
+                    <select id="transactionRule_costCenter" required required="true"></select>
+                    <label><b>THEN </b>Cost Center<b><font color='red'>*</font></b></label>
+                  </div>
+                  <div class="input-field col s12 m4">
+                    <select id="transactionRule_owner" >
+                      <option value="" disabled selected>Select Owner</option>
+                    </select>
+                    <label for="transactionRule__owner"><b>THEN </b>Owner<b><font color='red'>*</font></b></label>
+                  </div>
+                </div>
               </form>
-              <br>
               <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeTransactionRule()">Save<i class="material-icons right">send</i></button>
               <a style="float: right;margin-left: 20px;margin-bottom: 3px"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
                 Cancel</a>
-              <button id="transactionRuleDeleteButton" style="float: right;margin-left: 20px;margin-bottom: 3px;display:block" data-target="transactionRuleRemove" class="btn-small waves-light red modal-trigger">Delete<i class="material-icons right">delete</i></button>
             </div>
           </div>
           <div id="transactionRuleRemove" class="modal">
@@ -1341,7 +1345,7 @@
             </tbody>
           </table>
           <br>
-          <button style="float: right;margin-bottom: 3px" class="btn-small waves-light modal-trigger" data-target="meterWrite" onclick="addCopropertyMeter()">Add Meter<i class="material-icons right">add</i></button>
+          <button style="float: right;margin-bottom: 3px" class="btn-small waves-light modal-trigger" data-target="meterWrite" onclick="addCopropertyMeter()">New Meter Common Parts<i class="material-icons right">add</i></button>
           <div id="costCenterPrepareRemove" class="modal">
           <div class="modal-content">
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
@@ -3029,7 +3033,7 @@
       };
       
       var transactionRule;
-      function resetSelectedTransactionRule(){
+      function resetTransactionRule(){
         var trR = 
           {
           type: "",
@@ -3052,9 +3056,6 @@
         document.getElementById("transactionRule_name").value=object.name;
         document.getElementById("transactionRule_communication").value=object.communication;
         listMembers(document.getElementById("transactionRule_owner"), object.owner);
-        if (currentUser.role == roleAdministrator) {
-          document.getElementById("transactionRuleDeleteButton").style = "float: right;margin-left: 20px;margin-bottom: 3px;display:block";
-        } else {document.getElementById("transactionRuleDeleteButton").style = "float: right;margin-left: 20px;margin-bottom: 3px;display:none"};
         var elems = document.querySelectorAll('select');
         M.FormSelect.init(elems);
         M.updateTextFields();
