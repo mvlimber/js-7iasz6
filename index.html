@@ -409,8 +409,8 @@
             <button style="float: right" data-target="transactionLoad" class="btn-small waves-light modal-trigger" onclick="emptyTransactionLoadFields()"><i class="material-icons right">add</i>Load transactions</button>
           </div>
           <div id="transactionAdd" class="modal">
-            <div class="modal-content">
-            <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
+            <div class="modal-content" >
+              <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
               
               <h5>Enter transaction data</h5>
               <form>
@@ -453,7 +453,7 @@
                   <label for="transaction_bookDate_add">Accountancy Date<b><font color='red'>*</font></b></label>
                   <span class="helper-text" data-error="Required field">By default copied from Transaction Date</span>
                 </div>
-                <div id="transaction_properties_add_frame" style="display:none">
+                <div id="transaction_properties_add_frame" style="display:none" class="w3-panel">
                   <h5>For private transactions: please assign amount to properties</h5>
                   <div class="input-field col s12 m4">
                     <select id="transaction_properties_add">
@@ -482,7 +482,7 @@
               </form>
               <br>
               <button id="transaction_save_button" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeTransaction()">Save and go to adding evidence<i class="material-icons right">send</i></button>
-              <a style="float: right;margin-bottom: 3px"
+              <a style="float: right;margin-left: 20px;margin-bottom: 3px"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
                 Cancel</a>
             </div>
@@ -2542,9 +2542,9 @@
       buttonIcon.innerHTML = "send";
       document.getElementById("transaction_save_button").appendChild(buttonIcon);
       if ((object.type == "PRIVA") || (object.type == "OWNER")) {
-        document.getElementById("transaction_costCenter_add_field").style.visibility = "hidden";
+        document.getElementById("transaction_costCenter_add_field").style.display = "none";
       } else {
-        document.getElementById("transaction_costCenter_add_field").style.visibility = "visible";
+        document.getElementById("transaction_costCenter_add_field").style.display = "hidden";
       };
       enableSelectProperties();
       var elems = document.querySelectorAll('select');
@@ -2663,9 +2663,9 @@
         document.getElementById("transaction_properties_add_frame").style.display = "none";
       };
       if ((typeElement.value == "PRIVA") || (typeElement.value == "OWNER")) {
-        document.getElementById("transaction_costCenter_add_field").style.visibility = "hidden";
+        document.getElementById("transaction_costCenter_add_field").style.display = "none";
       } else {
-        document.getElementById("transaction_costCenter_add_field").style.visibility = "visible";
+        document.getElementById("transaction_costCenter_add_field").style.display = "block";
       };
 
     };
