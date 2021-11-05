@@ -5,7 +5,7 @@ a:link { text-transform: none}
         border-left: solid white;
       } 
       .modal {
-        max-height: 90%;
+        max-height: 100%;
         width: 100%;
         startingTop: 0%;
         endingTop: 0%;
