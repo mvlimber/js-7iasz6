@@ -697,12 +697,11 @@
                     <span class="helper-text" data-error="Maximum 80 characters"></span>
                   </div>
                   <div class="input-field col s6 m6">
-                  <input id="transactionRule_name" type="text" class="validate" maxlength="50">
-                  <label for="transactionRule_name"><b>For info only</b> Counterpart</label>
-                  <span class="helper-text" data-error="Maximum 50 characters"></span>
+                    <input id="transactionRule_name" type="text" class="validate" maxlength="50">
+                    <label for="transactionRule_name"><b>For info only</b> Counterpart</label>
+                    <span class="helper-text" data-error="Maximum 50 characters"></span>
+                  </div>
                 </div>
-                
-                <div>
                 <div class="w3-panel ">
                   <h6><b>THEN:</b>below fields will be set with value given</h6> 
                   <div class="input-field col s12 m4">
@@ -2948,12 +2947,13 @@
       function refreshTransactionRules(){
         emptyHTMLSet(transactionRulesList);
         transactionRules = null;
-        transactionRulesGet().then(function(objectsFSArray){
-          objectsFSArray.forEach(function(objectFS){loadTransactionRule(objectFS);});
+        transactionRulesGet().then(function(objectsArray){
+          objectsArray.forEach(function(tR){loadTransactionRule(tR);});
         });
       };
 
       function loadTransactionRule(tR){
+        /*
         var objectsRow= document.createElement('li');
         var header = document.createElement('div');
         var headerIcon = document.createElement('i');
@@ -3008,10 +3008,11 @@
           });
         } else {
           title.innerHTML = "Expense " + tR.name;
+          
           costCenterGet(tR.costCenter).then(function(cc){text.innerHTML += " <b>AND</b><br>   cost center = "+ cc.name;})
           
         };
-         
+        */ 
       };
 
       var transactionRulesLoaded = false;
@@ -3083,14 +3084,6 @@
 
       function validateTransactionRule(){
         var valid = true;
-        if (!document.getElementById("transactionRule_type").checkValidity()) {
-          M.toast({html:"Please enter type"});
-          valid=false;
-        };
-        if (!document.getElementById("transactionRule_costCenter").checkValidity()) {
-          M.toast({html:"Please enter type"});
-          valid=false;
-        };
         if (!document.getElementById("transactionRule_account").checkValidity()) {
           M.toast({html:"Please enter valid account"});
           valid=false;
@@ -3103,14 +3096,24 @@
           M.toast({html:"Please enter valid communication"});
           valid=false;
         };
-        if ((document.getElementById("transactionRule_type").value == "Owner Payment") && (!document.getElementById("transactionRule_owner").value)) {
+        if (!document.getElementById("transactionRule_type").checkValidity()) {
+          M.toast({html:"Please enter type"});
+          valid=false;
+        };
+        if (!document.getElementById("transactionRule_costCenter").checkValidity()) {
+          M.toast({html:"Please enter cost center"});
+          valid=false;
+        };
+        if ((document.getElementById("transactionRule_type").value != "OWNER") && (!document.getElementById("transactionRule_costCenter").value)){
+          M.toast({html:"Please enter cost center"});
+          valid=false;
+        };
+
+       if ((document.getElementById("transactionRule_type").value == "Owner Payment") && (!document.getElementById("transactionRule_owner").value)) {
           M.toast({html:"Please select owner"});
           valid=false;
         };
-        if ((document.getElementById("transactionRule_type").value != "Owner Payment") && (document.getElementById("transactionRule_owner").value)) {
-          M.toast({html:"Owner only allowed for Owner Payment"});
-          valid=false;
-        };
+        
         return valid;
       };
       
