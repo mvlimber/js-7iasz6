@@ -2967,7 +2967,9 @@
         var body= document.createElement('div');
         body.setAttribute("class","collapsible-body");
         var text = document.createElement('DIV');
-        text.innerHTML = "<b>If</b> Account =" +tR.account + "<b> Then</b> expense classification =  " + TransTypeRead[tR.type];
+        text.innerHTML = "<b>IF</b><br>    account = " +tR.account;
+        if (tR.communication) {text.innerHTML += " <b>AND</b><br>   communication = "+tR.communication;};
+        text.innerHTML += "<br><br><b>THEN</b><br>   type = " + TransTypeRead[tR.type];
         body.appendChild(text);
         if (currentUser.role == roleAdministrator) {
           var buttons = document.createElement('DIV');
@@ -2998,16 +3000,18 @@
         objectsRow.appendChild(body);
         transactionRulesList.appendChild (objectsRow);
         
-        if (tR.type != "OWNER"){
-          title.innerHTML = "Expense " + tR.name;
-          headerIcon.innerHTML = "payment";
-        }
-        else {
+        if (tR.type == "OWNER") {
+          headerIcon.innerHTML = "input";
           memberGet(tR.owner).then (function(owner){
-            title.innerHTML = "Owner payment " + owner.firstName + " " + owner.lastName ;
-            headerIcon.innerHTML = "input";
+            title.innerHTML = "Owner payment from " + owner.firstName + " " + owner.lastName ;
+            text.innerHTML += " <b>AND</b><br>   owner = "+tR.owner;
           });
-        };  
+        } else {
+          title.innerHTML = "Expense " + tR.name;
+          costCenterGet(tR.costCenter).then(function(cc){text.innerHTML += " <b>AND</b><br>   cost center = "+ cc.name;})
+          
+        };
+         
       };
 
       var transactionRulesLoaded = false;
