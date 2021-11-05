@@ -422,7 +422,7 @@
                   <label>Type<b><font color='red'>*</font></b></label>
                 </div>
                 <div class="input-field col s12 m4" id="transaction_costCenter_add_field">
-                  <select id="transaction_costCenter_add" required required="true"></select>
+                  <select id="transaction_costCenter_add"></select>
                   <label>Cost Center<b><font color='red'>*</font></b></label>
                 </div>
                 <div class="input-field col s12 m4">
@@ -1068,9 +1068,8 @@
         </div>
 
         <div id="propertyView" class="modal">
-        <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
-              
           <div class="modal-content">
+            <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
             <h5> View property</h5>
             <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
               <form class="col s12">
@@ -1141,12 +1140,8 @@
                 </div>
               </div>
             </div>
-
+            <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
           </div>
-
-          <a style="float:right;margin-bottom: 3px"
-            class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>Close</a>
-
         </div>
 
         <div id="meterWrite" class="modal">
@@ -2385,6 +2380,10 @@
         valid=false;
       };
       if (!document.getElementById("transaction_costCenter_add").checkValidity()) {
+        M.toast({html:"Please enter cost center"});
+        valid=false;
+      };
+      if (((document.getElementById("transaction_type_add").value != "PRIVA") && (document.getElementById("transaction_type_add").value != "OWNER")) && (!document.getElementById("transaction_costCenter_add").value)) {
         M.toast({html:"Please enter cost center"});
         valid=false;
       };
