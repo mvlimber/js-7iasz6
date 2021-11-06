@@ -1066,34 +1066,33 @@
             <h5> View property</h5>
             <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
               <form class="col s12">
-                <div class="input-field col s6 m4">
+                <div class="input-field col s2 m2">
                   <input id="property_code" type="text" readonly>
                   <label for="property_code">Code</label>
                 </div>
-                <div class="input-field col s6 m4">
+                <div class="input-field col s4 m4">
                   <input id="property_type" type="text" readonly>
                   <label for="property_type">Type</label>
                 </div>
-                <div class="input-field col s6 m4">
+                <div class="input-field col s4 m4">
                   <input id="property_cellar" type="text" readonly>
                   <label for="property_cellar">Cellar(s)</label>
                 </div>
                 <div id="Properties_Edit" class="displayHidden">
-                  <button style="float: right;margin-bottom: 3px" data-target="propertyWrite" class="btn-small waves-light modal-trigger" onclick="setEditPropertyEntries()">Edit<i class="material-icons right">edit</i></button>
+                  <button style="float: right;margin-bottom: 3px;margin-top: 30px" data-target="propertyWrite" class="btn-floating waves-light modal-trigger" onclick="setEditPropertyEntries()"><i class="material-icons right">edit</i></button>
                 </div>
               </form>
             </div>
             <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
               <div>
-                <h7>Owner: </h7>
-                <button id="property_owner" data-target="memberView" class="modal-trigger" style="border:none;background-color:Transparent"></button>
+                <h7 style="margin-top: 10px">Owner: </h7>
+                <button id="property_owner" data-target="memberView" class="modal-trigger" style="border:none;background-color:Transparent;margin-top: 10px"></button>
 
                 <div class="displayHidden" id="previousOwnersButton">
                   <button style="float:right;margin-left: 20px;margin-bottom: 3px" data-target="previousOwners" class="btn-small waves-light modal-trigger" onclick="showPreviousOwnersTable()">Previous Owners</button>
                 </div>
-                <div id="Properties_OwnersAdd" class="displayHidden">
-                  <button disabled style="float:right;margin-bottom: 3px" data-target="newOwner" class="btn-small waves-light modal-trigger" onclick="newOwner()">New Owner<i class="material-icons right">add</i></button>
-                </div>
+                  <button id="Properties_OwnersAdd_button" disabled style="float:right;margin-top: 5px;margin-bottom: 3px;visibility:hidden" data-target="newOwner" class="btn-small waves-light modal-trigger" onclick="newOwner()">New Owner<i class="material-icons right">add</i></button>
+                
               </div>
             </div>
             <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
@@ -1494,7 +1493,7 @@
                           document.getElementById("Properties_Add").setAttribute("class","displayBlock");
                           document.getElementById("Properties_Edit").setAttribute("class","displayBlock");
                           document.getElementById("Properties_MetersAdd").setAttribute("class","displayBlock");
-                          document.getElementById("Properties_OwnersAdd").setAttribute("class","displayBlock");
+                          document.getElementById("Properties_OwnersAdd_button").style.visibility="visible";
                           document.getElementById("tabTransactionRules").style.display = "block";
                           document.getElementById("tabSettings").style.display = "block";
                         };
