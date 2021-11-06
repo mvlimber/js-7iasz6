@@ -3016,7 +3016,7 @@
           headerIcon.innerHTML = "input";
           memberGet(tR.owner).then (function(owner){
             title.innerHTML = "Owner payment from " + owner.firstName + " " + owner.lastName ;
-            text.innerHTML += " <b>AND</b><br>   owner = "+tR.owner;
+            text.innerHTML += " <b>AND</b><br>   owner = "+owner.firstName + " " + owner.lastName;
           });
         } else {
           headerIcon.innerHTML = "payment";
