@@ -2312,7 +2312,7 @@
     async function documentsGet(){
       if (documents) {return documents;}
       else {
-        var querySnapshot = await refCoproperty.collection("Documents").orderBy("sortDate").get();
+        var querySnapshot = await refCoproperty.collection("Documents").orderBy("sortDate","desc").get();
         documents = [];
         querySnapshot.forEach(function(objectFS) {
           var thisObject = objectFS.data();
@@ -2511,18 +2511,21 @@
       return valid;
     };
     
-    function getToDaysDate(){var d = new Date(); return d.getFullYear()+"-"+d.getMonth()+"-"+d.getDate()};
+    function getToDaysDate(){
+      var d = new Date(); 
+      return d.getFullYear()+"-"+d.getMonth()+"-"+d.getDate()};
     
     function getDocumentEntries(){
       var beforeEl = document.getElementById("document_before");
+      var typeEl = document.getElementById("document_type");
       var toDay = getToDaysDate();
       var sortingDate;
-      if (beforeEl.value){sortingdate = beforeEl.value;}
-      else {sortingdate = toDay;};
+      if ((typeEl.value != "GEASS") && (beforeEl.value)){sortingDate = beforeEl.value;}
+      else {sortingDate = toDay;};
       return {
-        type: document.getElementById("document_type").value,
+        type: typeEl.value,
         counterParty: document.getElementById("document_counterparty").value,
-        before: document.getElementById("document_before").value,
+        before: beforeEl.value,
         link: document.getElementById("document_link").value,
         freeType: document.getElementById("document_freeType").value,
         updatedOn: toDay,
