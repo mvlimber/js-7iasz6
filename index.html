@@ -388,6 +388,33 @@
         <!------------------------------------------------------------------------------------------------------>
         <div id="Documents" class="col s12">
         <ul class="collapsible" id="documentsList">
+          <li>
+          <div class="collapsible-header">
+          <h6 style="text-align:center;"><span style="float:left;"><b>Invoice</b></span>Van Marcke <span style="float:right;">Act by:2021-12_25</span></h2>
+            
+          </div>
+          <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+        </li>
+        <li>
+          <div class="collapsible-header">
+            <table>
+              <th>Invoice</th>
+              <th>Van Marcke hhh gg</th>
+              <th>Act by:2021-12_25</th>
+            </table>
+          </div>
+          <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+        </li>
+        <li>
+        <div class="collapsible-header">
+          <table>
+            <th>General Assembly</th>
+            <th></th>
+            <th>2021-12_25</th>
+          </table>
+        </div>
+        <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+      </li>
         </ul>
         <br>
         <!----
@@ -2329,12 +2356,12 @@
       };
     };
 
-    var documentsList = document.getElementById("transactionRulesList");
+    var documentsList = document.getElementById("documentsList");
     function refreshDocuments(){
-      emptyHTMLSet(documentsList);
+      /*emptyHTMLSet(documentsList);
       documents = null;
-      loadDocument();
-      /*
+      
+      
       documentsGet().then(function(objectsArray){
         objectsArray.forEach(function(d){loadDocument(d);});
       });
@@ -2352,6 +2379,8 @@
       header.setAttribute("class","collapsible-header");
       var title = document.createElement('span');
       title.innerHTML = "Invoice   Van marcke   Act by:2021_12_06";
+      var l = document.createElement('p');
+      
       header.appendChild (title);
       objectsRow.appendChild(header);
       documentsList.appendChild (objectsRow);
