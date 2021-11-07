@@ -2435,7 +2435,7 @@
     var documentsLoaded = false;
     function loadDocuments(){
       hideMenu();
-      document.getElementById("logo-container").innerHTML = "Documents";
+      document.getElementById("logo-container").innerHTML = "MyCondos: Documents";
       if (!documentsLoaded) {
         refreshDocuments();
         documentsLoaded = true;
@@ -2536,23 +2536,17 @@
     
     function getToDaysDate(){
       var d = new Date(); 
-      return d.getFullYear()+"-"+d.getMonth()+"-"+d.getDate()};
+      return (d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate());
+    };
     
     function getDocumentEntries(){
-      var beforeEl = document.getElementById("document_before");
-      var typeEl = document.getElementById("document_type");
-      var toDay = getToDaysDate();
-      var sortingDate;
-      if ((typeEl.value != "GEASS") && (beforeEl.value)){sortingDate = beforeEl.value;}
-      else {sortingDate = toDay;};
       return {
-        type: typeEl.value,
+        type: document.getElementById("document_type").value,
         counterParty: document.getElementById("document_counterparty").value,
-        before: beforeEl.value,
+        before: document.getElementById("document_before").value,
         link: document.getElementById("document_link").value,
         freeType: document.getElementById("document_freeType").value,
-        updatedOn: toDay,
-        sortDate: sortingDate,
+        updatedOn: getToDaysDate(),
       };
     };
     
