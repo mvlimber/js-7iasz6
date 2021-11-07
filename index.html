@@ -414,6 +414,11 @@
                 <select id="document_link" ></select>
                 <label>Link to</label>
               </div>
+              <div class="input-field col s12 m4" id="document_freeType_field">
+                <input id="document_freeType" type="text" class="validate" maxlength="20">
+                <label for="document_freeType">Free text type<b><font color='red'>*</font></b></label>
+                <span class="helper-text" data-error="Maximum 20 characters"></span>
+              </div>
               
             </form>
             <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeDocument()">Save<i class="material-icons right">send</i></button>
@@ -2427,6 +2432,7 @@
         counterparty: "",
         before: "",
         link:"",
+        freeType:"",
         idFS:null
         };
       selectDocument(d);
@@ -2437,6 +2443,7 @@
       document.getElementById("document_type").value=object.type;
       document.getElementById("document_counterparty").counterParty=object.counterParty;
       document.getElementById("document_before").before=object.before;
+      document.getElementById("document_freeType").before=object.freeType;
       /*listTransactions(document.getElementById("document_link"),object.link)*/
       toggleDocument();
       var elems = document.querySelectorAll('select');
@@ -2446,10 +2453,15 @@
 
     function toggleDocument(){
       var typeElement = document.getElementById("transactionRule_type");
-      if (["INVOI", "QUOTE"].includes(document.getElementById("document_type").value)) {
+      if (["INVOI", "QUOTE"].includes(typeElement.value)) {
         document.getElementById("document_link_field").style.display = "block";
       } else {
-      document.getElementById("document_link_field").style.display = "none";
+        document.getElementById("document_link_field").style.display = "none";
+      };
+      if (typeElement.value == "OTHER") {
+        document.getElementById("document_freeType_field").style.display = "block";
+      } else {
+        document.getElementById("document_freeType_field").style.display = "none";
       };
     };
 
@@ -2467,7 +2479,15 @@
         M.toast({html:"Please enter valid reminder date"});
         valid=false;
       };
-      
+      if (!document.getElementById("document_freeType").checkValidity()) {
+        M.toast({html:"Please enter valid reminder date"});
+        valid=false;
+      };
+      var typeElement = document.getElementById("transactionRule_type");
+      if ((typeElement.value == "OTHER") && (!document.getElementById("document_freeType_field").value)){
+        M.toast({html:"when Type = Other, Free text type is required"});
+        valid=false;
+      };
       return valid;
     };
     
