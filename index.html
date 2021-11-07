@@ -414,13 +414,16 @@
               </div>
               <div class="input-field col s12 m4">
                 <input id="document_actBy" type="text" class="datepicker validate" >
-                <label for="document_actBy">Act by</label>
-                <span class="helper-text" >By default copied from Transaction Date</span>
+                <label for="document_actBy">Before</label>
+                <span class="helper-text">reminder date</span>
               </div>
-          
+              <div class="input-field col s12 m4" id="document_link_field">
+                <select id="document_link" ></select>
+                <label>Link to<b><font color='red'>*</font></b></label>
+              </div>
               
             </form>
-            <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeTransactionRule()">Save<i class="material-icons right">send</i></button>
+            <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeDocument()">Save<i class="material-icons right">send</i></button>
             <a style="float: right;margin-left: 20px;margin-bottom: 3px"
               class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
               Cancel</a>
@@ -797,7 +800,6 @@
           </div>  
         </div>
         <!------------------------------------------------------------------------------------------------------>
-
         <div id="MeterReadings" class="col s12">
           <table class="striped">
             <thead>
@@ -2412,9 +2414,9 @@
           documentsLoaded = true;
         };
       };
-    /*
-    var transactionRule;
-
+    
+    var paper;
+/*
     function popupRemoveTransactionRule(tR){transactionRule=tR;};
     function removeTransactionRule(){
       refCoproperty.collection("TransactionRules").doc(transactionRule.idFS).delete().then(function(){
@@ -2424,95 +2426,65 @@
           M.toast({html:"System error removing transaction rule:" + error});
       });
     };
-    
-    var transactionRule;
-    function resetTransactionRule(){
-      var trR = 
+*/    
+    function resetDocument(){
+      var d = 
         {
         type: "",
-        costCenter:"",
-        account: "",
-        name: "",
-        communication:"",
-        owner:"",
+        counterParty: "",
+        before: "",
+        link:"",
         idFS:null
         };
-        selectTransactionRule(trR)
+        selectdocument(d)
 
     };
 
-    function selectTransactionRule(object) {
-      transactionRule = object;
-      document.getElementById("transactionRule_type").value=object.type;
-      listCostCenters(document.getElementById("transactionRule_costCenter"),object.costCenter)
-      document.getElementById("transactionRule_account").value=object.account;
-      document.getElementById("transactionRule_name").value=object.name;
-      document.getElementById("transactionRule_communication").value=object.communication;
-      listMembers(document.getElementById("transactionRule_owner"), object.owner);
-      toggleTransactionRule();
+    function selectDocument(object) {
+      paper = object;
+      document.getElementById("document_type").value=object.type;
+      document.getElementById("document_counterParty").counterParty=object.counterParty;
+      document.getElementById("document_before").before=object.before;
+      listTransactions(document.getElementById("document_link"),object.link)
+      toggleDocument();
       var elems = document.querySelectorAll('select');
       M.FormSelect.init(elems);
       M.updateTextFields();
     };
 
-    function toggleTransactionRule(){
+    function toggleDocument(){
       var typeElement = document.getElementById("transactionRule_type");
-      if ((!typeElement.value) ||(typeElement.value == "PRIVA")) {
-        document.getElementById("transactionRule_costCenter_field").style.display = "none";
-        document.getElementById("transactionRule_owner_field").style.display = "none";
-      } else if (typeElement.value == "OWNER"){
-        document.getElementById("transactionRule_costCenter_field").style.display = "none";
-        document.getElementById("transactionRule_owner_field").style.display = "block";
-      } else {
-        document.getElementById("transactionRule_costCenter_field").style.display = "block";
-        document.getElementById("transactionRule_owner_field").style.display = "none";
+      if (document.getElementById("document_type").value != "GEASS") {
+        document.getElementById("document_link_field").style.display = "block";
+      else {
+      document.getElementById("document_link_field").style.display = "none";
       };
-      
     };
 
-    function validateTransactionRule(){
+    function validateDocument(){
       var valid = true;
-      if (!document.getElementById("transactionRule_account").checkValidity()) {
-        M.toast({html:"Please enter valid account"});
-        valid=false;
-      };
-      if (!document.getElementById("transactionRule_name").checkValidity()) {
-        M.toast({html:"Please enter counter party"});
-        valid=false;
-      };
-      if (!document.getElementById("transactionRule_communication").checkValidity()) {
-        M.toast({html:"Please enter valid communication"});
-        valid=false;
-      };
-      if (!document.getElementById("transactionRule_type").checkValidity()) {
+      if (!document.getElementById("document_type").checkValidity()) {
         M.toast({html:"Please enter type"});
         valid=false;
       };
-      if (!document.getElementById("transactionRule_costCenter").checkValidity()) {
-        M.toast({html:"Please enter cost center"});
+      if (!document.getElementById("document_counterParty").checkValidity()) {
+        M.toast({html:"Please enter counter party"});
         valid=false;
       };
-      if ((document.getElementById("transactionRule_type").value != "OWNER") && (!document.getElementById("transactionRule_costCenter").value)){
-        M.toast({html:"Please enter cost center"});
-        valid=false;
-      };
-
-     if ((document.getElementById("transactionRule_type").value == "Owner Payment") && (!document.getElementById("transactionRule_owner").value)) {
-        M.toast({html:"Please select owner"});
+      if (!document.getElementById("document_before").checkValidity()) {
+        M.toast({html:"Please enter valid reminder date"});
         valid=false;
       };
       
       return valid;
     };
     
-    function getTransactionRuleEntries(){
+    function getDocumentEntries(){
       return {
         type: document.getElementById("transactionRule_type").value,
-        costCenter: document.getElementById("transactionRule_costCenter").value,
-        account: document.getElementById("transactionRule_account").value,
-        name: document.getElementById("transactionRule_name").value,
-        communication:document.getElementById("transactionRule_communication").value,
-        owner:document.getElementById("transactionRule_owner").value,
+        counterParty: document.getElementById("document_counterParty").value,
+        before: document.getElementById("document_before").value,
+        link: document.getElementById("transactionRule_link").value,
       };
     };
     
@@ -3348,7 +3320,6 @@
         });
       };
       
-      var transactionRule;
       function resetTransactionRule(){
         var trR = 
           {
