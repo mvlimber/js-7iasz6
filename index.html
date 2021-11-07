@@ -2334,22 +2334,32 @@
     };
 
     function loadDocument(d){
-      
-      /*
       var objectsRow= document.createElement('li');
       var header = document.createElement('div');
-      var headerIcon = document.createElement('i');
+      /*var headerIcon = document.createElement('i');
       headerIcon.setAttribute("class","material-icons");
-      header.appendChild(headerIcon);
+      header.appendChild(headerIcon);*/
       header.setAttribute("class","collapsible-header");
-      var title = document.createElement('span');
-      title.innerHTML = "Invoice   Van marcke   Act by:2021_12_06";
-      var l = document.createElement('p');
+      var title = document.createElement('h6');
+      title.setAttribute("style","text-align:center");
+      title.innerHTML = d.counterParty;
+      var titleLeft = document.createElement('span');
+      titleLeft.setAttribute("style","float:left");
+      if (d.type != "Other"){titleLeft.innerHTML = "<b>"+DocumentType[d.type]+"</b>"}
+      else {titleLeft.innerHTML = "<b>"+DocumentType[d.freeType]+"</b>"};
+      title.appendChild(titleLeft);
+      var titleRight = document.createElement('span');
+      titleRight.setAttribute("style","float:right");
+      if (d.before ){titleRight.innerHTML = "<font color='red'>before " + document.before+"*"</font>"</b>"}
+      else {titleRight.innerHTML = document.upLoaded};
+      title.appendChild(titleRight);
+
+      
       
       header.appendChild (title);
       objectsRow.appendChild(header);
       documentsList.appendChild (objectsRow);
-      
+      /*
       var body= document.createElement('div');
       body.setAttribute("class","collapsible-body");
       var text = document.createElement('DIV');
