@@ -268,56 +268,8 @@
         <!------------------------------------------------------------------------------------------------------>
         <div id="Reports" class="col s12">
           <div id="reportRemove" class="modal">
-            <div class="modal-content">
-              <h5> You are about to permanently remove the report</h5>
-              <p id="report_to_remove"> </p>
-            </div>
-            <div class="modal-footer">
-              <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="removeReport(report_to_remove)">Confirm<i class="material-icons right">send</i></button>
-              <a style="float: right"
-                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
-                Cancel</a>
-            </div>
           </div>
           <div id="reportAdd" class="modal">
-            <div class="modal-content">
-            <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
-              
-              <h5> New Report</h5>
-              <div class="row">
-                <form>
-                  <div class="input-field" id="report_file_edit">
-                  </div>
-                  <div class="file-field input-field col s12 m6">
-                    <div class="btn-small">
-                      <span>PDF Document<b><font color='red'>*</font></b><i class="material-icons right">attach_file</i></span>
-                      <input type="file" id="reportFile">
-                    </div>
-                    <div class="file-path-wrapper">
-                      <input class="file-path validate" type="text" id="reportFileText">
-                    </div>
-                  </div>
-                </form>
-                <form>
-                  <div class="input-field col s12 m4">
-                    <select id="report_type_structured" required required="true" onchange="showFreeTypeReport()"></select>
-                    <label>Type<b><font color='red'>*</font></b></label>
-                    <span class="helper-text" data-error="required field" ></span>
-                  </div>
-                  <div id = "report_freeType_frame" class="input-field col s12 m6" style="display:none">
-                    <input id="report_type_free" type="text" maxlength="40" >
-                    <label for="report_type_free">Free Text Type<b><font color='red'>*</font></b></label>
-                    <span class="helper-text" data-error="maximum 40 characters" >maximum 40 characters</span>
-                  </div>
-                </form>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="writeReport()">Submit<i class="material-icons right">send</i></button>
-              <a style="float: right"
-                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
-                Cancel</a>
-            </div>
           </div>
           <div id="chargesReportAdd" class="modal">
             <div class="modal-content">
@@ -351,7 +303,6 @@
                 Cancel</a>
             </div>
           </div>
-          <h6 style="font-size:20px "><b>Charges and Accountancy</b></h6>
           <table class="striped">
             <thead>
               <tr>
@@ -368,7 +319,6 @@
             <button id="ChargesReport_Generate" style="float: right" data-target="chargesReportAdd" class="btn-small waves-light modal-trigger" onclick="emptyFieldsChargesReportAdd()"><i class="material-icons right">add</i>Generate New Charges Report</button>
           </div>
           <br><br>
-          <h6 style="font-size:20px "><b>Other Reports</b></h6>
           <table class="striped">
             <thead>
               <tr>
@@ -2419,54 +2369,6 @@
         documentsList.appendChild (objectsRow);
       });
       
-      /*var text = document.createElement('DIV');
-      text.innerHTML = "<b>IF</b><br>    account = " +tR.account;
-      if (tR.communication) {text.innerHTML += " <b>AND</b><br>   communication = "+tR.communication;};
-      text.innerHTML += "<br><br><b>THEN</b><br>   type = " + TransTypeRead[tR.type];
-      body.appendChild(text);
-      if (currentUser.role == roleAdministrator) {
-        var buttons = document.createElement('DIV');
-        var removeButton = document.createElement('button');
-        removeButton.setAttribute('style','float: right;margin-bottom: 3px');
-        removeButton.setAttribute('class','modal-trigger btn-floating waves-light red');
-        removeButton.setAttribute("data-target", "transactionRuleRemove");
-        removeButton.setAttribute('onclick','popupRemoveTransactionRule('+JSON.stringify(tR)+')');
-        var cellButtonIcon = document.createElement('i');
-        cellButtonIcon.setAttribute('class','material-icons right');
-        cellButtonIcon.innerHTML="delete";           
-        removeButton.appendChild(cellButtonIcon);
-        buttons.appendChild(removeButton);
-        var editButton = document.createElement('button');
-        editButton.setAttribute('style','float: right;margin-right: 5px;margin-bottom: 3px');
-        editButton.setAttribute('class','modal-trigger btn-floating waves-light');
-        editButton.setAttribute("data-target", "transactionRuleEdit");
-        editButton.setAttribute('onclick','selectTransactionRule('+JSON.stringify(tR)+')');
-        cellButtonIcon = document.createElement('i');
-        cellButtonIcon.setAttribute('class','material-icons right');
-        cellButtonIcon.innerHTML="edit";           
-        editButton.appendChild(cellButtonIcon);
-        buttons.appendChild(editButton);
-        body.appendChild(buttons);
-        var br = document.createElement('br');
-        body.appendChild(br);
-      };
-      objectsRow.appendChild(body);
-      transactionRulesList.appendChild (objectsRow);
-      
-      if (tR.type == "OWNER") {
-        headerIcon.innerHTML = "input";
-        memberGet(tR.owner).then (function(owner){
-          title.innerHTML = "Owner payment from " + owner.firstName + " " + owner.lastName ;
-          text.innerHTML += " <b>AND</b><br>   owner = "+owner.firstName + " " + owner.lastName;
-        });
-      } else {
-        headerIcon.innerHTML = "payment";
-        title.innerHTML = "Expense " + tR.name;
-        
-        costCenterGet(tR.costCenter).then(function(cc){text.innerHTML += " <b>AND</b><br>   cost center = "+ cc.name;})
-        
-      };
-      */
     };
 
     var documentsLoaded = false;
