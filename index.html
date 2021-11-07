@@ -2463,9 +2463,9 @@
     function selectDocument(object) {
       paper = object;
       document.getElementById("document_type").value=object.type;
-      document.getElementById("document_counterparty").counterParty=object.counterParty;
-      document.getElementById("document_before").before=object.before;
-      document.getElementById("document_freeType").before=object.freeType;
+      document.getElementById("document_counterparty").value=object.counterParty;
+      document.getElementById("document_before").value=object.before;
+      document.getElementById("document_freeType").value=object.freeType;
       /*listTransactions(document.getElementById("document_link"),object.link)*/
       toggleDocument();
       var elems = document.querySelectorAll('select');
