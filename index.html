@@ -394,8 +394,20 @@
         <div id="documentEdit" class="modal">
           <div class="modal-content">
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
-            <h5>Enter document attributes and upload document</h5>
+            <h5>Upload document and enter its attributes</h5>
             <form>
+            <div class="input-field" id="document_file">
+            </div>
+            <div class="file-field input-field col s12 m6">
+              <div class="btn-small">
+                <span>PDF Document<b><font color='red'>*</font></b><i class="material-icons right">attach_file</i></span>
+                <input type="file" id="documentFile">
+              </div>
+              <div class="file-path-wrapper">
+                <input class="file-path validate" type="text" id="documentFileText">
+              </div>
+            </div>
+          </form><form>
               <div class="input-field col s12 m4">
               <select id="document_type" required required="true" onchange="toggleDocument()"></select>
               <label>Type<b><font color='red'>*</font></b></label>
@@ -420,6 +432,7 @@
                 <span class="helper-text" data-error="Maximum 20 characters"></span>
               </div>
             </form>
+            
             <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeDocument()">Save<i class="material-icons right">send</i></button>
             <a style="float: right;margin-left: 20px;margin-bottom: 3px"
               class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
