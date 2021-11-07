@@ -419,7 +419,6 @@
                 <label for="document_freeType">Free text type<b><font color='red'>*</font></b></label>
                 <span class="helper-text" data-error="Maximum 20 characters"></span>
               </div>
-              
             </form>
             <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeDocument()">Save<i class="material-icons right">send</i></button>
             <a style="float: right;margin-left: 20px;margin-bottom: 3px"
@@ -2452,7 +2451,7 @@
     };
 
     function toggleDocument(){
-      var typeElement = document.getElementById("transactionRule_type");
+      var typeElement = document.getElementById("document_type");
       if (["INVOI", "QUOTE"].includes(typeElement.value)) {
         document.getElementById("document_link_field").style.display = "block";
       } else {
@@ -2480,11 +2479,11 @@
         valid=false;
       };
       if (!document.getElementById("document_freeType").checkValidity()) {
-        M.toast({html:"Please enter valid reminder date"});
+        M.toast({html:"Please enter valid free text type"});
         valid=false;
       };
-      var typeElement = document.getElementById("transactionRule_type");
-      if ((typeElement.value == "OTHER") && (!document.getElementById("document_freeType_field").value)){
+      var typeElement = document.getElementById("document_type");
+      if ((typeElement.value == "OTHER") && (!document.getElementById("document_freeType").value)){
         M.toast({html:"when Type = Other, Free text type is required"});
         valid=false;
       };
@@ -2501,7 +2500,7 @@
     };
     
     function writeDocument(){
-      if (validateTransactionRule()) { 
+      if (validateDocument()) { 
         var entries =  getDocumentEntries();
         if (paper.idFS) {
           refCoproperty.collection("Documents").doc(paper.idFS).set(entries).then(function(docref) {
