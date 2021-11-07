@@ -2312,14 +2312,22 @@
     async function documentsGet(){
       if (documents) {return documents;}
       else {
-        var querySnapshot = await refCoproperty.collection("Documents").orderBy("sortDate","desc").get();
+        var querySnapshot = await refCoproperty.collection("Documents").where("before","!=","").orderBy("before","asc").get();
         documents = [];
         querySnapshot.forEach(function(objectFS) {
           var thisObject = objectFS.data();
           thisObject.idFS = objectFS.id;
           documents.push(thisObject);
         });
-        return documents;
+        querySnapshot = await refCoproperty.collection("Documents").where("before","==","").get();
+        var documentsDone = [];
+        querySnapshot.forEach(function(objectFS) {
+          var thisObject = objectFS.data();
+          thisObject.idFS = objectFS.id;
+          documentsDone.push(thisObject);
+        });
+        documentsDone.sort("updatedOn").reverse();
+        return documents.concat(documentsDone);
       };
     };
 
@@ -2463,7 +2471,7 @@
     function selectDocument(object) {
       paper = object;
       document.getElementById("document_type").value=object.type;
-      document.getElementById("document_counterparty").value=object.counterParty;
+      document.getElementById("document_counterparty").value=object.counterparty;
       document.getElementById("document_before").value=object.before;
       document.getElementById("document_freeType").value=object.freeType;
       /*listTransactions(document.getElementById("document_link"),object.link)*/
