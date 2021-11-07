@@ -2457,6 +2457,7 @@
     };
     
     var paper;
+    var documentFile;
 
     function popupRemoveDocument(d){paper=d;};
     function removeDocument(){
@@ -2545,7 +2546,22 @@
         M.toast({html:"Please enter counterparty"});
         valid=false;
       };
-
+      documentFile = document.getElementById('documentFile').files[0];
+      let allowed_mime_types = ['application/pdf'];
+      let allowed_size_kb = 5000;
+      if (documentFile) {
+        if(allowed_mime_types.indexOf(documentFile.type) == -1) {
+          M.toast({html:"Incorrect file type (only pdf allowed)"});
+          valid=false;
+        };
+        if(documentFile.size > allowed_size_kb*1024) {
+          M.toast({html:"File exceeds max size 500KB"});
+          valid=false;
+        };
+      } else {
+          M.toast({html:"Please select PDF File"});
+          valid=false;
+      };
 
       return valid;
     };
@@ -2568,22 +2584,27 @@
     
     function writeDocument(){
       if (validateDocument()) { 
-        var entries =  getDocumentEntries();
-        if (paper.idFS) {
-          refCoproperty.collection("Documents").doc(paper.idFS).set(entries).then(function(docref) {
-            refreshDocuments();
-            M.Modal.getInstance(document.getElementById("documentEdit")).close();
-          }).catch(function(error) {
-            M.toast({html:"Error updating document: " + error});
-          });
-        } else {
-          refCoproperty.collection("Documents").add(entries).then(function(docref) {
-            refreshDocuments();
-            M.Modal.getInstance(document.getElementById("documentEdit")).close();
-          }).catch(function(error) {
-            M.toast({html:"Error adding document: " + error});
-          });
-        };
+        if (documentFile) {
+          var entries =  getDocumentEntries();
+          if (paper.idFS) {
+            refCoproperty.collection("Documents").doc(paper.idFS).set(entries).then(function(docref) {
+              refreshDocuments();
+              M.Modal.getInstance(document.getElementById("documentEdit")).close();
+            }).catch(function(error) {
+              M.toast({html:"Error updating document: " + error});
+            });
+          } else {
+            refCoproperty.collection("Documents").add(entries).then(function(docref) {
+              var fileRef = refCopropertyFiles.child("Documents").child(docref.id); 
+              fileRef.put(documentFile).then (function (){
+                refreshDocuments();
+                M.Modal.getInstance(document.getElementById("documentEdit")).close();
+              }).catch(function(error) {
+                M.toast({html:"Error adding document: " + error});
+              });
+            });
+          };
+        } else {M.toast({html:"System error writing file"});};
       };
     };
     
