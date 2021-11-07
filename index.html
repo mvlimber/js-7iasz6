@@ -2400,6 +2400,10 @@
       var getFileButton = document.createElement("button");
       getFileButton.setAttribute('class','btn-small waves-light');
       getFileButton.innerHTML = "DownLoad File";
+      var icon = document.createElement('i');
+      icon.setAttribute("class","material-icons right");
+      icon.innerHTML = "file_download";
+      getFileButton.appendChild(icon);
       refCopropertyFiles.child("Documents").child(d.idFS).getDownloadURL().then(function(url) {
           
         getFileButton.setAttribute('onclick','showFile('+JSON.stringify(url)+')');
