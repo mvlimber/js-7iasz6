@@ -2353,8 +2353,8 @@
       title.innerHTML = d.counterParty;
       var titleLeft = document.createElement('span');
       titleLeft.setAttribute("style","float:left");
-      if (d.type != "Other"){titleLeft.innerHTML = "<b>"+DocumentType[d.type]+"</b>"}
-      else {titleLeft.innerHTML = "<b>"+DocumentType[d.freeType]+"</b>"};
+      if (d.type != "OTHER"){titleLeft.innerHTML = "<b>"+DocumentType[d.type]+"</b>"}
+      else {titleLeft.innerHTML = "<b>"+d.freeType+"</b>"};
       title.appendChild(titleLeft);
       var titleRight = document.createElement('span');
       titleRight.setAttribute("style","float:right");
