@@ -2312,7 +2312,7 @@
     async function documentsGet(){
       if (documents) {return documents;}
       else {
-        var querySnapshot = await refCoproperty.collection("Documents").get();
+        var querySnapshot = await refCoproperty.collection("Documents").orderBy("sortDate").get();
         documents = [];
         querySnapshot.forEach(function(objectFS) {
           var thisObject = objectFS.data();
@@ -2350,8 +2350,8 @@
       title.appendChild(titleLeft);
       var titleRight = document.createElement('span');
       titleRight.setAttribute("style","float:right");
-      if (d.before){titleRight.innerHTML = "<font color='red'>before " + document.before+"</font>"}
-      else {titleRight.innerHTML = document.upLoaded};
+      if (d.before){titleRight.innerHTML = "<font color='red'>before " + d.before+"</font>"}
+      else {titleRight.innerHTML = d.updatedOn};
       title.appendChild(titleRight);
       header.appendChild (title);
       objectsRow.appendChild(header);
@@ -2511,15 +2511,22 @@
       return valid;
     };
     
+    function getToDaysDate(){var d = new Date(); return d.getFullYear()+"-"+d.getMonth()+"-"+d.getDate()};
+    
     function getDocumentEntries(){
-      var d = new Date();
+      var beforeEl = document.getElementById("document_before");
+      var toDay = getToDaysDate();
+      var sortingDate;
+      if (beforeEl.value){sortingdate = beforeEl.value;}
+      else {sortingdate = toDay;};
       return {
         type: document.getElementById("document_type").value,
         counterParty: document.getElementById("document_counterparty").value,
         before: document.getElementById("document_before").value,
         link: document.getElementById("document_link").value,
         freeType: document.getElementById("document_freeType").value,
-        updatedOn: d.toDateString(),
+        updatedOn: toDay,
+        sortDate: sortingDate,
       };
     };
     
@@ -2535,7 +2542,7 @@
           });
         } else {
           refCoproperty.collection("Documents").add(entries).then(function(docref) {
-            refreshDocumentss();
+            refreshDocuments();
             M.Modal.getInstance(document.getElementById("documentEdit")).close();
           }).catch(function(error) {
             M.toast({html:"Error adding document: " + error});
@@ -2546,7 +2553,7 @@
     
     
 
-  </script>
+    </script>
     <!--   Transaction scripts start here -->
     <script>
       var transactionsTable = document.getElementById("transactionsTable");
