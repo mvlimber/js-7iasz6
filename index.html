@@ -1128,7 +1128,7 @@
                   </select>
                 </div>
                 <div class="input-field col s6 m4">
-                  <button id="buttonOccupantAdd" class="btn-small waves-light disabled" onclick="addOccupant()">Add as Occupant<i class="material-icons right">add</i></button>
+                  <a id="buttonOccupantAdd" class="btn-floating waves-light disabled" onclick="addOccupant()"><i class="material-icons right">add</i></a>
                 </div>
               </div>
             </div>
@@ -3901,11 +3901,11 @@
       };
 
       function enableOccupantAdd() {
-        document.getElementById("buttonOccupantAdd").setAttribute("class","btn-small waves-light");
+        document.getElementById("buttonOccupantAdd").setAttribute("class","btn-floating waves-light");
       };
 
       function disableOccupantAdd() {
-        document.getElementById("buttonOccupantAdd").setAttribute("class","btn-small waves-light disabled");
+        document.getElementById("buttonOccupantAdd").setAttribute("class","btn-floating waves-light disabled");
       }
 
       var selectedPropertyId;
@@ -4213,7 +4213,7 @@
         selectedPropertyObject=object;
         if (currentUser.role == roleAdministrator || currentUser.id == selectedPropertyObject.owner){
           document.getElementById("Properties_OccupantsAdd").setAttribute("class","displayBlock");
-          document.getElementById("buttonOccupantAdd").setAttribute("class","btn-small waves-light disabled");
+          document.getElementById("buttonOccupantAdd").setAttribute("class","btn-floating waves-light disabled");
         } else {
           document.getElementById("Properties_OccupantsAdd").setAttribute("class","displayHidden");
         };
