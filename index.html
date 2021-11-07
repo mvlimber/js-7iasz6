@@ -1767,7 +1767,8 @@
       GEASS: 'General Assembly',
       INVOI: 'Invoice',
       QUOTE: 'Quote',
-      OTHER:  'Other'
+      PAYRE: 'Payment Reminder',
+      OTHER: 'Other'
     };
 
     function insertSelectOptions (elBeforeID, keyValuePairs, defaultString, defaultKey) {
@@ -2483,7 +2484,7 @@
 
     function toggleDocument(){
       var typeElement = document.getElementById("document_type");
-      if (["INVOI", "QUOTE"].includes(typeElement.value)) {
+      if (["INVOI", "QUOTE","PAYRE"].includes(typeElement.value)) {
         document.getElementById("document_link_field").style.display = "block";
       } else {
         document.getElementById("document_link_field").style.display = "none";
