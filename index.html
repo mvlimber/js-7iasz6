@@ -2350,12 +2350,9 @@
       title.appendChild(titleLeft);
       var titleRight = document.createElement('span');
       titleRight.setAttribute("style","float:right");
-      if (d.before ){titleRight.innerHTML = "<font color='red'>before " + document.before+"*"</font>"</b>"}
+      if (d.before){titleRight.innerHTML = "<font color='red'>before " + document.before+"</font>"}
       else {titleRight.innerHTML = document.upLoaded};
       title.appendChild(titleRight);
-
-      
-      
       header.appendChild (title);
       objectsRow.appendChild(header);
       documentsList.appendChild (objectsRow);
@@ -2442,7 +2439,7 @@
         before: "",
         link:"",
         freeType:"",
-        updatedOn:"";
+        updatedOn:"",
         idFS:null
         };
       selectDocument(d);
