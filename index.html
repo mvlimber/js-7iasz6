@@ -397,7 +397,7 @@
             <h5>Enter document attributes and upload document</h5>
             <form>
               <div class="input-field col s12 m4">
-              <select id="document_type" required required="true" onchange="toggelDocument()"></select>
+              <select id="document_type" required required="true" onchange="toggleDocument()"></select>
               <label>Type<b><font color='red'>*</font></b></label>
               </div>
               <div class="input-field col s12 m4">
@@ -412,7 +412,7 @@
               </div>
               <div class="input-field col s12 m4" id="document_link_field">
                 <select id="document_link" ></select>
-                <label>Link to<b><font color='red'>*</font></b></label>
+                <label>Link to</label>
               </div>
               
             </form>
@@ -2446,7 +2446,7 @@
 
     function toggleDocument(){
       var typeElement = document.getElementById("transactionRule_type");
-      if (document.getElementById("document_type").value != "GEASS") {
+      if (["INVOI", "QUOTE"].includes(document.getElementById("document_type").value)) {
         document.getElementById("document_link_field").style.display = "block";
       } else {
       document.getElementById("document_link_field").style.display = "none";
