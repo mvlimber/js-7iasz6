@@ -2326,7 +2326,7 @@
           thisObject.idFS = objectFS.id;
           documentsDone.push(thisObject);
         });
-        documentsDone.sort("updatedOn").reverse();
+        documentsDone.sort(function(a, b){return a.updatedOn - a.updatedOn});
         return documents.concat(documentsDone);
       };
     };
