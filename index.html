@@ -2486,6 +2486,11 @@
     function removeDocument(){
       refCoproperty.collection("Documents").doc(paper.idFS).delete().then(function(){
         refreshDocuments();
+        var fileRef = refCopropertyFiles.child("Documents").child(paper.idFS);
+        fileRef.delete().then(function() {
+        }).catch(function(error) {
+          M.toast({html:"System error removing report file:" + error});           
+        });
         M.Modal.getInstance(document.getElementById("documentRemove")).close();
       }).catch(function(error) {
           M.toast({html:"System error removing document:" + error});
@@ -2597,7 +2602,7 @@
     function getDocumentEntries(){
       return {
         type: document.getElementById("document_type").value,
-        counterParty: document.getElementById("document_counterparty").value,
+        counterparty: document.getElementById("document_counterparty").value,
         before: document.getElementById("document_before").value,
         link: document.getElementById("document_link").value,
         freeType: document.getElementById("document_freeType").value,
