@@ -400,12 +400,12 @@
               <select id="document_type" required required="true" onchange="toggleDocument()"></select>
               <label>Type<b><font color='red'>*</font></b></label>
               </div>
-              <div class="input-field col s12 m4">
-                <input id="document_counterparty" type="text" class="validate" maxlength="50" required required="true">
+              <div class="input-field col s12 m4" id="document_counterparty_field">
+                <input id="document_counterparty" type="text" class="validate" maxlength="30" >
                 <label for="transaction_name_add">Counterparty<b><font color='red'>*</font></b></label>
-                <span class="helper-text" data-error="Maximum 50 characters"></span>
+                <span class="helper-text" data-error="Maximum 30 characters"></span>
               </div>
-              <div class="input-field col s12 m4">
+              <div class="input-field col s12 m4" id="document_before_field">
                 <input id="document_before" type="text" class="datepicker validate" >
                 <label for="document_before">Before</label>
                 <span class="helper-text">reminder date</span>
@@ -2470,6 +2470,13 @@
       } else {
         document.getElementById("document_freeType_field").style.display = "none";
       };
+      if ((typeElement.value) && (typeElement.value != "GEASS"))  {
+        document.getElementById("document_before_field").style.display = "block";
+        document.getElementById("document_counterparty_field").style.display = "block";
+      } else {
+        document.getElementById("document_before_field").style.display = "none";
+        document.getElementById("document_counterparty_field").style.display = "none";
+      };
     };
 
     function validateDocument(){
@@ -2495,6 +2502,12 @@
         M.toast({html:"when Type = Other, Free text type is required"});
         valid=false;
       };
+      if ((typeElement.value != "GEASS") && (!document.getElementById("document_counterparty").value)){
+        M.toast({html:"Please enter counterparty"});
+        valid=false;
+      };
+
+
       return valid;
     };
     
