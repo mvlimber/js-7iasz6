@@ -395,72 +395,30 @@
           </div>
           <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
         </li>
-        <li>
-          <div class="collapsible-header">
-            <table>
-              <th>Invoice</th>
-              <th>Van Marcke hhh gg</th>
-              <th>Act by:2021-12_25</th>
-            </table>
-          </div>
-          <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-        </li>
-        <li>
-        <div class="collapsible-header">
-          <table>
-            <th>General Assembly</th>
-            <th></th>
-            <th>2021-12_25</th>
-          </table>
-        </div>
-        <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-      </li>
         </ul>
         <br>
-        <!----
-        <button style="float: right" data-target="documentEdit" class="btn-small waves-light modal-trigger" onclick="resetTransactionRule()"><i class="material-icons right">add</i>New document</button>
-        <div id="transactionRuleEdit" class="modal">
+        <button style="float: right" data-target="documentEdit" class="btn-small waves-light modal-trigger" onclick="resetDocument()"><i class="material-icons right">add</i>New document</button>
+        <div id="documentEdit" class="modal">
           <div class="modal-content">
-          <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
-            
-            <h5>Enter transaction rule </h5>
+            <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
+            <h5>Enter document attributes and upload document</h5>
             <form>
-              <div class="w3-panel ">
-                <h6><b>IF:</b> rule fires when all if-values match</h6>
-                <div class="input-field col s6 m4">
-                  <input id="transactionRule_account" type="text" maxlength="19" class="validate"
-                    pattern="^BE\d{14}$|^BE\d{2}\s\d{4}\s\d{4}\s\d{4}$" required required="true">
-                  <label for="transactionRule_account"><b>IF</b> Account<b><font color='red'>*</font></b></label>
-                  <span class="helper-text" data-error="BE followed by 14 digits, blancs for printing format allowed. Example: BE40 9799 2578 3625">BE followed by max 14 digits, blancs allowed. Example: BE40 9799 2578 3625</span>
-                </div>
-                <div class="input-field col s12 m6">
-                  <input id="transactionRule_communication" type="text" class="validate" maxlength="80" >
-                  <label for="transactionRule_communication"><b>IF</b> Communication</label>
-                  <span class="helper-text" data-error="Maximum 80 characters"></span>
-                </div>
-                <div class="input-field col s6 m6">
-                  <input id="transactionRule_name" type="text" class="validate" maxlength="50">
-                  <label for="transactionRule_name"><b>For info only</b> Counterpart</label>
-                  <span class="helper-text" data-error="Maximum 50 characters"></span>
-                </div>
+              <div class="input-field col s12 m4">
+              <select id="document_type" required required="true"></select>
+              <label>Type<b><font color='red'>*</font></b></label>
               </div>
-              <div class="w3-panel ">
-                <h6><b>THEN:</b>below fields will be set with value given</h6> 
-                <div class="input-field col s12 m4">
-                  <select id="transactionRule_type" required required="true" onchange="toggleTransactionRule()"></select>
-                  <label><b>THEN </b>Type<b><font color='red'>*</font></b></label>
-                </div>
-                <div class="input-field col s12 m4" id="transactionRule_costCenter_field">
-                  <select id="transactionRule_costCenter"></select>
-                  <label><b>THEN </b>Cost Center<b><font color='red'>*</font></b></label>
-                </div>
-                <div class="input-field col s12 m4" id="transactionRule_owner_field" >
-                  <select id="transactionRule_owner" >
-                    <option value="" disabled selected>Select Owner</option>
-                  </select>
-                  <label for="transactionRule__owner"><b>THEN </b>Owner<b><font color='red'>*</font></b></label>
-                </div>
+              <div class="input-field col s12 m4">
+                <input id="document_counterparty" type="text" class="validate" maxlength="50" required required="true">
+                <label for="transaction_name_add">Counterparty<b><font color='red'>*</font></b></label>
+                <span class="helper-text" data-error="Maximum 50 characters"></span>
               </div>
+              <div class="input-field col s12 m4">
+                <input id="document_actBy" type="text" class="datepicker validate" >
+                <label for="document_actBy">Act by</label>
+                <span class="helper-text" >By default copied from Transaction Date</span>
+              </div>
+          
+              
             </form>
             <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeTransactionRule()">Save<i class="material-icons right">send</i></button>
             <a style="float: right;margin-left: 20px;margin-bottom: 3px"
@@ -468,6 +426,8 @@
               Cancel</a>
           </div>
         </div>
+        <!----
+        
         <div id="transactionRuleRemove" class="modal">
           <div class="modal-content">
             <h5> Please confirm you want to permanently remove this transaction rule</h5>
@@ -1804,6 +1764,13 @@
       OTHER:  'Other'
     };
 
+    var DocumentType = {
+      GEASS: 'General Assembly',
+      INVOI: 'Invoice',
+      QUOTE: 'Quote',
+      OTHER:  'Other'
+    };
+
     function insertSelectOptions (elBeforeID, keyValuePairs, defaultString, defaultKey) {
       // either defaulString or defaultKey should be nul
       var el = document.getElementById(elBeforeID);
@@ -1829,6 +1796,7 @@
     insertSelectOptions("meter_status", MeterStatus, "", "ACTIF");
     insertSelectOptions("notification_type", NotificationType, "type");
     insertSelectOptions("report_type_structured", ReportType, "type");
+    insertSelectOptions("document_type", DocumentType, "type");
     </script>
     <!--   Home scripts start here -->
     <script>
@@ -2358,24 +2326,22 @@
 
     var documentsList = document.getElementById("documentsList");
     function refreshDocuments(){
-      /*emptyHTMLSet(documentsList);
+      emptyHTMLSet(documentsList);
       documents = null;
-      
-      
       documentsGet().then(function(objectsArray){
         objectsArray.forEach(function(d){loadDocument(d);});
       });
-      */
+      
     };
 
     function loadDocument(d){
       
+      /*
       var objectsRow= document.createElement('li');
       var header = document.createElement('div');
-      /*var headerIcon = document.createElement('i');
+      var headerIcon = document.createElement('i');
       headerIcon.setAttribute("class","material-icons");
-      header.appendChild(headerIcon);*/
-      
+      header.appendChild(headerIcon);
       header.setAttribute("class","collapsible-header");
       var title = document.createElement('span');
       title.innerHTML = "Invoice   Van marcke   Act by:2021_12_06";
@@ -2384,7 +2350,7 @@
       header.appendChild (title);
       objectsRow.appendChild(header);
       documentsList.appendChild (objectsRow);
-      /*
+      
       var body= document.createElement('div');
       body.setAttribute("class","collapsible-body");
       var text = document.createElement('DIV');
