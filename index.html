@@ -404,7 +404,7 @@
             <h5>Enter document attributes and upload document</h5>
             <form>
               <div class="input-field col s12 m4">
-              <select id="document_type" required required="true"></select>
+              <select id="document_type" required required="true" onchange="toggelDocument()"></select>
               <label>Type<b><font color='red'>*</font></b></label>
               </div>
               <div class="input-field col s12 m4">
@@ -2488,22 +2488,22 @@
       };
     };
     
-    function writeTransactionRule(){
+    function writeDocument(){
       if (validateTransactionRule()) { 
-        var entries =  getTransactionRuleEntries();
-        if (transactionRule.idFS) {
-          refCoproperty.collection("TransactionRules").doc(transactionRule.idFS).set(entries).then(function(docref) {
-            refreshTransactionRules();
-            M.Modal.getInstance(document.getElementById("transactionRuleEdit")).close();
+        var entries =  getDocumentEntries();
+        if (paper.idFS) {
+          refCoproperty.collection("Documents").doc(paper.idFS).set(entries).then(function(docref) {
+            refreshDocumentss();
+            M.Modal.getInstance(document.getElementById("documentEdit")).close();
           }).catch(function(error) {
-            M.toast({html:"Error updating transaction rule: " + error});
+            M.toast({html:"Error updating document: " + error});
           });
         } else {
-          refCoproperty.collection("TransactionRules").add(entries).then(function(docref) {
-            refreshTransactionRules();
-            M.Modal.getInstance(document.getElementById("transactionRuleEdit")).close();
+          refCoproperty.collection("Documents").add(entries).then(function(docref) {
+            refreshDocumentss();
+            M.Modal.getInstance(document.getElementById("documentEdit")).close();
           }).catch(function(error) {
-            M.toast({html:"Error adding transaction rule: " + error});
+            M.toast({html:"Error adding document: " + error});
           });
         };
       };
