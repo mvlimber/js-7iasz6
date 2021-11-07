@@ -426,20 +426,20 @@
               Cancel</a>
           </div>
         </div>
-        <!----
         
-        <div id="transactionRuleRemove" class="modal">
+        
+        <div id="documentRemove" class="modal">
           <div class="modal-content">
-            <h5> Please confirm you want to permanently remove this transaction rule</h5>
+            <h5> Please confirm you want to permanently remove this document</h5>
           </div>
           <div class="modal-footer">
-            <button style="float: right;margin-left: 20px" class="modal-close btn-small waves-light" type="submit" onclick="removeTransactionRule()">Confirm<i class="material-icons right">send</i></button>
+            <button style="float: right;margin-left: 20px" class="modal-close btn-small waves-light" type="submit" onclick="removeDocument()">Confirm<i class="material-icons right">send</i></button>
             <a style="float: right"
               class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
               Cancel</a>
           </div>
         </div> 
-      --> 
+       
       </div>
       <!------------------------------------------------------------------------------------------------------>
         <div id="Transactions" class="col s12">
@@ -2355,11 +2355,26 @@
       title.appendChild(titleRight);
       header.appendChild (title);
       objectsRow.appendChild(header);
-      documentsList.appendChild (objectsRow);
-      /*
       var body= document.createElement('div');
       body.setAttribute("class","collapsible-body");
-      var text = document.createElement('DIV');
+      if (currentUser.role == roleAdministrator) {
+        var buttons = document.createElement('DIV');
+        var removeButton = document.createElement('button');
+        removeButton.setAttribute('style','float: right;margin-bottom: 3px');
+        removeButton.setAttribute('class','modal-trigger btn-floating waves-light red');
+        removeButton.setAttribute("data-target", "documentRemove");
+        removeButton.setAttribute('onclick','popupRemoveDocument('+JSON.stringify(d)+')');
+        var cellButtonIcon = document.createElement('i');
+        cellButtonIcon.setAttribute('class','material-icons right');
+        cellButtonIcon.innerHTML="delete";           
+        removeButton.appendChild(cellButtonIcon);
+        buttons.appendChild(removeButton);
+        body.appendChild(buttons);
+      };
+      objectsRow.appendChild(body);
+      documentsList.appendChild (objectsRow);
+      
+      /*var text = document.createElement('DIV');
       text.innerHTML = "<b>IF</b><br>    account = " +tR.account;
       if (tR.communication) {text.innerHTML += " <b>AND</b><br>   communication = "+tR.communication;};
       text.innerHTML += "<br><br><b>THEN</b><br>   type = " + TransTypeRead[tR.type];
@@ -2420,17 +2435,17 @@
     };
     
     var paper;
-/*
-    function popupRemoveTransactionRule(tR){transactionRule=tR;};
-    function removeTransactionRule(){
-      refCoproperty.collection("TransactionRules").doc(transactionRule.idFS).delete().then(function(){
-        refreshTransactionRules();
-        M.Modal.getInstance(document.getElementById("transactionRuleRemove")).close();
+
+    function popupRemoveDocument(d){paper=d;};
+    function removeDocument(){
+      refCoproperty.collection("Documents").doc(paper.idFS).delete().then(function(){
+        refreshDocuments();
+        M.Modal.getInstance(document.getElementById("documentRemove")).close();
       }).catch(function(error) {
-          M.toast({html:"System error removing transaction rule:" + error});
+          M.toast({html:"System error removing document:" + error});
       });
     };
-*/    
+    
     function resetDocument(){
       var d = 
         {
