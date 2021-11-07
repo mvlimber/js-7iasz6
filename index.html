@@ -2384,7 +2384,6 @@
       var body= document.createElement('div');
       body.setAttribute("class","collapsible-body");
       if (currentUser.role == roleAdministrator) {
-        var buttons = document.createElement('DIV');
         var removeButton = document.createElement('button');
         removeButton.setAttribute('style','float: right;margin-bottom: 3px');
         removeButton.setAttribute('class','modal-trigger btn-floating waves-light red');
@@ -2394,8 +2393,17 @@
         cellButtonIcon.setAttribute('class','material-icons right');
         cellButtonIcon.innerHTML="delete";           
         removeButton.appendChild(cellButtonIcon);
-        buttons.appendChild(removeButton);
-        body.appendChild(buttons);
+        var editButton = document.createElement('button');
+        editButton.setAttribute('style','float: right;margin-bottom: 3px;margin-right: 5px;');
+        editButton.setAttribute('class','modal-trigger btn-floating waves-light');
+        editButton.setAttribute("data-target", "documentEdit");
+        editButton.setAttribute('onclick','popupRemoveDocument('+JSON.stringify(d)+')');
+        cellButtonIcon = document.createElement('i');
+        cellButtonIcon.setAttribute('class','material-icons right');
+        cellButtonIcon.innerHTML="edit";           
+        editButton.appendChild(cellButtonIcon);
+        body.appendChild(removeButton);
+        body.appendChild(editButton);
       };
       var getFileButton = document.createElement("button");
       getFileButton.setAttribute('class','btn-small waves-light');
