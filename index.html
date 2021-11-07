@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 
@@ -152,7 +151,7 @@
             onclick="loadHome()">Home</a>
         </li>
         <li class="tab side text-teal"><a class="waves-effect" href="#Reports" style="font-size:22px"
-            onclick="loadReports()">Charges</a></li>
+            onclick="loadReports()">Reports</a></li>
         <li class="tab side text-teal"><a class="waves-effect" href="#Documents" style="font-size:22px"
               onclick="loadDocuments()">Documents</a></li>
         <li class="tab side text-teal"><a class="waves-effect" href="#Transactions" style="font-size:22px"
@@ -268,9 +267,62 @@
         </div>
         <!------------------------------------------------------------------------------------------------------>
         <div id="Reports" class="col s12">
+          <div id="reportRemove" class="modal">
+            <div class="modal-content">
+              <h5> You are about to permanently remove the report</h5>
+              <p id="report_to_remove"> </p>
+            </div>
+            <div class="modal-footer">
+              <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="removeReport(report_to_remove)">Confirm<i class="material-icons right">send</i></button>
+              <a style="float: right"
+                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
+                Cancel</a>
+            </div>
+          </div>
+          <div id="reportAdd" class="modal">
+            <div class="modal-content">
+            <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
+              
+              <h5> New Report</h5>
+              <div class="row">
+                <form>
+                  <div class="input-field" id="report_file_edit">
+                  </div>
+                  <div class="file-field input-field col s12 m6">
+                    <div class="btn-small">
+                      <span>PDF Document<b><font color='red'>*</font></b><i class="material-icons right">attach_file</i></span>
+                      <input type="file" id="reportFile">
+                    </div>
+                    <div class="file-path-wrapper">
+                      <input class="file-path validate" type="text" id="reportFileText">
+                    </div>
+                  </div>
+                </form>
+                <form>
+                  <div class="input-field col s12 m4">
+                    <select id="report_type_structured" required required="true" onchange="showFreeTypeReport()"></select>
+                    <label>Type<b><font color='red'>*</font></b></label>
+                    <span class="helper-text" data-error="required field" ></span>
+                  </div>
+                  <div id = "report_freeType_frame" class="input-field col s12 m6" style="display:none">
+                    <input id="report_type_free" type="text" maxlength="40" >
+                    <label for="report_type_free">Free Text Type<b><font color='red'>*</font></b></label>
+                    <span class="helper-text" data-error="maximum 40 characters" >maximum 40 characters</span>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="writeReport()">Submit<i class="material-icons right">send</i></button>
+              <a style="float: right"
+                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
+                Cancel</a>
+            </div>
+          </div>
           <div id="chargesReportAdd" class="modal">
             <div class="modal-content">
-              <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
+            <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
+              
               <h5>Generate new charges report</h5>
               <div class="row">
                 <form>
@@ -299,7 +351,7 @@
                 Cancel</a>
             </div>
           </div>
-          <h6 style="font-size:20px "><b>Charges reports</b></h6>
+          <h6 style="font-size:20px "><b>Charges and Accountancy</b></h6>
           <table class="striped">
             <thead>
               <tr>
@@ -309,10 +361,27 @@
             </thead>
             <tbody id="chargesReportsTable">
             </tbody>
+
           </table>
           <br>
           <div id="Reports_Generate" class="displayHidden">
             <button id="ChargesReport_Generate" style="float: right" data-target="chargesReportAdd" class="btn-small waves-light modal-trigger" onclick="emptyFieldsChargesReportAdd()"><i class="material-icons right">add</i>Generate New Charges Report</button>
+          </div>
+          <br><br>
+          <h6 style="font-size:20px "><b>Other Reports</b></h6>
+          <table class="striped">
+            <thead>
+              <tr>
+                <th>Document Type</th>
+                <th>Uploaded</th>
+              </tr>
+            </thead>
+            <tbody id="reportsTable">
+            </tbody>
+          </table>
+          <br>
+          <div id="Reports_Add" class="displayHidden">
+            <button style="float: right" data-target="reportAdd" class="btn-small waves-light modal-trigger" onclick="emptyReportFields()"><i class="material-icons right">add</i>New Report</button>
           </div>
         </div>
         <!------------------------------------------------------------------------------------------------------>
@@ -1938,41 +2007,185 @@
     </script>
     <!--   Reports scripts start here -->
     <script>
-     function showReport(url) {
-          window.open(url,"_blank");
-      };
-
-      function refreshChargesReports(){
-        emptyHTMLSet(chargesReportsTable);
-        refCoproperty.collection("ChargesReports").orderBy("endDate","desc").get().then(function(chargesReportsFS){
-          readCloseAndReguDate (chargesReportsFS);
-          chargesReportsFS.forEach(function(objectFS){
-            loadChargesReport(objectFS);
-          });
-          meterReadingsLoaded = false;
-          transactionsLoaded = false;
-        });
-      };
-
-      var chargesReportsLoaded = false;
-      function loadReports() {
-      hideMenu();
-      document.getElementById("logo-container").innerHTML = "MyCondos: Charges";
-      if (!chargesReportsLoaded) {
-            refreshChargesReports();
-            chargesReportsLoaded = true;
-          };
-      };
-
-      function emptyFieldsChargesReportAdd() {
-        document.getElementById("chargesReport_closeDate").value = "";
-        document.getElementById("chargesReport_metersIncluded").value = "";
+      function emptyReportFields(){
+        document.getElementById("reportFile").value = "";
+        document.getElementById("reportFileText").value = "";
+        document.getElementById("report_type_structured").value = "";
+        document.getElementById("report_freeType_frame").style.display = "none";
+        document.getElementById("report_type_free").value = "";
         var elems = document.querySelectorAll('select');
         M.FormSelect.init(elems);
         M.updateTextFields();
       };
+      
+      function showFreeTypeReport(){
+        if (document.getElementById("report_type_structured").value == "OTHER") {
+          document.getElementById("report_freeType_frame").style.display = "block"; 
+        } else {document.getElementById("report_freeType_frame").style.display = "none"; };
+      };
+      
+      function showReport(url) {
+          window.open(url,"_blank");
+      };
+
+      function loadReport (objectFS){
+        var object = objectFS.data();
+        var objectsRow= document.createElement('tr');
+        
+        var cellContent = document.createElement("button");
+        cellContent.setAttribute('style','border:none;background-color:Transparent');
+        cellContent.setAttribute('class','modal-trigger');
+        cellContent.setAttribute('data-target','fileShow');
+        refCopropertyFiles.child("Reports").child(objectFS.id).getDownloadURL().then(function(url) {
+          
+        cellContent.setAttribute('onclick','showReport('+JSON.stringify(url)+')');
+        var typeShown;
+        if (object.type == "OTHER") {typeShown = "<font color='#0000FF'>" + object.typeFree + "</font>";}
+        else {typeShown = "<font color='#0000FF'>" + ReportType[object.type] + "</font>"};
+        cellContent.innerHTML = "<font color='#0000FF'>" + typeShown + "</font>";
+        var cell = document.createElement('td');
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell);
+        
+        cellContent = document.createTextNode(object.date);
+        cell = document.createElement('td');
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell); 
+        if (currentUser.role == roleAdministrator) {
+          cellContent = document.createElement('button');
+          cellContent.setAttribute('class','modal-trigger btn-floating waves-light red');
+          cellContent.setAttribute("data-target", "reportRemove");
+          cellContent.setAttribute('onclick','popupRemoveReport('+JSON.stringify(objectFS.id)+','+JSON.stringify(typeShown)+')');
+          var cellButtonIcon = document.createElement('i');
+          cellButtonIcon.setAttribute('class','material-icons right');
+          cellButtonIcon.innerHTML="delete";           
+          cellContent.appendChild(cellButtonIcon);
+          /*cellContent.innerHTML = "Remove";*/
+
+          cell = document.createElement('td');
+          cell.appendChild(cellContent);
+          objectsRow.appendChild(cell);    
+        };
+        reportsTable.appendChild (objectsRow);
+        });
+      };
+
+      function refreshReports(){
+        emptyHTMLSet(reportsTable);
+        refCoproperty.collection("Reports").orderBy("date", "desc").get().then(function(objectsFSArray){
+          objectsFSArray.forEach(function(objectFS){
+            loadReport(objectFS);
+          });
+        });
+      };
+
+      var reportsLoaded = false;
+      function loadReports() {
+      hideMenu();
+      document.getElementById("logo-container").innerHTML = "MyCondos: Reports";
+      loadChargesReports();
+      if (!reportsLoaded) {
+            refreshReports();
+            reportsLoaded = true;
+          };
+      };
+
+      var reportFile;
+      function validateReportEntries() {
+        var valid = true
+        if (!(document.getElementById("report_type_structured").checkValidity())) {
+          M.toast({html:"Please enter Type"});
+          valid=false;
+        };
+        if (!(document.getElementById("report_type_free").checkValidity())) {
+          M.toast({html:"Please valid free text type"});
+          valid=false;
+        };
+
+        if ((document.getElementById("report_type_structured").value == "OTHER") && (!document.getElementById("report_type_free").value)) {
+          M.toast({html:"when Type = Other, Free Text Type is required"});
+          valid=false;
+        };
+      
+        reportFile = document.getElementById('reportFile').files[0];
+        let allowed_mime_types = ['application/pdf'];
+        let allowed_size_kb = 5000;
+        if (reportFile) {
+          if(allowed_mime_types.indexOf(reportFile.type) == -1) {
+            M.toast({html:"Incorrect file type (only pdf allowed)"});
+            valid=false;
+          };
+          if(reportFile.size > allowed_size_kb*1024) {
+            M.toast({html:"File exceeds max size 500KB"});
+            valid=false;
+          };
+        } else {
+            M.toast({html:"Please select PDF File"});
+            valid=false;
+        };
+        return valid;
+      };
+
+      function getReportEntries() {
+        var d = new Date();
+        return {
+          fileName: reportFile.name,
+          type: document.getElementById("report_type_structured").value,
+          typeFree: document.getElementById("report_type_free").value,
+          date: d.toDateString()
+        };
+      };
+
+
+      function writeReport() {
+        if (validateReportEntries()) {  
+          var entries = getReportEntries();
+          refCoproperty.collection("Reports").add(entries).then(function(docref) {
+            if (reportFile) {
+              var fileRef = refCopropertyFiles.child("Reports").child(docref.id);  
+              fileRef.put(reportFile).then (function (){
+                refreshReports();
+                M.Modal.getInstance(document.getElementById("reportAdd")).close();
+              });
+              
+            } else {
+              M.toast({html:"System error writing file"});
+            };
+          }).catch(function(error) {
+            M.toast({html:"System error writing document: " + error});
+          });
+        };
+      };
+
+      var report_to_remove;
+      function popupRemoveReport(report,typeShown){
+        document.getElementById("report_to_remove").innerHTML=typeShown;
+        report_to_remove = report;
+      }
+      
+      function removeReport(report){
+        refCoproperty.collection("Reports").doc(report).delete().then(function(){
+          refreshReports();
+          var fileRef = refCopropertyFiles.child("Reports").child(report);
+          fileRef.delete().then(function() {
+          }).catch(function(error) {
+            M.toast({html:"System error removing report file:" + error});           
+          });
+          M.Modal.getInstance(document.getElementById("reportRemove")).close();
+        }).catch(function(error) {
+            M.toast({html:"System error removing report:" + error});
+        });
+      };
+
+    function emptyFieldsChargesReportAdd() {
+      document.getElementById("chargesReport_closeDate").value = "";
+      document.getElementById("chargesReport_metersIncluded").value = "";
+      var elems = document.querySelectorAll('select');
+      M.FormSelect.init(elems);
+      M.updateTextFields();
+    };
     
-      function validateChargesReportAdd() {
+    function validateChargesReportAdd() {
         var valid = true
         if (!document.getElementById("chargesReport_closeDate").checkValidity()) {
           M.toast({html:"Please enter accountancy close date"});
@@ -1988,11 +2201,11 @@
       };
 
       function prepareChargesReport() {
-        if (validateChargesReportAdd()) {
-          var metersIn = (document.getElementById("chargesReport_metersIncluded").value == "Yes");
-          generateChargesReport(document.getElementById("chargesReport_closeDate").value, metersIn);
-        };
+      if (validateChargesReportAdd()) {
+        var metersIn = (document.getElementById("chargesReport_metersIncluded").value == "Yes");
+        generateChargesReport(document.getElementById("chargesReport_closeDate").value, metersIn);
       };
+    };
 
     function loadChargesReport (objectFS){
         var object = objectFS.data();
@@ -2062,6 +2275,26 @@
               lastCloseDate = currentCoproperty.initialStartDate;
               lastReguDate = currentCoproperty.initialStartDate;
             };
+      };
+
+      function refreshChargesReports(){
+        emptyHTMLSet(chargesReportsTable);
+        refCoproperty.collection("ChargesReports").orderBy("endDate","desc").get().then(function(chargesReportsFS){
+            readCloseAndReguDate (chargesReportsFS);
+            chargesReportsFS.forEach(function(objectFS){
+              loadChargesReport(objectFS);
+            });
+            meterReadingsLoaded = false;
+            transactionsLoaded = false;
+          });
+      };
+
+      var chargesReportsLoaded = false;
+      function loadChargesReports() {
+      if (!chargesReportsLoaded) {
+            refreshChargesReports();
+            chargesReportsLoaded = true;
+          };
       };
 
       function popupChargesReportConfirmed(chargesReportId) {
@@ -2134,7 +2367,7 @@
       header.setAttribute("class","collapsible-header");
       var title = document.createElement('h6');
       title.setAttribute("style","text-align:center");
-      title.innerHTML = d.counterParty;
+      title.innerHTML = d.counterparty;
       var titleLeft = document.createElement('span');
       titleLeft.setAttribute("style","float:left");
       if (d.type != "OTHER"){titleLeft.innerHTML = "<b>"+DocumentType[d.type]+"</b>"}
@@ -2253,11 +2486,6 @@
     function removeDocument(){
       refCoproperty.collection("Documents").doc(paper.idFS).delete().then(function(){
         refreshDocuments();
-        var fileRef = refCopropertyFiles.child("Documents").child(paper.idFS);
-        fileRef.delete().then(function() {
-        }).catch(function(error) {
-          M.toast({html:"System error removing document file:" + error});           
-        });
         M.Modal.getInstance(document.getElementById("documentRemove")).close();
       }).catch(function(error) {
           M.toast({html:"System error removing document:" + error});
