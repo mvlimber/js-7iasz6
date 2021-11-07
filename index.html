@@ -2398,9 +2398,8 @@
         body.appendChild(buttons);
       };
       var getFileButton = document.createElement("button");
-      getFileButton.setAttribute('style','border:none;background-color:Transparent');
-      getFileButton.setAttribute('class','modal-trigger');
-      getFileButton.setAttribute('data-target','fileShow');
+      getFileButton.setAttribute('class','btn-small waves-light');
+      getFileButton.innerHTML = "DownLoad File";
       refCopropertyFiles.child("Documents").child(d.idFS).getDownloadURL().then(function(url) {
           
         getFileButton.setAttribute('onclick','showFile('+JSON.stringify(url)+')');
