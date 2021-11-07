@@ -2442,6 +2442,7 @@
         before: "",
         link:"",
         freeType:"",
+        updatedOn:"";
         idFS:null
         };
       selectDocument(d);
@@ -2501,12 +2502,14 @@
     };
     
     function getDocumentEntries(){
+      var d = new Date();
       return {
         type: document.getElementById("document_type").value,
         counterParty: document.getElementById("document_counterparty").value,
         before: document.getElementById("document_before").value,
         link: document.getElementById("document_link").value,
         freeType: document.getElementById("document_freeType").value,
+        updatedOn: d.toDateString(),
       };
     };
     
