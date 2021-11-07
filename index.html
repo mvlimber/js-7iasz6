@@ -2492,10 +2492,11 @@
     
     function getDocumentEntries(){
       return {
-        type: document.getElementById("transactionRule_type").value,
+        type: document.getElementById("document_type").value,
         counterParty: document.getElementById("document_counterparty").value,
         before: document.getElementById("document_before").value,
-        link: document.getElementById("transactionRule_link").value,
+        link: document.getElementById("document_link").value,
+        freeType: document.getElementById("document_freeType").value,
       };
     };
     
@@ -2504,7 +2505,7 @@
         var entries =  getDocumentEntries();
         if (paper.idFS) {
           refCoproperty.collection("Documents").doc(paper.idFS).set(entries).then(function(docref) {
-            refreshDocumentss();
+            refreshDocuments();
             M.Modal.getInstance(document.getElementById("documentEdit")).close();
           }).catch(function(error) {
             M.toast({html:"Error updating document: " + error});
