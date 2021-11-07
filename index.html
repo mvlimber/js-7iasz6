@@ -2397,7 +2397,7 @@
         editButton.setAttribute('style','float: right;margin-bottom: 3px;margin-right: 5px;');
         editButton.setAttribute('class','modal-trigger btn-floating waves-light');
         editButton.setAttribute("data-target", "documentEdit");
-        editButton.setAttribute('onclick','popupRemoveDocument('+JSON.stringify(d)+')');
+        editButton.setAttribute('onclick','selectDocument('+JSON.stringify(d)+')');
         cellButtonIcon = document.createElement('i');
         cellButtonIcon.setAttribute('class','material-icons right');
         cellButtonIcon.innerHTML="edit";           
@@ -2611,11 +2611,14 @@
         if (documentFile) {
           var entries =  getDocumentEntries();
           if (paper.idFS) {
-            refCoproperty.collection("Documents").doc(paper.idFS).set(entries).then(function(docref) {
-              refreshDocuments();
-              M.Modal.getInstance(document.getElementById("documentEdit")).close();
-            }).catch(function(error) {
-              M.toast({html:"Error updating document: " + error});
+            refCoproperty.collection("Documents").doc(paper.idFS).set(entries).then(function() {
+              var fileRef = refCopropertyFiles.child("Documents").child(paper.idFS); 
+              fileRef.put(documentFile).then (function (){
+                refreshDocuments();
+                M.Modal.getInstance(document.getElementById("documentEdit")).close();
+              }).catch(function(error) {
+                M.toast({html:"Error updating document: " + error});
+              });
             });
           } else {
             refCoproperty.collection("Documents").add(entries).then(function(docref) {
