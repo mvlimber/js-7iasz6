@@ -2322,6 +2322,10 @@
     </script>
     <!-- Documents scripts start here-->
     <script>
+    function showFile(url) {
+          window.open(url,"_blank");
+    };
+    
     var documents = null;
     async function documentsGet(){
       if (documents) {return documents;}
@@ -2393,8 +2397,17 @@
         buttons.appendChild(removeButton);
         body.appendChild(buttons);
       };
-      objectsRow.appendChild(body);
-      documentsList.appendChild (objectsRow);
+      var getFileButton = document.createElement("button");
+      getFileButton.setAttribute('style','border:none;background-color:Transparent');
+      getFileButton.setAttribute('class','modal-trigger');
+      getFileButton.setAttribute('data-target','fileShow');
+      refCopropertyFiles.child("Documents").child(d.idFS).getDownloadURL().then(function(url) {
+          
+        getFileButton.setAttribute('onclick','showFile('+JSON.stringify(url)+')');
+        body.appendChild(getFileButton);
+        objectsRow.appendChild(body);
+        documentsList.appendChild (objectsRow);
+      });
       
       /*var text = document.createElement('DIV');
       text.innerHTML = "<b>IF</b><br>    account = " +tR.account;
