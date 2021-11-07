@@ -2487,6 +2487,11 @@
     function removeDocument(){
       refCoproperty.collection("Documents").doc(paper.idFS).delete().then(function(){
         refreshDocuments();
+        var fileRef = refCopropertyFiles.child("Documents").child(paper.idFS);
+        fileRef.delete().then(function() {
+        }).catch(function(error) {
+          M.toast({html:"System error removing document file:" + error});           
+        });
         M.Modal.getInstance(document.getElementById("documentRemove")).close();
       }).catch(function(error) {
           M.toast({html:"System error removing document:" + error});
