@@ -326,25 +326,26 @@
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
             <h5>Upload document and enter its attributes</h5>
             <form>
-            <div class="input-field" id="document_file">
-            </div>
-            <div class="file-field input-field col s12 m6">
-              <div class="btn-small">
-                <span>PDF Document<b><font color='red'>*</font></b><i class="material-icons right">attach_file</i></span>
-                <input type="file" id="documentFile">
+              <div class="input-field" id="document_file">
               </div>
-              <div class="file-path-wrapper">
-                <input class="file-path validate" type="text" id="documentFileText">
+              <div class="file-field input-field col s12 m6">
+                <div class="btn-small">
+                  <span id="documentUploadButtonLabel">PDF Document<b><font color='red'>*</font></b><i class="material-icons right">attach_file</i></span>
+                  <input type="file" id="documentFile">
+                </div>
+                <div class="file-path-wrapper">
+                  <input class="file-path validate" type="text" id="documentFileText">
+                </div>
               </div>
-            </div>
-          </form><form>
+            </form>
+            <form>
               <div class="input-field col s12 m4">
               <select id="document_type" required required="true" onchange="toggleDocument()"></select>
               <label>Type<b><font color='red'>*</font></b></label>
               </div>
               <div class="input-field col s12 m4" id="document_counterparty_field">
                 <input id="document_counterparty" type="text" class="validate" maxlength="30" >
-                <label for="transaction_name_add">Counterparty<b><font color='red'>*</font></b></label>
+                <label for="document_counterparty">Counterparty<b><font color='red'>*</font></b></label>
                 <span class="helper-text" data-error="Maximum 30 characters"></span>
               </div>
               <div class="input-field col s12 m4" id="document_before_field">
@@ -2133,7 +2134,8 @@
       header.setAttribute("class","collapsible-header");
       var title = document.createElement('h6');
       title.setAttribute("style","text-align:center");
-      title.innerHTML = d.counterparty;
+      if (d.type == "GEASS") {title.innerHTML = "";}
+      else {title.innerHTML = d.counterparty;};
       var titleLeft = document.createElement('span');
       titleLeft.setAttribute("style","float:left");
       if (d.type != "OTHER"){titleLeft.innerHTML = "<b>"+DocumentType[d.type]+"</b>"}
@@ -2258,6 +2260,9 @@
         document.getElementById("document_before_field").style.display = "none";
         document.getElementById("document_counterparty_field").style.display = "none";
       };
+      var dUBL = document.getElementById("documentUploadButtonLabel");
+      if (paper.idFS){dUBL.innerHTML = "option: replace PDF file with"}
+      else {dUBL.innerHTML = "PDF file<b><font color='red'>*</font></b>"};
     };
 
     function validateDocument(){
@@ -2283,9 +2288,13 @@
         M.toast({html:"when Type = Other, Free text type is required"});
         valid=false;
       };
-      if ((typeElement.value != "GEASS") && (!document.getElementById("document_counterparty").value)){
+      if ((typeElement.value != "") && (typeElement.value != "GEASS") && (!document.getElementById("document_counterparty").value)){
         M.toast({html:"Please enter counterparty"});
         valid=false;
+      };
+      if ((!paper.idFS) && (!documentFile)) {
+        M.toast({html:"Please select PDF file"});
+        return false;
       };
       documentFile = document.getElementById('documentFile').files[0];
       let allowed_mime_types = ['application/pdf'];
@@ -3031,9 +3040,7 @@
       };
     };
 
-    
     function writeTransactionsFile(){
-
       var batch = firestore.batch();
       transactionsBatchData.map(function(el){
         var docRef = refCoproperty.collection("Transactions").doc();
@@ -3046,7 +3053,6 @@
         M.toast({html:"System error loading transactions: " + error});
       });
     };
-
     </script>
     <!-- TransactionRules scripts start here-->
     <script>
