@@ -2143,12 +2143,22 @@
       title.appendChild(titleLeft);
       var titleRight = document.createElement('span');
       titleRight.setAttribute("style","float:right");
-      if ((d.type != "GEASS")&&(d.before)){titleRight.innerHTML = "<font color='red'>before " + d.before+"</font>"}
-      else {titleRight.innerHTML = "update:" +d.updatedOn};
+      var body= document.createElement('div');
+      body.setAttribute("style","position: relative");
+      var bodyText = document.createElement('div');
+      bodyText.setAttribute("style","margin-top: 0px");
+      var bodyRight = document.createElement('span');
+      bodyRight.setAttribute("style","float:right");
+      if ((d.type != "GEASS")&&(d.before)){
+        titleRight.innerHTML = "<font color='red'>before " + d.before+"</font>";
+        bodyRight.innerHTML = "update:" +d.updatedOn;
+        bodyText.appendChild(bodyRight);
+        body.appendChild(bodyText);
+        body.appendChild(document.createElement('br'));
+      } else {titleRight.innerHTML = "update:" +d.updatedOn};
       title.appendChild(titleRight);
       header.appendChild (title);
       objectsRow.appendChild(header);
-      var body= document.createElement('div');
       body.setAttribute("class","collapsible-body");
       if (currentUser.role == roleAdministrator) {
         var removeButton = document.createElement('button');
@@ -2180,6 +2190,8 @@
       icon.innerHTML = "file_download";
       getFileButton.appendChild(icon);
       body.appendChild(getFileButton);
+      body.appendChild(document.createElement('br'));
+      body.appendChild(document.createElement('br'));
       objectsRow.appendChild(body);
       documentsList.appendChild (objectsRow);
       refCopropertyFiles.child("Documents").child(d.idFS).getDownloadURL().then(function(url) {
