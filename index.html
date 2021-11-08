@@ -2052,7 +2052,7 @@
 
       function refreshChargesReports(){
         emptyHTMLSet(chargesReportsTable);
-        refCoproperty.collection("ChargesReports").orderBy("endDate","desc").get().then(function(chargesReportsFS){
+        refCoproperty.collection("ChargesReports").orderBy("endDate","asc").get().then(function(chargesReportsFS){
             readCloseAndReguDate (chargesReportsFS);
             chargesReportsFS.forEach(function(objectFS){
               loadChargesReport(objectFS);
