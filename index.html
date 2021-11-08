@@ -151,7 +151,7 @@
             onclick="loadHome()">Home</a>
         </li>
         <li class="tab side text-teal"><a class="waves-effect" href="#Reports" style="font-size:22px"
-            onclick="loadReports()">Reports</a></li>
+            onclick="loadChargesReports()">Charges</a></li>
         <li class="tab side text-teal"><a class="waves-effect" href="#Documents" style="font-size:22px"
               onclick="loadDocuments()">Documents</a></li>
         <li class="tab side text-teal"><a class="waves-effect" href="#Transactions" style="font-size:22px"
@@ -267,10 +267,6 @@
         </div>
         <!------------------------------------------------------------------------------------------------------>
         <div id="Reports" class="col s12">
-          <div id="reportRemove" class="modal">
-          </div>
-          <div id="reportAdd" class="modal">
-          </div>
           <div id="chargesReportAdd" class="modal">
             <div class="modal-content">
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
@@ -317,21 +313,6 @@
           <br>
           <div id="Reports_Generate" class="displayHidden">
             <button id="ChargesReport_Generate" style="float: right" data-target="chargesReportAdd" class="btn-small waves-light modal-trigger" onclick="emptyFieldsChargesReportAdd()"><i class="material-icons right">add</i>Generate New Charges Report</button>
-          </div>
-          <br><br>
-          <table class="striped">
-            <thead>
-              <tr>
-                <th>Document Type</th>
-                <th>Uploaded</th>
-              </tr>
-            </thead>
-            <tbody id="reportsTable">
-            </tbody>
-          </table>
-          <br>
-          <div id="Reports_Add" class="displayHidden">
-            <button style="float: right" data-target="reportAdd" class="btn-small waves-light modal-trigger" onclick="emptyReportFields()"><i class="material-icons right">add</i>New Report</button>
           </div>
         </div>
         <!------------------------------------------------------------------------------------------------------>
@@ -1955,22 +1936,6 @@
     </script>
     <!--   Reports scripts start here -->
     <script>
-      function emptyReportFields(){
-        document.getElementById("reportFile").value = "";
-        document.getElementById("reportFileText").value = "";
-        document.getElementById("report_type_structured").value = "";
-        document.getElementById("report_freeType_frame").style.display = "none";
-        document.getElementById("report_type_free").value = "";
-        var elems = document.querySelectorAll('select');
-        M.FormSelect.init(elems);
-        M.updateTextFields();
-      };
-      
-      function showFreeTypeReport(){
-        if (document.getElementById("report_type_structured").value == "OTHER") {
-          document.getElementById("report_freeType_frame").style.display = "block"; 
-        } else {document.getElementById("report_freeType_frame").style.display = "none"; };
-      };
       
       function showReport(url) {
           window.open(url,"_blank");
@@ -2018,19 +1983,12 @@
         });
       };
 
-      function refreshReports(){
-        emptyHTMLSet(reportsTable);
-        refCoproperty.collection("Reports").orderBy("date", "desc").get().then(function(objectsFSArray){
-          objectsFSArray.forEach(function(objectFS){
-            loadReport(objectFS);
-          });
-        });
-      };
+      
 
       var reportsLoaded = false;
       function loadReports() {
       hideMenu();
-      document.getElementById("logo-container").innerHTML = "MyCondos: Reports";
+      document.getElementById("logo-container").innerHTML = "MyCondos: Charges";
       loadChargesReports();
       if (!reportsLoaded) {
             refreshReports();
@@ -2239,6 +2197,9 @@
 
       var chargesReportsLoaded = false;
       function loadChargesReports() {
+      hideMenu();
+      document.getElementById("logo-container").innerHTML = "MyCondos: Charges";
+      
       if (!chargesReportsLoaded) {
             refreshChargesReports();
             chargesReportsLoaded = true;
