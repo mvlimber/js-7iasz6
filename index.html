@@ -1936,153 +1936,6 @@
     </script>
     <!--   Reports scripts start here -->
     <script>
-      
-      function showReport(url) {
-          window.open(url,"_blank");
-      };
-
-      function loadReport (objectFS){
-        var object = objectFS.data();
-        var objectsRow= document.createElement('tr');
-        
-        var cellContent = document.createElement("button");
-        cellContent.setAttribute('style','border:none;background-color:Transparent');
-        cellContent.setAttribute('class','modal-trigger');
-        cellContent.setAttribute('data-target','fileShow');
-        refCopropertyFiles.child("Reports").child(objectFS.id).getDownloadURL().then(function(url) {
-          
-        cellContent.setAttribute('onclick','showReport('+JSON.stringify(url)+')');
-        var typeShown;
-        if (object.type == "OTHER") {typeShown = "<font color='#0000FF'>" + object.typeFree + "</font>";}
-        else {typeShown = "<font color='#0000FF'>" + ReportType[object.type] + "</font>"};
-        cellContent.innerHTML = "<font color='#0000FF'>" + typeShown + "</font>";
-        var cell = document.createElement('td');
-        cell.appendChild(cellContent);
-        objectsRow.appendChild(cell);
-        
-        cellContent = document.createTextNode(object.date);
-        cell = document.createElement('td');
-        cell.appendChild(cellContent);
-        objectsRow.appendChild(cell); 
-        if (currentUser.role == roleAdministrator) {
-          cellContent = document.createElement('button');
-          cellContent.setAttribute('class','modal-trigger btn-floating waves-light red');
-          cellContent.setAttribute("data-target", "reportRemove");
-          cellContent.setAttribute('onclick','popupRemoveReport('+JSON.stringify(objectFS.id)+','+JSON.stringify(typeShown)+')');
-          var cellButtonIcon = document.createElement('i');
-          cellButtonIcon.setAttribute('class','material-icons right');
-          cellButtonIcon.innerHTML="delete";           
-          cellContent.appendChild(cellButtonIcon);
-          /*cellContent.innerHTML = "Remove";*/
-
-          cell = document.createElement('td');
-          cell.appendChild(cellContent);
-          objectsRow.appendChild(cell);    
-        };
-        reportsTable.appendChild (objectsRow);
-        });
-      };
-
-      
-
-      var reportsLoaded = false;
-      function loadReports() {
-      hideMenu();
-      document.getElementById("logo-container").innerHTML = "MyCondos: Charges";
-      loadChargesReports();
-      if (!reportsLoaded) {
-            refreshReports();
-            reportsLoaded = true;
-          };
-      };
-
-      var reportFile;
-      function validateReportEntries() {
-        var valid = true
-        if (!(document.getElementById("report_type_structured").checkValidity())) {
-          M.toast({html:"Please enter Type"});
-          valid=false;
-        };
-        if (!(document.getElementById("report_type_free").checkValidity())) {
-          M.toast({html:"Please valid free text type"});
-          valid=false;
-        };
-
-        if ((document.getElementById("report_type_structured").value == "OTHER") && (!document.getElementById("report_type_free").value)) {
-          M.toast({html:"when Type = Other, Free Text Type is required"});
-          valid=false;
-        };
-      
-        reportFile = document.getElementById('reportFile').files[0];
-        let allowed_mime_types = ['application/pdf'];
-        let allowed_size_kb = 5000;
-        if (reportFile) {
-          if(allowed_mime_types.indexOf(reportFile.type) == -1) {
-            M.toast({html:"Incorrect file type (only pdf allowed)"});
-            valid=false;
-          };
-          if(reportFile.size > allowed_size_kb*1024) {
-            M.toast({html:"File exceeds max size 500KB"});
-            valid=false;
-          };
-        } else {
-            M.toast({html:"Please select PDF File"});
-            valid=false;
-        };
-        return valid;
-      };
-
-      function getReportEntries() {
-        var d = new Date();
-        return {
-          fileName: reportFile.name,
-          type: document.getElementById("report_type_structured").value,
-          typeFree: document.getElementById("report_type_free").value,
-          date: d.toDateString()
-        };
-      };
-
-
-      function writeReport() {
-        if (validateReportEntries()) {  
-          var entries = getReportEntries();
-          refCoproperty.collection("Reports").add(entries).then(function(docref) {
-            if (reportFile) {
-              var fileRef = refCopropertyFiles.child("Reports").child(docref.id);  
-              fileRef.put(reportFile).then (function (){
-                refreshReports();
-                M.Modal.getInstance(document.getElementById("reportAdd")).close();
-              });
-              
-            } else {
-              M.toast({html:"System error writing file"});
-            };
-          }).catch(function(error) {
-            M.toast({html:"System error writing document: " + error});
-          });
-        };
-      };
-
-      var report_to_remove;
-      function popupRemoveReport(report,typeShown){
-        document.getElementById("report_to_remove").innerHTML=typeShown;
-        report_to_remove = report;
-      }
-      
-      function removeReport(report){
-        refCoproperty.collection("Reports").doc(report).delete().then(function(){
-          refreshReports();
-          var fileRef = refCopropertyFiles.child("Reports").child(report);
-          fileRef.delete().then(function() {
-          }).catch(function(error) {
-            M.toast({html:"System error removing report file:" + error});           
-          });
-          M.Modal.getInstance(document.getElementById("reportRemove")).close();
-        }).catch(function(error) {
-            M.toast({html:"System error removing report:" + error});
-        });
-      };
-
     function emptyFieldsChargesReportAdd() {
       document.getElementById("chargesReport_closeDate").value = "";
       document.getElementById("chargesReport_metersIncluded").value = "";
@@ -2124,7 +1977,7 @@
         cellContent.setAttribute('data-target','fileShow');
         refCopropertyFiles.child("ChargesReports").child(objectFS.id).getDownloadURL().then(function(url) {
           
-        cellContent.setAttribute('onclick','showReport('+JSON.stringify(url)+')');
+        cellContent.setAttribute('onclick','showFile('+JSON.stringify(url)+')');
         cellContent.innerHTML = "<font color='#0000FF'>" + object.startDate + " to " +object.endDate + "</font>";
         var cell = document.createElement('td');
         cell.appendChild(cellContent);
@@ -2955,7 +2808,7 @@
 
         var cellContent = document.createElement("button");
         refCopropertyFiles.child("Transactions").child(objectFS.id).getDownloadURL().then(function(url) {
-        cellContent.setAttribute('onclick','showReport('+JSON.stringify(url)+')');
+        cellContent.setAttribute('onclick','showFile('+JSON.stringify(url)+')');
         cellContent.setAttribute('style','border:none;background-color:Transparent');
         cellContent.innerHTML = "<font color='#0000FF'>" + object.fileName + "</font>";
         
