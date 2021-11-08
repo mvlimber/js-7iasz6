@@ -2391,6 +2391,8 @@
         };
       };
     };
+
+    
     
    </script>
     <!--   Transaction scripts start here -->
@@ -2895,7 +2897,7 @@
       var transactionEvidenceFile;
       function validateTransactionEvidenceEntries() {
         var valid = true
-        if (!(document.getElementById("transactionEvidence_type_edit").value)) {
+        if (!(document.getElementById("transactionEvidence_type").value)) {
           M.toast({html:"Please enter Type"});
           valid=false;
         };
@@ -2922,11 +2924,11 @@
       function getTransactionEvidenceEntries() {
         var d = {
           type: document.getElementById("transactionEvidence_type").value,
-          counterparty: transaction.counterparty,
+          counterparty: transaction.name,
           before: "",
-          link: transaction.idFS,
+          link: selectedTransactionId,
           freeType: document.getElementById("transactionEvidence_freeType").value,
-          updateOn: getTodaysdate(),
+          updatedOn: getToDaysDate(),
         };
         return d;
       };
@@ -2934,21 +2936,22 @@
       function writeTransactionEvidence() {
         if (validateTransactionEvidenceEntries()) {  
           var entries = getTransactionEvidenceEntries();
-          /*refCoproperty.collection("Documents")
-          
-          refCoproperty.collection("Transactions").doc(selectedTransactionId).collection("Evidence").add(entries).then(function(docref) {
-            if (transactionEvidenceFile) {
-              var fileRef = refCopropertyFiles.child("Transactions").child(docref.id);  
-              fileRef.put(transactionEvidenceFile).then (function (){});
+          console.log("entries ",entries);
+          refCoproperty.collection("Documents").add(entries).then(function(docref) {
+            var fileRef = refCopropertyFiles.child("Documents").child(docref.id); 
+            fileRef.put(transactionEvidenceFile).then (function (){
               refreshTransactionEvidence();
-              refreshTransactions();
-              M.Modal.getInstance(document.getElementById("transactionEvidenceAdd")).close();
-            } else {
-              M.toast({html:"System error writing file"});
-            };
+              documents = null;
+              documentsLoaded = false;
+    
+              M.Modal.getInstance(document.getElementById("transactionNewDocument")).close();
+            }).catch(function(error) {
+              M.toast({html:"Error creating transaction evidence file: " + error});
+            });
           }).catch(function(error) {
-            M.toast({html:"System error writing document: " + error});
-          });*/
+            M.toast({html:"System creating transaction evidence document: " + error});
+          });;
+
         };
       };
 
