@@ -606,12 +606,6 @@
               <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
                 <h6 style="font-size:20px ">Transaction Evidence</h6>
                 <table class="striped">
-                  <thead>
-                    <tr>
-                      <th> Type</th>
-                      <th> Update</th>
-                    </tr>
-                  </thead>
                   <tbody id="transactionEvidenceTable">
                   </tbody>
                 </table>
@@ -2847,51 +2841,54 @@
       
 
       function loadTransactionEvidence (objectFS){
-        /*var object = objectFS.data();
+        var object = objectFS.data();
         var objectsRow= document.createElement('tr');
 
-        var cellContent = document.createElement("button");
-        refCopropertyFiles.child("Transactions").child(objectFS.id).getDownloadURL().then(function(url) {
-        cellContent.setAttribute('onclick','showFile('+JSON.stringify(url)+')');
-        cellContent.setAttribute('style','border:none;background-color:Transparent');
-        cellContent.innerHTML = "<font color='#0000FF'>" + object.fileName + "</font>";
-        
+        var cellContent = document.createTextNode(DocumentType[object.type]);
         var cell = document.createElement('td');
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);
         
-        cellContent = document.createTextNode(object.type);
+        var getFileButton = document.createElement("button");
+        getFileButton.setAttribute('class','btn-small waves-light');
+        getFileButton.innerHTML = "DownLoad File";
+        var icon = document.createElement('i');
+        icon.setAttribute("class","material-icons right");
+        icon.innerHTML = "file_download";
+        getFileButton.appendChild(icon);
+        objectsRow.appendChild(getFileButton);
         cell = document.createElement('td');
-        cell.appendChild(cellContent);
-        objectsRow.appendChild(cell);  
+        cell.appendChild(getFileButton);
+        objectsRow.appendChild(cell);
+          
         if (currentUser.role == roleAdministrator) {
           cellContent = document.createElement('button');
           cellContent.setAttribute('class','modal-trigger btn-floating waves-light red');
           cellContent.setAttribute("data-target", "transactionEvidenceRemove");
-          cellContent.setAttribute('onclick','popupRemoveTransactionEvidence('+JSON.stringify(objectFS.id)+','+JSON.stringify(object.fileName)+')');
+          cellContent.setAttribute('onclick','popupRemoveTransactionEvidence('+JSON.stringify(objectFS.id)+')');
           var cellButtonIcon = document.createElement('i');
           cellButtonIcon.setAttribute('class','material-icons right');
           cellButtonIcon.innerHTML="delete";           
           cellContent.appendChild(cellButtonIcon);
-          
-
           cell = document.createElement('td');
           cell.appendChild(cellContent);
           objectsRow.appendChild(cell);    
         };
         transactionEvidenceTable.appendChild (objectsRow);
-        });*/
+        refCopropertyFiles.child("Documents").child(objectFS.id).getDownloadURL().then(function(url) {
+          getFileButton.setAttribute('onclick','showFile('+JSON.stringify(url)+')');
+        }); 
       };
 
       function refreshTransactionEvidence(){
         emptyHTMLSet(transactionEvidenceTable);
-        /*
-        refCoproperty.collection("Transactions").doc(selectedTransactionId).collection("Evidence").get().then(function(objectsFSArray){
+        
+        refCoproperty.collection("Documents").where("link","==",selectedTransactionId).get().then(function(objectsFSArray){
             objectsFSArray.forEach(function(objectFS){
               loadTransactionEvidence(objectFS);
             })
           });
-        */
+       
       };
 
       var transactionEvidenceFile;
