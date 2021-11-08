@@ -2319,10 +2319,14 @@
     };
     
     function getDocumentEntries(){
+      var thistype = document.getElementById("document_type").value;
+      var thisBefore;
+      if (thisType == "GEASS"){thisBefore = ""}
+      else {thisBefore =thisType document.getElementById("document_before").value};
       return {
-        type: document.getElementById("document_type").value,
+        type: thistype,
         counterparty: document.getElementById("document_counterparty").value,
-        before: document.getElementById("document_before").value,
+        before: thisBefore,
         link: document.getElementById("document_link").value,
         freeType: document.getElementById("document_freeType").value,
         updatedOn: getToDaysDate(),
