@@ -2164,11 +2164,11 @@
       bodyRight.setAttribute("style","float:right");
       if ((d.type != "GEASS")&&(d.before)){
         titleRight.innerHTML = "<font color='red'>before " + d.before+"</font>";
-        bodyRight.innerHTML = "update:" +d.updatedOn;
+        bodyRight.innerHTML = "updated:" +d.updatedOn;
         bodyText.appendChild(bodyRight);
         body.appendChild(bodyText);
         body.appendChild(document.createElement('br'));
-      } else {titleRight.innerHTML = "update:" +d.updatedOn};
+      } else {titleRight.innerHTML = "updated:" +d.updatedOn};
       title.appendChild(titleRight);
       header.appendChild (title);
       objectsRow.appendChild(header);
