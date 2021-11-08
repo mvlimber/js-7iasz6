@@ -2960,6 +2960,7 @@
       var transactionEvidenceId_to_remove;
       function popupRemoveTransactionEvidence(transactionEvidenceId){
         transactionEvidenceId_to_remove = transactionEvidenceId;
+        document.getElementById("transactionEvidenceFileDelete").checked = false;
       }
       
       function removeTransactionEvidence(transactionEvidenceId){
@@ -2967,6 +2968,7 @@
           refCoproperty.collection("Documents").doc(transactionEvidenceId).delete().then(function(){
             documents=null;
             documentsLoaded=false;
+            refreshTransactionEvidence();
             var fileRef = refCopropertyFiles.child("Documents").child(transactionEvidenceId);
             fileRef.delete().then(function() {
             }).catch(function(error) {
@@ -2984,7 +2986,8 @@
             M.Modal.getInstance(document.getElementById("transactionEvidenceRemove")).close();
           }).catch(function(error) {
             M.toast({html:"System error removing transaction evidence link:" + error});
-        });
+          });
+        };
       };
 
    
