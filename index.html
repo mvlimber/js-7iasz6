@@ -384,134 +384,159 @@
           </div>
         </div> 
        
+        </div>
+        <!------------------------------------------------------------------------------------------------------>
+        <div id="transactionView" class="modal">
+        <div class="modal-content">
+          <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
+          <h5> View Transaction</h5>
+          <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
+            <form class="col s12">
+              <div class="input-field col s12 m4">
+                <input id="transaction_type" type="text" readonly>
+                <label for="transaction_type">type</label>
+              </div>
+              <div class="input-field col s12 m4" id="transaction_costCenter_field">
+                <input id="transaction_costCenter" type="text" readonly>
+                <label for="transaction_type">cost center</label>
+              </div>
+              <div class="input-field col s12 m4">
+                <input id="transaction_name" type="text" readonly>
+                <label for="transaction_name">Counterparty</label>
+              </div>
+              <div class="input-field col s12 m4">
+                <input id="transaction_account" type="text" readonly>
+                <label for="transaction_account">Account</label>
+              </div>
+              <div class="input-field col s12 m8">
+                <input id="transaction_communication" type="text" readonly>
+                <label for="transaction_communication">Communication</label>
+              </div>
+              <div class="input-field col s12 m4">
+                <input id="transaction_amount" type="text" readonly>
+                <label for="transaction_amount">Amount</label>
+              </div>
+              <div class="input-field col s12 m4">
+                <input id="transaction_date" type="text" readonly>
+                <label for="transaction_date">Transaction Date</label>
+              </div>
+              <div class="input-field col s12 m4">
+                <input id="transaction_bookDate" type="text" readonly>
+                <label for="transaction_bookDate">Accountancy Date</label>
+              </div>
+              <div id="transaction_properties_frame" style="display:none" >
+                <table class="striped">
+                  <caption><b>Private transaction: Amount distributed to following properties:</b></caption>
+                  <thead>
+                    <tr>
+                      <th>Property</th>
+                      <th>Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody id="transaction_distribution_table">
+                  </tbody>
+                </table>
+              </div>
+            </form>
+            <div id="Transactions_Edit" class="displayHidden">
+              <button id="transaction_edit_button" style="float: right;margin-bottom: 3px" data-target="transactionAdd" class="btn-small waves-light modal-trigger" onclick="editTransaction(selectedTransactionId, transaction)">Edit<i class="material-icons right">edit</i></button>
+            </div>
+          </div>
+          <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
+            <h6 style="font-size:20px ">Transaction Evidence</h6>
+            <table class="striped">
+              <tbody id="transactionEvidenceTable">
+              </tbody>
+            </table>
+            <br>
+            <div id="Transactions_EvidenceAdd" class="displayHidden">
+              <button style="float: right;margin-bottom: 3px" data-target="transactionNewDocument" class="btn-small waves-light modal-trigger" onclick="emptyTransactionEvidenceFields()"><i class="material-icons right">add</i>New Document</button>
+            </div>
+            <div id="Transactions_EvidenceLink" class="displayHidden">
+              <button style="float: right;margin-bottom: 3px;margin-left: 3px" data-target="transactionNewEvidenceLink" class="btn-small waves-light modal-trigger" onclick="emptyTransactionEvidenceLinkFields()"><i class="material-icons right">link</i>Link Document</button>
+          </div>
+          </div>
+          <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
+        </div>
+        </div> 
+        <div id="transactionEvidenceRemove" class="modal">
+        <div class="modal-content">
+        <h5> You are about to remove the document from the list of evidences</h5>
+        <p>
+        <form>
+        <label>
+          <input type="checkbox" class="filled-in" id="transactionEvidenceFileDelete"/>
+          <span><h6>Also permanently delete the document and file itself</h6></span>
+        </label>
+        </form>
+        
+          <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="removeTransactionEvidence(transactionEvidenceId_to_remove)">Confirm<i class="material-icons right">send</i></button>
+          <a style="float: right"
+            class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
+            Cancel</a>
       </div>
-      <!------------------------------------------------------------------------------------------------------>
-      <div id="transactionView" class="modal">
-      <div class="modal-content">
-        <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
-        <h5> View Transaction</h5>
-        <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
-          <form class="col s12">
-            <div class="input-field col s12 m4">
-              <input id="transaction_type" type="text" readonly>
-              <label for="transaction_type">type</label>
-            </div>
-            <div class="input-field col s12 m4" id="transaction_costCenter_field">
-              <input id="transaction_costCenter" type="text" readonly>
-              <label for="transaction_type">cost center</label>
-            </div>
-            <div class="input-field col s12 m4">
-              <input id="transaction_name" type="text" readonly>
-              <label for="transaction_name">Counterparty</label>
-            </div>
-            <div class="input-field col s12 m4">
-              <input id="transaction_account" type="text" readonly>
-              <label for="transaction_account">Account</label>
-            </div>
-            <div class="input-field col s12 m8">
-              <input id="transaction_communication" type="text" readonly>
-              <label for="transaction_communication">Communication</label>
-            </div>
-            <div class="input-field col s12 m4">
-              <input id="transaction_amount" type="text" readonly>
-              <label for="transaction_amount">Amount</label>
-            </div>
-            <div class="input-field col s12 m4">
-              <input id="transaction_date" type="text" readonly>
-              <label for="transaction_date">Transaction Date</label>
-            </div>
-            <div class="input-field col s12 m4">
-              <input id="transaction_bookDate" type="text" readonly>
-              <label for="transaction_bookDate">Accountancy Date</label>
-            </div>
-            <div id="transaction_properties_frame" style="display:none" >
-              <table class="striped">
-                <caption><b>Private transaction: Amount distributed to following properties:</b></caption>
-                <thead>
-                  <tr>
-                    <th>Property</th>
-                    <th>Amount</th>
-                  </tr>
-                </thead>
-                <tbody id="transaction_distribution_table">
-                </tbody>
-              </table>
-            </div>
-          </form>
-          <div id="Transactions_Edit" class="displayHidden">
-            <button id="transaction_edit_button" style="float: right;margin-bottom: 3px" data-target="transactionAdd" class="btn-small waves-light modal-trigger" onclick="editTransaction(selectedTransactionId, transaction)">Edit<i class="material-icons right">edit</i></button>
+        </div>
+        <div id="transactionNewDocument" class="modal">
+        <div class="modal-content">
+          <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
+          <h5> New Transaction Evidence Document</h5>
+          <div class="row">
+            <form>
+              <div class="input-field" id="transactionEvidence_file_edit">
+              </div>
+              <div class="file-field input-field col s12 m6">
+                <div class="btn-small">
+                  <span>PDF Document<b><font color='red'>*</font></b><i class="material-icons right">attach_file</i></span>
+                  <input type="file" id="transactionEvidenceFile">
+                </div>
+                <div class="file-path-wrapper">
+                  <input class="file-path validate" type="text" id="transactionEvidenceFileText">
+                </div>
+              </div>
+            </form>
+            <form>
+              <div class="input-field col s12 m4">
+                <select id="transactionEvidence_type" required required="true" onchange="toggleTransactionEvidenceNew()"></select>
+                <label>Type<b><font color='red'>*</font></b></label>
+              </div> 
+              <div class="input-field col s12 m4" id="transactionEvidence_freeType_field">
+                <input id="transactionEvidence_freeType" type="text" class="validate" maxlength="20">
+                <label for="transactionEvidence_freeType">Free text type<b><font color='red'>*</font></b></label>
+                <span class="helper-text" data-error="Maximum 20 characters"></span>
+              </div>
+            </form>
           </div>
         </div>
-        <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
-          <h6 style="font-size:20px ">Transaction Evidence</h6>
-          <table class="striped">
-            <tbody id="transactionEvidenceTable">
-            </tbody>
-          </table>
-          <br>
-          <div id="Transactions_EvidenceAdd" class="displayHidden">
-            <button style="float: right;margin-bottom: 3px" data-target="transactionNewDocument" class="btn-small waves-light modal-trigger" onclick="emptyTransactionEvidenceFields()"><i class="material-icons right">add</i>New Document</button>
+        <div class="modal-footer">
+          <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="writeTransactionEvidence()">Submit<i class="material-icons right">send</i></button>
+          <a style="float: right"
+            class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
+            Cancel</a>
+        </div>
+        </div>
+        <div id="transactionNewEvidenceLink" class="modal">
+        <div class="modal-content">
+          <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
+          <h5> Link to existing document</h5>
+          <div class="row">
+            
+            <form>
+              <div class="input-field col s12 m4">
+                <select id="transactionLink_document" required required="true"></select>
+                <label>Document<b><font color='red'>*</font></b></label>
+              </div> 
+              
+            </form>
           </div>
         </div>
-        <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
-      </div>
-      </div> 
-      <div id="transactionEvidenceRemove" class="modal">
-      <div class="modal-content">
-      <h5> You are about to remove the document from the list of evidences</h5>
-      <p>
-      <form>
-      <label>
-        <input type="checkbox" class="filled-in" id="transactionEvidenceFileDelete"/>
-        <span><h6>Also permanently delete the document and file itself</h6></span>
-      </label>
-      </form>
-      
-        <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="removeTransactionEvidence(transactionEvidenceId_to_remove)">Confirm<i class="material-icons right">send</i></button>
-        <a style="float: right"
-          class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
-          Cancel</a>
-    </div>
-      </div>
-      <div id="transactionNewDocument" class="modal">
-      <div class="modal-content">
-        <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
-        <h5> New Transaction Evidence Document</h5>
-        <div class="row">
-          <form>
-            <div class="input-field" id="transactionEvidence_file_edit">
-            </div>
-            <div class="file-field input-field col s12 m6">
-              <div class="btn-small">
-                <span>PDF Document<b><font color='red'>*</font></b><i class="material-icons right">attach_file</i></span>
-                <input type="file" id="transactionEvidenceFile">
-              </div>
-              <div class="file-path-wrapper">
-                <input class="file-path validate" type="text" id="transactionEvidenceFileText">
-              </div>
-            </div>
-          </form>
-          <form>
-            <div class="input-field col s12 m4">
-              <select id="transactionEvidence_type" required required="true" onchange="toggleTransactionEvidenceNew()"></select>
-              <label>Type<b><font color='red'>*</font></b></label>
-            </div> 
-            <div class="input-field col s12 m4" id="transactionEvidence_freeType_field">
-              <input id="transactionEvidence_freeType" type="text" class="validate" maxlength="20">
-              <label for="transactionEvidence_freeType">Free text type<b><font color='red'>*</font></b></label>
-              <span class="helper-text" data-error="Maximum 20 characters"></span>
-            </div>
-          </form>
+        <div class="modal-footer">
+          <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="writeTransactionLink()">Submit<i class="material-icons right">send</i></button>
+          <a style="float: right"
+            class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
+            Cancel</a>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="writeTransactionEvidence()">Submit<i class="material-icons right">send</i></button>
-        <a style="float: right"
-          class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
-          Cancel</a>
-      </div>
-      </div>
-      <div id="Transactions" class="col s12">
+        </div>
+        <div id="Transactions" class="col s12">
           <table class="striped">
             <thead>
               <tr>
@@ -671,11 +696,6 @@
                 Cancel</a>
             </div>
           </div>
-
-          
-
-          
-          
 
         </div>
         <!------------------------------------------------------------------------------------------------------>
@@ -1494,6 +1514,7 @@
                           document.getElementById("Transactions_Add").setAttribute("class","displayBlock");
                           document.getElementById("Transactions_Edit").setAttribute("class","displayBlock");
                           document.getElementById("Transactions_EvidenceAdd").setAttribute("class","displayBlock");
+                          document.getElementById("Transactions_EvidenceLink").style.display = "block";
                           document.getElementById("Members_Add").setAttribute("class","displayBlock");
                           document.getElementById("Members_Edit").setAttribute("class","displayBlock");
                           document.getElementById("Properties_Add").setAttribute("class","displayBlock");
@@ -1502,6 +1523,7 @@
                           document.getElementById("Properties_OwnersAdd_button").style.visibility="visible";
                           document.getElementById("tabTransactionRules").style.display = "block";
                           document.getElementById("tabSettings").style.display = "block";
+                          
                         };
                         openApplication();
                       }).catch(function(error) {
@@ -2863,6 +2885,28 @@
 
     };
 
+      function emptyTransactionEvidenceLinkFields(){
+        var thisSelectEl = document.getElementById("transactionLink_document");
+        thisSelectEl.value = "";
+        emptyHTMLSet(thisSelectEl));
+        var thislist = [];
+        refCoproperty.collection("Documents").where("type","!=","GEASS").where("link","==","").get().then(function(querySnapshot){
+          querySnapshot.forEach(function(objectFS){
+            var line={};
+            var thisData=objectFS.data();
+            var thisKey=DocumentType[thisData.type]+" "+thisData.counterparty+" "+thisData.updatedOn;
+            line[thisKey]=objectFS.id;
+            thislist.push(line);
+          });
+          /*insertSelectOptions("transactionEvidence_type", EvidenceType, "type");*/
+        });
+        /* hier nog select invullen*/
+      };
+
+      function writeTransactionLink(){
+        /* hier nog link writing invullen*/
+      };
+
       function emptyTransactionEvidenceFields(){
         document.getElementById("transactionEvidenceFile").value = "";
         document.getElementById("transactionEvidenceFileText").value = "";
@@ -3025,8 +3069,7 @@
           });
         };
       };
-
-   
+    
     var transactionsLoadFile;
     function validateTransactionsLoadEntries(){
       var valid = true;
