@@ -2174,15 +2174,19 @@
       objectsRow.appendChild(header);
       body.setAttribute("class","collapsible-body");
       if (currentUser.role == roleAdministrator) {
-        var removeButton = document.createElement('button');
-        removeButton.setAttribute('style','float: right;margin-bottom: 3px');
-        removeButton.setAttribute('class','modal-trigger btn-floating waves-light red');
-        removeButton.setAttribute("data-target", "documentRemove");
-        removeButton.setAttribute('onclick','popupRemoveDocument('+JSON.stringify(d)+')');
-        var cellButtonIcon = document.createElement('i');
-        cellButtonIcon.setAttribute('class','material-icons right');
-        cellButtonIcon.innerHTML="delete";           
-        removeButton.appendChild(cellButtonIcon);
+        if (!d.link) {
+          var removeButton = document.createElement('button');
+          removeButton.setAttribute('style','float: right;margin-bottom: 3px');
+          removeButton.setAttribute('class','modal-trigger btn-floating waves-light red');
+          removeButton.setAttribute("data-target", "documentRemove");
+          removeButton.setAttribute('onclick','popupRemoveDocument('+JSON.stringify(d)+')');
+          var cellButtonIcon = document.createElement('i');
+          cellButtonIcon.setAttribute('class','material-icons right');
+          cellButtonIcon.innerHTML="delete";           
+          removeButton.appendChild(cellButtonIcon);
+          body.appendChild(removeButton);
+        
+        };
         var editButton = document.createElement('button');
         editButton.setAttribute('style','float: right;margin-bottom: 3px;margin-right: 5px;');
         editButton.setAttribute('class','modal-trigger btn-floating waves-light');
@@ -2192,17 +2196,29 @@
         cellButtonIcon.setAttribute('class','material-icons right');
         cellButtonIcon.innerHTML="edit";           
         editButton.appendChild(cellButtonIcon);
-        body.appendChild(removeButton);
         body.appendChild(editButton);
       };
       var getFileButton = document.createElement("button");
       getFileButton.setAttribute('class','btn-small waves-light');
+      getFileButton.setAttribute('style','margin-right:5px;margin-bottom:5px');
       getFileButton.innerHTML = "DownLoad File";
       var icon = document.createElement('i');
       icon.setAttribute("class","material-icons right");
       icon.innerHTML = "file_download";
       getFileButton.appendChild(icon);
       body.appendChild(getFileButton);
+      if (d.link) {
+        var getTransactionButton = document.createElement("button");
+        getTransactionButton.setAttribute('class','btn-small waves-light');
+        /*getFileButton.setAttribute('style','margin-top:5px');*/
+        getTransactionButton.setAttribute('onclick','showTransaction('+JSON.stringify(d.link)+')');
+        getTransactionButton.innerHTML = "Open linked Transaction";
+        var icon = document.createElement('i');
+        icon.setAttribute("class","material-icons right");
+        icon.innerHTML = "link";
+        getTransactionButton.appendChild(icon);
+        body.appendChild(getTransactionButton);
+      };
       body.appendChild(document.createElement('br'));
       body.appendChild(document.createElement('br'));
       objectsRow.appendChild(body);
