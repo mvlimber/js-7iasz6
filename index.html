@@ -2143,8 +2143,8 @@
       title.appendChild(titleLeft);
       var titleRight = document.createElement('span');
       titleRight.setAttribute("style","float:right");
-      if (d.before){titleRight.innerHTML = "<font color='red'>before " + d.before+"</font>"}
-      else {titleRight.innerHTML = d.updatedOn};
+      if ((d.type != "GEASS")&&(d.before)){titleRight.innerHTML = "<font color='red'>before " + d.before+"</font>"}
+      else {titleRight.innerHTML = "update:" +d.updatedOn};
       title.appendChild(titleRight);
       header.appendChild (title);
       objectsRow.appendChild(header);
@@ -2234,6 +2234,8 @@
       document.getElementById("document_counterparty").value=object.counterparty;
       document.getElementById("document_before").value=object.before;
       document.getElementById("document_freeType").value=object.freeType;
+      documentFile =null;
+      document.getElementById("documentFileText").value="";
       /*listTransactions(document.getElementById("document_link"),object.link)*/
       toggleDocument();
       var elems = document.querySelectorAll('select');
@@ -2292,27 +2294,22 @@
         M.toast({html:"Please enter counterparty"});
         valid=false;
       };
+      documentFile = document.getElementById('documentFile').files[0];
       if ((!paper.idFS) && (!documentFile)) {
         M.toast({html:"Please select PDF file"});
         return false;
-      };
-      documentFile = document.getElementById('documentFile').files[0];
-      let allowed_mime_types = ['application/pdf'];
-      let allowed_size_kb = 5000;
-      if (documentFile) {
+      } else if (documentFile){
+        let allowed_mime_types = ['application/pdf'];
+        let allowed_size_kb = 5000;
         if(allowed_mime_types.indexOf(documentFile.type) == -1) {
-          M.toast({html:"Incorrect file type (only pdf allowed)"});
-          valid=false;
-        };
+            M.toast({html:"Incorrect file type (only pdf allowed)"});
+            valid=false;
+          };
         if(documentFile.size > allowed_size_kb*1024) {
           M.toast({html:"File exceeds max size 500KB"});
           valid=false;
         };
-      } else {
-          M.toast({html:"Please select PDF File"});
-          valid=false;
       };
-
       return valid;
     };
     
