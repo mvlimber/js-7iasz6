@@ -2319,12 +2319,12 @@
     };
     
     function getDocumentEntries(){
-      var thistype = document.getElementById("document_type").value;
+      var thisType = document.getElementById("document_type").value;
       var thisBefore;
       if (thisType == "GEASS"){thisBefore = ""}
-      else {thisBefore =thisType document.getElementById("document_before").value};
+      else {thisBefore = document.getElementById("document_before").value};
       return {
-        type: thistype,
+        type: thisType,
         counterparty: document.getElementById("document_counterparty").value,
         before: thisBefore,
         link: document.getElementById("document_link").value,
@@ -2335,32 +2335,36 @@
     
     function writeDocument(){
       if (validateDocument()) { 
-        if (documentFile) {
-          var entries =  getDocumentEntries();
-          if (paper.idFS) {
-            refCoproperty.collection("Documents").doc(paper.idFS).set(entries).then(function() {
+        var entries =  getDocumentEntries();
+        if (paper.idFS) {
+          refCoproperty.collection("Documents").doc(paper.idFS).set(entries).then(function() {
+            if (documentFile) {
               var fileRef = refCopropertyFiles.child("Documents").child(paper.idFS); 
               fileRef.put(documentFile).then (function (){
                 refreshDocuments();
                 M.Modal.getInstance(document.getElementById("documentEdit")).close();
               }).catch(function(error) {
-                M.toast({html:"Error updating document: " + error});
+                M.toast({html:"Error updating file: " + error});
               });
+            } else {
+              refreshDocuments();
+              M.Modal.getInstance(document.getElementById("documentEdit")).close();
+            };
+          });
+        } else {
+          refCoproperty.collection("Documents").add(entries).then(function(docref) {
+            var fileRef = refCopropertyFiles.child("Documents").child(docref.id); 
+            fileRef.put(documentFile).then (function (){
+              refreshDocuments();
+              M.Modal.getInstance(document.getElementById("documentEdit")).close();
+            }).catch(function(error) {
+              M.toast({html:"Error adding document: " + error});
             });
-          } else {
-            refCoproperty.collection("Documents").add(entries).then(function(docref) {
-              var fileRef = refCopropertyFiles.child("Documents").child(docref.id); 
-              fileRef.put(documentFile).then (function (){
-                refreshDocuments();
-                M.Modal.getInstance(document.getElementById("documentEdit")).close();
-              }).catch(function(error) {
-                M.toast({html:"Error adding document: " + error});
-              });
-            });
-          };
-        } else {M.toast({html:"System error writing file"});};
+          });
+        };
       };
     };
+    
    </script>
     <!--   Transaction scripts start here -->
     <script>
