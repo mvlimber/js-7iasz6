@@ -2279,11 +2279,11 @@
       if (documents) {return documents;}
       else {
         var querySnapshot = await refCoproperty.collection("Documents").where("before","!=","").orderBy("before","asc").get();
-        documents = [];
+        var documentsBefore = [];
         querySnapshot.forEach(function(objectFS) {
           var thisObject = objectFS.data();
           thisObject.idFS = objectFS.id;
-          documents.push(thisObject);
+          documentsBefore.push(thisObject);
         });
         querySnapshot = await refCoproperty.collection("Documents").where("before","==","").get();
         var documentsDone = [];
@@ -2292,8 +2292,8 @@
           thisObject.idFS = objectFS.id;
           documentsDone.push(thisObject);
         });
-        documentsDone.sort(function(a, b){return a.updatedOn - a.updatedOn});
-        return documents.concat(documentsDone);
+        documents = documentsBefore.concat(documentsDone.sort(function(a, b){return a.updatedOn - a.updatedOn}));
+        return documents;
       };
     };
 
@@ -2360,12 +2360,13 @@
       icon.setAttribute("class","material-icons right");
       icon.innerHTML = "file_download";
       getFileButton.appendChild(icon);
+      body.appendChild(getFileButton);
+        objectsRow.appendChild(body);
+        documentsList.appendChild (objectsRow);
       refCopropertyFiles.child("Documents").child(d.idFS).getDownloadURL().then(function(url) {
           
         getFileButton.setAttribute('onclick','showFile('+JSON.stringify(url)+')');
-        body.appendChild(getFileButton);
-        objectsRow.appendChild(body);
-        documentsList.appendChild (objectsRow);
+        
       });
       
     };
