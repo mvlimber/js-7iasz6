@@ -636,39 +636,43 @@
             </div>
           </div>
           <div id="transactionNewDocument" class="modal">
-          <div class="modal-content">
-          <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
-            
-            <h5> New Transaction Evidence Document</h5>
-            <div class="row">
-              <form>
-                <div class="input-field" id="transactionEvidence_file_edit">
-                </div>
-                <div class="file-field input-field col s12 m6">
-                  <div class="btn-small">
-                    <span>PDF Document<b><font color='red'>*</font></b><i class="material-icons right">attach_file</i></span>
-                    <input type="file" id="transactionEvidenceFile">
+            <div class="modal-content">
+              <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
+              <h5> New Transaction Evidence Document</h5>
+              <div class="row">
+                <form>
+                  <div class="input-field" id="transactionEvidence_file_edit">
                   </div>
-                  <div class="file-path-wrapper">
-                    <input class="file-path validate" type="text" id="transactionEvidenceFileText">
+                  <div class="file-field input-field col s12 m6">
+                    <div class="btn-small">
+                      <span>PDF Document<b><font color='red'>*</font></b><i class="material-icons right">attach_file</i></span>
+                      <input type="file" id="transactionEvidenceFile">
+                    </div>
+                    <div class="file-path-wrapper">
+                      <input class="file-path validate" type="text" id="transactionEvidenceFileText">
+                    </div>
                   </div>
-                </div>
-              </form>
-              <form>
-                <div class="input-field col s12 m4">
-                  <select id="transactionEvidence_type" required required="true"></select>
-                  <label>Type<b><font color='red'>*</font></b></label>
-                </div> 
-              </form>
+                </form>
+                <form>
+                  <div class="input-field col s12 m4">
+                    <select id="transactionEvidence_type" required required="true"></select>
+                    <label>Type<b><font color='red'>*</font></b></label>
+                  </div> 
+                  <div class="input-field col s12 m4" id="document_freeType_field">
+                    <input id="transactionEvidence_freeType" type="text" class="validate" maxlength="20">
+                    <label for="transactionEvidence_freeType">Free text type<b><font color='red'>*</font></b></label>
+                    <span class="helper-text" data-error="Maximum 20 characters"></span>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="writeTransactionEvidence()">Submit<i class="material-icons right">send</i></button>
+              <a style="float: right"
+                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
+                Cancel</a>
             </div>
           </div>
-          <div class="modal-footer">
-            <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="writeTransactionEvidence()">Submit<i class="material-icons right">send</i></button>
-            <a style="float: right"
-              class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
-              Cancel</a>
-          </div>
-        </div>
 
         </div>
         <!------------------------------------------------------------------------------------------------------>
@@ -2836,11 +2840,12 @@
         document.getElementById("transactionEvidenceFile").value = "";
         document.getElementById("transactionEvidenceFileText").value = "";
         document.getElementById("transactionEvidence_type").value = "";
+        document.getElementById("transactionEvidence_freeType").value = "";
       };
       
 
       function loadTransactionEvidence (objectFS){
-        var object = objectFS.data();
+        /*var object = objectFS.data();
         var objectsRow= document.createElement('tr');
 
         var cellContent = document.createElement("button");
@@ -2873,16 +2878,18 @@
           objectsRow.appendChild(cell);    
         };
         transactionEvidenceTable.appendChild (objectsRow);
-        });
+        });*/
       };
 
       function refreshTransactionEvidence(){
         emptyHTMLSet(transactionEvidenceTable);
+        /*
         refCoproperty.collection("Transactions").doc(selectedTransactionId).collection("Evidence").get().then(function(objectsFSArray){
             objectsFSArray.forEach(function(objectFS){
               loadTransactionEvidence(objectFS);
             })
           });
+        */
       };
 
       var transactionEvidenceFile;
@@ -2913,20 +2920,22 @@
       };
 
       function getTransactionEvidenceEntries() {
-        var d = newEmptyDocument();
-        d.
-        return {
-          fileName: transactionEvidenceFile.name,
+        var d = {
           type: document.getElementById("transactionEvidence_type").value,
-
+          counterparty: transaction.counterparty,
+          before: "",
+          link: transaction.idFS,
+          freeType: document.getElementById("transactionEvidence_freeType").value,
+          updateOn: getTodaysdate(),
         };
+        return d;
       };
       
       function writeTransactionEvidence() {
         if (validateTransactionEvidenceEntries()) {  
           var entries = getTransactionEvidenceEntries();
-          refCoproperty.collection("Documents")
-          /*
+          /*refCoproperty.collection("Documents")
+          
           refCoproperty.collection("Transactions").doc(selectedTransactionId).collection("Evidence").add(entries).then(function(docref) {
             if (transactionEvidenceFile) {
               var fileRef = refCopropertyFiles.child("Transactions").child(docref.id);  
