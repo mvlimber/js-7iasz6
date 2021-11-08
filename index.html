@@ -623,7 +623,7 @@
             <h5> You are about to permanently remove the transaction evidence <i id="transactionEvidence_to_remove"></i> </h5>
             </div>
             <div class="modal-footer">
-              <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="removeTransactionEvidence(transactionEvidence_to_remove)">Confirm<i class="material-icons right">send</i></button>
+              <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="removeTransactionEvidence(transactionEvidenceId_to_remove)">Confirm<i class="material-icons right">send</i></button>
               <a style="float: right"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
                 Cancel</a>
@@ -2952,13 +2952,12 @@
         };
       };
 
-      var transactionEvidence_to_remove;
-      function popupRemoveTransactionEvidence(transactionEvidence,filename){
-        document.getElementById("transactionEvidence_to_remove").innerHTML=filename;
-        transactionEvidence_to_remove = transactionEvidence;
+      var transactionEvidenceId_to_remove;
+      function popupRemoveTransactionEvidence(transactionEvidenceId){
+        transactionEvidenceId_to_remove = transactionEvidenceId;
       }
       
-      function removeTransactionEvidence(transactionEvidence){
+      function removeTransactionEvidence(transactionEvidenceId){
         refCoproperty.collection("Transactions").doc(selectedTransactionId).collection("Evidence").doc(transactionEvidence).delete().then(function(){
           refreshTransactionEvidence();
           refreshTransactions();
