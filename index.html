@@ -620,9 +620,15 @@
 
           <div id="transactionEvidenceRemove" class="modal">
             <div class="modal-content">
-            <h5> You are about to permanently remove the transaction evidence <i id="transactionEvidence_to_remove"></i> </h5>
-            </div>
-            <div class="modal-footer">
+            <h5> You are about to remove the document from the list of evidences</h5>
+            <p>
+            <form>
+            <label>
+              <input type="checkbox" class="filled-in" id="transactionEvidenceFileDelete"/>
+              <span><h6>Also permanently delete the document and file itself</h6></span>
+            </label>
+            </form>
+            
               <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="removeTransactionEvidence(transactionEvidenceId_to_remove)">Confirm<i class="material-icons right">send</i></button>
               <a style="float: right"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
@@ -2216,7 +2222,6 @@
     };
     
     function popupRemoveDocument(d){paper=d;};
-    
     function removeDocument(){
       refCoproperty.collection("Documents").doc(paper.idFS).delete().then(function(){
         refreshDocuments();
@@ -2958,17 +2963,27 @@
       }
       
       function removeTransactionEvidence(transactionEvidenceId){
-        refCoproperty.collection("Transactions").doc(selectedTransactionId).collection("Evidence").doc(transactionEvidence).delete().then(function(){
-          refreshTransactionEvidence();
-          refreshTransactions();
-          var fileRef = refCopropertyFiles.child("Transactions").child(transactionEvidence);
-          fileRef.delete().then(function() {
+        if (document.getElementById("transactionEvidenceFileDelete").checked) {
+          refCoproperty.collection("Documents").doc(transactionEvidenceId).delete().then(function(){
+            documents=null;
+            documentsLoaded=false;
+            var fileRef = refCopropertyFiles.child("Documents").child(transactionEvidenceId);
+            fileRef.delete().then(function() {
+            }).catch(function(error) {
+              M.toast({html:"System error removing report file:" + error});           
+            });
+            M.Modal.getInstance(document.getElementById("transactionEvidenceRemove")).close();
           }).catch(function(error) {
-            M.toast({html:"System error removing transaction evidence file:" + error});            
+              M.toast({html:"System error removing document:" + error});
           });
-          M.Modal.getInstance(document.getElementById("transactionEvidenceRemove")).close();
-        }).catch(function(error) {
-            M.toast({html:"System error removing transaction evidence:" + error});
+        } else {
+          refCoproperty.collection("Documents").doc(transactionEvidenceId).update({link:""}).then(function(){
+            refreshTransactionEvidence();
+            documents=null;
+            documentsLoaded=false;
+            M.Modal.getInstance(document.getElementById("transactionEvidenceRemove")).close();
+          }).catch(function(error) {
+            M.toast({html:"System error removing transaction evidence link:" + error});
         });
       };
 
