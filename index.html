@@ -2888,19 +2888,23 @@
       function emptyTransactionEvidenceLinkFields(){
         var thisSelectEl = document.getElementById("transactionLink_document");
         thisSelectEl.value = "";
-        emptyHTMLSet(thisSelectEl));
-        var thislist = [];
-        refCoproperty.collection("Documents").where("type","!=","GEASS").where("link","==","").get().then(function(querySnapshot){
+        emptyHTMLSet(thisSelectEl);
+        var thislist = {};
+        refCoproperty.collection("Documents").where("type","!=","GEASS").get().then(function(querySnapshot){
           querySnapshot.forEach(function(objectFS){
-            var line={};
             var thisData=objectFS.data();
-            var thisKey=DocumentType[thisData.type]+" "+thisData.counterparty+" "+thisData.updatedOn;
-            line[thisKey]=objectFS.id;
-            thislist.push(line);
+            if (!thisData.link) {
+              var thisVisual=DocumentType[thisData.type]+" "+thisData.counterparty+" "+thisData.updatedOn;
+              thislist[objectFS.id]=thisVisual;
+            };
           });
-          /*insertSelectOptions("transactionEvidence_type", EvidenceType, "type");*/
+          console.log("thislist", thislist);
+          insertSelectOptions("transactionLink_document", thislist, "document");
+          M.updateTextFields();
+          var elems = document.querySelectorAll('select');        
+	        M.FormSelect.init(elems);
         });
-        /* hier nog select invullen*/
+        
       };
 
       function writeTransactionLink(){
