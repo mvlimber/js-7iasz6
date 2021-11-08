@@ -1756,7 +1756,6 @@
     insertSelectOptions("meter_type", MeterType, "type");
     insertSelectOptions("meter_status", MeterStatus, "", "ACTIF");
     insertSelectOptions("notification_type", NotificationType, "type");
-    insertSelectOptions("report_type_structured", ReportType, "type");
     insertSelectOptions("document_type", DocumentType, "type");
     </script>
     <!--   Home scripts start here -->
@@ -2361,14 +2360,11 @@
       icon.innerHTML = "file_download";
       getFileButton.appendChild(icon);
       body.appendChild(getFileButton);
-        objectsRow.appendChild(body);
-        documentsList.appendChild (objectsRow);
+      objectsRow.appendChild(body);
+      documentsList.appendChild (objectsRow);
       refCopropertyFiles.child("Documents").child(d.idFS).getDownloadURL().then(function(url) {
-          
-        getFileButton.setAttribute('onclick','showFile('+JSON.stringify(url)+')');
-        
+       getFileButton.setAttribute('onclick','showFile('+JSON.stringify(url)+')');
       });
-      
     };
 
     var documentsLoaded = false;
