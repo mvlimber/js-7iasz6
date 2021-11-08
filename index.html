@@ -2898,7 +2898,6 @@
               thislist[objectFS.id]=thisVisual;
             };
           });
-          console.log("thislist", thislist);
           insertSelectOptions("transactionLink_document", thislist, "document");
           M.updateTextFields();
           var elems = document.querySelectorAll('select');        
@@ -2908,7 +2907,14 @@
       };
 
       function writeTransactionLink(){
-        /* hier nog link writing invullen*/
+        var documentId = document.getElementById("transactionLink_document").value;
+        refCoproperty.collection("Documents").doc(documentId).update({link:selectedTransactionId}).then(function(){
+          refreshDocuments();
+          refreshTransactionEvidence();
+          M.Modal.getInstance(document.getElementById("transactionNewEvidenceLink")).close();
+        }).catch(function(error) {
+          M.toast({html:"System creating transaction evidence link: " + error});
+        });
       };
 
       function emptyTransactionEvidenceFields(){
@@ -3038,7 +3044,7 @@
             });
           }).catch(function(error) {
             M.toast({html:"System creating transaction evidence document: " + error});
-          });;
+          });
 
         };
       };
