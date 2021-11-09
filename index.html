@@ -1353,16 +1353,6 @@
           </div>
         </div>
         <div id="Settings" class="col s12">
-          <h5>Cost Centers</h5>
-          <table class="striped">
-          <thead id="costCenters_tableHead">
-          </thead>
-          <tbody id="costCenters_tableBody">
-          </tbody>
-          </table>
-          <br>
-          <button style="float: right;margin-bottom: 3px" class="btn-small waves-light modal-trigger" data-target="costCenterAdd" ">New Cost Center<i class="material-icons right">add</i></button>
-          <br><br><br>
           <h5>Meters common parts</h5>
           <table class="striped">
             <thead>
@@ -1375,6 +1365,28 @@
           </table>
           <br>
           <button style="float: right;margin-bottom: 3px" class="btn-small waves-light modal-trigger" data-target="meterWrite" onclick="addCopropertyMeter()">New Meter Common Parts<i class="material-icons right">add</i></button>
+          <br><br><h5>Cost Centers</h5>
+          <table class="striped">
+          <thead id="costCenters_tableHead">
+          </thead>
+          <tbody id="costCenters_tableBody">
+          </tbody>
+          </table>
+          <br>
+          <button style="float: right;margin-bottom: 3px" class="btn-small waves-light modal-trigger" data-target="costCenterAdd" ">New Cost Center<i class="material-icons right">add</i></button>
+          <br><br>
+          <div id="initialSaldos_frame">
+            <h5>Initial Saldos</h5>
+          <table class="striped">
+            <thead>
+              <th>Owner</th>
+              <th>Initial Saldo</th>
+            </thead>
+            <tbody id="coproperty_initialSaldos">
+            </tbody>
+          </table>
+          </div>
+          
           <div id="costCenterPrepareRemove" class="modal">
           <div class="modal-content">
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
