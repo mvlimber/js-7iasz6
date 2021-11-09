@@ -1082,6 +1082,11 @@
                 <label for="member_bus_edit">Bus</label>
                 <span class="helper-text" data-error="Max 3 characters. Example 12" >Max 3 characters. Example 12</span>
               </div>
+              <div class="input-field col s12 m12" id="member_initialSaldo_edit_frame">
+                <input id="member_initialSaldo_edit" type="number" class="validate" min="-999999" max="999999" step="0.01" >
+                <label for="member_initialSaldo_edit">Initial Saldo</label>
+                <span class="helper-text" data-error="Positive or negative amount. Example: -1234.56">Positive or negative amount. Example: -1234.56"</span>
+              </div>
             </form>
             <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeMember()">Submit<i class="material-icons right">send</i></button>
             <a style="float: right;margin-bottom: 3px"
@@ -3888,7 +3893,8 @@
                 town: document.getElementById("member_town_edit").value,
                 street: document.getElementById("member_street_edit").value,
                 houseNumber: document.getElementById("member_houseNumber_edit").value,
-                bus: document.getElementById("member_bus_edit").value
+                bus: document.getElementById("member_bus_edit").value,
+                initialSaldo: document.getElementById("member_initialSaldo_edit").value
           };
         };
         
@@ -3947,8 +3953,12 @@
                 });
               });
             });
+          } else {
+            if (object.saldo.length == 1) {
+              M.updateTextFields(document.getElementById("member_initialSaldo"+modeArg).value=object.salso[0].amount;)
+            } else {M.updateTextFields(document.getElementById("member_initialSaldo"+modeArg).value=null}
           };
-          M.updateTextFields();
+          ;
         };
 
         function resetSelectedMember() {
@@ -3966,6 +3976,7 @@
           document.getElementById("member_street_edit").value="";
           document.getElementById("member_houseNumber_edit").value="";
           document.getElementById("member_bus_edit").value="";
+          document.getElementById("member_initialSaldo_edit").value=null;
           M.updateTextFields();
         };
 
