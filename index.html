@@ -144,7 +144,7 @@
               <img style="width:100%" src="https://img1.goodfon.com/wallpaper/big/6/d8/android-material-fon-linii.jpg">
             </div>
             <img width="150" height="100"" class="center" src="https://firebasestorage.googleapis.com/v0/b/slimmeeigendomdb.appspot.com/o/Azur_small.gif?alt=media&token=289506e5-49da-435a-877d-bd00757f3aac">
-            <span class="white-text name" style="font-size:18px">Condomynium: Azur</span>
+            <span class="white-text name" style="font-size:18px">Résidence Pélican</span>
           </div>
         </li>
         <li id="homeTab" class="tab side text-teal"><a class=" active waves-effect" href="#Home" style="font-size:22px"
@@ -255,13 +255,17 @@
                   <td id="Home_CopropertyAddress"></td>
                 </tr>
                 <tr>
+                <td>Bank Account</td>
+                <td id="Home_Account"></td>
+              </tr>
+                <tr>
                   <td>Syndicus</td>
                   <td id = "home_administrator"></td>
                 </tr>
               </table>
             </div>
             <div class="col s12 m6">
-              <img width="300" height="175"" class="center" src="https://firebasestorage.googleapis.com/v0/b/slimmeeigendomdb.appspot.com/o/Azur_small.gif?alt=media&token=289506e5-49da-435a-877d-bd00757f3aac">
+              <img width="300" height="225"" class="center" src="https://firebasestorage.googleapis.com/v0/b/slimmeeigendomdb.appspot.com/o/Azur_small.gif?alt=media&token=289506e5-49da-435a-877d-bd00757f3aac">
             </div>
           </div>
         </div>
@@ -1792,6 +1796,8 @@
           document.getElementById("Home_CopropertyName").appendChild(textN);
           textN = document.createTextNode(currentCoproperty.street + " " + currentCoproperty.houseNumber + ", "+ currentCoproperty.zip + " " + currentCoproperty.town);
           document.getElementById("Home_CopropertyAddress").appendChild(textN);
+          textN = document.createTextNode(currentCoproperty.account);
+          document.getElementById("Home_Account").appendChild(textN);
           memberGet(currentCoproperty.administrator).then (function(a){
             document.getElementById("home_administrator").appendChild(memberLink(a));
             refCoproperty.collection("ChargesReports").orderBy("endDate","desc").get().then(function(chargesReportsFS){
