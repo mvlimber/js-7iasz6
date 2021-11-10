@@ -1375,23 +1375,22 @@
           </table>
           <br>
           <button style="float: right;margin-bottom: 3px" class="btn-small waves-light modal-trigger" data-target="costCenterAdd" ">New Cost Center<i class="material-icons right">add</i></button>
-          <br><br>
+          <br><br><br><br>
           <div id="initialSaldos_frame">
-            <table>
-              <td><h5>Initial Saldo Coproperty:  </h5></td>
+            <table><tr>
+              <td><h5>Initial Saldo Condomynium</h5></td>
               <td><p id="initialSaldo"></p></td>
-              <td><button style="float: right;margin-bottom: 3px" class="btn-floating waves-light modal-trigger" data-target="coproppertyInitialSaldoEdit()"><i class="material-icons right">edit</i></button></td>
-            </table>
-            <br>
+              <td><button style="float: right;margin-bottom: 3px" class="btn-floating waves-light modal-trigger" data-target="initialCopropertySaldoEdit" onclick="initialCopropertySaldoEditPrepare()"><i class="material-icons right">edit</i></button></td>
+            </tr></table>
             <h5>Initial Saldos Owners</h5>
-          <table class="striped">
-            <thead>
-              <th>Owner</th>
-              <th>Initial Saldo</th>
-            </thead>
-            <tbody id="initialSaldos">
-            </tbody>
-          </table>
+            <table class="striped">
+              <thead>
+                <th>Owner</th>
+                <th>Initial Saldo</th>
+              </thead>
+              <tbody id="initialSaldos">
+              </tbody>
+            </table>
           </div>
           
           <div id="costCenterPrepareRemove" class="modal">
@@ -1454,17 +1453,33 @@
             </div>
           </div>
           <div id="initialSaldoEdit" class="modal">
+            <div class="modal-content">
+              <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
+              <h5> Enter initial saldo</h5>
+              <form class="col s12">
+                <div class="input-field col s12 m4">
+                  <input id="initialSaldo_amount" type="number" class="validate" min="-999999" max="999999" step="0.01" required required="true">
+                  <label for="initialSaldo_amount">Amount<b><font color='red'>*</font></b></label>
+                  <span class="helper-text" data-error="Positive or negative amount. Example: -10234.56">Positive or negative amount. Example: -1234.56"</span>
+                </div>
+              </form>
+              <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="initialSaldoWrite()">Save<i class="material-icons right">send</i></button>
+              <a style="float: right;margin-bottom: 3px"
+                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+            </div>
+          </div>
+          <div id="initialCopropertySaldoEdit" class="modal">
           <div class="modal-content">
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
-            <h5> Enter initial saldo</h5>
+            <h5> Enter initial condomynium saldo</h5>
             <form class="col s12">
               <div class="input-field col s12 m4">
-                <input id="initialSaldo_amount" type="number" class="validate" min="-999999" max="999999" step="0.01" required required="true">
-                <label for="initialSaldo_amount">Amount<b><font color='red'>*</font></b></label>
+                <input id="initialCopropertySaldo_amount" type="number" class="validate" min="-999999" max="999999" step="0.01" required required="true">
+                <label for="initialCopropertySaldo_amount">Amount<b><font color='red'>*</font></b></label>
                 <span class="helper-text" data-error="Positive or negative amount. Example: -10234.56">Positive or negative amount. Example: -1234.56"</span>
               </div>
             </form>
-            <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="initialSaldoWrite()">Save<i class="material-icons right">send</i></button>
+            <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="initialCopropertySaldoWrite()">Save<i class="material-icons right">send</i></button>
             <a style="float: right;margin-bottom: 3px"
               class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
           </div>
@@ -5077,8 +5092,6 @@
       function initialSaldoSelect(memberIdFS, saldo) {
         selectedMemberForInitialSaldo = memberIdFS;
         document.getElementById("initialSaldo_amount").value = saldo;
-        var elems = document.querySelectorAll('select');
-        M.FormSelect.init(elems);
         M.updateTextFields();
       };
 
@@ -5093,12 +5106,18 @@
         });
       };
 
-      function copropertyInitialSaldoEdit(){
+      function initialCopropertySaldoEditPrepare(){
+        document.getElementById("initialCopropertySaldo_amount").value = currentCoproperty.initialSaldo;
+        M.updateTextFields();
+      };
+
+
+      function initialCopropertySaldoWrite(){
         currentCoproperty.initialSaldo = Number(document.getElementById("initialCopropertySaldo_amount").value);
         refCoproperty.update({initialSaldo:currentCoproperty.initialSaldo}).then(function(){
           refreshHome();
           refreshInitialSaldos();
-          M.Modal.getInstance(document.getElementById("copropertyInitialSaldoEdit")).close();
+          M.Modal.getInstance(document.getElementById("initialCopropertySaldoEdit")).close();
         }).catch(function(error) {
           M.toast({html:"System error writing initial salso:" + error});
         });
