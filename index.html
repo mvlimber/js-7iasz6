@@ -5019,17 +5019,27 @@
         membersGet().then(function(membersHere){
           membersHere.forEach(function(memberHere){
             propertiesBy(memberHere).then(function(propertiesHere){
-              console.log("propertiesHere ", propertiesHere);
               if (propertiesHere.length) {
                 var memberHereSaldo = 0;
                 if(currentCoproperty.initialSaldos[memberHere]) {memberHereSaldo = currentCoproperty.initialSaldos[memberHere] };
                 var row = document.createElement("tr");
                 var column = document.createElement("td");
-                /*column.innerHTML = memberHere.firstName + " "+memberHere.lastName;*/
                 column.appendChild(memberLink(memberHere));
                 row.appendChild(column);
                 column = document.createElement("td");
                 column.innerHTML = memberHereSaldo.toLocaleString("nl-BE",currencyStyle) ;
+                row.appendChild(column);
+                column = document.createElement("td");
+                var cellContent = document.createElement('button');
+                cellContent.setAttribute("style", "float:left");
+                cellContent.setAttribute("data-target", "initialSaldoEdit");
+                cellContent.setAttribute('class','btn-floating waves-light modal-trigger');
+                cellContent.setAttribute('onclick','initialSaldoSelect('+JSON.stringify(memberHere.idFS)+','+JSON.stringify(memberHereSaldo)+')');
+                var cellButtonIcon = document.createElement('i');
+                cellButtonIcon.setAttribute('class','material-icons right');
+                cellButtonIcon.innerHTML="edit";         
+                cellContent.appendChild(cellButtonIcon);
+                column.appendChild(cellContent);
                 row.appendChild(column);
                 ISEl.appendChild(row);
               }
