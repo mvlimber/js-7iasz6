@@ -4041,11 +4041,11 @@
         return properties.find(checkId);
       };
       async function propertiesBy(aMember) {
-        function checkOwnership(p){return p.owner == aMember.idfs};
+        function checkOwnership(p){return p.owner == aMember.idFS};
         var ps = await propertiesGet();
-        return {
-          owns: ps.filter(checkOwnership),
-        } ;
+        var result = ps.filter(checkOwnership);
+        return result;
+          
       };
       
       var propertiesTable = document.getElementById("propertiesTable");
@@ -4990,7 +4990,7 @@
         });
       };
     
-     
+      var initialSaldosLoaded = false;
       function loadSettings() {
         hideMenu();
         document.getElementById("logo-container").innerHTML = "MyCondos: Settings";
@@ -5001,6 +5001,10 @@
         if (!costCentersLoaded) {
           refreshCostCenters();
           costCentersLoaded = true;
+        };
+        if (!initialSaldosLoaded) {
+          refreshInitialSaldos();
+          initialSaldosLoaded = true;
         };
       };
 
@@ -5015,15 +5019,16 @@
         membersGet().then(function(membersHere){
           membersHere.forEach(function(memberHere){
             propertiesBy(memberHere).then(function(propertiesHere){
+              console.log("propertiesHere ", propertiesHere);
               if (propertiesHere.length) {
                 var memberHereSaldo = 0;
-                if(coproperty.initialSaldos[memberHere]) {memberHereSaldo = coproperty.initialSaldos[memberHere] };
+                if(currentCoproperty.initialSaldos[memberHere]) {memberHereSaldo = currentCoproperty.initialSaldos[memberHere] };
                 var row = document.createElement("tr");
                 var column = document.createElement("td");
                 column.innerHTML = memberHere.firstName + " "+memberHere.lastName;
                 row.appendChild(column);
                 column = document.createElement("td");
-                column.innerHTML = memberHereSaldo..toLocaleString("nl-BE",currencyStyle) ;
+                column.innerHTML = memberHereSaldo.toLocaleString("nl-BE",currencyStyle) ;
                 row.appendChild(column);
                 ISEl.appendChild(row);
               }
