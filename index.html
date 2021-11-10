@@ -5025,7 +5025,8 @@
                 if(currentCoproperty.initialSaldos[memberHere]) {memberHereSaldo = currentCoproperty.initialSaldos[memberHere] };
                 var row = document.createElement("tr");
                 var column = document.createElement("td");
-                column.innerHTML = memberHere.firstName + " "+memberHere.lastName;
+                /*column.innerHTML = memberHere.firstName + " "+memberHere.lastName;*/
+                column.appendChild(memberLink(memberHere));
                 row.appendChild(column);
                 column = document.createElement("td");
                 column.innerHTML = memberHereSaldo.toLocaleString("nl-BE",currencyStyle) ;
