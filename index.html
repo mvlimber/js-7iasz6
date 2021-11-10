@@ -1377,7 +1377,12 @@
           <button style="float: right;margin-bottom: 3px" class="btn-small waves-light modal-trigger" data-target="costCenterAdd" ">New Cost Center<i class="material-icons right">add</i></button>
           <br><br>
           <div id="initialSaldos_frame">
-            <h5>Initial Saldos Coproperty:  </h5><p id="saldoCoproperty"></p>
+            <table>
+              <td><h5>Initial Saldo Coproperty:  </h5></td>
+              <td><p id="initialSaldo"></p></td>
+              <td><button style="float: right;margin-bottom: 3px" class="btn-floating waves-light modal-trigger" data-target="coproppertyInitialSaldoEdit()"><i class="material-icons right">edit</i></button></td>
+            </table>
+            <br>
             <h5>Initial Saldos Owners</h5>
           <table class="striped">
             <thead>
@@ -5032,7 +5037,9 @@
       };
 
       function refreshInitialSaldos(){
-        var ISEl = document.getElementById("initialSaldos");
+        var ISEl = document.getElementById("initialSaldo");
+        ISEl.innerHTML = currentCoproperty.initialSaldo.toLocaleString("nl-BE",currencyStyle);
+        ISEl = document.getElementById("initialSaldos");
         emptyHTMLSet(ISEl);
         membersGet().then(function(membersHere){
           membersHere.forEach(function(memberHere){
@@ -5066,6 +5073,7 @@
         })
       };
       var selectedMemberForInitialSaldo;
+
       function initialSaldoSelect(memberIdFS, saldo) {
         selectedMemberForInitialSaldo = memberIdFS;
         document.getElementById("initialSaldo_amount").value = saldo;
@@ -5073,6 +5081,7 @@
         M.FormSelect.init(elems);
         M.updateTextFields();
       };
+
       function initialSaldoWrite(){
         currentCoproperty.initialSaldos[selectedMemberForInitialSaldo]= Number(document.getElementById("initialSaldo_amount").value);
         refCoproperty.update({initialSaldos:currentCoproperty.initialSaldos }).then(function(){
@@ -5082,9 +5091,18 @@
         }).catch(function(error) {
           M.toast({html:"System error writing initial salso:" + error});
         });
-        
       };
 
+      function copropertyInitialSaldoEdit(){
+        currentCoproperty.initialSaldo = Number(document.getElementById("initialCopropertySaldo_amount").value);
+        refCoproperty.update({initialSaldo:currentCoproperty.initialSaldo}).then(function(){
+          refreshHome();
+          refreshInitialSaldos();
+          M.Modal.getInstance(document.getElementById("copropertyInitialSaldoEdit")).close();
+        }).catch(function(error) {
+          M.toast({html:"System error writing initial salso:" + error});
+        });
+      };
     </script>
     <!-- Charges report ----------------------------------------------------->
     <script>
