@@ -5016,7 +5016,16 @@
           membersHere.forEach(function(memberHere){
             propertiesBy(memberHere).then(function(propertiesHere){
               if (propertiesHere.length) {
-                if()
+                var memberHereSaldo = 0;
+                if(coproperty.initialSaldos[memberHere]) {memberHereSaldo = coproperty.initialSaldos[memberHere] };
+                var row = document.createElement("tr");
+                var column = document.createElement("td");
+                column.innerHTML = memberHere.firstName + " "+memberHere.lastName;
+                row.appendChild(column);
+                column = document.createElement("td");
+                column.innerHTML = memberHereSaldo..toLocaleString("nl-BE",currencyStyle) ;
+                row.appendChild(column);
+                ISEl.appendChild(row);
               }
             })
           })
