@@ -1382,7 +1382,7 @@
               <th>Owner</th>
               <th>Initial Saldo</th>
             </thead>
-            <tbody id="coproperty_initialSaldos">
+            <tbody id="initialSaldos">
             </tbody>
           </table>
           </div>
@@ -5007,7 +5007,22 @@
       function addCopropertyMeter(){
         addMeter();
         handlingCopropertyMeter = true;
+      };
+
+      function refreshInitialSaldos(){
+        var ISEl = document.getElementById("initialSaldos");
+        emptyHTMLSet(ISEl);
+        membersGet().then(function(membersHere){
+          membersHere.forEach(function(memberHere){
+            propertiesBy(memberHere).then(function(propertiesHere){
+              if (propertiesHere.length) {
+                if()
+              }
+            })
+          })
+        })
       }
+
     </script>
     <!-- Charges report ----------------------------------------------------->
     <script>
