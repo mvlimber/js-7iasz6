@@ -1377,7 +1377,8 @@
           <button style="float: right;margin-bottom: 3px" class="btn-small waves-light modal-trigger" data-target="costCenterAdd" ">New Cost Center<i class="material-icons right">add</i></button>
           <br><br>
           <div id="initialSaldos_frame">
-            <h5>Initial Saldos</h5>
+            <h5>Initial Saldos Coproperty:  </h5><p id="saldoCoproperty"></p>
+            <h5>Initial Saldos Owners</h5>
           <table class="striped">
             <thead>
               <th>Owner</th>
@@ -5038,7 +5039,6 @@
             propertiesBy(memberHere).then(function(propertiesHere){
               if (propertiesHere.length) {
                 var memberHereSaldo = 0;
-                console.log("currentCoproperty.initialSaldos", currentCoproperty.initialSaldos);
                 if(currentCoproperty.initialSaldos[memberHere.idFS]) {memberHereSaldo = currentCoproperty.initialSaldos[memberHere.idFS] };
                 var row = document.createElement("tr");
                 var column = document.createElement("td");
