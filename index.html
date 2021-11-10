@@ -5038,7 +5038,8 @@
             propertiesBy(memberHere).then(function(propertiesHere){
               if (propertiesHere.length) {
                 var memberHereSaldo = 0;
-                if(currentCoproperty.initialSaldos[memberHere]) {memberHereSaldo = currentCoproperty.initialSaldos[memberHere] };
+                console.log("currentCoproperty.initialSaldos", currentCoproperty.initialSaldos);
+                if(currentCoproperty.initialSaldos[memberHere.idFS]) {memberHereSaldo = currentCoproperty.initialSaldos[memberHere.idFS] };
                 var row = document.createElement("tr");
                 var column = document.createElement("td");
                 column.appendChild(memberLink(memberHere));
@@ -5073,10 +5074,13 @@
         M.updateTextFields();
       };
       function initialSaldoWrite(){
-        currentCoproperty.initialSaldos[selectedMemberForInitialSaldo]= document.getElementById("initialSaldo_amount").value;
+        currentCoproperty.initialSaldos[selectedMemberForInitialSaldo]= Number(document.getElementById("initialSaldo_amount").value);
         refCoproperty.update({initialSaldos:currentCoproperty.initialSaldos }).then(function(){
+          refreshHome();
           refreshInitialSaldos();
-          M.Modal.getInstance(document.getElementById("costCenterAdd")).close();
+          M.Modal.getInstance(document.getElementById("initialSaldoEdit")).close();
+        }).catch(function(error) {
+          M.toast({html:"System error writing initial salso:" + error});
         });
         
       };
