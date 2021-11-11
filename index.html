@@ -5225,6 +5225,15 @@
         {id:"private",name:"private",prompt:"private charges",width: 35,align: "center",padding: 0},
         {id:"Total",name:"Total",prompt:"Total",width: 35,align: "right",padding: 0}
       ];
+
+      var headerSaldos = [
+        {id:"owner",name:"owner",prompt:"owner",width: 60,align: "center",padding: 0},
+        {id:"oldSaldo",name:"oldSaldo",prompt:"last saldo",width: 35,align: "center",padding: 0},
+        {id:"payments",name:"payments",prompt:"payments",width: 35,align: "center",padding: 0},
+        {id:"charges",name:"charges",prompt:"charges",width: 35,align: "center",padding: 0},
+        {id:"provisions",name:"provisions",prompt:"provisions",width: 35,align: "center",padding: 0},
+        {id:"newSaldo",name:"newSaldo",prompt:"newSaldo",width: 35,align: "right",padding: 0}
+      ];
       
       var ccsInReport;
       var propertiesInReport;
@@ -5296,6 +5305,7 @@
         var mrsInReport;
         var consumptions = [];
         var totalledConsumptions = [];
+        var payedByProvisions = [];
         var ownerSaldos = [];
         if (metersIncluded){
           headerCharges = headerChargesMetersIncluded;
@@ -5369,6 +5379,18 @@
               privateCharges.push(trData);
             };
           });
+          /* fill payments by provisions */
+          transactionsFS.forEach(function(transactionFS){
+            var trData = transactionFS.data();
+            if (trData.type == "PROVI") {
+              payedByProvisionsTotal += reportTransaction(trData);
+              payedByProvisions.push(trData);
+            };
+          };
+
+          payedByProvisions.push({name:"Total",date:" ",communication:" ",amount:payedByProvisionsTotal});
+          convertToCurrency(payedByProvisions, ["amount"]);
+
           privateCharges.push({name: "Total", date: " ", communication: " ", assignments: " ", amount: privateTotal});
           convertToCurrency(privateCharges, ["amount"]);
           
@@ -5607,13 +5629,12 @@
           };
           totalChargesAmountFields.push("Total");
           convertToCurrency(totalledCharges, totalChargesAmountFields);
-          writePDF (closeDateTransactions,metersIncluded,commonCharges,privateCharges,totalledCharges,waterCharges,heatingCharges,totalledConsumptions);
+          writePDF (closeDateTransactions,metersIncluded,commonCharges,privateCharges,totalledCharges,waterCharges,heatingCharges,totalledConsumptions,payedByProvisions);
         });
       
       };
       
- 
-      function writePDF (closeDateTransactions, metersIncludedHere, commonCharges ,privateCharges, totalCharges, waterCharges,heatingCharges,totalledConsumptionsHere){
+      function writePDF (closeDateTransactions, metersIncludedHere, commonCharges ,privateCharges, totalCharges, waterCharges,heatingCharges,totalledConsumptionsHere,payedByProvisions){
         const rowsLandscapeConsumptions =16;
         const rowsLandscapePrivate =12;
         const rowsLandscapeTotal =13;
