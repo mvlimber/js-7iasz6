@@ -5316,6 +5316,7 @@
         var totalHeatingDifference = 0;
         var oldSaldo;
         var income = 0;
+        var payedByProvisionsTotal = 0;
         
         
         /* initialise common charges holder tabels*/
@@ -5386,7 +5387,7 @@
               payedByProvisionsTotal += reportTransaction(trData);
               payedByProvisions.push(trData);
             };
-          };
+          });
 
           payedByProvisions.push({name:"Total",date:" ",communication:" ",amount:payedByProvisionsTotal});
           convertToCurrency(payedByProvisions, ["amount"]);
@@ -5642,9 +5643,9 @@
         var numPages = 0;
         Object.values(commonCharges).forEach(function(cC){numPages += Math.ceil(cC.transactions.length/rowsPortrait)});
         if (metersIncludedHere) {
-          numPages += 1 + Math.ceil(privateCharges.length/rowsLandscapePrivate) + Math.ceil(totalCharges.length/rowsLandscapeTotal) + Math.ceil(waterCharges.length/rowsPortrait) + Math.ceil(heatingCharges.length/rowsPortrait) + Math.ceil(totalledConsumptionsHere.length/rowsLandscapeConsumptions)+ Math.ceil(payedByProvisions.length/rowsPortrait);
+          numPages += 1 + Math.ceil(privateCharges.length/rowsLandscapePrivate) + Math.ceil(totalCharges.length/rowsLandscapeTotal) + Math.ceil(waterCharges.length/rowsPortrait) + Math.ceil(heatingCharges.length/rowsPortrait) + Math.ceil(totalledConsumptionsHere.length/rowsLandscapeConsumptions)+ Math.ceil((payedByProvisions.length/rowsPortrait)-1);
         } else {
-          numPages += 1 + Math.ceil(privateCharges.length/rowsLandscapePrivate) + Math.ceil(totalCharges.length/rowsLandscapeTotal) + Math.ceil(payedByProvisions.length/rowsPortrait);
+          numPages += 1 + Math.ceil(privateCharges.length/rowsLandscapePrivate) + Math.ceil(totalCharges.length/rowsLandscapeTotal) + Math.ceil((payedByProvisions.length/rowsPortrait)-1);
         };
         window.jsPDF = window.jspdf.jsPDF;
         var currentPage = 1;
@@ -5719,10 +5720,10 @@
           doc.text("Heating expenses since previous regularisation", 30, 175);
           doc.text("Regularisation Water and Heating", 30, 185);
           doc.text("Total charges", 30, 195);
-          if (payedByProvisions.length) {doc.text("Expenses payed with provisions", 30, 205);};
+          if (payedByProvisions.length > 1) {doc.text("Expenses payed with provisions", 30, 205);};
         } else {
           doc.text("Total charges", 30, 165);
-          if (payedByProvisions.length) {doc.text("Expenses payed with provisions", 30, 175);};
+          if (payedByProvisions.length > 1) {doc.text("Expenses payed with provisions", 30, 175);};
         };
 
         printFooterPortrait();
@@ -5736,9 +5737,8 @@
           printTableLandscape("Regularisation Water and Heating (CW = Cold Water, HW= Hot Water, HE = Heating)", totalledConsumptionsHere, headerConsumption,8, rowsLandscapeConsumptions );
         };
         printTableLandscape("Total charges", totalCharges, headerCharges, 10, rowsLandscapeTotal );
-        if (payedByProvisions.length){
+        if (payedByProvisions.length > 1){
           printTablePortrait("Expenses payed with provisions" , payedByProvisions, headerWH);
-          
         };
       
       
