@@ -1377,9 +1377,9 @@
           <button style="float: right;margin-bottom: 3px" class="btn-small waves-light modal-trigger" data-target="costCenterAdd" ">New Cost Center<i class="material-icons right">add</i></button>
           <br><br><br><br>
           <table><tr>
-            <td><h5>Periodic funds raising</h5></td>
-            <td><p id="funds"></p></td>
-            <td><button style="float: right;margin-bottom: 3px" class="btn-floating waves-light modal-trigger" data-target="fundsEdit" onclick="fundsEditPrepare()"><i class="material-icons right">edit</i></button></td>
+            <td><h5>Periodic Provisions</h5></td>
+            <td><p id="provisions"></p></td>
+            <td><button style="float: right;margin-bottom: 3px" class="btn-floating waves-light modal-trigger" data-target="provisionsEdit" onclick="provisionsEditPrepare()"><i class="material-icons right">edit</i></button></td>
           </tr></table>
           <div id="initialSaldos_frame">
             <table><tr>
@@ -1473,6 +1473,22 @@
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
             </div>
           </div>
+          <div id="provisionsEdit" class="modal">
+          <div class="modal-content">
+            <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
+            <h5> Enter amount periodic funds raising, for entire condomynium</h5>
+            <form class="col s12">
+              <div class="input-field col s12 m4">
+                <input id="provisions_edit" type="number" class="validate" min="-999999" max="999999" step="0.01" required required="true">
+                <label for="provisions_edit">Amount<b><font color='red'>*</font></b></label>
+                <span class="helper-text" data-error="Positive or negative amount. Example: 2500">Positive amount. Example: 2000. Negative amount yields funds reimbursement"</span>
+              </div>
+            </form>
+            <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="provisionsWrite()">Save<i class="material-icons right">send</i></button>
+            <a style="float: right;margin-bottom: 3px"
+              class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+          </div>
+        </div>
           <div id="initialCopropertySaldoEdit" class="modal">
           <div class="modal-content">
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
@@ -5034,6 +5050,7 @@
       };
     
       var initialSaldosLoaded = false;
+      var copropertyAttributesLoaded = false;
       function loadSettings() {
         hideMenu();
         document.getElementById("logo-container").innerHTML = "MyCondos: Settings";
@@ -5049,6 +5066,11 @@
           refreshInitialSaldos();
           initialSaldosLoaded = true;
         };
+        if (!copropertyAttributesLoaded) {
+          refreshCopropertyAttributes();
+          copropertyAttributesLoaded = true;
+        };
+        
       };
 
       function addCopropertyMeter(){
@@ -5056,6 +5078,12 @@
         handlingCopropertyMeter = true;
       };
 
+      function refreshCopropertyAttributes(){
+        var CAEl = document.getElementById("provisions");
+        CAEl.innerHTML = currentCoproperty.provisions.toLocaleString("nl-BE",currencyStyle);
+        
+      };
+      
       function refreshInitialSaldos(){
         var ISEl = document.getElementById("initialSaldo");
         ISEl.innerHTML = currentCoproperty.initialSaldo.toLocaleString("nl-BE",currencyStyle);
@@ -5116,6 +5144,11 @@
         M.updateTextFields();
       };
 
+      function provisionsEditPrepare(){
+        document.getElementById("provisions_edit").value = currentCoproperty.provisions;
+        M.updateTextFields();
+      };
+
 
       function initialCopropertySaldoWrite(){
         currentCoproperty.initialSaldo = Number(document.getElementById("initialCopropertySaldo_amount").value);
@@ -5125,6 +5158,17 @@
           M.Modal.getInstance(document.getElementById("initialCopropertySaldoEdit")).close();
         }).catch(function(error) {
           M.toast({html:"System error writing initial salso:" + error});
+        });
+      };
+
+      function provisionsWrite(){
+        currentCoproperty.provisions = Number(document.getElementById("provisions_edit").value);
+        refCoproperty.update({fundsRaise:currentCoproperty.provisions}).then(function(){
+          refreshHome();
+          refreshCopropertyAttributes();
+          M.Modal.getInstance(document.getElementById("provisionsEdit")).close();
+        }).catch(function(error) {
+          M.toast({html:"System error writing provisions:" + error});
         });
       };
     </script>
