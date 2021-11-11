@@ -5296,6 +5296,7 @@
         var mrsInReport;
         var consumptions = [];
         var totalledConsumptions = [];
+        var ownerSaldos = [];
         if (metersIncluded){
           headerCharges = headerChargesMetersIncluded;
           mrsInReport = await meterReadingsGet();   
@@ -5303,6 +5304,9 @@
         var totalColdWaterDifference = 0;
         var totalHotWaterDifference = 0;
         var totalHeatingDifference = 0;
+        var oldSaldo;
+        var income = 0;
+        
         
         /* initialise common charges holder tabels*/
         var i = 0;
