@@ -5719,8 +5719,10 @@
           doc.text("Heating expenses since previous regularisation", 30, 175);
           doc.text("Regularisation Water and Heating", 30, 185);
           doc.text("Total charges", 30, 195);
+          if (payedByProvisions.length) {doc.text("Payes with provisions", 30, 205);};
         } else {
           doc.text("Total charges", 30, 165);
+          if (payedByProvisions.length) {doc.text("Payes with provisions", 30, 175);};
         };
 
         printFooterPortrait();
