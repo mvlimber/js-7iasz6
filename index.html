@@ -5652,12 +5652,14 @@
           };
           totalChargesAmountFields.push("Total");
           convertToCurrency(totalledCharges, totalChargesAmountFields);
+          convertToCurrency(copropertySaldo, ["oldSaldo","income","expenses","newSaldo"]);
+          
           writePDF (closeDateTransactions,metersIncluded,commonCharges,privateCharges,totalledCharges,waterCharges,heatingCharges,totalledConsumptions,payedByProvisions, copropertySaldo);
         });
       
       };
       /*  print starts here ---------------------------------------------------------------------------------*/
-      function writePDF (closeDateTransactions, metersIncludedHere, commonCharges ,privateCharges, totalCharges, waterCharges,heatingCharges,totalledConsumptionsHere,payedByProvisions){
+      function writePDF (closeDateTransactions, metersIncludedHere, commonCharges ,privateCharges, totalCharges, waterCharges,heatingCharges,totalledConsumptionsHere,payedByProvisions, copropertySaldo){
         const rowsLandscapeConsumptions =16;
         const rowsLandscapePrivate =12;
         const rowsLandscapeTotal =13;
