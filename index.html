@@ -2142,9 +2142,15 @@
         });
       };
 
+      var lastCoproperySaldo;
+      var lastOwnerSaldos;
+
       function readCloseAndReguDate (chargesReportsFS) {
         if  (chargesReportsFS.docs.length > 0) {
-              lastCloseDate= chargesReportsFS.docs[0].data().endDate;
+              var lastReportData = chargesReportsFS.docs[0].data();
+              lastCloseDate= lastReportData.endDate;
+              lastCoproperySaldo = lastReportData.copropertySaldo;
+              lastOwnerSaldos = lastReportData.ownerSaldos;
               var i = 0;
               while ((i < chargesReportsFS.docs.length) && (!chargesReportsFS.docs[i].data().metersIncluded)) {i = i+1};
               if (i < chargesReportsFS.docs.length) {lastReguDate = chargesReportsFS.docs[i].data().endDate}
@@ -2153,6 +2159,8 @@
             else {
               lastCloseDate = currentCoproperty.initialStartDate;
               lastReguDate = currentCoproperty.initialStartDate;
+              lastCoproperySaldo = currentCoproperty.initialSaldo;
+              lastOwnerSaldos = currentCoproperty.initialSaldos;
             };
       };
 
@@ -5229,7 +5237,14 @@
         {id:"Total",name:"Total",prompt:"Total",width: 35,align: "right",padding: 0}
       ];
 
-      var headerSaldos = [
+      var headerCopropertySaldo = [
+        {id:"oldSaldo",name:"oldSaldo",prompt:"last saldo",width: 35,align: "center",padding: 0},
+        {id:"income",name:"income",prompt:"income",width: 35,align: "center",padding: 0},
+        {id:"expenses",name:"expenses",prompt:"expenses",width: 35,align: "center",padding: 0},
+        {id:"newSaldo",name:"newSaldo",prompt:"newSaldo",width: 35,align: "right",padding: 0}
+      ];
+
+      var headerOwnerSaldos = [
         {id:"owner",name:"owner",prompt:"owner",width: 60,align: "center",padding: 0},
         {id:"oldSaldo",name:"oldSaldo",prompt:"last saldo",width: 35,align: "center",padding: 0},
         {id:"payments",name:"payments",prompt:"payments",width: 35,align: "center",padding: 0},
@@ -5317,8 +5332,12 @@
         var totalColdWaterDifference = 0;
         var totalHotWaterDifference = 0;
         var totalHeatingDifference = 0;
-        var oldSaldo;
-        var income = 0;
+        var copropertySaldo = {
+          oldSalso: null,
+          income: 0,
+          expenses: 0,
+          newSaldo.0
+        };
         var payedByProvisionsTotal = 0;
         
         
