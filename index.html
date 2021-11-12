@@ -1747,6 +1747,7 @@
       HEATI: 'heating',
       PRIVA: 'private',
       OWNER: 'owner payment',
+      PROVI: 'payed with provision',
       TBSET: 'to be set'
     };
 
@@ -1760,8 +1761,10 @@
       WATER: 'water',
       HEATI: 'heating',
       PRIVA: 'private',
-      OWNER: 'owner payment'
+      OWNER: 'owner payment',
+      PROVI: 'payed with provision'
     };
+    function hasCostCenter(aTransType) {return ((aTransType != "") && (aTransType != "PRIVA") && (aTransType != "OWNER") && (aTransType != "PROVI"))};
 
     var TransRuleType = {
       MAINT : 'repair maintenance',
@@ -1772,7 +1775,8 @@
       ELECT: 'electricity',
       WATER: 'water',
       HEATI: 'heating',
-      OWNER: 'owner payment'
+      OWNER: 'owner payment',
+      PROVI: 'payed with provision'
     };
 
     var MeterStatus = {
@@ -2661,7 +2665,7 @@
         M.toast({html:"Please enter cost center"});
         valid=false;
       };
-      if (((document.getElementById("transaction_type_add").value != "PRIVA") && (document.getElementById("transaction_type_add").value != "OWNER")) && (!document.getElementById("transaction_costCenter_add").value)) {
+      if ((hasCostCenter(document.getElementById("transaction_type_add").value) && (!document.getElementById("transaction_costCenter_add").value)) {
         M.toast({html:"Please enter cost center"});
         valid=false;
       };
@@ -2739,7 +2743,7 @@
       if (checkBookDate(object.bookDate)){document.getElementById("transaction_edit_button").disabled = false}
       else {document.getElementById("transaction_edit_button").disabled = true};
       refreshTransactionEvidence();
-      if ((object.type == "PRIVA") || (object.type == "OWNER")) {
+      if ((object.type == "PRIVA") || (object.type == "OWNER") || (object.type == "PROVI")) {
         document.getElementById("transaction_costCenter_field").style.display = "none";
         var elems = document.querySelectorAll('select');
         M.FormSelect.init(elems);
@@ -2802,6 +2806,7 @@
       transaction = new TransactionObject();
       document.getElementById("transaction_type_add").value="";
       listCostCenters(document.getElementById("transaction_costCenter_add"), "");
+      document.getElementById("transaction_costCenter_add_field").style.display = "none";
       document.getElementById("transaction_account_add").value="";
       document.getElementById("transaction_name_add").value="";
       document.getElementById("transaction_amount_add").value="";
@@ -2954,12 +2959,11 @@
       } else {
         document.getElementById("transaction_properties_add_frame").style.display = "none";
       };
-      if ((typeElement.value == "PRIVA") || (typeElement.value == "OWNER")) {
-        document.getElementById("transaction_costCenter_add_field").style.display = "none";
-      } else {
+      if (hasCostCenter(typeElement.value) {
         document.getElementById("transaction_costCenter_add_field").style.display = "block";
+      } else {
+        document.getElementById("transaction_costCenter_add_field").style.display = "none";
       };
-
     };
 
       function emptyTransactionEvidenceLinkFields(){
@@ -3422,7 +3426,7 @@
 
       function toggleTransactionRule(){
         var typeElement = document.getElementById("transactionRule_type");
-        if ((!typeElement.value) ||(typeElement.value == "PRIVA")) {
+        if ((!typeElement.value) ||(typeElement.value == "PRIVA") ||(typeElement.value == "PROVI")) {
           document.getElementById("transactionRule_costCenter_field").style.display = "none";
           document.getElementById("transactionRule_owner_field").style.display = "none";
         } else if (typeElement.value == "OWNER"){
@@ -5335,7 +5339,7 @@
           /* fill common charges tables */
           transactionsFS.forEach(function(transactionFS){
             var trData = transactionFS.data();
-            if (trData.type != "PRIVA") {
+            if (!hasCostCenter(trData.type)) {
               commonCharges[trData.costCenter].total += reportTransaction(trData);
               commonCharges[trData.costCenter].transactions.push(trData);
             };
