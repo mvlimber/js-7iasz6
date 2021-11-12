@@ -2665,7 +2665,7 @@
         M.toast({html:"Please enter cost center"});
         valid=false;
       };
-      if ((hasCostCenter(document.getElementById("transaction_type_add").value) && (!document.getElementById("transaction_costCenter_add").value)) {
+      if ((hasCostCenter(document.getElementById("transaction_type_add").value)) && (!document.getElementById("transaction_costCenter_add").value)) {
         M.toast({html:"Please enter cost center"});
         valid=false;
       };
@@ -2743,12 +2743,7 @@
       if (checkBookDate(object.bookDate)){document.getElementById("transaction_edit_button").disabled = false}
       else {document.getElementById("transaction_edit_button").disabled = true};
       refreshTransactionEvidence();
-      if ((object.type == "PRIVA") || (object.type == "OWNER") || (object.type == "PROVI")) {
-        document.getElementById("transaction_costCenter_field").style.display = "none";
-        var elems = document.querySelectorAll('select');
-        M.FormSelect.init(elems);
-        M.updateTextFields();
-      } else {
+      if (hasCostCenter(object.type)) {
         document.getElementById("transaction_costCenter_field").style.display = "block";
         costCenterGet(object.costCenter).then(function (cc){
           document.getElementById("transaction_costCenter").value=cc.name;
@@ -2756,8 +2751,12 @@
           M.FormSelect.init(elems);
           M.updateTextFields();
         });
+      } else {
+        document.getElementById("transaction_costCenter_field").style.display = "none";
+        var elems = document.querySelectorAll('select');
+        M.FormSelect.init(elems);
+        M.updateTextFields();
       };
-      
     };    
 
     function showTransactionDistribution(){
@@ -2838,10 +2837,10 @@
       buttonIcon.setAttribute("class","material-icons right");
       buttonIcon.innerHTML = "send";
       document.getElementById("transaction_save_button").appendChild(buttonIcon);
-      if ((object.type == "PRIVA") || (object.type == "OWNER")) {
-        document.getElementById("transaction_costCenter_add_field").style.display = "none";
+      if (hasCostCenter(object.type)) {
+        document.getElementById("transaction_costCenter_add_field").style.display = "block";
       } else {
-        document.getElementById("transaction_costCenter_add_field").style.display = "hidden";
+        document.getElementById("transaction_costCenter_add_field").style.display = "none";
       };
       enableSelectProperties();
       var elems = document.querySelectorAll('select');
@@ -2959,7 +2958,7 @@
       } else {
         document.getElementById("transaction_properties_add_frame").style.display = "none";
       };
-      if (hasCostCenter(typeElement.value) {
+      if (hasCostCenter(typeElement.value)) {
         document.getElementById("transaction_costCenter_add_field").style.display = "block";
       } else {
         document.getElementById("transaction_costCenter_add_field").style.display = "none";
