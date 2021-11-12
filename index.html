@@ -2142,14 +2142,14 @@
         });
       };
 
-      var lastCoproperySaldo;
+      var lastCopropertySaldo;
       var lastOwnerSaldos;
 
       function readCloseAndReguDate (chargesReportsFS) {
         if  (chargesReportsFS.docs.length > 0) {
               var lastReportData = chargesReportsFS.docs[0].data();
               lastCloseDate= lastReportData.endDate;
-              lastCoproperySaldo = lastReportData.copropertySaldo;
+              lastCopropertySaldo = lastReportData.copropertySaldo;
               lastOwnerSaldos = lastReportData.ownerSaldos;
               var i = 0;
               while ((i < chargesReportsFS.docs.length) && (!chargesReportsFS.docs[i].data().metersIncluded)) {i = i+1};
@@ -2159,7 +2159,7 @@
             else {
               lastCloseDate = currentCoproperty.initialStartDate;
               lastReguDate = currentCoproperty.initialStartDate;
-              lastCoproperySaldo = currentCoproperty.initialSaldo;
+              lastCopropertySaldo = currentCoproperty.initialSaldo;
               lastOwnerSaldos = currentCoproperty.initialSaldos;
             };
       };
@@ -5332,12 +5332,12 @@
         var totalColdWaterDifference = 0;
         var totalHotWaterDifference = 0;
         var totalHeatingDifference = 0;
-        var copropertySaldo = {
-          oldSalso: null,
+        var copropertySaldo = [{
+          oldSaldo: lastCopropertySaldo,
           income: 0,
           expenses: 0,
-          newSaldo.0
-        };
+          newSaldo: 0
+        }];
         var payedByProvisionsTotal = 0;
         
         
@@ -5652,11 +5652,11 @@
           };
           totalChargesAmountFields.push("Total");
           convertToCurrency(totalledCharges, totalChargesAmountFields);
-          writePDF (closeDateTransactions,metersIncluded,commonCharges,privateCharges,totalledCharges,waterCharges,heatingCharges,totalledConsumptions,payedByProvisions);
+          writePDF (closeDateTransactions,metersIncluded,commonCharges,privateCharges,totalledCharges,waterCharges,heatingCharges,totalledConsumptions,payedByProvisions, copropertySaldo);
         });
       
       };
-      
+      /*  print starts here ---------------------------------------------------------------------------------*/
       function writePDF (closeDateTransactions, metersIncludedHere, commonCharges ,privateCharges, totalCharges, waterCharges,heatingCharges,totalledConsumptionsHere,payedByProvisions){
         const rowsLandscapeConsumptions =16;
         const rowsLandscapePrivate =12;
@@ -5665,9 +5665,9 @@
         var numPages = 0;
         Object.values(commonCharges).forEach(function(cC){numPages += Math.ceil(cC.transactions.length/rowsPortrait)});
         if (metersIncludedHere) {
-          numPages += 1 + Math.ceil(privateCharges.length/rowsLandscapePrivate) + Math.ceil(totalCharges.length/rowsLandscapeTotal) + Math.ceil(waterCharges.length/rowsPortrait) + Math.ceil(heatingCharges.length/rowsPortrait) + Math.ceil(totalledConsumptionsHere.length/rowsLandscapeConsumptions)+ Math.ceil((payedByProvisions.length/rowsPortrait)-1);
+          numPages += 2 + Math.ceil(privateCharges.length/rowsLandscapePrivate) + Math.ceil(totalCharges.length/rowsLandscapeTotal) + Math.ceil(waterCharges.length/rowsPortrait) + Math.ceil(heatingCharges.length/rowsPortrait) + Math.ceil(totalledConsumptionsHere.length/rowsLandscapeConsumptions)+ Math.ceil((payedByProvisions.length/rowsPortrait)-1);
         } else {
-          numPages += 1 + Math.ceil(privateCharges.length/rowsLandscapePrivate) + Math.ceil(totalCharges.length/rowsLandscapeTotal) + Math.ceil((payedByProvisions.length/rowsPortrait)-1);
+          numPages += 2 + Math.ceil(privateCharges.length/rowsLandscapePrivate) + Math.ceil(totalCharges.length/rowsLandscapeTotal) + Math.ceil((payedByProvisions.length/rowsPortrait)-1);
         };
         window.jsPDF = window.jspdf.jsPDF;
         var currentPage = 1;
@@ -5742,10 +5742,20 @@
           doc.text("Heating expenses since previous regularisation", 30, 175);
           doc.text("Regularisation Water and Heating", 30, 185);
           doc.text("Total charges", 30, 195);
-          if (payedByProvisions.length > 1) {doc.text("Expenses payed with provisions", 30, 205);};
+          if (payedByProvisions.length > 1) {
+            doc.text("Expenses payed with provisions", 30, 205);
+            doc.text("Saldos", 30, 215);
+          } else {
+            doc.text("Saldos", 30, 205);
+          };
         } else {
           doc.text("Total charges", 30, 165);
-          if (payedByProvisions.length > 1) {doc.text("Expenses payed with provisions", 30, 175);};
+          if (payedByProvisions.length > 1) {
+            doc.text("Expenses payed with provisions", 30, 175);
+            doc.text("Saldos", 30, 185);
+          }else {
+            doc.text("Saldos", 30, 175);
+          };
         };
 
         printFooterPortrait();
@@ -5762,7 +5772,7 @@
         if (payedByProvisions.length > 1){
           printTablePortrait("Expenses payed with provisions" , payedByProvisions, headerWH);
         };
-      
+        printTablePortrait("Saldos", copropertySaldo, headerCopropertySaldo);
       
         refCoproperty.collection("ChargesReports").add({startDate: startDateString, endDate: closeDateTransactions, metersIncluded: metersIncludedHere, confirmed: false }).then (function (chargesReportFS){
           var fileRef = refCopropertyFiles.child("ChargesReports").child(chargesReportFS.id);  
