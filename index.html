@@ -5643,6 +5643,8 @@
           });
           totalledCharges.push(generateEmptyRowTotalledCharges());
           totalledCharges.push(grandTotalsRow);
+          ccsInReport.forEach(function(cc){copropertySaldo.expenses += grandTotalsRow[cc.idFs];});
+          copropertySaldo.expenses += grandTotalsRow.private;
           function getId(cc){return cc.idFS};
           var totalChargesAmountFields = ccsInReport.map(getId);
           totalChargesAmountFields.push("private");
