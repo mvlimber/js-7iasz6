@@ -5338,7 +5338,7 @@
           /* fill common charges tables */
           transactionsFS.forEach(function(transactionFS){
             var trData = transactionFS.data();
-            if (!hasCostCenter(trData.type)) {
+            if (hasCostCenter(trData.type)) {
               commonCharges[trData.costCenter].total += reportTransaction(trData);
               commonCharges[trData.costCenter].transactions.push(trData);
             };
