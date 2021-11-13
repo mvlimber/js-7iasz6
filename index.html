@@ -5796,7 +5796,8 @@
         };
         printTablePortrait(" Owner Saldos", ownersSaldo, headerOwnersSaldo);
         /*printTablePortrait("Saldos", copropertySaldo, headerCopropertySaldo);*/
-      
+        doc.text("Saldo Condomynium", 30, 240);
+        doc.table(15, 250, copropertySaldo, headerCopropertySaldo,{fontSize:10});
         refCoproperty.collection("ChargesReports").add({startDate: startDateString, endDate: closeDateTransactions, metersIncluded: metersIncludedHere, confirmed: false }).then (function (chargesReportFS){
           var fileRef = refCopropertyFiles.child("ChargesReports").child(chargesReportFS.id);  
           fileRef.put(doc.output("blob")).then(function(snapshot) {
