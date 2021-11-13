@@ -578,10 +578,16 @@
                   <select id="transaction_costCenter_add"></select>
                   <label>Cost Center<b><font color='red'>*</font></b></label>
                 </div>
-                <div class="input-field col s12 m4">
-                  <input id="transaction_name_add" type="text" class="validate" maxlength="50" required required="true">
+                <div class="input-field col s12 m4" id="transaction_name_add_field">
+                  <input id="transaction_name_add" type="text" class="validate" maxlength="50">
                   <label for="transaction_name_add">Counterparty<b><font color='red'>*</font></b></label>
                   <span class="helper-text" data-error="Maximum 50 characters"></span>
+                </div>
+                <div class="input-field col s12 m4" id="transaction_owner_add_field" >
+                  <select id="transaction_owner_add" >
+                    <option value="" disabled selected>Select Owner</option>
+                  </select>
+                  <label for="transaction_owner_add"><b>THEN </b>Owner<b><font color='red'>*</font></b></label>
                 </div>
                 <div class="input-field col s12 m4">
                   <input id="transaction_account_add" type="text" maxlength="19" class="validate"
@@ -1765,6 +1771,7 @@
       PROVI: 'payed with provision'
     };
     function hasCostCenter(aTransType) {return ((aTransType != "") && (aTransType != "PRIVA") && (aTransType != "OWNER") && (aTransType != "PROVI"))};
+    function hasCounterparty(aTransType) {return ((aTransType != "") && (aTransType != "OWNER") && (aTransType != "PROVI"))};
 
     var TransRuleType = {
       MAINT : 'repair maintenance',
@@ -2541,6 +2548,7 @@
         this.date = "";
         this.bookDate = "";
         this.communication = "";
+        this.owner = "";
         this.distribution= [];
         this.evidence = [];
       };
@@ -2820,7 +2828,8 @@
       document.getElementById("transaction_date_add").value="";
       document.getElementById("transaction_bookDate_add").value="";
       document.getElementById("transaction_communication_add").value="";
-      document.getElementById("transaction_properties_add_frame").style.display = "none";
+      listMembers(document.getElementById("transaction_owner_add"), "");
+      toggleTransaction();
       document.getElementById("transaction_save_button").innerHTML = "Save and go to adding evidence";
       var buttonIcon = document.createElement("i");
       buttonIcon.setAttribute("class","material-icons right");
@@ -2840,6 +2849,9 @@
       document.getElementById("transaction_date_add").value=object.date;
       document.getElementById("transaction_bookDate_add").value=object.bookDate;
       document.getElementById("transaction_communication_add").value=object.communication;
+      if (object.owner) {listMembers(document.getElementById("transaction_owner_add"), object.owner);}
+      else {listMembers(document.getElementById("transaction_owner_add"), "");};
+      toggleTransaction();
       document.getElementById("transaction_save_button").innerHTML = "Save";
       var buttonIcon = document.createElement("i");
       buttonIcon.setAttribute("class","material-icons right");
@@ -2955,7 +2967,7 @@
       htmlTable.appendChild(objectsRow);
     };
     
-    function enableSelectProperties(){
+    function toggleTransaction(){
       var typeElement = document.getElementById("transaction_type_add");
       if (typeElement.value == "PRIVA") {
         document.getElementById("transaction_properties_add_frame").style.display = "block";
@@ -2971,8 +2983,19 @@
       } else {
         document.getElementById("transaction_costCenter_add_field").style.display = "none";
       };
+      if (typeElement.value == "OWNER"){
+        document.getElementById("transaction_owner_add_field").style.display = "block";
+      } else {
+        document.getElementById("transaction_owner_add_field").style.display = "none";
+      };
+      if (hasCounterparty(typeElement.value)){
+        document.getElementById("transaction_name_add_field").style.display = "block";
+      } else {
+        document.getElementById("transaction_name_add_field").style.display = "none";
+      },
     };
-
+      /* Transaction Evidence scripts start here---------------------------------------------*/
+    
       function emptyTransactionEvidenceLinkFields(){
         var thisSelectEl = document.getElementById("transactionLink_document");
         thisSelectEl.value = "";
@@ -3167,6 +3190,7 @@
           });
         };
       };
+    /* TransactionLoadings scripts start here---------------------------------------------*/
     
     var transactionsLoadFile;
     function validateTransactionsLoadEntries(){
@@ -3290,7 +3314,7 @@
       });
     };
     </script>
-    <!-- TransactionRules scripts start here-->
+    <!-- TransactionRules scripts start here--------------------------------------------->
     <script>
       var transactionRules = null;
       async function transactionRulesGet(){
