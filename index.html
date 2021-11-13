@@ -5241,7 +5241,7 @@
         {id:"oldSaldo",name:"oldSaldo",prompt:"last saldo",width: 35,align: "center",padding: 0},
         {id:"income",name:"income",prompt:"income",width: 35,align: "center",padding: 0},
         {id:"expenses",name:"expenses",prompt:"expenses",width: 35,align: "center",padding: 0},
-        {id:"newSaldo",name:"newSaldo",prompt:"newSaldo",width: 35,align: "right",padding: 0}
+        {id:"newSaldo",name:"newSaldo",prompt:"new saldo",width: 35,align: "right",padding: 0}
       ];
 
       var headerOwnerSaldos = [
@@ -5250,7 +5250,7 @@
         {id:"payments",name:"payments",prompt:"payments",width: 35,align: "center",padding: 0},
         {id:"charges",name:"charges",prompt:"charges",width: 35,align: "center",padding: 0},
         {id:"provisions",name:"provisions",prompt:"provisions",width: 35,align: "center",padding: 0},
-        {id:"newSaldo",name:"newSaldo",prompt:"newSaldo",width: 35,align: "right",padding: 0}
+        {id:"newSaldo",name:"newSaldo",prompt:"new saldo",width: 35,align: "right",padding: 0}
       ];
       
       var ccsInReport;
@@ -5643,8 +5643,12 @@
           });
           totalledCharges.push(generateEmptyRowTotalledCharges());
           totalledCharges.push(grandTotalsRow);
-          ccsInReport.forEach(function(cc){copropertySaldo.expenses += grandTotalsRow[cc.idFs];});
-          copropertySaldo.expenses += grandTotalsRow.private;
+
+          ccsInReport.forEach(function(cc){
+            copropertySaldo[0].expenses += grandTotalsRow[cc.idFS];});
+          copropertySaldo[0].expenses += grandTotalsRow.private;
+          
+
           function getId(cc){return cc.idFS};
           var totalChargesAmountFields = ccsInReport.map(getId);
           totalChargesAmountFields.push("private");
@@ -5655,6 +5659,7 @@
           totalChargesAmountFields.push("Total");
           convertToCurrency(totalledCharges, totalChargesAmountFields);
           convertToCurrency(copropertySaldo, ["oldSaldo","income","expenses","newSaldo"]);
+          console.log("copropertySaldo ",copropertySaldo);
           
           writePDF (closeDateTransactions,metersIncluded,commonCharges,privateCharges,totalledCharges,waterCharges,heatingCharges,totalledConsumptions,payedByProvisions, copropertySaldo);
         });
