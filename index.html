@@ -2562,22 +2562,22 @@
           var object = objectFS.data();
           var objectsRow= document.createElement('tr');
           
-          var cellContent = document.createElement('button');
-          cellContent.setAttribute("data-target", "transactionView");
-          cellContent.setAttribute('class','modal-trigger');
-          cellContent.setAttribute('style','border:none;background-color:Transparent');
-          cellContent.setAttribute('onclick','setSelectedTransaction('+JSON.stringify(objectFS.id)+','+JSON.stringify(object)+')');
+          var viewButton = document.createElement('button');
+          viewButton.setAttribute("data-target", "transactionView");
+          viewButton.setAttribute('class','modal-trigger');
+          viewButton.setAttribute('style','border:none;background-color:Transparent');
+          viewButton.setAttribute('onclick','setSelectedTransaction('+JSON.stringify(objectFS.id)+','+JSON.stringify(object)+')');
           var cellButtonIcon = document.createElement('i');
           cellButtonIcon.setAttribute('class','material-icons right');
           cellButtonIcon.innerHTML="add";           
-          cellContent.appendChild(cellButtonIcon);
-          cellContent.innerHTML = "<font color='blue'>" + object.name + "</font>";
+          viewButton.appendChild(cellButtonIcon);
+          
           var cell = document.createElement('td');
-          cell.appendChild(cellContent);
+          cell.appendChild(viewButton);
           objectsRow.appendChild(cell);   
 
           var amount = object.amount;
-          cellContent = document.createTextNode(amount.toLocaleString("nl-BE", currencyStyle));
+          var cellContent = document.createTextNode(amount.toLocaleString("nl-BE", currencyStyle));
           cell = document.createElement('td');
           cell.appendChild(cellContent);
           objectsRow.appendChild(cell);  
@@ -2621,6 +2621,15 @@
           
           
           transactionsTable.appendChild (objectsRow);
+
+          if (object.type == "OWNER") {
+            memberGet(object.owner).then (function(m){
+              viewButton.innerHTML = "<font color='blue'>" + m.firtName + " " + m.lastName + "</font>";
+            })
+          } else {
+            viewButton.innerHTML = "<font color='blue'>" + object.name + "</font>";
+          }
+
           });
         };
           
