@@ -5659,7 +5659,7 @@
           ccsInReport.forEach(function(cc){
             copropertySaldo[0].expenses += grandTotalsRow[cc.idFS];});
           copropertySaldo[0].expenses += grandTotalsRow.private;
-          copropertySaldo[0].expenses += payedByProvisions;
+          copropertySaldo[0].expenses += payedByProvisionsTotal;
           
           function getId(cc){return cc.idFS};
           var totalChargesAmountFields = ccsInReport.map(getId);
@@ -5796,7 +5796,8 @@
         };
         printTablePortrait(" Owner Saldos", ownersSaldo, headerOwnersSaldo);
         /*printTablePortrait("Saldos", copropertySaldo, headerCopropertySaldo);*/
-        doc.text("Saldo Condomynium", 30, 240);
+        doc.setFontSize(16);
+        doc.text("Saldo Condomynium", 15, 240);
         doc.table(15, 250, copropertySaldo, headerCopropertySaldo,{fontSize:10});
         refCoproperty.collection("ChargesReports").add({startDate: startDateString, endDate: closeDateTransactions, metersIncluded: metersIncludedHere, confirmed: false }).then (function (chargesReportFS){
           var fileRef = refCopropertyFiles.child("ChargesReports").child(chargesReportFS.id);  
