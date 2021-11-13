@@ -5647,8 +5647,8 @@
           ccsInReport.forEach(function(cc){
             copropertySaldo[0].expenses += grandTotalsRow[cc.idFS];});
           copropertySaldo[0].expenses += grandTotalsRow.private;
+          copropertySaldo[0].expenses += payedByProvisions;
           
-
           function getId(cc){return cc.idFS};
           var totalChargesAmountFields = ccsInReport.map(getId);
           totalChargesAmountFields.push("private");
@@ -5659,7 +5659,6 @@
           totalChargesAmountFields.push("Total");
           convertToCurrency(totalledCharges, totalChargesAmountFields);
           convertToCurrency(copropertySaldo, ["oldSaldo","income","expenses","newSaldo"]);
-          console.log("copropertySaldo ",copropertySaldo);
           
           writePDF (closeDateTransactions,metersIncluded,commonCharges,privateCharges,totalledCharges,waterCharges,heatingCharges,totalledConsumptions,payedByProvisions, copropertySaldo);
         });
