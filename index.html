@@ -4115,7 +4115,11 @@
         var ps = await propertiesGet();
         var result = ps.filter(checkOwnership);
         return result;
-          
+      };
+      function propertiesBySynchrone(aMember) {
+        function checkOwnership(p){return p.owner == aMember.idFS};
+        var result = properties.filter(checkOwnership);
+        return result;
       };
       
       var propertiesTable = document.getElementById("propertiesTable");
@@ -5339,7 +5343,13 @@
           newSaldo: 0
         }];
         var payedByProvisionsTotal = 0;
-        
+
+        /* make table saldos per owner */
+        membersInReport.forEach(function(m){
+          var hisProperties = propertiesBySynchrone(m);
+          if (hisProperties.length){ownerSaldos.push({ownerId: m.idFS, owner: m.firstName + " " + m.lastName, oldSaldo: 0, payments: 0, charges:0, provisions:0 , newSaldo:0})};
+        });
+        console.log("ownerSaldos",ownerSaldos);
         
         /* initialise common charges holder tabels*/
         var i = 0;
