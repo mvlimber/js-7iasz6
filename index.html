@@ -2624,11 +2624,11 @@
 
           if (object.type == "OWNER") {
             memberGet(object.owner).then (function(m){
-              viewButton.innerHTML = "<font color='blue'>" + m.firtName + " " + m.lastName + "</font>";
+              viewButton.innerHTML = "<font color='blue'>" + m.firstName + " " + m.lastName + "</font>";
             })
           } else {
             viewButton.innerHTML = "<font color='blue'>" + object.name + "</font>";
-          }
+          };
 
           });
         };
@@ -2787,7 +2787,7 @@
         if (object.type == "OWNER") {
           document.getElementById("transaction_owner_field").style.display = "block";
           memberGet(object.owner).then(function(m){
-            document.getElementById("transaction_owner_field").value = m.firstName + " " + m. lastName;
+            document.getElementById("transaction_owner").value = m.firstName + " " + m. lastName;
             var elems = document.querySelectorAll('select');
             M.FormSelect.init(elems);
             M.updateTextFields();
