@@ -2731,7 +2731,7 @@
         amount: Number(document.getElementById("transaction_amount_add").value),
         date: document.getElementById("transaction_date_add").value,
         bookDate: document.getElementById("transaction_bookDate_add").value,
-        communication:document.getElementById("transaction_communication_add").value,
+        owner: document.getElementById("transaction_owner_add").value,
       };
     };
     
@@ -2759,6 +2759,8 @@
       if (checkBookDate(object.bookDate)){document.getElementById("transaction_edit_button").disabled = false}
       else {document.getElementById("transaction_edit_button").disabled = true};
       refreshTransactionEvidence();
+      if (hasCounterparty(object.type)){document.getElementById("transaction_name_field").style.display = "block"; }
+      else {document.getElementById("transaction_name_field").style.display = "none"; }
       if (hasCostCenter(object.type)) {
         document.getElementById("transaction_costCenter_field").style.display = "block";
         costCenterGet(object.costCenter).then(function (cc){
@@ -2769,9 +2771,19 @@
         });
       } else {
         document.getElementById("transaction_costCenter_field").style.display = "none";
-        var elems = document.querySelectorAll('select');
-        M.FormSelect.init(elems);
-        M.updateTextFields();
+        if (object.type == "OWNER") {
+          document.getElementById("transaction_owner_field").style.display = "block";
+          memberGet(object.owner).then(function(m){
+            document.getElementById("transaction_owner_field").value = m.firstName + " " + m. lastName;
+            var elems = document.querySelectorAll('select');
+            M.FormSelect.init(elems);
+            M.updateTextFields();
+          })
+        } else {document.getElementById("transaction_owner_field").style.display = "none";
+          var elems = document.querySelectorAll('select');
+          M.FormSelect.init(elems);
+          M.updateTextFields();
+      };
       };
     };    
 
