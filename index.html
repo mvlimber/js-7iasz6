@@ -2143,14 +2143,14 @@
       };
 
       var lastCopropertySaldo;
-      var lastOwnerSaldos;
+      var lastOwnersSaldo;
 
       function readCloseAndReguDate (chargesReportsFS) {
         if  (chargesReportsFS.docs.length > 0) {
               var lastReportData = chargesReportsFS.docs[0].data();
               lastCloseDate= lastReportData.endDate;
               lastCopropertySaldo = lastReportData.copropertySaldo;
-              lastOwnerSaldos = lastReportData.ownerSaldos;
+              lastOwnersSaldo = lastReportData.ownersSaldo;
               var i = 0;
               while ((i < chargesReportsFS.docs.length) && (!chargesReportsFS.docs[i].data().metersIncluded)) {i = i+1};
               if (i < chargesReportsFS.docs.length) {lastReguDate = chargesReportsFS.docs[i].data().endDate}
@@ -2160,7 +2160,7 @@
               lastCloseDate = currentCoproperty.initialStartDate;
               lastReguDate = currentCoproperty.initialStartDate;
               lastCopropertySaldo = currentCoproperty.initialSaldo;
-              lastOwnerSaldos = currentCoproperty.initialSaldos;
+              lastOwnersSaldo = currentCoproperty.initialSaldos;
             };
       };
 
@@ -5248,7 +5248,7 @@
         {id:"newSaldo",name:"newSaldo",prompt:"new saldo",width: 35,align: "right",padding: 0}
       ];
 
-      var headerOwnerSaldos = [
+      var headerOwnersSaldo = [
         {id:"owner",name:"owner",prompt:"owner",width: 60,align: "center",padding: 0},
         {id:"oldSaldo",name:"oldSaldo",prompt:"last saldo",width: 35,align: "center",padding: 0},
         {id:"payments",name:"payments",prompt:"payments",width: 35,align: "center",padding: 0},
@@ -5328,7 +5328,7 @@
         var consumptions = [];
         var totalledConsumptions = [];
         var payedByProvisions = [];
-        var ownerSaldos = [];
+        var ownersSaldo = [];
         if (metersIncluded){
           headerCharges = headerChargesMetersIncluded;
           mrsInReport = await meterReadingsGet();   
@@ -5347,7 +5347,10 @@
         /* make table saldos per owner */
         membersInReport.forEach(function(m){
           var hisProperties = propertiesBySynchrone(m);
-          if (hisProperties.length){ownerSaldos.push({ownerId: m.idFS, owner: m.firstName + " " + m.lastName, oldSaldo: lastOwnerSaldos[m.idFS], payments: 0, charges:0, provisions:0 , newSaldo:0})};
+          if (hisProperties.length){
+            var lastOS = 0;
+            if (lastOwnersSaldo[m.idFS]) {lastOS = lastOwnersSaldo[m.idFS]};
+            ownersSaldo.push({ownerId: m.idFS, owner: m.firstName + " " + m.lastName, oldSaldo: lastOS, payments: 0, charges:0, provisions:0 , newSaldo:0})};
         });
         
         /* initialise common charges holder tabels*/
@@ -5670,12 +5673,13 @@
           convertToCurrency(copropertySaldo, ["oldSaldo","income","expenses","newSaldo"]);
           convertToCurrency(ownersSaldo, ["oldSaldo","payments","charges","provisions","newSaldo"]);
           
+          
           writePDF (closeDateTransactions,metersIncluded,commonCharges,privateCharges,totalledCharges,waterCharges,heatingCharges,totalledConsumptions,payedByProvisions, copropertySaldo,ownersSaldo);
         });
       
       };
       /*  print starts here ---------------------------------------------------------------------------------*/
-      function writePDF (closeDateTransactions, metersIncludedHere, commonCharges ,privateCharges, totalCharges, waterCharges,heatingCharges,totalledConsumptionsHere,payedByProvisions, copropertySaldo){
+      function writePDF (closeDateTransactions, metersIncludedHere, commonCharges ,privateCharges, totalCharges, waterCharges,heatingCharges,totalledConsumptionsHere,payedByProvisions, copropertySaldo,ownersSaldo){
         const rowsLandscapeConsumptions =16;
         const rowsLandscapePrivate =12;
         const rowsLandscapeTotal =13;
@@ -5790,7 +5794,8 @@
         if (payedByProvisions.length > 1){
           printTablePortrait("Expenses payed with provisions" , payedByProvisions, headerWH);
         };
-        printTablePortrait("Saldos", copropertySaldo, headerCopropertySaldo);
+        printTablePortrait(" Owner Saldos", ownersSaldo, headerOwnersSaldo);
+        /*printTablePortrait("Saldos", copropertySaldo, headerCopropertySaldo);*/
       
         refCoproperty.collection("ChargesReports").add({startDate: startDateString, endDate: closeDateTransactions, metersIncluded: metersIncludedHere, confirmed: false }).then (function (chargesReportFS){
           var fileRef = refCopropertyFiles.child("ChargesReports").child(chargesReportFS.id);  
