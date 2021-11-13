@@ -5347,9 +5347,8 @@
         /* make table saldos per owner */
         membersInReport.forEach(function(m){
           var hisProperties = propertiesBySynchrone(m);
-          if (hisProperties.length){ownerSaldos.push({ownerId: m.idFS, owner: m.firstName + " " + m.lastName, oldSaldo: 0, payments: 0, charges:0, provisions:0 , newSaldo:0})};
+          if (hisProperties.length){ownerSaldos.push({ownerId: m.idFS, owner: m.firstName + " " + m.lastName, oldSaldo: lastOwnerSaldos[m.idFS], payments: 0, charges:0, provisions:0 , newSaldo:0})};
         });
-        console.log("ownerSaldos",ownerSaldos);
         
         /* initialise common charges holder tabels*/
         var i = 0;
@@ -5669,8 +5668,9 @@
           totalChargesAmountFields.push("Total");
           convertToCurrency(totalledCharges, totalChargesAmountFields);
           convertToCurrency(copropertySaldo, ["oldSaldo","income","expenses","newSaldo"]);
+          convertToCurrency(ownersSaldo, ["oldSaldo","payments","charges","provisions","newSaldo"]);
           
-          writePDF (closeDateTransactions,metersIncluded,commonCharges,privateCharges,totalledCharges,waterCharges,heatingCharges,totalledConsumptions,payedByProvisions, copropertySaldo);
+          writePDF (closeDateTransactions,metersIncluded,commonCharges,privateCharges,totalledCharges,waterCharges,heatingCharges,totalledConsumptions,payedByProvisions, copropertySaldo,ownersSaldo);
         });
       
       };
@@ -5683,9 +5683,9 @@
         var numPages = 0;
         Object.values(commonCharges).forEach(function(cC){numPages += Math.ceil(cC.transactions.length/rowsPortrait)});
         if (metersIncludedHere) {
-          numPages += 2 + Math.ceil(privateCharges.length/rowsLandscapePrivate) + Math.ceil(totalCharges.length/rowsLandscapeTotal) + Math.ceil(waterCharges.length/rowsPortrait) + Math.ceil(heatingCharges.length/rowsPortrait) + Math.ceil(totalledConsumptionsHere.length/rowsLandscapeConsumptions)+ Math.ceil((payedByProvisions.length/rowsPortrait)-1);
+          numPages += 2 + Math.ceil(privateCharges.length/rowsLandscapePrivate) + Math.ceil(totalCharges.length/rowsLandscapeTotal) + Math.ceil(waterCharges.length/rowsPortrait) + Math.ceil(heatingCharges.length/rowsPortrait) + Math.ceil(totalledConsumptionsHere.length/rowsLandscapeConsumptions)+ Math.ceil(((payedByProvisions.length-1)/rowsPortrait));
         } else {
-          numPages += 2 + Math.ceil(privateCharges.length/rowsLandscapePrivate) + Math.ceil(totalCharges.length/rowsLandscapeTotal) + Math.ceil((payedByProvisions.length/rowsPortrait)-1);
+          numPages += 2 + Math.ceil(privateCharges.length/rowsLandscapePrivate) + Math.ceil(totalCharges.length/rowsLandscapeTotal) + Math.ceil(((payedByProvisions.length-1)/rowsPortrait));
         };
         window.jsPDF = window.jspdf.jsPDF;
         var currentPage = 1;
