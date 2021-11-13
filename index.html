@@ -2871,7 +2871,7 @@
       document.getElementById("transaction_date_add").value="";
       document.getElementById("transaction_bookDate_add").value="";
       document.getElementById("transaction_communication_add").value="";
-      listMembers(document.getElementById("transaction_owner_add"), "");
+      listMembers(document.getElementById("transaction_owner_add"), "", true);
       toggleTransaction();
       document.getElementById("transaction_save_button").innerHTML = "Save and go to adding evidence";
       var buttonIcon = document.createElement("i");
@@ -2892,8 +2892,8 @@
       document.getElementById("transaction_date_add").value=object.date;
       document.getElementById("transaction_bookDate_add").value=object.bookDate;
       document.getElementById("transaction_communication_add").value=object.communication;
-      if (object.owner) {listMembers(document.getElementById("transaction_owner_add"), object.owner);}
-      else {listMembers(document.getElementById("transaction_owner_add"), "");};
+      if (object.owner) {listMembers(document.getElementById("transaction_owner_add"), object.owner, true);}
+      else {listMembers(document.getElementById("transaction_owner_add"), "", true);};
       toggleTransaction();
       document.getElementById("transaction_save_button").innerHTML = "Save";
       var buttonIcon = document.createElement("i");
@@ -3485,7 +3485,7 @@
         document.getElementById("transactionRule_account").value=object.account;
         document.getElementById("transactionRule_name").value=object.name;
         document.getElementById("transactionRule_communication").value=object.communication;
-        listMembers(document.getElementById("transactionRule_owner"), object.owner);
+        listOwners(document.getElementById("transactionRule_owner"), object.owner, true);
         toggleTransactionRule();
         var elems = document.querySelectorAll('select');
         M.FormSelect.init(elems);
@@ -4571,16 +4571,43 @@
         };
         refCoproperty.collection("Members").get().then(function(querySnapshot) {
           querySnapshot.forEach(function(member) {
-              option = document.createElement("option");
+             option = document.createElement("option");
               option.setAttribute("value",member.id);
               if (member.id == selectedOption) {option.setAttribute("selected",true);};
               option.innerHTML = member.data().firstName + " " + member.data().lastName;
               el.appendChild(option);
-            });
+          });
           var elems = document.querySelectorAll('select');
           M.FormSelect.init(elems);
-        });
-        
+        });  
+      };
+
+      function listOwners(el, selectedOption) {
+        var option;
+        emptyHTMLSet(el);
+        if (!Boolean(selectedOption)) {
+          option = document.createElement("option");
+          option.setAttribute("value","");
+          option.setAttribute("disabled",true);
+          option.setAttribute("selected",true);
+          option.innerHTML = "Select Owner";
+          el.appendChild(option);
+        };
+        refCoproperty.collection("Members").get().then(function(querySnapshot) {
+          querySnapshot.forEach(function(member) {
+            propertiesBy(member).then(function (ps){
+              if (ps.length) {
+                option = document.createElement("option");
+                option.setAttribute("value",member.id);
+                if (member.id == selectedOption) {option.setAttribute("selected",true);};
+                option.innerHTML = member.data().firstName + " " + member.data().lastName;
+                el.appendChild(option);
+              };
+              var elems = document.querySelectorAll('select');
+              M.FormSelect.init(elems);  
+            });
+          });
+        });  
       };
       
       function displayOccupants(property) {
@@ -4592,7 +4619,7 @@
             });
           };
         });
-        listMembers(document.getElementById("property_occupant_add"),"");   
+        listMembers(document.getElementById("property_occupant_add"),"", false);   
       };
 
       
@@ -4664,7 +4691,7 @@
         document.getElementById("property_type_add").value="";
         document.getElementById("property_cellar_add").value="";
         document.getElementById("property_owner_add").value="";
-        listMembers(document.getElementById("property_owner_add"),"");
+        listMembers(document.getElementById("property_owner_add"),"", false);
         M.updateTextFields();
         M.FormSelect.init(document.querySelectorAll('select'));
       };
@@ -4727,7 +4754,7 @@
       function newOwner() {
         document.getElementById("property_transferDate").value="";
         document.getElementById("property_newOwner").value="";
-        listMembers(document.getElementById("property_newOwner"),"");
+        listMembers(document.getElementById("property_newOwner"),"", false);
         M.updateTextFields();
         M.FormSelect.init(document.querySelectorAll('select'));
       };
@@ -4756,7 +4783,7 @@
       var previousOwnerId;
       function setPreviousOwner(poId, poObject) {
         previousOwnerId = poId;
-        listMembers(document.getElementById("property_previousOwner"), poObject.owner); 
+        listMembers(document.getElementById("property_previousOwner"), poObject.owner, false); 
         document.getElementById("property_transferDatePrevious").value = poObject.date;
         M.updateTextFields();
         M.FormSelect.init(document.querySelectorAll('select'));
