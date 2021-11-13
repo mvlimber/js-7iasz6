@@ -4593,14 +4593,14 @@
           option.innerHTML = "Select Owner";
           el.appendChild(option);
         };
-        refCoproperty.collection("Members").get().then(function(querySnapshot) {
-          querySnapshot.forEach(function(member) {
-            propertiesBy(member).then(function (ps){
+        membersGet().then(function(membersHere) {
+          membersHere.forEach(function(memberHere) {
+            propertiesBy(memberHere).then(function (ps){
               if (ps.length) {
                 option = document.createElement("option");
-                option.setAttribute("value",member.id);
-                if (member.id == selectedOption) {option.setAttribute("selected",true);};
-                option.innerHTML = member.data().firstName + " " + member.data().lastName;
+                option.setAttribute("value",memberHere.idFS);
+                if (memberHere.idFS == selectedOption) {option.setAttribute("selected",true);};
+                option.innerHTML = memberHere.firstName + " " + memberHere.lastName;
                 el.appendChild(option);
               };
               var elems = document.querySelectorAll('select');
