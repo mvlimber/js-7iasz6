@@ -1771,7 +1771,7 @@
       PROVI: 'payed with provision'
     };
     function hasCostCenter(aTransType) {return ((aTransType != "") && (aTransType != "PRIVA") && (aTransType != "OWNER") && (aTransType != "PROVI"))};
-    function hasCounterparty(aTransType) {return ((aTransType != "") && (aTransType != "OWNER") && (aTransType != "PROVI"))};
+    function hasCounterparty(aTransType) {return ((aTransType != "") && (aTransType != "OWNER") )};
 
     var TransRuleType = {
       MAINT : 'repair maintenance',
