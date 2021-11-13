@@ -571,7 +571,7 @@
               <h5>Enter transaction data</h5>
               <form>
                 <div class="input-field col s12 m4">
-                  <select id="transaction_type_add" required required="true" onchange="enableSelectProperties()"></select>
+                  <select id="transaction_type_add" required required="true" onchange="toggleTransaction()"></select>
                   <label>Type<b><font color='red'>*</font></b></label>
                 </div>
                 <div class="input-field col s12 m4" id="transaction_costCenter_add_field">
@@ -587,7 +587,7 @@
                   <select id="transaction_owner_add" >
                     <option value="" disabled selected>Select Owner</option>
                   </select>
-                  <label for="transaction_owner_add"><b>THEN </b>Owner<b><font color='red'>*</font></b></label>
+                  <label for="transaction_owner_add">Owner<b><font color='red'>*</font></b></label>
                 </div>
                 <div class="input-field col s12 m4">
                   <input id="transaction_account_add" type="text" maxlength="19" class="validate"
@@ -2857,12 +2857,6 @@
       buttonIcon.setAttribute("class","material-icons right");
       buttonIcon.innerHTML = "send";
       document.getElementById("transaction_save_button").appendChild(buttonIcon);
-      if (hasCostCenter(object.type)) {
-        document.getElementById("transaction_costCenter_add_field").style.display = "block";
-      } else {
-        document.getElementById("transaction_costCenter_add_field").style.display = "none";
-      };
-      enableSelectProperties();
       var elems = document.querySelectorAll('select');
       M.FormSelect.init(elems);
       M.updateTextFields();
@@ -2992,7 +2986,7 @@
         document.getElementById("transaction_name_add_field").style.display = "block";
       } else {
         document.getElementById("transaction_name_add_field").style.display = "none";
-      },
+      };
     };
       /* Transaction Evidence scripts start here---------------------------------------------*/
     
