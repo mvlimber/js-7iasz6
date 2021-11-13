@@ -2748,16 +2748,22 @@
     };
     
     function getTransactionEntriesAdd() {
-      return {
+      var result = {
         type: document.getElementById("transaction_type_add").value,
         costCenter:document.getElementById("transaction_costCenter_add").value,
         account: document.getElementById("transaction_account_add").value,
         name: document.getElementById("transaction_name_add").value,
         amount: Number(document.getElementById("transaction_amount_add").value),
         date: document.getElementById("transaction_date_add").value,
+        communication: document.getElementById("transaction_communication_add").value,
         bookDate: document.getElementById("transaction_bookDate_add").value,
         owner: document.getElementById("transaction_owner_add").value,
       };
+      if (!hasCostCenter(result.type)) { result.costCenter = ""};
+      if (result.type == "OWNER") {
+        memberGet(result.owner).then(function(m){result.name = m.firstName + " " + m.lastName;});
+      } else {result.owner = ""}
+      return result;
     };
     
     function setSelectedTransactionById(id){
