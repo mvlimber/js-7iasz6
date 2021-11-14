@@ -1494,7 +1494,7 @@
                 <span class="helper-text" data-error="Positive or negative amount. Example: 2500">Positive amount. Example: 2000. Negative amount yields funds reimbursement"</span>
               </div>
               <div class="input-field col s12 m4">
-                <select id="provisions_costCenter"></select>
+                <select id="provisions_costCenter_edit"></select>
                 <label>Cost Center<b><font color='red'>*</font></b></label>
             </div>
             </form>
@@ -5188,7 +5188,12 @@
       function refreshCopropertyAttributes(){
         var CAEl = document.getElementById("provisions");
         CAEl.innerHTML = currentCoproperty.provisions.toLocaleString("nl-BE",currencyStyle);
-        
+        CAEl = document.getElementById("provisionsCostCenterView");
+        if (currentCoproperty.provisionsCC){
+          costCenterGet(currentCoproperty.provisionsCC).then(function(cc){
+            CAEl.innerHTML = "cost center : " + cc.name;
+          })
+        } else {CAEl.innerHTML = "";}
       };
       
       function refreshInitialSaldos(){
@@ -5253,7 +5258,7 @@
 
       function provisionsEditPrepare(){
         document.getElementById("provisions_edit").value = currentCoproperty.provisions;
-        listCostCenters(document.getElementById("provisions_costCenter"),currentCoproperty.provisionsCC);
+        listCostCenters(document.getElementById("provisions_costCenter_edit"),currentCoproperty.provisionsCC);
         var elems = document.querySelectorAll('select');
         M.FormSelect.init(elems);
         M.updateTextFields();
@@ -5273,7 +5278,8 @@
 
       function provisionsWrite(){
         currentCoproperty.provisions = Number(document.getElementById("provisions_edit").value);
-        refCoproperty.update({fundsRaise:currentCoproperty.provisions}).then(function(){
+        currentCoproperty.provisionsCC = document.getElementById("provisions_costCenter_edit").value;
+        refCoproperty.update({provisions:currentCoproperty.provisions, provisionsCC:currentCoproperty.provisionsCC }).then(function(){
           refreshHome();
           refreshCopropertyAttributes();
           M.Modal.getInstance(document.getElementById("provisionsEdit")).close();
@@ -5780,6 +5786,18 @@
             };
           });
           copropertySaldo[0].income = totalPayments;
+
+          /* handle provisions -------------------------------------*/
+          if (coproperty.provisionsCC){
+            function checkCCId(cc) {return cc.idFS = coproperty.provisionsCC};
+            var ccHere = ccsInReport.find(checkCCId);
+            ownersSaldo.forEach(function(os){
+              var provisionsHere = 0;
+              var quotaHere = 0;
+              propertiesBySynchrone(os.ownerId).foreach(function(p){quotaHere += ccHere.distribution[p.idFS]});
+              os.provisions = Number((coproperty.provisions * quotaHere / ccHere.totalQuota).toFixed(2));
+            });
+          };         
 
           convertToCurrency(totalledCharges, totalChargesAmountFields);
           convertToCurrency(copropertySaldo, ["oldSaldo","income","expenses","newSaldo"]);
