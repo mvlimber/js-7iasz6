@@ -5737,6 +5737,10 @@
               totallsRow.heating_regu += tc.heating_regu; grandTotalsRow.heating_regu += tc.heating_regu;
             };
             totallsRow.Total += tc.Total; grandTotalsRow.Total += tc.Total;
+              /* fill charges colun in owner saldos table */
+              function checkOwner(os){return os.ownerId == tc.ownerId};
+              ownersSaldo.find(checkOwner).charges = totallsRow.Total;
+
             nrOfProperties += 1;
             if ((nrOfProperties > 1) && (positionTotalCharges ==  totalCharges.length)) {totalledCharges.push(totallsRow);};
             positionTotalCharges += 1;  
@@ -5757,6 +5761,16 @@
             totalChargesAmountFields.push("heating_regu");
           };
           totalChargesAmountFields.push("Total");
+
+          /* handle payments by owners -------------------------------------*/
+          transactionsFS.forEach(function(transactionFS){
+            var trData = transactionFS.data();
+            if (trData.type == "OWNER") {
+              function checkOwner(os){return os.ownerId == trData.owner};
+              ownersSaldo.find(checkOwner).payments += trData.amount;
+            };
+          });
+
           convertToCurrency(totalledCharges, totalChargesAmountFields);
           convertToCurrency(copropertySaldo, ["oldSaldo","income","expenses","newSaldo"]);
           convertToCurrency(ownersSaldo, ["oldSaldo","payments","charges","provisions","newSaldo"]);
