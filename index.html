@@ -323,7 +323,6 @@
         <ul class="collapsible" id="documentsList">
         </ul>
         <h5 id = "documents_absentPhrase">There are no Documents yet</h5>
-        <br>
         <button style="float: right" data-target="documentEdit" class="btn-small waves-light modal-trigger" onclick="resetDocument()"><i class="material-icons right">add</i>New document</button>
         <div id="documentEdit" class="modal">
           <div class="modal-content">
@@ -545,7 +544,7 @@
         </div>
         </div>
         <div id="Transactions" class="col s12">
-          <table class="striped">
+          <table class="striped" id="transactionsTable_frame">
             <thead>
               <tr>
                 <th align=center>Counterparty</th>
@@ -563,6 +562,7 @@
             <tbody id="transactionsTable">
             </tbody>
           </table>
+          <h5 id="transactions_absentPhrase">There are no Transactions yet</h5>
           <div id="Transactions_Add" class="displayHidden">
             <button style="float: right" data-target="transactionAdd" class="btn-small waves-light modal-trigger" onclick="resetSelectedTransaction()"><i class="material-icons right">add</i>New transaction</button>
             <br><br>
@@ -2652,10 +2652,15 @@
         function refreshTransactions(){
           emptyHTMLSet(transactionsTable);
           refCoproperty.collection("Transactions").orderBy("bookDate","desc").get().then(function(objectsFSArray){
-            objectsFSArray.forEach(function(objectFS){
-                loadTransaction(objectFS);
-              });        
-            });
+            if (objectsFSArray.length){
+              document.getElementById("transactionsTable_frame").style.display = "block";
+              document.getElementById("transactions_absentPhrase").style.visibility = "hidden";
+              objectsFSArray.forEach(function(objectFS){loadTransaction(objectFS);});
+            } else {
+              document.getElementById("transactionsTable_frame").style.display = "none";
+              document.getElementById("transactions_absentPhrase").style.visibility = "visible";
+            };        
+          });
         };
 
         function loadTransactions(){
