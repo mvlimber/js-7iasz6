@@ -544,7 +544,8 @@
         </div>
         </div>
         <div id="Transactions" class="col s12">
-          <table class="striped" id="transactionsTable_frame">
+          <div id="transactionsTable_frame">
+          <table class="striped" >
             <thead>
               <tr>
                 <th align=center>Counterparty</th>
@@ -562,6 +563,7 @@
             <tbody id="transactionsTable">
             </tbody>
           </table>
+          </div>
           <h5 id="transactions_absentPhrase">There are no Transactions yet</h5>
           <div id="Transactions_Add" class="displayHidden">
             <button style="float: right" data-target="transactionAdd" class="btn-small waves-light modal-trigger" onclick="resetSelectedTransaction()"><i class="material-icons right">add</i>New transaction</button>
@@ -2652,7 +2654,7 @@
         function refreshTransactions(){
           emptyHTMLSet(transactionsTable);
           refCoproperty.collection("Transactions").orderBy("bookDate","desc").get().then(function(objectsFSArray){
-            if (objectsFSArray.length){
+            if (objectsFSArray.docs.length){
               document.getElementById("transactionsTable_frame").style.display = "block";
               document.getElementById("transactions_absentPhrase").style.visibility = "hidden";
               objectsFSArray.forEach(function(objectFS){loadTransaction(objectFS);});
