@@ -5386,6 +5386,30 @@
         return aTable;
       };
 
+      function totalHorizontal (aTable, listOfFields, totalfield) {
+        aTable.forEach(function(aRow){
+          var total = 0;
+          listOfFields.forEach(function(anAmountField){total+= aRow[anAmountField];});
+          aRow[totalfield] = total;
+        });
+        return aTable;
+      };
+
+      function totalVertical (aTable, listOfFieldsToTotal, fieldTotal) {
+        if (aTable.length) {
+          var columns = Object.keys(aTable[0]);
+          var totalsRow={};
+          columns.forEach(function(column){totalsRow[column]=""});
+          totalsRow[fieldTotal]="Total";
+          listOfFieldsToTotal.forEach(function(column){totalsRow[column]=0});
+          aTable.forEach(function(aRow){
+            listOfFields.forEach(function(column){totalsRow[column]+= aRow[column];});
+          });
+          aTable.push(totalsRow);
+        };
+        return aTable;
+      };
+
       var costCenterWater;
       var costCenterHeating;
       async function getConsumptionTransactions(closeDateTransactions, metersIncluded, consumptionType, consumptionTable){
@@ -5458,7 +5482,7 @@
               var ccHere = ccsInReport.find(checkCCId);
               var quotaHere = 0;
               hisProperties.forEach(function(p){quotaHere += ccHere.distribution[p.idFS]});
-              var provisionHere = Number((currentCoproperty.provisions * quotaHere / ccHere.totalQuota).toFixed(2));
+              var provisionHere = -1 * Number((currentCoproperty.provisions * quotaHere / ccHere.totalQuota).toFixed(2));
             };
             ownersSaldo.push({ownerId: m.idFS, owner: m.firstName + " " + m.lastName, oldSaldo: lastOS, payments: 0, charges:0, provisions:provisionHere , newSaldo:0})};
         });
@@ -5794,7 +5818,9 @@
             };
           });
           copropertySaldo[0].income = totalPayments;
-
+          totalHorizontal(copropertySaldo,["oldSaldo","income","expenses"],"newSaldo" );
+          totalHorizontal(ownersSaldo,["oldSaldo","payments","charges","provisions"],"newSaldo" );
+          totalVertical(ownersSaldo,["oldSaldo","payments","charges","provisions","newSaldo"],"owner");
                    
 
           convertToCurrency(totalledCharges, totalChargesAmountFields);
