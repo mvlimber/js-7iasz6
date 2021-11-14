@@ -2273,11 +2273,11 @@
       documents = null;
       documentsGet().then(function(objectsArray){
         if (objectsArray.length){
-          document.getElementById("documentsList").style.visibility = "visible";
+          document.getElementById("documentsList").style.display = "block";
           document.getElementById("documents_absentPhrase").style.visibility = "hidden";
           objectsArray.forEach(function(d){loadDocument(d);});
         } else {
-          document.getElementById("documentsList").style.visibility = "hidden";
+          document.getElementById("documentsList").style.display = "none";
           document.getElementById("documents_absentPhrase").style.visibility = "visible";
         };
       });
