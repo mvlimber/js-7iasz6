@@ -312,7 +312,7 @@
             <tbody id="chargesReportsTable">
             </tbody>
           </table>
-          <h5 id = "chargesTable_absentPhrase">There are no Charges Reports yet</h5>
+          <h5 id = "charges_absentPhrase">There are no Charges Reports yet</h5>
           <br>
           <div id="Reports_Generate" class="displayHidden">
             <button id="ChargesReport_Generate" style="float: right" data-target="chargesReportAdd" class="btn-small waves-light modal-trigger" onclick="emptyFieldsChargesReportAdd()"><i class="material-icons right">add</i>Generate New Charges Report</button>
@@ -322,6 +322,7 @@
         <div id="Documents" class="col s12">
         <ul class="collapsible" id="documentsList">
         </ul>
+        <h5 id = "documents_absentPhrase">There are no Documents yet</h5>
         <br>
         <button style="float: right" data-target="documentEdit" class="btn-small waves-light modal-trigger" onclick="resetDocument()"><i class="material-icons right">add</i>New document</button>
         <div id="documentEdit" class="modal">
@@ -2186,14 +2187,14 @@
         refCoproperty.collection("ChargesReports").orderBy("endDate","asc").get().then(function(chargesReportsFS){
           if (chargesReportsFS.length) {
             document.getElementById("chargesTable_frame").style.display = "block";
-            document.getElementById("chargesTable_absentPhrase").style.visibility = "hidden";
+            document.getElementById("charges_absentPhrase").style.visibility = "hidden";
             readCloseAndReguDate (chargesReportsFS);
             chargesReportsFS.forEach(function(objectFS){
               loadChargesReport(objectFS);
             });
           } else {
             document.getElementById("chargesTable_frame").style.display = "none";
-            document.getElementById("chargesTable_absentPhrase").style.visibility = "visible";
+            document.getElementById("charges_absentPhrase").style.visibility = "visible";
           };
           meterReadingsLoaded = false;
           transactionsLoaded = false;
@@ -2271,9 +2272,15 @@
       emptyHTMLSet(documentsList);
       documents = null;
       documentsGet().then(function(objectsArray){
-        objectsArray.forEach(function(d){loadDocument(d);});
+        if (objectsArray.length){
+          document.getElementById("documentsList").style.visibility = "visible";
+          document.getElementById("documents_absentPhrase").style.visibility = "hidden";
+          objectsArray.forEach(function(d){loadDocument(d);});
+        } else {
+          document.getElementById("documentsList").style.visibility = "visible";
+          document.getElementById("documents_absentPhrase").style.visibility = "hidden";
+        };
       });
-      
     };
 
     function loadDocument(d){
