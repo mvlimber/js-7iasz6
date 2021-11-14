@@ -1223,17 +1223,23 @@
         </div>
         <!------------------------------------------------------------------------------------------>
         <div id="Properties" class="col s12">
-          <table class="striped">
-            <thead>
-              <tr>
-                <th>Code</th>
-                <th>Type</th>
-                <th>Owner</th>
-              </tr>
-            </thead>
-            <tbody id="propertiesTable">
-            </tbody>
-          </table>
+          <div id="propertiesTable_frame">
+            <table class="striped">
+              <thead>
+                <tr>
+                  <th>Code</th>
+                  <th>Type</th>
+                  <th>Owner</th>
+                </tr>
+              </thead>
+              <tbody id="propertiesTable">
+              </tbody>
+            </table>
+          </div>
+          <div id="properties_absentPhrase">
+            <h5>There are no properties yet</h5>
+          </div>
+          <br>
           <div id="Properties_Add" class="displayHidden">
             <button style="float: right" data-target="propertyAdd" class="btn-small waves-light modal-trigger" onclick="resetSelectedProperty()"><i class="material-icons right">add</i>New Property</button>
           </div>
@@ -4259,7 +4265,14 @@
         emptyHTMLSet(propertiesTable);
         properties = null;
         propertiesGet().then(function(ps){
-          ps.forEach(function(p){loadProperty(p);});
+          if (ps.length){
+            document.getElementById("propertiesTable_frame").style.display = "block";
+            document.getElementById("properties_absentPhrase").style.display = "none";
+            ps.forEach(function(p){loadProperty(p);});
+          } else {
+            document.getElementById("propertiesTable_frame").style.display = "none";
+            document.getElementById("properties_absentPhrase").style.display = "block";
+          };
         });
       };
 
