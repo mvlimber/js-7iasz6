@@ -312,7 +312,9 @@
             <tbody id="chargesReportsTable">
             </tbody>
           </table>
-          <h5 id = "charges_absentPhrase">There are no Charges Reports yet</h5>
+          <div id = "charges_absentPhrase">
+          <h5>There are no Charges Reports yet</h5>
+          </div>
           <br>
           <div id="Reports_Generate" class="displayHidden">
             <button id="ChargesReport_Generate" style="float: right" data-target="chargesReportAdd" class="btn-small waves-light modal-trigger" onclick="emptyFieldsChargesReportAdd()"><i class="material-icons right">add</i>Generate New Charges Report</button>
@@ -322,7 +324,10 @@
         <div id="Documents" class="col s12">
         <ul class="collapsible" id="documentsList">
         </ul>
-        <h5 id = "documents_absentPhrase">There are no Documents yet</h5>
+        <div id = "documents_absentPhrase">
+        <h5 >There are no Documents yet</h5>
+        </div>
+        <br>
         <button style="float: right" data-target="documentEdit" class="btn-small waves-light modal-trigger" onclick="resetDocument()"><i class="material-icons right">add</i>New document</button>
         <div id="documentEdit" class="modal">
           <div class="modal-content">
@@ -564,7 +569,10 @@
             </tbody>
           </table>
           </div>
-          <h5 id="transactions_absentPhrase">There are no Transactions yet</h5>
+          <div id="transactions_absentPhrase">
+          <h5>There are no Transactions yet</h5>
+          </div>
+          <br>
           <div id="Transactions_Add" class="displayHidden">
             <button style="float: right" data-target="transactionAdd" class="btn-small waves-light modal-trigger" onclick="resetSelectedTransaction()"><i class="material-icons right">add</i>New transaction</button>
             <br><br>
@@ -719,6 +727,9 @@
           <h6 style="font-size:20px "><b>Rules to auto-classify uploaded transactions</b></h6>
           <ul class="collapsible" id="transactionRulesList">
           </ul>
+          <div id="transactionRules_absentPhrase">
+          <h5>There are no Transaction Rules yet</h5>
+          </div>
           <br>
           <button style="float: right" data-target="transactionRuleEdit" class="btn-small waves-light modal-trigger" onclick="resetTransactionRule()"><i class="material-icons right">add</i>New transaction rule</button>
           <div id="transactionRuleEdit" class="modal">
@@ -2189,14 +2200,14 @@
         refCoproperty.collection("ChargesReports").orderBy("endDate","asc").get().then(function(chargesReportsFS){
           if (chargesReportsFS.length) {
             document.getElementById("chargesTable_frame").style.display = "block";
-            document.getElementById("charges_absentPhrase").style.visibility = "hidden";
+            document.getElementById("charges_absentPhrase").style.display = "none";
             readCloseAndReguDate (chargesReportsFS);
             chargesReportsFS.forEach(function(objectFS){
               loadChargesReport(objectFS);
             });
           } else {
             document.getElementById("chargesTable_frame").style.display = "none";
-            document.getElementById("charges_absentPhrase").style.visibility = "visible";
+            document.getElementById("charges_absentPhrase").style.display = "block";
           };
           meterReadingsLoaded = false;
           transactionsLoaded = false;
@@ -2276,11 +2287,11 @@
       documentsGet().then(function(objectsArray){
         if (objectsArray.length){
           document.getElementById("documentsList").style.display = "block";
-          document.getElementById("documents_absentPhrase").style.visibility = "hidden";
+          document.getElementById("documents_absentPhrase").style.display = "none";
           objectsArray.forEach(function(d){loadDocument(d);});
         } else {
           document.getElementById("documentsList").style.display = "none";
-          document.getElementById("documents_absentPhrase").style.visibility = "visible";
+          document.getElementById("documents_absentPhrase").style.display = "block";
         };
       });
     };
@@ -2656,11 +2667,11 @@
           refCoproperty.collection("Transactions").orderBy("bookDate","desc").get().then(function(objectsFSArray){
             if (objectsFSArray.docs.length){
               document.getElementById("transactionsTable_frame").style.display = "block";
-              document.getElementById("transactions_absentPhrase").style.visibility = "hidden";
+              document.getElementById("transactions_absentPhrase").style.display = "none";
               objectsFSArray.forEach(function(objectFS){loadTransaction(objectFS);});
             } else {
               document.getElementById("transactionsTable_frame").style.display = "none";
-              document.getElementById("transactions_absentPhrase").style.visibility = "visible";
+              document.getElementById("transactions_absentPhrase").style.display = "block";
             };        
           });
         };
@@ -3395,7 +3406,14 @@
         emptyHTMLSet(transactionRulesList);
         transactionRules = null;
         transactionRulesGet().then(function(objectsArray){
-          objectsArray.forEach(function(tR){loadTransactionRule(tR);});
+          if (objectsArray.length){
+            document.getElementById("transactionRulesList").style.display = "block";
+            document.getElementById("transactionRules_absentPhrase").style.display = "none";
+            objectsArray.forEach(function(tR){loadTransactionRule(tR);});
+          } else {
+            document.getElementById("transactionRulesList").style.display = "none";
+            document.getElementById("transactionRules_absentPhrase").style.display = "block";
+          };
         });
       };
 
