@@ -5841,9 +5841,9 @@
         var numPages = 0;
         Object.values(commonCharges).forEach(function(cC){numPages += Math.ceil(cC.transactions.length/rowsPortrait)});
         if (metersIncludedHere) {
-          numPages += 2 + Math.ceil(privateCharges.length/rowsLandscapePrivate) + Math.ceil(totalCharges.length/rowsLandscapeTotal) + Math.ceil(waterCharges.length/rowsPortrait) + Math.ceil(heatingCharges.length/rowsPortrait) + Math.ceil(totalledConsumptionsHere.length/rowsLandscapeConsumptions)+ Math.ceil(((payedByProvisions.length-1)/rowsPortrait));
+          numPages += 3 + Math.ceil(privateCharges.length/rowsLandscapePrivate) + Math.ceil(totalCharges.length/rowsLandscapeTotal) + Math.ceil(waterCharges.length/rowsPortrait) + Math.ceil(heatingCharges.length/rowsPortrait) + Math.ceil(totalledConsumptionsHere.length/rowsLandscapeConsumptions)+ Math.ceil(((payedByProvisions.length-1)/rowsPortrait));
         } else {
-          numPages += 2 + Math.ceil(privateCharges.length/rowsLandscapePrivate) + Math.ceil(totalCharges.length/rowsLandscapeTotal) + Math.ceil(((payedByProvisions.length-1)/rowsPortrait));
+          numPages += 3 + Math.ceil(privateCharges.length/rowsLandscapePrivate) + Math.ceil(totalCharges.length/rowsLandscapeTotal) + Math.ceil(((payedByProvisions.length-1)/rowsPortrait));
         };
         window.jsPDF = window.jspdf.jsPDF;
         var currentPage = 1;
@@ -5921,16 +5921,20 @@
           if (payedByProvisions.length > 1) {
             doc.text("Expenses payed with provisions", 30, 205);
             doc.text("Saldos", 30, 215);
+            doc.text("Amounts Due", 30, 225);
           } else {
             doc.text("Saldos", 30, 205);
+            doc.text("Amounts Due", 30, 215);
           };
         } else {
           doc.text("Total charges", 30, 165);
           if (payedByProvisions.length > 1) {
             doc.text("Expenses payed with provisions", 30, 175);
             doc.text("Saldos", 30, 185);
+            doc.text("Amounts Due", 30, 195);
           }else {
-            doc.text("Saldos", 30, 175);
+            doc.text("Saldos and amounts payable", 30, 175);
+            doc.text("Amounts Due", 30, 185);
           };
         };
 
