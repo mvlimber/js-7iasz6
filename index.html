@@ -5826,8 +5826,8 @@
             };
           });
           copropertySaldo[0].income = totalPayments;
-          newCopropertySaldo = copropertySaldo[0].newSaldo;
           totalHorizontal(copropertySaldo,["oldSaldo","income","expenses"],"newSaldo" );
+          newCopropertySaldo = copropertySaldo[0].newSaldo;
           totalHorizontal(ownersSaldo,["oldSaldo","payments","charges","provisions"],"newSaldo" );
           ownersSaldo.forEach(function(os){
             newOwnersSaldo[os.ownerId] = os.newSaldo;
