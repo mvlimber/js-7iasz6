@@ -5788,14 +5788,14 @@
           copropertySaldo[0].income = totalPayments;
 
           /* handle provisions -------------------------------------*/
-          if (coproperty.provisionsCC){
-            function checkCCId(cc) {return cc.idFS = coproperty.provisionsCC};
+          if (currentCoproperty.provisionsCC){
+            function checkCCId(cc) {return cc.idFS = currentCoproperty.provisionsCC};
             var ccHere = ccsInReport.find(checkCCId);
             ownersSaldo.forEach(function(os){
               var provisionsHere = 0;
               var quotaHere = 0;
-              propertiesBySynchrone(os.ownerId).foreach(function(p){quotaHere += ccHere.distribution[p.idFS]});
-              os.provisions = Number((coproperty.provisions * quotaHere / ccHere.totalQuota).toFixed(2));
+              propertiesBySynchrone(os.ownerId).forEach(function(p){quotaHere += ccHere.distribution[p.idFS]});
+              os.provisions = Number((currentCoproperty.provisions * quotaHere / ccHere.totalQuota).toFixed(2));
             });
           };         
 
