@@ -5357,6 +5357,11 @@
         {id:"provisions",name:"provisions",prompt:"provisions",width: 35,align: "center",padding: 0},
         {id:"newSaldo",name:"newSaldo",prompt:"new saldo",width: 35,align: "right",padding: 0}
       ];
+
+      var headerAmountsDue = [
+        {id:"owner",name:"owner",prompt:"owner",width: 60,align: "center",padding: 0},
+        {id:"amount",name:"amount",prompt:"amount due",width: 35,align: "right",padding: 0}
+      ];
       
       var ccsInReport;
       var propertiesInReport;
@@ -5454,6 +5459,7 @@
         var totalledConsumptions = [];
         var payedByProvisions = [];
         var ownersSaldo = [];
+        var amountsDue = [];
         if (metersIncluded){
           headerCharges = headerChargesMetersIncluded;
           mrsInReport = await meterReadingsGet();   
@@ -5467,6 +5473,7 @@
           expenses: 0,
           newSaldo: 0
         }];
+        var newOwnersSaldo = {};
         var payedByProvisionsTotal = 0;
         var totalPayments = 0;
 
@@ -5820,20 +5827,25 @@
           copropertySaldo[0].income = totalPayments;
           totalHorizontal(copropertySaldo,["oldSaldo","income","expenses"],"newSaldo" );
           totalHorizontal(ownersSaldo,["oldSaldo","payments","charges","provisions"],"newSaldo" );
+          ownersSaldo.forEach(function(os){
+            newOwnersSaldo[os.ownerId] = os.newSaldo;
+            if (os.newSaldo < 0) {amountsDue.push({owner: os.owner, amount: -1 * os.newSaldo })};
+          });
           totalVertical(ownersSaldo,["oldSaldo","payments","charges","provisions","newSaldo"],"owner");
                    
 
           convertToCurrency(totalledCharges, totalChargesAmountFields);
           convertToCurrency(copropertySaldo, ["oldSaldo","income","expenses","newSaldo"]);
           convertToCurrency(ownersSaldo, ["oldSaldo","payments","charges","provisions","newSaldo"]);
+          convertToCurrency(amountsDue, ["amount"]);
           
           
-          writePDF (closeDateTransactions,metersIncluded,commonCharges,privateCharges,totalledCharges,waterCharges,heatingCharges,totalledConsumptions,payedByProvisions, copropertySaldo,ownersSaldo);
+          writePDF (closeDateTransactions,metersIncluded,commonCharges,privateCharges,totalledCharges,waterCharges,heatingCharges,totalledConsumptions,payedByProvisions, copropertySaldo,ownersSaldo, amountsDue);
         });
       
       };
       /*  print starts here ---------------------------------------------------------------------------------*/
-      function writePDF (closeDateTransactions, metersIncludedHere, commonCharges ,privateCharges, totalCharges, waterCharges,heatingCharges,totalledConsumptionsHere,payedByProvisions, copropertySaldo,ownersSaldo){
+      function writePDF (closeDateTransactions, metersIncludedHere, commonCharges ,privateCharges, totalCharges, waterCharges,heatingCharges,totalledConsumptionsHere,payedByProvisions, copropertySaldo,ownersSaldo, amountsDue){
         const rowsLandscapeConsumptions =16;
         const rowsLandscapePrivate =12;
         const rowsLandscapeTotal =13;
@@ -5957,6 +5969,8 @@
         doc.setFontSize(16);
         doc.text("Saldo Condomynium", 15, 240);
         doc.table(15, 250, copropertySaldo, headerCopropertySaldo,{fontSize:10});
+        printTablePortrait("Amounts Due" , amountsDue, headerAmountsDue);
+          
         refCoproperty.collection("ChargesReports").add({startDate: startDateString, endDate: closeDateTransactions, metersIncluded: metersIncludedHere, confirmed: false }).then (function (chargesReportFS){
           var fileRef = refCopropertyFiles.child("ChargesReports").child(chargesReportFS.id);  
           fileRef.put(doc.output("blob")).then(function(snapshot) {
