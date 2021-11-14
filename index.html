@@ -795,6 +795,7 @@
         </div>
         <!------------------------------------------------------------------------------------------------------>
         <div id="MeterReadings" class="col s12">
+          <div id="meterReadingsTable_frame">
           <table class="striped">
             <thead>
               <tr>
@@ -814,7 +815,10 @@
             <tbody id="meterReadingsTable">
             </tbody>
           </table>
-
+          </div>
+          <div id="meterReadings_absentPhrase">
+            <h5>There are no Meter Readings yet</h5>
+          </div>
           <div id="pictureRemove" class="modal">
             <div class="modal-content">
               <h5> You are about to remove the meter reading picture</h5>
@@ -3754,7 +3758,14 @@
         emptyHTMLSet(meterReadingsTable);
         meterReadings = null;
         meterReadingsGet().then(function(mrs){
-          mrs.forEach(function(thisObject){loadMeterReading(thisObject);});
+          if (mrs.length){
+            document.getElementById("meterReadingsTable_frame").style.display = "block";
+            document.getElementById("meterReadings_absentPhrase").style.display = "none";
+            mrs.forEach(function(thisObject){loadMeterReading(thisObject);});
+          } else {
+            document.getElementById("meterReadingsTable_frame").style.display = "none";
+            document.getElementById("meterReadings_absentPhrase").style.display = "block";
+          };
         });
       };
       
