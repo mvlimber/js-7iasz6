@@ -302,7 +302,7 @@
                 Cancel</a>
             </div>
           </div>
-          <table class="striped">
+          <table class="striped" id="chargesTable_frame">
             <thead>
               <tr>
                 <th>Period</th>
@@ -311,8 +311,8 @@
             </thead>
             <tbody id="chargesReportsTable">
             </tbody>
-
           </table>
+          <h5 id = "chargesTable_absentPhrase">There are no Charges Reports yet</h5>
           <br>
           <div id="Reports_Generate" class="displayHidden">
             <button id="ChargesReport_Generate" style="float: right" data-target="chargesReportAdd" class="btn-small waves-light modal-trigger" onclick="emptyFieldsChargesReportAdd()"><i class="material-icons right">add</i>Generate New Charges Report</button>
@@ -2071,6 +2071,8 @@
     </script>
     <!--   Reports scripts start here -->
     <script>
+    var transactionsLoaded = false;
+      
     function emptyFieldsChargesReportAdd() {
       document.getElementById("chargesReport_closeDate").value = "";
       document.getElementById("chargesReport_metersIncluded").value = "";
@@ -2182,12 +2184,19 @@
       function refreshChargesReports(){
         emptyHTMLSet(chargesReportsTable);
         refCoproperty.collection("ChargesReports").orderBy("endDate","asc").get().then(function(chargesReportsFS){
+          if (chargesReportsFS.length) {
+            document.getElementById("chargesTable_frame").style.display = "block";
+            document.getElementById("chargesTable_absentPhrase").style.visibility = "hidden";
             readCloseAndReguDate (chargesReportsFS);
             chargesReportsFS.forEach(function(objectFS){
               loadChargesReport(objectFS);
             });
-            meterReadingsLoaded = false;
-            transactionsLoaded = false;
+          } else {
+            document.getElementById("chargesTable_frame").style.display = "none";
+            document.getElementById("chargesTable_absentPhrase").style.visibility = "visible";
+          };
+          meterReadingsLoaded = false;
+          transactionsLoaded = false;
           });
       };
 
@@ -2563,90 +2572,85 @@
       var transaction;
 
       function loadTransaction (objectFS){
-          var object = objectFS.data();
-          var objectsRow= document.createElement('tr');
-          
-          var viewButton = document.createElement('button');
-          viewButton.setAttribute("data-target", "transactionView");
-          viewButton.setAttribute('class','modal-trigger');
-          viewButton.setAttribute('style','border:none;background-color:Transparent');
-          viewButton.setAttribute('onclick','setSelectedTransaction('+JSON.stringify(objectFS.id)+','+JSON.stringify(object)+')');
-          var cellButtonIcon = document.createElement('i');
-          cellButtonIcon.setAttribute('class','material-icons right');
-          cellButtonIcon.innerHTML="add";           
-          viewButton.appendChild(cellButtonIcon);
-          
-          var cell = document.createElement('td');
-          cell.appendChild(viewButton);
-          objectsRow.appendChild(cell);   
-
-          var amount = object.amount;
-          var cellContent = document.createTextNode(amount.toLocaleString("nl-BE", currencyStyle));
-          cell = document.createElement('td');
-          cell.appendChild(cellContent);
-          objectsRow.appendChild(cell);  
-          
-          cellContent = document.createTextNode(object.bookDate);
-          cell = document.createElement('td');
-          cell.appendChild(cellContent);
-          objectsRow.appendChild(cell); 
-          
-          cell = document.createElement('td');
-          cell.setAttribute("align","center");
-          if (object.type !="TBSET") {
-              cellContent = document.createElement("i");
-              cellContent.setAttribute("class","material-icons  green ");
-              cellContent.innerHTML = "done";
-            } else {
-              cellContent = document.createElement("i");
-              cellContent.setAttribute("class","material-icons  red ");
-              cellContent.innerHTML = "clear";
-            };
-          cell.appendChild(cellContent);
-          objectsRow.appendChild(cell); 
-
-          refCoproperty.collection("Transactions").doc(objectFS.id).collection("Evidence").get().then(function(objectsFSArray){
-            if (objectsFSArray.docs.length > 0) {
-              cellContent = document.createElement("i");
-              cellContent.setAttribute("class","material-icons  green ");
-              cellContent.innerHTML = "done";
-            } else {
-              cellContent = document.createElement("i");
-              cellContent.setAttribute("class","material-icons  red ");
-              cellContent.innerHTML = "clear";
-            };
-          
-          cell = document.createElement('td');
-          cell.setAttribute("align","center");
+        var object = objectFS.data();
+        var objectsRow= document.createElement('tr');
         
+        var viewButton = document.createElement('button');
+        viewButton.setAttribute("data-target", "transactionView");
+        viewButton.setAttribute('class','modal-trigger');
+        viewButton.setAttribute('style','border:none;background-color:Transparent');
+        viewButton.setAttribute('onclick','setSelectedTransaction('+JSON.stringify(objectFS.id)+','+JSON.stringify(object)+')');
+        var cellButtonIcon = document.createElement('i');
+        cellButtonIcon.setAttribute('class','material-icons right');
+        cellButtonIcon.innerHTML="add";           
+        viewButton.appendChild(cellButtonIcon);
+        
+        var cell = document.createElement('td');
+        cell.appendChild(viewButton);
+        objectsRow.appendChild(cell);   
+
+        var amount = object.amount;
+        var cellContent = document.createTextNode(amount.toLocaleString("nl-BE", currencyStyle));
+        cell = document.createElement('td');
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell);  
+        
+        cellContent = document.createTextNode(object.bookDate);
+        cell = document.createElement('td');
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell); 
+        
+        cell = document.createElement('td');
+        cell.setAttribute("align","center");
+        if (object.type !="TBSET") {
+            cellContent = document.createElement("i");
+            cellContent.setAttribute("class","material-icons  green ");
+            cellContent.innerHTML = "done";
+          } else {
+            cellContent = document.createElement("i");
+            cellContent.setAttribute("class","material-icons  red ");
+            cellContent.innerHTML = "clear";
+          };
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell); 
+
+        refCoproperty.collection("Documents").where("link","==",objectFS.id).get().then(function(objectsFSArray){
+          if (objectsFSArray.docs.length > 0) {
+            cellContent = document.createElement("i");
+            cellContent.setAttribute("class","material-icons  green ");
+            cellContent.innerHTML = "done";
+          } else {
+            cellContent = document.createElement("i");
+            cellContent.setAttribute("class","material-icons  red ");
+            cellContent.innerHTML = "clear";
+          };
+          cell = document.createElement('td');
+          cell.setAttribute("align","center");
           cell.appendChild(cellContent);
           objectsRow.appendChild(cell);
-          
-          
-          
+        
           transactionsTable.appendChild (objectsRow);
 
           if (object.type == "OWNER") {
             memberGet(object.owner).then (function(m){
               viewButton.innerHTML = "<font color='blue'>" + m.firstName + " " + m.lastName + "</font>";
-            })
+            });
           } else {
             viewButton.innerHTML = "<font color='blue'>" + object.name + "</font>";
           };
 
-          });
-        };
+        });
+      };
           
         function refreshTransactions(){
           emptyHTMLSet(transactionsTable);
           refCoproperty.collection("Transactions").orderBy("bookDate","desc").get().then(function(objectsFSArray){
-              objectsFSArray.forEach(function(objectFS){
+            objectsFSArray.forEach(function(objectFS){
                 loadTransaction(objectFS);
               });        
             });
         };
 
-        var transactionsLoaded = false;
         function loadTransactions(){
           hideMenu();
           document.getElementById("logo-container").innerHTML = "MyCondos: Transactions";
