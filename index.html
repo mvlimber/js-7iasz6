@@ -302,7 +302,8 @@
                 Cancel</a>
             </div>
           </div>
-          <table class="striped" id="chargesTable_frame">
+          <div id="chargesTable_frame">
+          <table class="striped" >
             <thead>
               <tr>
                 <th>Period</th>
@@ -312,6 +313,7 @@
             <tbody id="chargesReportsTable">
             </tbody>
           </table>
+          </div>
           <div id = "charges_absentPhrase">
           <h5>There are no Charges Reports yet</h5>
           </div>
@@ -2207,7 +2209,7 @@
       function refreshChargesReports(){
         emptyHTMLSet(chargesReportsTable);
         refCoproperty.collection("ChargesReports").orderBy("endDate","asc").get().then(function(chargesReportsFS){
-          if (chargesReportsFS.length) {
+          if (chargesReportsFS.docs.length) {
             document.getElementById("chargesTable_frame").style.display = "block";
             document.getElementById("charges_absentPhrase").style.display = "none";
             readCloseAndReguDate (chargesReportsFS);
@@ -2215,6 +2217,7 @@
               loadChargesReport(objectFS);
             });
           } else {
+            readCloseAndReguDate (chargesReportsFS);
             document.getElementById("chargesTable_frame").style.display = "none";
             document.getElementById("charges_absentPhrase").style.display = "block";
           };
