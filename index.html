@@ -901,52 +901,51 @@
             </div>
           </div>
 
-          <div id="meterReadingRead" class="modal">
-            <div class="modal-content">
-              <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
-              <h5>Meter info</h5>
+          <div id="meterReadingView" class="modal">
+          <div class="modal-content">
+            <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
+            <h5>Meter info</h5>
+            <form>
+              <div class="input-field col s4 m4">
+                <input id="meterReading_property" type="text" readonly>
+                <label for="meterReading_property">Property</label>
+              </div>
+              <div class="input-field col s4 m4">
+                <input id="meterReading_type" type="text" readonly>
+                <label for="meterReading_type">Type</label>
+              </div>
+              <div class="input-field col s4 m4">
+                <input id="meterReading_id" type="text" readonly>
+                <label for="meterReading_id">ID Meter</label>
+              </div>
+            </form>
+            <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
               <form>
                 <div class="input-field col s12 m6">
-                  <input id="meterReading_property" type="text" readonly>
-                  <label for="meterReading_property">Property</label>
-                </div>
-                <div class="input-field col s12 m6">
-                  <input id="meterReading_type" type="text" readonly>
-                  <label for="meterReading_type">Type</label>
-                </div>
-                <div class="input-field col s12 m6">
-                  <input id="meterReading_id" type="text" readonly>
-                  <label for="meterReading_id">ID Meter</label>
-                </div>
-                <div class="input-field col s12 m6">
-                  <input id="meterReading_lastReading" type="text" readonly>
-                  <label for="meterReading_lastReading">Last Reading</label>
+                  <div class="input-field">
+                    <input id="meterReading_reading" type="text" readonly>
+                    <label for="meterReading_reading">NewReading</label>
+                  </div>
+                  <div class="input-field ">
+                    <input id="meterReading_date" type="text" readonly>
+                    <label for="meterReading_date">Reading Date</label>
+                  </div>
                 </div>
               </form>
-              <div class="row">
-                <form>
-                  <div class="input-field col s12 m6">
-                    <div class="input-field">
-                      <input id="meterReading_reading" type="text" readonly>
-                      <label for="meterReading_reading">Reading</label>
-                    </div>
-                    <div class="input-field ">
-                      <input id="meterReading_date" type="text" readonly>
-                      <label for="meterReading_date">Reading Date</label>
-                    </div>
-                  </div>
-                </form>
-                <div class="col s12 m6">
-                  <div id="meterReading_picture_frame">
-                    <div id="meterReading_picture_show" class="col s12 m6">
-                    </div>
+              <div class="col s12 m6">
+                <div id="meterReading_picture_frame">
+                  <div id="meterReading_picture_show" class="col s12 m6">
                   </div>
                 </div>
               </div>
-              <a style="float: right;margin-bottom: 3px"
-                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>Close</a>
+              <div id="meterReading_edit_button_frame" class="displayHidden">
+              <button id="meterReading_edit_button" style="float: right;margin-bottom: 3px" data-target="meterReading_edit" class="btn-small waves-light modal-trigger" onclick="editMeterReading(meterReading)">Edit<i class="material-icons right">edit</i></button>
             </div>
+            </div>
+            <a style="float: right;margin-bottom: 3px"
+              class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>Close</a>
           </div>
+        </div>
         </div>
         <!------------------------------------------------------------------------------------------------------>
         <div id="Members" class="col s12">
@@ -3666,14 +3665,13 @@
         }; 
       };
 
-      
+      /*
       function loadMeterReading(mr){
         var objectsRow= document.createElement('tr');
         var cellContent;
         var cell;
         
         if (mr.readings[0].date.localeCompare(lastReguDate) < 1) {
-          /* newest reading is in closed period: fake empty record */
           mr.readings.unshift({
             counter : mr.readings[0].counter + 1,
             picture : false,
@@ -3710,8 +3708,6 @@
 
         if (mr.property) {cellContent = propertyLink(propertyGetSynchrone(mr.property));}
         else {
-            /*cellContent = document.createElement();
-            cellContent.innerHTML ="Common <br> Parts";*/
             cellContent = document.createTextNode("Common Parts");
           };
         cell = document.createElement('td');
@@ -3733,7 +3729,6 @@
         objectsRow.appendChild(cell);  
 
         if (mr.readings[0].picture) {
-           /*cellContent = document.createTextNode("&#10060;");*/
            cellContent = document.createElement("i");
            cellContent.setAttribute("class","material-icons  green ");
            cellContent.innerHTML = "done";
@@ -3741,6 +3736,75 @@
           cellContent = document.createElement("i");
            cellContent.setAttribute("class","material-icons  red ");
            cellContent.innerHTML = "clear";
+        };
+        cell = document.createElement('td');
+        cell.setAttribute("align","center");
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell);  
+
+        cellContent = document.createTextNode(mr.readings[0].date);
+        cell = document.createElement('td');
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell);
+
+        meterReadingsTable.appendChild (objectsRow);
+      };*/
+
+      function loadMeterReading(mr){
+        var objectsRow= document.createElement('tr');
+        var cellContent;
+        var cell;
+        
+        cellContent = document.createElement('button');
+        if (mr.property) {
+          var p = propertyGetSynchrone(mr.property);
+          isOwner = (currentUser.id == p.owner);
+          idHere = p.idFS;
+          codeHere = p.code}
+        else {
+          isOwner = false;
+          idHere =  currentCopropertyId;
+          codeHere = "Common Parts";
+        };
+
+        cellContent.setAttribute("data-target", "meterReadingView");
+        cellContent.setAttribute('onclick','selectMeterReading('+JSON.stringify(idHere)+','+JSON.stringify(codeHere)+','+JSON.stringify(mr)+')');
+        cellContent.setAttribute('class','modal-trigger');
+        cellContent.setAttribute('style','border:none;background-color:Transparent');
+        cellContent.innerHTML = "<font color='blue'>" + MeterType[mr.type] + "</font>";
+        cell = document.createElement('td');
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell);  
+
+        if (mr.property) {cellContent = propertyLink(propertyGetSynchrone(mr.property));}
+        else {cellContent = document.createTextNode("Common Parts");};
+        cell = document.createElement('td');
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell);
+        
+        var readingPresent = (mr.readings[0])&& (mr.readings[0].date.localeCompare(lastReguDate) < 0);
+        if (readingPresent) {
+           cellContent = document.createElement("i");
+           cellContent.setAttribute("class","material-icons  green ");
+           cellContent.innerHTML = "done";
+        } else {
+          cellContent = document.createElement("i");
+          cellContent.setAttribute("class","material-icons  red ");
+          cellContent.innerHTML = "clear";
+        };
+        cell = document.createElement('td');
+        cell.setAttribute("align","center");
+        cell.appendChild(cellContent);
+        objectsRow.appendChild(cell);  
+
+        if (readingPresent && (mr.readings[0].picture)) {
+          cellContent = document.createElement("i");
+          cellContent.setAttribute("class","material-icons  green ");
+          cellContent.innerHTML = "done";
+        } else {
+          cellContent = document.createElement("i");
+          cellContent.setAttribute("class","material-icons  red ");
+          cellContent.innerHTML = "clear";
         };
         cell = document.createElement('td');
         cell.setAttribute("align","center");
