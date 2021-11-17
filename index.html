@@ -904,21 +904,7 @@
           <div id="meterReadingView" class="modal">
           <div class="modal-content">
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
-            <h5>Meter info</h5>
-            <form>
-              <div class="input-field col s4 m4">
-                <input id="meterReading_property" type="text" readonly>
-                <label for="meterReading_property">Property</label>
-              </div>
-              <div class="input-field col s4 m4">
-                <input id="meterReading_type" type="text" readonly>
-                <label for="meterReading_type">Type</label>
-              </div>
-              <div class="input-field col s4 m4">
-                <input id="meterReading_id" type="text" readonly>
-                <label for="meterReading_id">ID Meter</label>
-              </div>
-            </form>
+            <h6>New meter reading</h5>
             <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
               <form>
                 <div class="input-field col s12 m6">
@@ -940,8 +926,24 @@
               </div>
               <div id="meterReading_edit_button_frame" class="displayHidden">
               <button id="meterReading_edit_button" style="float: right;margin-bottom: 3px" data-target="meterReading_edit" class="btn-small waves-light modal-trigger" onclick="editMeterReading(meterReading)">Edit<i class="material-icons right">edit</i></button>
+              </div>
             </div>
+            <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
+            <h6>Meter info and past readings</h5>
+            <div class="input-field col s4 m4">
+              <input id="meterReading_property" type="text" readonly>
+              <label for="meterReading_property">Property</label>
             </div>
+            <div class="input-field col s4 m4">
+              <input id="meterReading_type" type="text" readonly>
+              <label for="meterReading_type">Type</label>
+            </div>
+            <div class="input-field col s4 m4">
+              <input id="meterReading_id" type="text" readonly>
+              <label for="meterReading_id">ID Meter</label>
+            </div>
+          </div>
+          
             <a style="float: right;margin-bottom: 3px"
               class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>Close</a>
           </div>
