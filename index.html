@@ -925,28 +925,26 @@
                   </div>
                 </div>
               </div>
-              <div id="meterReading_edit_button_frame" class="displayHidden">
-              <button id="meterReading_edit_button" style="float: right;margin-bottom: 3px" data-target="meterReading_edit" class="btn-small waves-light modal-trigger" onclick="editMeterReading(meterReading)">Edit<i class="material-icons right">edit</i></button>
+              <div id="meterReading_edit_button_frame">
+                <button id="meterReading_edit_button" style="float: right;float: bottom;margin-bottom: 3px" data-target="meterReading_edit" class="btn-floating waves-light modal-trigger" onclick="editMeterReading(meterReading)"><i class="material-icons right">edit</i></button>
               </div>
             </div>
             <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
-            <h6>Meter Info and Past Readings</h5>
-            <div class="input-field col s4 m4">
-              <input id="meterReading_property" type="text" readonly>
-              <label for="meterReading_property">Property</label>
+              <h6>Meter Info and Past Readings</h5>
+              <div class="input-field col s4 m4">
+                <input id="meterReading_property" type="text" readonly>
+                <label for="meterReading_property">Property</label>
+              </div>
+              <div class="input-field col s4 m4">
+                <input id="meterReading_type" type="text" readonly>
+                <label for="meterReading_type">Type</label>
+              </div>
+              <div class="input-field col s4 m4">
+                <input id="meterReading_id" type="text" readonly>
+                <label for="meterReading_id">ID Meter</label>
+              </div>
             </div>
-            <div class="input-field col s4 m4">
-              <input id="meterReading_type" type="text" readonly>
-              <label for="meterReading_type">Type</label>
-            </div>
-            <div class="input-field col s4 m4">
-              <input id="meterReading_id" type="text" readonly>
-              <label for="meterReading_id">ID Meter</label>
-            </div>
-          </div>
-          
-            <a style="float: right;margin-bottom: 3px"
-              class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>Close</a>
+            <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
           </div>
         </div>
         </div>
@@ -3875,12 +3873,16 @@
       var meterReading;
       function selectMeterReading(mr){
         meterReading = mr;
-        document.getElementById("meterReading_property").value = propertyGetSynchrone(mr.property).code;
+        var thisProperty = propertyGetSynchrone(mr.property).code;
+        document.getElementById("meterReading_property").value = thisProperty.code;
         document.getElementById("meterReading_type").value = mr.type;
         document.getElementById("meterReading_id").value = mr.meter;
         var containsNewReading = (mr.readings[0]) && (lastReguDate.localeCompare(mr.readings[0].date) < 1);
         emptyHTMLSet(document.getElementById("meterReading_picture"));
         emptyHTMLSet(document.getElementById("meterReading_picture_show"));
+        if ((currentUser.role == roleAdministrator) || (currentUser.id == thisProperty.owner)) {
+         document.getElementById("meterReading_edit_button_frame").style.display= "block";
+        } else{document.getElementById("meterReading_edit_button_frame").style.display= "none"}
         if (containsNewReading) {
           document.getElementById("meterReading_reading").value = mr.readings[0].reading;
           document.getElementById("meterReading_date").value = mr.readings[0].date;
@@ -3900,7 +3902,7 @@
             picturePresent= "";
           };
         } else {
-          document.getElementById("meterReading_date").value = "";
+          document.getElementById("meterReading_reading").value = "";
           document.getElementById("meterReading_date").value ="";
         };
         M.updateTextFields();
