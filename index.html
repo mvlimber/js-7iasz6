@@ -833,30 +833,10 @@
             </div>
           </div>
 
-          <div id="meterReadingWrite" class="modal">
+          <div id="meterReadingEdit" class="modal">
             <div class="modal-content">
               <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
-              <h5>Meter info</h5>
-              <form>
-                <div class="input-field col s12 m6">
-                  <input id="meterReading_property_edit" type="text" readonly>
-                  <label for="meterReading_property_edit">Property</label>
-                </div>
-                <div class="input-field col s12 m6">
-                  <input id="meterReading_type_edit" type="text" readonly>
-                  <label for="meterReading_type_edit">Type</label>
-                </div>
-                <div class="input-field col s12 m6">
-                  <input id="meterReading_id_edit" type="text" readonly>
-                  <label for="meterReading_id_edit">ID Meter</label>
-                </div>
-                <div class="input-field col s12 m6">
-                  <input id="meterReading_lastReading_edit" type="text" readonly>
-                  <label for="meterReading_lastReading_edit">Last Reading</label>
-                </div>
-              </form>
-              <h6><b>Please enter Meter Reading here below:</b></h6>
-              <div class="row">
+              <h5>Enter meter reading and picture</h5>
                 <form>
                   <div class="input-field col s12 m6">
                     <div class="input-field">
@@ -892,14 +872,79 @@
                     </div>
                   </form>
                 </div>
-              </div>
-
-
+              
               <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeMeterReading()">Submit<i class="material-icons right">send</i></button>
               <a style="float: right;margin-bottom: 3px"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
             </div>
           </div>
+          <div id="meterReadingWrite" class="modal">
+          <div class="modal-content">
+            <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
+            <h5>Meter info</h5>
+            <form>
+              <div class="input-field col s12 m6">
+                <input id="meterReading_property_edit" type="text" readonly>
+                <label for="meterReading_property_edit">Property</label>
+              </div>
+              <div class="input-field col s12 m6">
+                <input id="meterReading_type_edit" type="text" readonly>
+                <label for="meterReading_type_edit">Type</label>
+              </div>
+              <div class="input-field col s12 m6">
+                <input id="meterReading_id_edit" type="text" readonly>
+                <label for="meterReading_id_edit">ID Meter</label>
+              </div>
+              <div class="input-field col s12 m6">
+                <input id="meterReading_lastReading_edit" type="text" readonly>
+                <label for="meterReading_lastReading_edit">Last Reading</label>
+              </div>
+            </form>
+            <h6><b>Please enter Meter Reading here below:</b></h6>
+            <div class="row">
+              <form>
+                <div class="input-field col s12 m6">
+                  <div class="input-field">
+                    <input id="meterReading_reading_edit" type="number" class="validate" max="9999999999" required required="true">
+                    <label for="meterReading_reading_edit">Reading<b><font color='red'>*</font></b></label>
+                    <span class="helper-text" data-error="Include decimals but ignore separator if present. Max 10 digits. Example: 06614639">Include decimals but ignore separator if present. Example: 06614639</span>
+                  </div>
+                  <br>
+                  <div class="input-field ">
+                    <input id="meterReading_date_edit" type="text" class="datepicker validate" required required="true">
+                    <label for="meterReading_date_edit">Reading Date<b><font color='red'>*</font></b></label>
+                    <span class="helper-text" data-error="required field" ></span>
+                  </div>
+                </div>
+              </form>
+              <div class="col s12 m6">
+                <div id="meterReading_picture_frame_edit">
+                  <div id="meterReading_picture_show_edit" class="col s12 m6">
+                  </div>
+                  <button style="float:right;margin-left: 20px;margin-top: 3px" class="btn-small waves-light red modal-trigger" data-target="pictureRemove" type="submit" >Remove Picture<i class="material-icons right">delete</i></button>
+                </div>
+                <form id="meterReading_picture_form" class="displayHidden">
+                  <div class="input-field " id="meterReading_picture">
+                  </div>
+                  <div class="file-field input-field col s12 m6">
+                    <div class="btn-small">
+                      <span>Picture<i class="material-icons right">attach_file</i></span>
+                      <input type="file" id="meterReading_picture_file">
+                    </div>
+                    <div class="file-path-wrapper">
+                      <input class="file-path validate" type="text" id="meterReading_picture_text">
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+
+            <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeMeterReading()">Submit<i class="material-icons right">send</i></button>
+            <a style="float: right;margin-bottom: 3px"
+              class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+          </div>
+        </div>
 
           <div id="meterReadingView" class="modal">
           <div class="modal-content">
@@ -946,7 +991,7 @@
             </div>
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
           </div>
-        </div>
+          </div>
         </div>
         <!------------------------------------------------------------------------------------------------------>
         <div id="Members" class="col s12">
@@ -3870,6 +3915,7 @@
         M.updateTextFields();
       };
 
+      
       var meterReading;
       function selectMeterReading(mr){
         meterReading = mr;
@@ -3907,6 +3953,10 @@
         };
         M.updateTextFields();
       };
+
+      function editMeterReading(){
+        
+      }
       
       function setSelectedMeterReading_readonly(propertyId, propertyData,readingID, readingData){
         selectedReadingId = readingID;
