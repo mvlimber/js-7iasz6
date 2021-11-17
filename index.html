@@ -3751,24 +3751,12 @@
       };*/
 
       function loadMeterReading(mr){
-        var objectsRow= document.createElement('tr');
-        var cellContent;
+        var objectsRow = document.createElement('tr');
+        var cellContent = document.createElement('button');
         var cell;
         
-        cellContent = document.createElement('button');
-        if (mr.property) {
-          var p = propertyGetSynchrone(mr.property);
-          isOwner = (currentUser.id == p.owner);
-          idHere = p.idFS;
-          codeHere = p.code}
-        else {
-          isOwner = false;
-          idHere =  currentCopropertyId;
-          codeHere = "Common Parts";
-        };
-
         cellContent.setAttribute("data-target", "meterReadingView");
-        cellContent.setAttribute('onclick','selectMeterReading('+JSON.stringify(idHere)+','+JSON.stringify(codeHere)+','+JSON.stringify(mr)+')');
+        cellContent.setAttribute('onclick','selectMeterReading('+JSON.stringify(mr)+')');
         cellContent.setAttribute('class','modal-trigger');
         cellContent.setAttribute('style','border:none;background-color:Transparent');
         cellContent.innerHTML = "<font color='blue'>" + MeterType[mr.type] + "</font>";
@@ -3881,6 +3869,40 @@
         M.updateTextFields();
       };
 
+      var meterReading;
+      function selectMeterReading(mr){
+        meterReading = mr;
+        document.getElementById("meterReading_property").value = propertyGetSynchrone(mr.property).code;
+        document.getElementById("meterReading_type").value = mr.type;
+        document.getElementById("meterReading_id").value = mr.meter;
+        var containsNewReading = (mr.readings[0]) && (lastReguDate.localeCompare(mr.readings[0].date) < 1);
+        emptyHTMLSet(document.getElementById("meterReading_picture"));
+        emptyHTMLSet(document.getElementById("meterReading_picture_show"));
+        if (containsNewReading) {
+          document.getElementById("meterReading_reading").value = mr.readings[0].reading;
+          document.getElementById("meterReading_date").value = mr.readings[0].date;
+          if (mr.readings[0].picture) {
+            refCopropertyFiles.child(selectedReadingPropertyId).child("Meters").child(selectedReadingId).child((readingData.readings[0].counter).toString()).getDownloadURL().then(function(url) {
+              var imgEl = document.createElement("img");
+              imgEl.setAttribute("width","400");
+              imgEl.setAttribute("height","300");
+              imgEl.setAttribute("src",url);
+              document.getElementById("meterReading_picture_show").appendChild(imgEl);
+              document.getElementById("meterReading_picture_frame").setAttribute("class","displayBlock");
+              picturePresent= "Y";
+              M.updateTextFields();
+            });
+          } else {
+            document.getElementById("meterReading_picture_frame").setAttribute("class","displayHidden");
+            picturePresent= "";
+          };
+        } else {
+          document.getElementById("meterReading_date").value = "";
+          document.getElementById("meterReading_date").value ="";
+        };
+        M.updateTextFields();
+      };
+      
       function setSelectedMeterReading_readonly(propertyId, propertyData,readingID, readingData){
         selectedReadingId = readingID;
         selectedReadingPropertyId = propertyId;
