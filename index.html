@@ -947,50 +947,50 @@
         </div>
 
           <div id="meterReadingView" class="modal">
-          <div class="modal-content">
-            <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
-            <h5>View meter readings</h5>
-            <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
-              <h6>New Meter Reading</h5>
-              <form>
-                <div class="input-field col s12 m6">
-                  <div class="input-field">
-                    <input id="meterReading_reading" type="text" readonly>
-                    <label for="meterReading_reading">NewReading</label>
+            <div class="modal-content">
+              <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
+              <h5>View meter readings</h5>
+              <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
+                <h6>New Meter Reading</h5>
+                <form>
+                  <div class="input-field col s12 m6">
+                    <div class="input-field">
+                      <input id="meterReading_reading" type="text" readonly>
+                      <label for="meterReading_reading">NewReading</label>
+                    </div>
+                    <div class="input-field ">
+                      <input id="meterReading_date" type="text" readonly>
+                      <label for="meterReading_date">Reading Date</label>
+                    </div>
                   </div>
-                  <div class="input-field ">
-                    <input id="meterReading_date" type="text" readonly>
-                    <label for="meterReading_date">Reading Date</label>
+                </form>
+                <div class="col s12 m6">
+                  <div id="meterReading_picture_frame">
+                    <div id="meterReading_picture_show" class="col s12 m6">
+                    </div>
                   </div>
                 </div>
-              </form>
-              <div class="col s12 m6">
-                <div id="meterReading_picture_frame">
-                  <div id="meterReading_picture_show" class="col s12 m6">
-                  </div>
+                <div id="meterReading_edit_button_frame">
+                  <button id="meterReading_edit_button" style="float: right;float: bottom;margin-bottom: 3px" data-target="meterReadingEdit" class="btn-floating waves-light modal-trigger"><i class="material-icons right">edit</i></button>
                 </div>
               </div>
-              <div id="meterReading_edit_button_frame">
-                <button id="meterReading_edit_button" style="float: right;float: bottom;margin-bottom: 3px" data-target="meterReading_edit" class="btn-floating waves-light modal-trigger" onclick="editMeterReading(meterReading)"><i class="material-icons right">edit</i></button>
+              <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
+                <h6>Meter Info and Past Readings</h5>
+                <div class="input-field col s4 m4">
+                  <input id="meterReading_property" type="text" readonly>
+                  <label for="meterReading_property">Property</label>
+                </div>
+                <div class="input-field col s4 m4">
+                  <input id="meterReading_type" type="text" readonly>
+                  <label for="meterReading_type">Type</label>
+                </div>
+                <div class="input-field col s4 m4">
+                  <input id="meterReading_id" type="text" readonly>
+                  <label for="meterReading_id">ID Meter</label>
+                </div>
               </div>
+              <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
             </div>
-            <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
-              <h6>Meter Info and Past Readings</h5>
-              <div class="input-field col s4 m4">
-                <input id="meterReading_property" type="text" readonly>
-                <label for="meterReading_property">Property</label>
-              </div>
-              <div class="input-field col s4 m4">
-                <input id="meterReading_type" type="text" readonly>
-                <label for="meterReading_type">Type</label>
-              </div>
-              <div class="input-field col s4 m4">
-                <input id="meterReading_id" type="text" readonly>
-                <label for="meterReading_id">ID Meter</label>
-              </div>
-            </div>
-            <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
-          </div>
           </div>
         </div>
         <!------------------------------------------------------------------------------------------------------>
@@ -3923,15 +3923,17 @@
         document.getElementById("meterReading_property").value = thisProperty.code;
         document.getElementById("meterReading_type").value = mr.type;
         document.getElementById("meterReading_id").value = mr.meter;
-        var containsNewReading = (mr.readings[0]) && (lastReguDate.localeCompare(mr.readings[0].date) < 1);
         emptyHTMLSet(document.getElementById("meterReading_picture"));
         emptyHTMLSet(document.getElementById("meterReading_picture_show"));
         if ((currentUser.role == roleAdministrator) || (currentUser.id == thisProperty.owner)) {
          document.getElementById("meterReading_edit_button_frame").style.display= "block";
         } else{document.getElementById("meterReading_edit_button_frame").style.display= "none"}
+        var containsNewReading = (mr.readings[0]) && (lastReguDate.localeCompare(mr.readings[0].date) < 1);
         if (containsNewReading) {
           document.getElementById("meterReading_reading").value = mr.readings[0].reading;
+          document.getElementById("meterReading_reading_edit").value = mr.readings[0].reading;
           document.getElementById("meterReading_date").value = mr.readings[0].date;
+          document.getElementById("meterReading_date_edit").value = mr.readings[0].date;
           if (mr.readings[0].picture) {
             refCopropertyFiles.child(selectedReadingPropertyId).child("Meters").child(selectedReadingId).child((readingData.readings[0].counter).toString()).getDownloadURL().then(function(url) {
               var imgEl = document.createElement("img");
@@ -3949,7 +3951,9 @@
           };
         } else {
           document.getElementById("meterReading_reading").value = "";
+          document.getElementById("meterReading_reading-edit").value = "";
           document.getElementById("meterReading_date").value ="";
+          document.getElementById("meterReading_date_edit").value ="";
         };
         M.updateTextFields();
       };
