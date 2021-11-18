@@ -4036,13 +4036,13 @@
           var thisReading = meterReading.readings;
           if (containsNewReading){
             thisReading[0].reading = Number(document.getElementById("meterReading_reading_edit").value);
-            thisReading[0].date = Number(document.getElementById("meterReading_reading_edit").value);
+            thisReading[0].date = document.getElementById("meterReading_date_edit").value;
           } else {
             thisReading.unshift({
               counter : thisReading[0].counter + 1,
-              picture : false,
+              picture : Boolean(pictureFileText),
               reading : Number(document.getElementById("meterReading_reading_edit").value),
-              date: Number(document.getElementById("meterReading_reading_edit").value),
+              date: document.getElementById("meterReading_date_edit").value,
             });
           };
           var thisRefFS;
@@ -4051,7 +4051,7 @@
           if (pictureFileText) { 
             // A new picture has been attached
             thisReading.picture= true;
-            thisRefFS.collection("Meters").doc(meterReading.idFS).update({readings:selectedReadingData.readings}).then(function() {
+            thisRefFS.collection("Meters").doc(meterReading.idFS).update({readings:thisReading}).then(function() {
               var pictureFile = document.getElementById('meterReading_picture_file_edit').files[0];
               var fileRef = refCopropertyFiles.child(selectedReadingPropertyId).child("Meters").child(selectedReadingId).child((thisReading.counter).toString());  
               fileRef.put(pictureFile).then (function (){});
@@ -4062,8 +4062,9 @@
             });
           } else {
             // No new picture attached: either existing picture or no picture or pictuture was removed
-            thisReading.picture= picturePresent;
-            thisRefFS.collection("Meters").doc(selectedReadingId).update({readings:selectedReadingData.readings}).then(function(docref) {
+            //thisReading.picture= picturePresent;
+            thisReading.picture= false;
+            thisRefFS.collection("Meters").doc(meterReading.idFS).update({readings:selectedReadingData.readings}).then(function(docref) {
               refreshMeterReadings();
               M.Modal.getInstance(document.getElementById("meterReadingWrite")).close();
             }).catch(function(error) {
