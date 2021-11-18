@@ -3917,6 +3917,7 @@
 
       
       var meterReading;
+      var containsNewReading;
       function selectMeterReading(mr){
         meterReading = mr;
         var thisProperty = propertyGetSynchrone(mr.property).code;
@@ -3928,7 +3929,7 @@
         if ((currentUser.role == roleAdministrator) || (currentUser.id == thisProperty.owner)) {
          document.getElementById("meterReading_edit_button_frame").style.display= "block";
         } else{document.getElementById("meterReading_edit_button_frame").style.display= "none"}
-        var containsNewReading = (mr.readings[0]) && (lastReguDate.localeCompare(mr.readings[0].date) < 1);
+        containsNewReading = (mr.readings[0]) && (lastReguDate.localeCompare(mr.readings[0].date) < 1);
         if (containsNewReading) {
           document.getElementById("meterReading_reading").value = mr.readings[0].reading;
           document.getElementById("meterReading_reading_edit").value = mr.readings[0].reading;
@@ -4008,8 +4009,9 @@
         if (!document.getElementById("meterReading_date_edit").checkValidity()) {
           M.toast({html:"Please enter Reading Date"});
           valid=false;
-        } else if (lastReguDate.localeCompare((document.getElementById("meterReading_date_edit").value)) != -1) {
-          M.toast({html:"Reading date must be after last meters regulation date"});
+        }; 
+        if (lastReguDate.localeCompare((document.getElementById("meterReading_date_edit").value)) != -1) {
+          M.toast({html:"Reading date must be after last meters regulation date being "+lastReguDate});
           valid=false;
         };
         var readingPicture = document.getElementById('meterReading_picture_file').files[0];
@@ -4029,19 +4031,28 @@
       };
 
       function writeMeterReading(){
-        var pictureFileText = document.getElementById("meterReading_picture_text").value;
+        var pictureFileText = document.getElementById("meterReading_picture_text_edit").value;
         if (validateMeterReading()) {
-          var thisReading = selectedReadingData.readings;
-          thisReading[0].reading = Number(document.getElementById("meterReading_reading_edit").value);
-          thisReading[0].date = document.getElementById("meterReading_date_edit").value;
+          var thisReading = meterReading.readings;
+          if (containsNewReading){
+            thisReading[0].reading = Number(document.getElementById("meterReading_reading_edit").value);
+            thisReading[0].date = Number(document.getElementById("meterReading_reading_edit").value);
+          } else {
+            thisReading.unshift({
+              counter : thisReading[0].counter + 1,
+              picture : false,
+              reading : Number(document.getElementById("meterReading_reading_edit").value),
+              date: Number(document.getElementById("meterReading_reading_edit").value),
+            });
+          };
           var thisRefFS;
-          if (selectedReadingData.coproperty){thisRefFS = refCoproperty}
-          else {thisRefFS = refCoproperty.collection("Properties").doc(selectedReadingPropertyId)};
+          if (meterReading.coproperty){thisRefFS = refCoproperty}
+          else {thisRefFS = refCoproperty.collection("Properties").doc(meterReading.property)};
           if (pictureFileText) { 
             // A new picture has been attached
             thisReading.picture= true;
-            thisRefFS.collection("Meters").doc(selectedReadingId).update({readings:selectedReadingData.readings}).then(function() {
-              var pictureFile = document.getElementById('meterReading_picture_file').files[0];
+            thisRefFS.collection("Meters").doc(meterReading.idFS).update({readings:selectedReadingData.readings}).then(function() {
+              var pictureFile = document.getElementById('meterReading_picture_file_edit').files[0];
               var fileRef = refCopropertyFiles.child(selectedReadingPropertyId).child("Meters").child(selectedReadingId).child((thisReading.counter).toString());  
               fileRef.put(pictureFile).then (function (){});
               refreshMeterReadings();
