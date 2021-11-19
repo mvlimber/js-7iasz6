@@ -3820,7 +3820,7 @@
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);
         
-        var readingPresent = (mr.readings[0])&& (mr.readings[0].date.localeCompare(lastReguDate) < 0);
+        var readingPresent = (mr.readings[0])&& (mr.readings[0].date.localeCompare(lastReguDate) > 0);
         if (readingPresent) {
            cellContent = document.createElement("i");
            cellContent.setAttribute("class","material-icons  green ");
