@@ -3711,6 +3711,12 @@
         }; 
       };
 
+      async function meterReadingGet(idFS){
+        function checkId(mr){return mr.idFS == idFS};
+        var mrs = await meterReadingsGet();
+        return mrs.find(checkId);
+      };
+
       /*
       function loadMeterReading(mr){
         var objectsRow= document.createElement('tr');
@@ -3920,8 +3926,16 @@
       var containsNewReading;
       function selectMeterReading(mr){
         meterReading = mr;
-        var thisProperty = propertyGetSynchrone(mr.property).code;
-        document.getElementById("meterReading_property").value = thisProperty.code;
+        var thisPropertyCode;
+        var thisPropertyOwner;
+        if (mr.property){
+          var thisProperty = propertyGetSynchrone(mr.property);
+          thisPropertyCode= thisProperty.code;
+          thisPropertyOwner = thisProperty.owner}
+        else {
+          thisPropertyCode= "Common parts";
+          thisPropertyOwner = ""};
+        document.getElementById("meterReading_property").value = thisPropertyCode;
         document.getElementById("meterReading_type").value = mr.type;
         document.getElementById("meterReading_id").value = mr.meter;
         emptyHTMLSet(document.getElementById("meterReading_picture"));
@@ -4048,10 +4062,11 @@
           var thisRefFS;
           if (meterReading.coproperty){thisRefFS = refCoproperty}
           else {thisRefFS = refCoproperty.collection("Properties").doc(meterReading.property)};
+          var thisMeterIdFS = meterReading.idFS;
           if (pictureFileText) { 
             // A new picture has been attached
             thisReading.picture= true;
-            thisRefFS.collection("Meters").doc(meterReading.idFS).update({readings:thisReading}).then(function() {
+            thisRefFS.collection("Meters").doc(thisMeterIdFS).update({readings:thisReading}).then(function() {
               var pictureFile = document.getElementById('meterReading_picture_file_edit').files[0];
               var fileRef = refCopropertyFiles.child(selectedReadingPropertyId).child("Meters").child(selectedReadingId).child((thisReading.counter).toString());  
               fileRef.put(pictureFile).then (function (){});
@@ -4064,10 +4079,12 @@
             // No new picture attached: either existing picture or no picture or pictuture was removed
             //thisReading.picture= picturePresent;
             thisReading.picture= false;
-            thisRefFS.collection("Meters").doc(meterReading.idFS).update({readings:thisReading}).then(function(docref) {
+            thisRefFS.collection("Meters").doc(thisMeterIdFS).update({readings:thisReading}).then(function(docref) {
               refreshMeterReadings();
-              selectMeterReading
-              M.Modal.getInstance(document.getElementById("meterReadingEdit")).close();
+              meterReadingGet(thisMeterIdFS).then(function(mr){
+                selectMeterReading(mr);
+                M.Modal.getInstance(document.getElementById("meterReadingEdit")).close();
+              }); 
             }).catch(function(error) {
               M.toast({html:"Error occurred updating meter reading:" + error}); 
             });
