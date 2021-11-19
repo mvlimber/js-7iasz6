@@ -878,74 +878,7 @@
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
             </div>
           </div>
-          <div id="meterReadingWrite" class="modal">
-          <div class="modal-content">
-            <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
-            <h5>Meter info</h5>
-            <form>
-              <div class="input-field col s12 m6">
-                <input id="meterReading_property_edit" type="text" readonly>
-                <label for="meterReading_property_edit">Property</label>
-              </div>
-              <div class="input-field col s12 m6">
-                <input id="meterReading_type_edit" type="text" readonly>
-                <label for="meterReading_type_edit">Type</label>
-              </div>
-              <div class="input-field col s12 m6">
-                <input id="meterReading_id_edit" type="text" readonly>
-                <label for="meterReading_id_edit">ID Meter</label>
-              </div>
-              <div class="input-field col s12 m6">
-                <input id="meterReading_lastReading_edit" type="text" readonly>
-                <label for="meterReading_lastReading_edit">Last Reading</label>
-              </div>
-            </form>
-            <h6><b>Please enter Meter Reading here below:</b></h6>
-            <div class="row">
-              <form>
-                <div class="input-field col s12 m6">
-                  <div class="input-field">
-                    <input id="meterReading_reading_edit" type="number" class="validate" max="9999999999" required required="true">
-                    <label for="meterReading_reading_edit">Reading<b><font color='red'>*</font></b></label>
-                    <span class="helper-text" data-error="Include decimals but ignore separator if present. Max 10 digits. Example: 06614639">Include decimals but ignore separator if present. Example: 06614639</span>
-                  </div>
-                  <br>
-                  <div class="input-field ">
-                    <input id="meterReading_date_edit" type="text" class="datepicker validate" required required="true">
-                    <label for="meterReading_date_edit">Reading Date<b><font color='red'>*</font></b></label>
-                    <span class="helper-text" data-error="required field" ></span>
-                  </div>
-                </div>
-              </form>
-              <div class="col s12 m6">
-                <div id="meterReading_picture_frame_edit">
-                  <div id="meterReading_picture_show_edit" class="col s12 m6">
-                  </div>
-                  <button style="float:right;margin-left: 20px;margin-top: 3px" class="btn-small waves-light red modal-trigger" data-target="pictureRemove" type="submit" >Remove Picture<i class="material-icons right">delete</i></button>
-                </div>
-                <form id="meterReading_picture_form" class="displayHidden">
-                  <div class="input-field " id="meterReading_picture">
-                  </div>
-                  <div class="file-field input-field col s12 m6">
-                    <div class="btn-small">
-                      <span>Picture<i class="material-icons right">attach_file</i></span>
-                      <input type="file" id="meterReading_picture_file">
-                    </div>
-                    <div class="file-path-wrapper">
-                      <input class="file-path validate" type="text" id="meterReading_picture_text">
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </div>
-
-
-            <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeMeterReading()">Submit<i class="material-icons right">send</i></button>
-            <a style="float: right;margin-bottom: 3px"
-              class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
-          </div>
-        </div>
-
+          
           <div id="meterReadingView" class="modal">
             <div class="modal-content">
               <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
@@ -988,6 +921,15 @@
                   <input id="meterReading_id" type="text" readonly>
                   <label for="meterReading_id">ID Meter</label>
                 </div>
+                <table>
+                  <thead>
+                    <th>reading</th>
+                    <th>date</th>
+                    <th>picture</th>
+                  </thead>
+                  <tbody id="meterReadingHistory">
+                  </tbody>
+                </table>
               </div>
               <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
             </div>
@@ -3926,6 +3868,27 @@
         meterReading = mr;
         var thisPropertyCode;
         var thisPropertyOwner;
+        var historyEl = document.getElementById("meterReadingHistory");
+        
+        function fillHistory(readingsHere){
+          emptyHTMLSet(historyEl);
+          readingsHere.forEach(function(r){
+            var row = document.createElement('tr');
+            var column = document.createElement('td');
+            var cell = document.createTextNode(r.reading);
+            column.appendChild(cell);
+            row.appendChild(column);
+            column = document.createElement('td');
+            cell = document.createTextNode(r.date);
+            column.appendChild(cell);
+            row.appendChild(column);
+            column = document.createElement('td');
+            cell = document.createTextNode(" ");
+            column.appendChild(cell);
+            row.appendChild(column);
+            historyEl.appendChild(row);
+          });
+        };
         if (mr.property){
           var thisProperty = propertyGetSynchrone(mr.property);
           thisPropertyCode= thisProperty.code;
@@ -3936,8 +3899,8 @@
         document.getElementById("meterReading_property").value = thisPropertyCode;
         document.getElementById("meterReading_type").value = mr.type;
         document.getElementById("meterReading_id").value = mr.meter;
-        emptyHTMLSet(document.getElementById("meterReading_picture"));
-        emptyHTMLSet(document.getElementById("meterReading_picture_show"));
+        /*emptyHTMLSet(document.getElementById("meterReading_picture"));
+        emptyHTMLSet(document.getElementById("meterReading_picture_show"));*/
         if ((currentUser.role == roleAdministrator) || (currentUser.id == thisProperty.owner)) {
          document.getElementById("meterReading_edit_button_frame").style.display= "block";
         } else{document.getElementById("meterReading_edit_button_frame").style.display= "none"}
@@ -3947,6 +3910,7 @@
           document.getElementById("meterReading_reading_edit").value = mr.readings[0].reading;
           document.getElementById("meterReading_date").value = mr.readings[0].date;
           document.getElementById("meterReading_date_edit").value = mr.readings[0].date;
+          fillHistory(mr.readings.slice(1,mr.readings.length));
           if (mr.readings[0].picture) {
             refCopropertyFiles.child(selectedReadingPropertyId).child("Meters").child(selectedReadingId).child((readingData.readings[0].counter).toString()).getDownloadURL().then(function(url) {
               var imgEl = document.createElement("img");
@@ -3967,42 +3931,12 @@
           document.getElementById("meterReading_reading-edit").value = "";
           document.getElementById("meterReading_date").value ="";
           document.getElementById("meterReading_date_edit").value ="";
+          fillHistory(mr.readings);
+          
         };
         M.updateTextFields();
       };
 
-      function editMeterReading(){
-        
-      }
-      /*
-      function setSelectedMeterReading_readonly(propertyId, propertyData,readingID, readingData){
-        selectedReadingId = readingID;
-        selectedReadingPropertyId = propertyId;
-        document.getElementById("meterReading_property").value = propertyData.code;
-        document.getElementById("meterReading_type").value = readingData.type;
-        document.getElementById("meterReading_id").value = readingData.meter;
-        document.getElementById("meterReading_lastReading").value = readingData.readings[1].reading;
-        document.getElementById("meterReading_reading").value = readingData.readings[0].reading;
-        document.getElementById("meterReading_date").value = readingData.readings[0].date;
-        emptyHTMLSet(document.getElementById("meterReading_picture"));
-        emptyHTMLSet(document.getElementById("meterReading_picture_show"));
-        if (readingData.readings[0].picture) {
-          refCopropertyFiles.child(selectedReadingPropertyId).child("Meters").child(selectedReadingId).child((readingData.readings[0].counter).toString()).getDownloadURL().then(function(url) {
-            var imgEl = document.createElement("img");
-            imgEl.setAttribute("width","400");
-            imgEl.setAttribute("height","300");
-            imgEl.setAttribute("src",url);
-            document.getElementById("meterReading_picture_show").appendChild(imgEl);
-            document.getElementById("meterReading_picture_frame").setAttribute("class","displayBlock");
-            picturePresent= "Y";
-          });
-        } else {
-          document.getElementById("meterReading_picture_frame").setAttribute("class","displayHidden");
-          picturePresent= "";
-        };
-        M.updateTextFields();
-      };
-      */
       function removePicture(){
         document.getElementById("meterReading_picture_form").setAttribute("class","displayBlock");
         document.getElementById("meterReading_picture_frame_edit").setAttribute("class","displayHidden");
@@ -4081,16 +4015,10 @@
               refreshMeterReadings();
               selectMeterReading(meterReading);
               M.Modal.getInstance(document.getElementById("meterReadingEdit")).close();
-              /*document.getElementById("meterReading_reading").value = mr.readings[0].reading;
-              document.getElementById("meterReading_date").value = mr.readings[0].date;
-              meterReadingGet(thisMeterIdFS).then(function(mr){
-                selectMeterReading(mr);
-                M.Modal.getInstance(document.getElementById("meterReadingEdit")).close();
-              }); */
             }).catch(function(error) {
               M.toast({html:"Error occurred updating meter reading:" + error}); 
             });
-          }
+          };
         };
       };
     </script>
