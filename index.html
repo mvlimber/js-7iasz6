@@ -264,7 +264,7 @@
               </table>
             </div>
             <div class="col s12 m6">
-              <img width="300" height="225"" class="center" src="https://firebasestorage.googleapis.com/v0/b/slimmeeigendomdb.appspot.com/o/Azur_small.gif?alt=media&token=289506e5-49da-435a-877d-bd00757f3aac">
+              <img width="300" height="225" class="center" src="https://firebasestorage.googleapis.com/v0/b/slimmeeigendomdb.appspot.com/o/Azur_small.gif?alt=media&token=289506e5-49da-435a-877d-bd00757f3aac">
             </div>
           </div>
         </div>
@@ -884,7 +884,7 @@
               <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
               <h5>View meter readings</h5>
               <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
-                <h6>New Meter Reading</h5>
+                <h6><b>New Meter Reading</b></h6>
                 <form>
                   <div class="input-field col s12 m6">
                     <div class="input-field">
@@ -897,18 +897,18 @@
                     </div>
                   </div>
                 </form>
-                <div class="col s12 m6">
-                  <div id="meterReading_picture_frame">
-                    <div id="meterReading_picture_show" class="col s12 m6">
-                    </div>
-                  </div>
+                
+                <div id="meterReading_picture_frame" class="col s12 m6">
+                  <img id="meterReading_picture_img" width="300" height="225" class="center" >
+                </div>
+                  
                 </div>
                 <div id="meterReading_edit_button_frame">
                   <button id="meterReading_edit_button" style="float: right;float: bottom;margin-bottom: 3px" data-target="meterReadingEdit" class="btn-floating waves-light modal-trigger"><i class="material-icons right">edit</i></button>
                 </div>
               </div>
               <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
-                <h6>Meter Info and Past Readings</h5>
+                <h6><b>Meter Info</b></h6>
                 <div class="input-field col s4 m4">
                   <input id="meterReading_property" type="text" readonly>
                   <label for="meterReading_property">Property</label>
@@ -921,7 +921,9 @@
                   <input id="meterReading_id" type="text" readonly>
                   <label for="meterReading_id">ID Meter</label>
                 </div>
-                <table>
+                <br>
+                <h6><b>Past Readings</b></h6>
+                  <table>
                   <thead>
                     <th>reading</th>
                     <th>date</th>
@@ -3657,91 +3659,6 @@
         return mrs.find(checkId);
       };
 
-      /*
-      function loadMeterReading(mr){
-        var objectsRow= document.createElement('tr');
-        var cellContent;
-        var cell;
-        
-        if (mr.readings[0].date.localeCompare(lastReguDate) < 1) {
-          mr.readings.unshift({
-            counter : mr.readings[0].counter + 1,
-            picture : false,
-            reading : "",
-            date: "",
-          });
-        };
-        cellContent = document.createElement('button');
-        var isOwner;
-        if (mr.property) {
-          var p = propertyGetSynchrone(mr.property);
-          isOwner = (currentUser.id == p.owner);
-          idHere = p.idFS;
-          codeHere = p.code}
-        else {
-          isOwner = false;
-          idHere =  currentCopropertyId;
-          codeHere = "Common Parts";
-        };
-
-        if (currentUser.role == roleAdministrator || isOwner) {
-          cellContent.setAttribute("data-target", "meterReadingWrite");
-            cellContent.setAttribute('onclick','setSelectedMeterReading_edit('+JSON.stringify(idHere)+','+JSON.stringify(codeHere)+','+JSON.stringify(mr.idFS)+','+JSON.stringify(mr)+')');
-        } else {
-          cellContent.setAttribute("data-target", "meterReadingRead");
-          cellContent.setAttribute('onclick','setSelectedMeterReading_readonly('+JSON.stringify(idHere)+','+JSON.stringify(codeHere)+','+JSON.stringify(mr.idFS)+','+JSON.stringify(mr)+')');
-        };
-        cellContent.setAttribute('class','modal-trigger');
-        cellContent.setAttribute('style','border:none;background-color:Transparent');
-        cellContent.innerHTML = "<font color='blue'>" + MeterType[mr.type] + "</font>";
-        cell = document.createElement('td');
-        cell.appendChild(cellContent);
-        objectsRow.appendChild(cell);  
-
-        if (mr.property) {cellContent = propertyLink(propertyGetSynchrone(mr.property));}
-        else {
-            cellContent = document.createTextNode("Common Parts");
-          };
-        cell = document.createElement('td');
-        cell.appendChild(cellContent);
-        objectsRow.appendChild(cell);
-        
-        if (mr.readings[0].reading) {
-           cellContent = document.createElement("i");
-           cellContent.setAttribute("class","material-icons  green ");
-           cellContent.innerHTML = "done";
-        } else {
-          cellContent = document.createElement("i");
-           cellContent.setAttribute("class","material-icons  red ");
-           cellContent.innerHTML = "clear";
-        };
-        cell = document.createElement('td');
-        cell.setAttribute("align","center");
-        cell.appendChild(cellContent);
-        objectsRow.appendChild(cell);  
-
-        if (mr.readings[0].picture) {
-           cellContent = document.createElement("i");
-           cellContent.setAttribute("class","material-icons  green ");
-           cellContent.innerHTML = "done";
-        } else {
-          cellContent = document.createElement("i");
-           cellContent.setAttribute("class","material-icons  red ");
-           cellContent.innerHTML = "clear";
-        };
-        cell = document.createElement('td');
-        cell.setAttribute("align","center");
-        cell.appendChild(cellContent);
-        objectsRow.appendChild(cell);  
-
-        cellContent = document.createTextNode(mr.readings[0].date);
-        cell = document.createElement('td');
-        cell.appendChild(cellContent);
-        objectsRow.appendChild(cell);
-
-        meterReadingsTable.appendChild (objectsRow);
-      };*/
-
       function loadMeterReading(mr){
         var objectsRow = document.createElement('tr');
         var cellContent = document.createElement('button');
@@ -3823,44 +3740,6 @@
           meterReadingsLoaded = true;
         };
       };
-      /*
-      var selectedReadingId;
-      var selectedReadingData;
-      var selectedReadingPropertyId;
-      var picturePresent;
-      function setSelectedMeterReading_edit(propertyId, propertyCode,readingID, readingData){
-        selectedReadingId = readingID;
-        selectedReadingPropertyId = propertyId;
-        selectedReadingData = readingData;
-        document.getElementById("meterReading_property_edit").value = propertyCode;
-        document.getElementById("meterReading_type_edit").value = MeterType[readingData.type];
-        document.getElementById("meterReading_id_edit").value = readingData.meter;
-        document.getElementById("meterReading_lastReading_edit").value = readingData.readings[1].reading;
-        document.getElementById("meterReading_reading_edit").value = readingData.readings[0].reading;
-        document.getElementById("meterReading_date_edit").value = readingData.readings[0].date;
-        emptyHTMLSet(document.getElementById("meterReading_picture"));
-        emptyHTMLSet(document.getElementById("meterReading_picture_show_edit"));
-        if (readingData.readings[0].picture) {
-          refCopropertyFiles.child(selectedReadingPropertyId).child("Meters").child(selectedReadingId).child((readingData.readings[0].counter).toString()).getDownloadURL().then(function(url) {
-            var imgEl = document.createElement("img");
-            imgEl.setAttribute("width","400");
-            imgEl.setAttribute("height","300");
-            imgEl.setAttribute("src",url);
-            document.getElementById("meterReading_picture_show_edit").appendChild(imgEl);
-            document.getElementById("meterReading_picture_frame_edit").setAttribute("class","displayBlock");
-            document.getElementById("meterReading_picture_form").setAttribute("class","displayHidden");
-            picturePresent= true;
-          });
-        } else {
-          document.getElementById("meterReading_picture_form").setAttribute("class","displayBlock");
-          document.getElementById("meterReading_picture_frame_edit").setAttribute("class","displayHidden");
-          document.getElementById("meterReading_picture_file").value = "";
-          document.getElementById("meterReading_picture_text").value = "";
-          picturePresent= false;
-        };
-        M.updateTextFields();
-      };
-      */
       
       var meterReading;
       var containsNewReading;
@@ -3897,10 +3776,10 @@
           thisPropertyCode= "Common parts";
           thisPropertyOwner = ""};
         document.getElementById("meterReading_property").value = thisPropertyCode;
-        document.getElementById("meterReading_type").value = mr.type;
+        document.getElementById("meterReading_type").value = MeterType[mr.type];
         document.getElementById("meterReading_id").value = mr.meter;
-        /*emptyHTMLSet(document.getElementById("meterReading_picture"));
-        emptyHTMLSet(document.getElementById("meterReading_picture_show"));*/
+        /*emptyHTMLSet(document.getElementById("meterReading_picture"));*/
+        /*emptyHTMLSet(document.getElementById("meterReading_picture_show"));*/
         if ((currentUser.role == roleAdministrator) || (currentUser.id == thisProperty.owner)) {
          document.getElementById("meterReading_edit_button_frame").style.display= "block";
         } else{document.getElementById("meterReading_edit_button_frame").style.display= "none"}
@@ -3912,18 +3791,15 @@
           document.getElementById("meterReading_date_edit").value = mr.readings[0].date;
           fillHistory(mr.readings.slice(1,mr.readings.length));
           if (mr.readings[0].picture) {
-            refCopropertyFiles.child(selectedReadingPropertyId).child("Meters").child(selectedReadingId).child((readingData.readings[0].counter).toString()).getDownloadURL().then(function(url) {
-              var imgEl = document.createElement("img");
-              imgEl.setAttribute("width","400");
-              imgEl.setAttribute("height","300");
-              imgEl.setAttribute("src",url);
-              document.getElementById("meterReading_picture_show").appendChild(imgEl);
-              document.getElementById("meterReading_picture_frame").setAttribute("class","displayBlock");
-              picturePresent= "Y";
+            refCopropertyFiles.child(mr.property).child("Meters").child(mr.idFS).child((mr.readings[0].counter).toString()).getDownloadURL().then(function(url) {
+              document.getElementById("meterReading_picture_img").setAttribute("src",url);
+              document.getElementById("meterReading_picture_frame").style.display="block";
+              var elems = document.querySelectorAll('select');
+              M.FormSelect.init(elems);
               M.updateTextFields();
             });
           } else {
-            document.getElementById("meterReading_picture_frame").setAttribute("class","displayHidden");
+            document.getElementById("meterReading_picture_frame").style.display="none";
             picturePresent= "";
           };
         } else {
@@ -3934,6 +3810,8 @@
           fillHistory(mr.readings);
           
         };
+        var elems = document.querySelectorAll('select');
+        M.FormSelect.init(elems);
         M.updateTextFields();
       };
 
