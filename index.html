@@ -858,7 +858,7 @@
                     <button style="float:right;margin-left: 20px;margin-top: 3px" class="btn-small waves-light red modal-trigger" data-target="pictureRemove" type="submit" >Remove Picture<i class="material-icons right">delete</i></button>
                   </div>
                   <form id="meterReading_picture_form">
-                    <div class="input-field " id="meterReading_picture-edit">
+                    <div class="input-field " >
                     </div>
                     <div class="file-field input-field col s12 m6">
                       <div class="btn-small">
@@ -3862,7 +3862,7 @@
           M.toast({html:"Reading date must be after last meters regulation date being "+lastReguDate});
           valid=false;
         };
-        var readingPicture = document.getElementById('meterReading_picture_file').files[0];
+        var readingPicture = document.getElementById('meterReading_picture_edit_file').files[0];
         let allowed_mime_types = [ 'image/jpeg', 'image/png' ];
         let allowed_size_kb = 500;
         if (readingPicture) {
@@ -3879,7 +3879,7 @@
       };
 
       function writeMeterReading(){
-        var pictureFileText = document.getElementById("meterReading_picture_text_edit").value;
+        var pictureFileText = document.getElementById("meterReading_picture_edit_text").value;
         if (validateMeterReading()) {
           var thisReading = meterReading.readings;
           if (containsNewReading){
@@ -3901,8 +3901,8 @@
             // A new picture has been attached
             thisReading.picture= true;
             thisRefFS.collection("Meters").doc(thisMeterIdFS).update({readings:thisReading}).then(function() {
-              var pictureFile = document.getElementById('meterReading_picture_file_edit').files[0];
-              var fileRef = refCopropertyFiles.child(selectedReadingPropertyId).child("Meters").child(selectedReadingId).child((thisReading.counter).toString());  
+              var pictureFile = document.getElementById('meterReading_picture_edit_file').files[0];
+              var fileRef = refCopropertyFiles.child(meterReading.property).child("Meters").child(thisMeterIdFS).child((thisReading[0].counter).toString());  
               fileRef.put(pictureFile).then (function (){});
               refreshMeterReadings();
               M.Modal.getInstance(document.getElementById("meterReadingWrite")).close();
