@@ -838,7 +838,7 @@
               <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
               <h5>Enter meter reading and picture</h5>
                 <form>
-                  <div class="input-field col s12 m6">
+                  <div class="input-field col s12 m4">
                     <div class="input-field">
                       <input id="meterReading_reading_edit" type="number" class="validate" max="9999999999" required required="true">
                       <label for="meterReading_reading_edit">Reading<b><font color='red'>*</font></b></label>
@@ -852,13 +852,13 @@
                     </div>
                   </div>
                 </form>
-                <div class="col s12 m6">
-                  <div id="meterReading_picture_frame_edit">
+                <div class="col s8 m4">
+                  <div id="meterReading_picture_edit_frame">
                     <div id="meterReading_picture_show_edit" class="col s12 m6">
                     </div>
                     <button style="float:right;margin-left: 20px;margin-top: 3px" class="btn-small waves-light red modal-trigger" data-target="pictureRemove" type="submit" >Remove Picture<i class="material-icons right">delete</i></button>
                   </div>
-                  <form id="meterReading_picture_form" class="displayHidden">
+                  <form id="meterReading_picture_form">
                     <div class="input-field " id="meterReading_picture-edit">
                     </div>
                     <div class="file-field input-field col s12 m6">
@@ -897,12 +897,9 @@
                     </div>
                   </div>
                 </form>
-                
                 <div id="meterReading_picture_frame" class="col s8 m4">
                   <img id="meterReading_picture_img" width="300" height="225" class="center" >
                 </div>
-                  
-              
                 <div id="meterReading_edit_button_frame">
                   <button id="meterReading_edit_button" style="float: right;float: bottom;margin-bottom: 3px" data-target="meterReadingEdit" class="btn-floating waves-light modal-trigger"><i class="material-icons right">edit</i></button>
                 </div>
@@ -3794,19 +3791,25 @@
             refCopropertyFiles.child(mr.property).child("Meters").child(mr.idFS).child((mr.readings[0].counter).toString()).getDownloadURL().then(function(url) {
               document.getElementById("meterReading_picture_img").setAttribute("src",url);
               document.getElementById("meterReading_picture_frame").style.display="block";
+              document.getElementById("meterReading_picture_edit_frame").style.display="block";
+              document.getElementById("meterReading_picture_form").style.display="none";
               var elems = document.querySelectorAll('select');
               M.FormSelect.init(elems);
               M.updateTextFields();
             });
           } else {
             document.getElementById("meterReading_picture_frame").style.display="none";
-            picturePresent= "";
+            document.getElementById("meterReading_picture_edit_frame").style.display="none";
+            document.getElementById("meterReading_picture_form").style.display="block";
+              
           };
         } else {
           document.getElementById("meterReading_reading").value = "";
           document.getElementById("meterReading_reading-edit").value = "";
           document.getElementById("meterReading_date").value ="";
           document.getElementById("meterReading_date_edit").value ="";
+          document.getElementById("meterReading_picture_edit_frame").style.display="none";
+          document.getElementById("meterReading_picture_form").style.display="block";
           fillHistory(mr.readings);
           
         };
