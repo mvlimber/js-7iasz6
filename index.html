@@ -854,8 +854,7 @@
                 </form>
                 <div class="col s8 m4">
                   <div id="meterReading_picture_edit_frame">
-                    <div id="meterReading_picture_show_edit" class="col s12 m6">
-                    </div>
+                    <img id="meterReading_picture_edit_img" width="300" height="225" class="center" >
                     <button style="float:right;margin-left: 20px;margin-top: 3px" class="btn-small waves-light red modal-trigger" data-target="pictureRemove" type="submit" >Remove Picture<i class="material-icons right">delete</i></button>
                   </div>
                   <form id="meterReading_picture_form">
@@ -3793,6 +3792,7 @@
               document.getElementById("meterReading_picture_frame").style.display="block";
               document.getElementById("meterReading_picture_edit_frame").style.display="block";
               document.getElementById("meterReading_picture_form").style.display="none";
+              document.getElementById("meterReading_picture_edit_img").setAttribute("src",url);
               var elems = document.querySelectorAll('select');
               M.FormSelect.init(elems);
               M.updateTextFields();
