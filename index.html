@@ -3268,7 +3268,6 @@
       function writeTransactionEvidence() {
         if (validateTransactionEvidenceEntries()) {  
           var entries = getTransactionEvidenceEntries();
-          console.log("entries ",entries);
           refCoproperty.collection("Documents").add(entries).then(function(docref) {
             var fileRef = refCopropertyFiles.child("Documents").child(docref.id); 
             fileRef.put(transactionEvidenceFile).then (function (){
@@ -3706,13 +3705,12 @@
               meterReadings.push(thisObject);
             };
           });
-          
           return meterReadings;
         }; 
       };
 
-      async function meterReadingGet(idFS){
-        function checkId(mr){return mr.idFS == idFS};
+      async function meterReadingGet(thisIdFS){
+        function checkId(mr){return (mr.idFS == thisIdFS)};
         var mrs = await meterReadingsGet();
         return mrs.find(checkId);
       };
@@ -3883,7 +3881,7 @@
           meterReadingsLoaded = true;
         };
       };
-
+      /*
       var selectedReadingId;
       var selectedReadingData;
       var selectedReadingPropertyId;
@@ -3920,7 +3918,7 @@
         };
         M.updateTextFields();
       };
-
+      */
       
       var meterReading;
       var containsNewReading;
@@ -3976,7 +3974,7 @@
       function editMeterReading(){
         
       }
-      
+      /*
       function setSelectedMeterReading_readonly(propertyId, propertyData,readingID, readingData){
         selectedReadingId = readingID;
         selectedReadingPropertyId = propertyId;
@@ -4004,7 +4002,7 @@
         };
         M.updateTextFields();
       };
-
+      */
       function removePicture(){
         document.getElementById("meterReading_picture_form").setAttribute("class","displayBlock");
         document.getElementById("meterReading_picture_frame_edit").setAttribute("class","displayHidden");
@@ -4079,12 +4077,16 @@
             // No new picture attached: either existing picture or no picture or pictuture was removed
             //thisReading.picture= picturePresent;
             thisReading.picture= false;
-            thisRefFS.collection("Meters").doc(thisMeterIdFS).update({readings:thisReading}).then(function(docref) {
+            thisRefFS.collection("Meters").doc(thisMeterIdFS).update({readings:thisReading}).then(function() {
               refreshMeterReadings();
+              selectMeterReading(meterReading);
+              M.Modal.getInstance(document.getElementById("meterReadingEdit")).close();
+              /*document.getElementById("meterReading_reading").value = mr.readings[0].reading;
+              document.getElementById("meterReading_date").value = mr.readings[0].date;
               meterReadingGet(thisMeterIdFS).then(function(mr){
                 selectMeterReading(mr);
                 M.Modal.getInstance(document.getElementById("meterReadingEdit")).close();
-              }); 
+              }); */
             }).catch(function(error) {
               M.toast({html:"Error occurred updating meter reading:" + error}); 
             });
