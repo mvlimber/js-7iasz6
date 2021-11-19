@@ -847,7 +847,7 @@
                     <br>
                     <div class="input-field ">
                       <input id="meterReading_date_edit" type="text" class="datepicker validate" required required="true">
-                      <label for="meterReading_date_edit">Reading Date<b><font color='red'>*</font></b></label>
+                      <label for="meterReading_date_edit">Date<b><font color='red'>*</font></b></label>
                       <span class="helper-text" data-error="required field" ></span>
                     </div>
                   </div>
@@ -888,11 +888,11 @@
                   <div class="input-field col s12 m4">
                     <div class="input-field">
                       <input id="meterReading_reading" type="text" readonly>
-                      <label for="meterReading_reading">NewReading</label>
+                      <label for="meterReading_reading">Reading</label>
                     </div>
                     <div class="input-field ">
                       <input id="meterReading_date" type="text" readonly>
-                      <label for="meterReading_date">Reading Date</label>
+                      <label for="meterReading_date">Date</label>
                     </div>
                   </div>
                 </form>
@@ -3762,6 +3762,18 @@
             column.appendChild(cell);
             row.appendChild(column);
             historyEl.appendChild(row);
+            if (r.picture){
+              var cellB = document.createElement("button");
+              cellB.setAttribute('style','border:none;background-color:Transparent');
+              cellB.setAttribute('class','modal-trigger');
+              cellB.setAttribute('data-target','fileShow');
+              refCopropertyFiles.child(mr.property).child("Meters").child(mr.idFS).child((r.counter).toString()).getDownloadURL().then(function(url){
+                cellB.setAttribute('onclick','showFile('+JSON.stringify(url)+')');
+                cellB.innerHTML = "<font color='#0000FF'>" + "open picture" + "</font>";
+                column.appendChild(cellB);
+            
+              });
+            } else {column.appendChild(cell);};
           });
         };
         if (mr.property){
@@ -3774,8 +3786,6 @@
         document.getElementById("meterReading_property").value = thisPropertyCode;
         document.getElementById("meterReading_type").value = MeterType[mr.type];
         document.getElementById("meterReading_id").value = mr.meter;
-        /*emptyHTMLSet(document.getElementById("meterReading_picture"));*/
-        /*emptyHTMLSet(document.getElementById("meterReading_picture_show"));*/
         if ((currentUser.role == roleAdministrator) || (currentUser.id == thisProperty.owner)) {
          document.getElementById("meterReading_edit_button_frame").style.display= "block";
         } else{document.getElementById("meterReading_edit_button_frame").style.display= "none"}
@@ -3799,6 +3809,7 @@
         } else {
           document.getElementById("meterReading_reading").value = "";
           document.getElementById("meterReading_date").value ="";
+          document.getElementById("meterReading_picture_frame").style.display="none";
           fillHistory(mr.readings);
         };
         var elems = document.querySelectorAll('select');
@@ -3811,16 +3822,13 @@
           document.getElementById("meterReading_reading_edit").value = meterReading.readings[0].reading;
           document.getElementById("meterReading_date_edit").value = meterReading.readings[0].date;
           if (meterReading.readings[0].picture) {
-            
-              document.getElementById("meterReading_picture_edit_frame").style.display="block";
-              document.getElementById("meterReading_picture_form").style.display="none";
-              document.getElementById("meterReading_picture_edit_img").setAttribute("src",meterReading.img);
-              M.updateTextFields();
-            
+            document.getElementById("meterReading_picture_edit_frame").style.display="block";
+            document.getElementById("meterReading_picture_form").style.display="none";
+            document.getElementById("meterReading_picture_edit_img").setAttribute("src",meterReading.img);
+            M.updateTextFields();
           } else {
             document.getElementById("meterReading_picture_edit_frame").style.display="none";
             document.getElementById("meterReading_picture_form").style.display="block";
-              
           };
         } else {
           document.getElementById("meterReading_reading_edit").value = "";
