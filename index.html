@@ -863,10 +863,10 @@
                     <div class="file-field input-field col s12 m6">
                       <div class="btn-small">
                         <span>Picture<i class="material-icons right">attach_file</i></span>
-                        <input type="file" id="meterReading_picture_file">
+                        <input type="file" id="meterReading_picture_edit_file">
                       </div>
                       <div class="file-path-wrapper">
-                        <input class="file-path validate" type="text" id="meterReading_picture_text_edit">
+                        <input class="file-path validate" type="text" id="meterReading_picture_edit_text">
                       </div>
                     </div>
                   </form>
@@ -3819,11 +3819,10 @@
       };
 
       function removePicture(){
-        document.getElementById("meterReading_picture_form").setAttribute("class","displayBlock");
-        document.getElementById("meterReading_picture_frame_edit").setAttribute("class","displayHidden");
-        document.getElementById("meterReading_picture_file").value = "";
-        document.getElementById("meterReading_picture_text").value = "";
-        picturePresent = "";
+        document.getElementById("meterReading_picture_form").style.display = "block";
+        document.getElementById("meterReading_picture_edit_frame").style.display = "none";
+        document.getElementById("meterReading_picture_edit_file").value = "";
+        document.getElementById("meterReading_picture_edit_text").value = "";
         M.Modal.getInstance(document.getElementById("pictureRemove")).close();
       };
       
