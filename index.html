@@ -3901,8 +3901,14 @@
             });
           };
           var thisRefFS;
-          if (meterReading.coproperty){thisRefFS = refCoproperty}
-          else {thisRefFS = refCoproperty.collection("Properties").doc(meterReading.property)};
+          var fileStoreRef;
+          if (meterReading.property){
+            thisRefFS = refCoproperty.collection("Properties").doc(meterReading.property);
+            fileStoreRef = refCopropertyFiles.child(meterReading.property);
+          } else {
+            thisRefFS = refCoproperty;
+            fileStoreRef = refCopropertyFiles;
+          };
           var thisMeterIdFS = meterReading.idFS;
           if (pictureFileText) { 
             // A new picture has been attached
@@ -3912,7 +3918,7 @@
               console.log("pictureFile",pictureFile);
               console.log("counter",(thisReading[0].counter).toString());
               
-              var fileRef = refCopropertyFiles.child(meterReading.property).child("Meters").child(thisMeterIdFS).child((thisReading[0].counter).toString());  
+              var fileRef = fileStoreRef.child("Meters").child(thisMeterIdFS).child((thisReading[0].counter).toString());  
               fileRef.put(pictureFile).then (function (){
                 refreshMeterReadings();
               selectMeterReading(meterReading);
