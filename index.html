@@ -855,7 +855,7 @@
                 <div class="col s8 m4">
                   <div id="meterReading_picture_edit_frame">
                     <img id="meterReading_picture_edit_img" width="300" height="225" class="center" >
-                    <button style="float:right;margin-left: 20px;margin-top: 3px" class="btn-small waves-light red modal-trigger" data-target="pictureRemove" type="submit" >Remove Picture<i class="material-icons right">delete</i></button>
+                    <button style="float:right;margin-left: 20px;margin-top: 3px" class="btn-small waves-light red"  type="submit" onclick="removePicture()">Remove Picture<i class="material-icons right">delete</i></button>
                   </div>
                   <form id="meterReading_picture_form">
                     <div class="input-field " >
@@ -3836,6 +3836,7 @@
           document.getElementById("meterReading_picture_edit_frame").style.display="none";
           document.getElementById("meterReading_picture_form").style.display="block";
         };
+        document.getElementById("meterReading_picture_edit_text").value ="";
         M.updateTextFields();
       };
       
@@ -3885,6 +3886,7 @@
           if (containsNewReading){
             thisReading[0].reading = Number(document.getElementById("meterReading_reading_edit").value);
             thisReading[0].date = document.getElementById("meterReading_date_edit").value;
+            thisReading[0].picture = Boolean(pictureFileText);
           } else {
             thisReading.unshift({
               counter : thisReading[0].counter + 1,
@@ -3902,12 +3904,18 @@
             thisReading.picture= true;
             thisRefFS.collection("Meters").doc(thisMeterIdFS).update({readings:thisReading}).then(function() {
               var pictureFile = document.getElementById('meterReading_picture_edit_file').files[0];
+              console.log("pictureFile",pictureFile);
+              console.log("counter",(thisReading[0].counter).toString());
+              
               var fileRef = refCopropertyFiles.child(meterReading.property).child("Meters").child(thisMeterIdFS).child((thisReading[0].counter).toString());  
-              fileRef.put(pictureFile).then (function (){});
-              refreshMeterReadings();
-              M.Modal.getInstance(document.getElementById("meterReadingWrite")).close();
+              fileRef.put(pictureFile).then (function (){
+                refreshMeterReadings();
+              selectMeterReading(meterReading);
+              M.Modal.getInstance(document.getElementById("meterReadingEdit")).close();
+              });
+              
             }).catch(function(error) {
-              M.toast({html:"Error occurred updating meter reading:" + error}); 
+              /*M.toast({html:"Error occurred updating meter reading:" + error}); */
             });
           } else {
             // No new picture attached: either existing picture or no picture or pictuture was removed
