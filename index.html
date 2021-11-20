@@ -3739,6 +3739,7 @@
       
       var meterReading;
       var containsNewReading;
+      var picturePresent;
       function selectMeterReading(mr){
         meterReading = mr;
         var thisPropertyCode;
@@ -3800,6 +3801,7 @@
           document.getElementById("meterReading_date").value = mr.readings[0].date;
           fillHistory(mr.readings.slice(1,mr.readings.length));
           if (mr.readings[0].picture) {
+            picturePresent = true;
             fileStoreRef.child("Meters").child(mr.idFS).child((mr.readings[0].counter).toString()).getDownloadURL().then(function(url) {
               document.getElementById("meterReading_picture_img").setAttribute("src",url);
               document.getElementById("meterReading_picture_frame").style.display="block";
@@ -3810,11 +3812,13 @@
             });
           } else {
             document.getElementById("meterReading_picture_frame").style.display="none";
+            picturePresent = false;
           };
         } else {
           document.getElementById("meterReading_reading").value = "";
           document.getElementById("meterReading_date").value ="";
           document.getElementById("meterReading_picture_frame").style.display="none";
+          picturePresent = false;
           fillHistory(mr.readings);
         };
         var elems = document.querySelectorAll('select');
@@ -3851,6 +3855,7 @@
         document.getElementById("meterReading_picture_edit_frame").style.display = "none";
         document.getElementById("meterReading_picture_edit_file").value = "";
         document.getElementById("meterReading_picture_edit_text").value = "";
+        picturePresent = false;
         M.Modal.getInstance(document.getElementById("pictureRemove")).close();
       };
       
@@ -3875,11 +3880,10 @@
           if(allowed_mime_types.indexOf(readingPicture.type) == -1) {
             M.toast({html:"Incorrect file type (only jpeg or png allowed)"});
             valid=false;
-          };
-          if(readingPicture.size > allowed_size_kb*1024) {
+          } else if(readingPicture.size > allowed_size_kb*1024) {
             M.toast({html:"Picture exceeds max size 500KB"});
             valid=false;
-          };
+          } else (picturePresent = true);
         }
         return valid;
       };
@@ -3891,11 +3895,11 @@
           if (containsNewReading){
             thisReading[0].reading = Number(document.getElementById("meterReading_reading_edit").value);
             thisReading[0].date = document.getElementById("meterReading_date_edit").value;
-            thisReading[0].picture = Boolean(pictureFileText);
+            thisReading[0].picture = picturePresent;
           } else {
             thisReading.unshift({
               counter : thisReading[0].counter + 1,
-              picture : Boolean(pictureFileText),
+              picture : picturePresent,
               reading : Number(document.getElementById("meterReading_reading_edit").value),
               date: document.getElementById("meterReading_date_edit").value,
             });
@@ -3912,12 +3916,8 @@
           var thisMeterIdFS = meterReading.idFS;
           if (pictureFileText) { 
             // A new picture has been attached
-            thisReading.picture= true;
             thisRefFS.collection("Meters").doc(thisMeterIdFS).update({readings:thisReading}).then(function() {
               var pictureFile = document.getElementById('meterReading_picture_edit_file').files[0];
-              console.log("pictureFile",pictureFile);
-              console.log("counter",(thisReading[0].counter).toString());
-              
               var fileRef = fileStoreRef.child("Meters").child(thisMeterIdFS).child((thisReading[0].counter).toString());  
               fileRef.put(pictureFile).then (function (){
                 refreshMeterReadings();
@@ -3931,7 +3931,6 @@
           } else {
             // No new picture attached: either existing picture or no picture or pictuture was removed
             //thisReading.picture= picturePresent;
-            thisReading.picture= false;
             thisRefFS.collection("Meters").doc(thisMeterIdFS).update({readings:thisReading}).then(function() {
               refreshMeterReadings();
               selectMeterReading(meterReading);
