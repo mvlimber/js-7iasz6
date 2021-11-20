@@ -3776,13 +3776,18 @@
             } else {column.appendChild(cell);};
           });
         };
+        var fileStoreRef;
         if (mr.property){
           var thisProperty = propertyGetSynchrone(mr.property);
           thisPropertyCode= thisProperty.code;
-          thisPropertyOwner = thisProperty.owner}
+          thisPropertyOwner = thisProperty.owner;
+          fileStoreRef = refCopropertyFiles.child(mr.property);
+        }
         else {
           thisPropertyCode= "Common parts";
-          thisPropertyOwner = ""};
+          thisPropertyOwner = "";
+          fileStoreRef = refCopropertyFiles;
+        };
         document.getElementById("meterReading_property").value = thisPropertyCode;
         document.getElementById("meterReading_type").value = MeterType[mr.type];
         document.getElementById("meterReading_id").value = mr.meter;
@@ -3795,7 +3800,7 @@
           document.getElementById("meterReading_date").value = mr.readings[0].date;
           fillHistory(mr.readings.slice(1,mr.readings.length));
           if (mr.readings[0].picture) {
-            refCopropertyFiles.child(mr.property).child("Meters").child(mr.idFS).child((mr.readings[0].counter).toString()).getDownloadURL().then(function(url) {
+            fileStoreRef.child("Meters").child(mr.idFS).child((mr.readings[0].counter).toString()).getDownloadURL().then(function(url) {
               document.getElementById("meterReading_picture_img").setAttribute("src",url);
               document.getElementById("meterReading_picture_frame").style.display="block";
               meterReading.img = url;
