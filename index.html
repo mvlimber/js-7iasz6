@@ -230,7 +230,7 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="writeNotification()">Submit<i class="material-icons right">send</i></button>
+              <button id="notificationSubmitButton" style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; writeNotification()">Submit<i class="material-icons right">send</i></button>
               <a style="float: right"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
                 Cancel</a>
@@ -296,7 +296,7 @@
               <h6 style="float: right;margin-left: 20px">Generating the report might take a few seconds. Please confirm
                 the generated report after review</h6>
               <br><br>
-              <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="prepareChargesReport()">Submit<i class="material-icons right">send</i></button>
+              <button id="chargesReportSubmitButton" style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; prepareChargesReport()">Submit<i class="material-icons right">send</i></button>
               <a style="float: right"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
                 Cancel</a>
@@ -2024,6 +2024,7 @@
         document.getElementById("notification_type").value=object.type;
         document.getElementById("notification_title").value=object.title;
         document.getElementById("notification_text").value=object.text;
+        document.getElementById("notificationSubmitButton").disabled=false;
         notification = object;
         var elems = document.querySelectorAll('select');
         M.FormSelect.init(elems);
@@ -2044,6 +2045,7 @@
           M.toast({html:"Please enter text"});
           valid=false;
         };
+        if (!valid) {document.getElementById("notificationSubmitButton").disabled=false;};
         return valid;
       };
 
@@ -2088,6 +2090,7 @@
     function emptyFieldsChargesReportAdd() {
       document.getElementById("chargesReport_closeDate").value = "";
       document.getElementById("chargesReport_metersIncluded").value = "";
+      document.getElementById("chargesReportSubmitButton").disabled=false;
       var elems = document.querySelectorAll('select');
       M.FormSelect.init(elems);
       M.updateTextFields();
@@ -2105,6 +2108,7 @@
             valid=false;
           };
         };
+        if (!valid) {document.getElementById("chargesReportSubmitButton").disabled=false;};
         return valid;
       };
 
@@ -5561,6 +5565,7 @@
           };
           if (!mrsInReport.every(meterReadingInPeriod)) {
             M.toast({html:"Not all meter readings are within regularisation period" });
+            document.getElementById("chargesReportSubmitButton").disabled=false;
             return;
           }; 
         };
@@ -5583,11 +5588,13 @@
         var ccHere = ccsInReport.find(checkCCId);
         if (!ccHere) {
           M.toast({html:"Please first select cost center for provision handling"});
-          return;
+          document.getElementById("chargesReportSubmitButton").disabled=false;
+            return;
         };
         if (!ccHere.totalQuota){
           M.toast({html:"Cost center for provision handling must have total > 0"});
-          return;
+          document.getElementById("chargesReportSubmitButton").disabled=false;
+            return;
         };
               
         membersInReport.forEach(function(m){
