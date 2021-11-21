@@ -1206,7 +1206,7 @@
               </div>
 
             </form>
-            <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeMeter()">Submit<i class="material-icons right">send</i></button>
+            <button id="meterSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; writeMeter()">Submit<i class="material-icons right">send</i></button>
             <a style="float: right;margin-bottom: 3px"
               class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
           </div>
