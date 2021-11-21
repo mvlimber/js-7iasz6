@@ -345,6 +345,7 @@
                 </div>
                 <div class="file-path-wrapper">
                   <input class="file-path validate" type="text" id="documentFileText">
+                  <span class="helper-text" data-error="only pfd, jpeg or png files" >pfd, jpeg or png file</span>
                 </div>
               </div>
             </form>
@@ -867,6 +868,7 @@
                       </div>
                       <div class="file-path-wrapper">
                         <input class="file-path validate" type="text" id="meterReading_picture_edit_text">
+                        <span class="helper-text" data-error="only jpeg or png files" >jpeg or png file</span>
                       </div>
                     </div>
                   </form>
@@ -2499,13 +2501,13 @@
       };
       documentFile = document.getElementById('documentFile').files[0];
       if ((!paper.idFS) && (!documentFile)) {
-        M.toast({html:"Please select PDF file"});
+        M.toast({html:"Please select file"});
         return false;
       } else if (documentFile){
-        let allowed_mime_types = ['application/pdf'];
+        let allowed_mime_types = ['application/pdf','image/jpeg', 'image/png'];
         let allowed_size_kb = 5000;
         if(allowed_mime_types.indexOf(documentFile.type) == -1) {
-            M.toast({html:"Incorrect file type (only pdf allowed)"});
+            M.toast({html:"Incorrect file type (only pdf, jpeg or png files allowed)"});
             valid=false;
           };
         if(documentFile.size > allowed_size_kb*1024) {
