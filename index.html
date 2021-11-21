@@ -872,7 +872,7 @@
                   </form>
                 </div>
               
-              <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeMeterReading()">Submit<i class="material-icons right">send</i></button>
+              <button id="meterReadingSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; writeMeterReading()">Submit<i class="material-icons right">send</i></button>
               <a style="float: right;margin-bottom: 3px"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
             </div>
@@ -3861,6 +3861,7 @@
           document.getElementById("meterReading_picture_form").style.display="block";
         };
         document.getElementById("meterReading_picture_edit_text").value ="";
+        document.getElementById("meterReadingSubmitButton").disabled=false;
         M.updateTextFields();
       };
       
@@ -3900,6 +3901,7 @@
             valid=false;
           } else (picturePresent = true);
         }
+        if (!valid) {document.getElementById("meterReadingSubmitButton").disabled=false;};
         return valid;
       };
 
