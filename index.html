@@ -6059,7 +6059,8 @@
         doc.text("Saldo Condomynium", 15, 240);
         doc.table(15, 250, copropertySaldo, headerCopropertySaldo,{fontSize:10});
         printTablePortrait("Amounts Due" , amountsDue, headerAmountsDue);
-          
+        newCopropertySaldo = Number(newCopropertySaldo.toFixed(2));
+        Object.keys(newOwnersSaldo).forEach(function(k){newOwnersSaldo[k]= Number(newOwnersSaldo[k].toFixed(2))});  
         refCoproperty.collection("ChargesReports").add({startDate: startDateString, endDate: closeDateTransactions, metersIncluded: metersIncludedHere, copropertySaldo: newCopropertySaldo, ownersSaldo: newOwnersSaldo, confirmed: false }).then (function (chargesReportFS){
           var fileRef = refCopropertyFiles.child("ChargesReports").child(chargesReportFS.id);  
           fileRef.put(doc.output("blob")).then(function(snapshot) {
@@ -6068,11 +6069,9 @@
           }).catch(function(error) {
                 M.toast({html:"Error writing report file in store:" + error});
           });
-           
         }).catch(function(error) {
             M.toast({html:"Error saving charges report:" + error});
         });
-        
       };
       
     </script>
