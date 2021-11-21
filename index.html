@@ -1287,7 +1287,7 @@
                 </div>
                 
               </form>
-              <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="addProperty()">Save and complete by adding meters<i class="material-icons right">send</i></button>
+              <button id="propertyAddButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; addProperty()">Save and complete by adding meters<i class="material-icons right">send</i></button>
               <a style="float: right;margin-bottom: 3px"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
               
@@ -1365,7 +1365,7 @@
                   </div>
                 
               </form>
-              <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeProperty()">Submit<i class="material-icons right">send</i></button>
+              <button id="propertyWriteButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; writeProperty()">Submit<i class="material-icons right">send</i></button>
               <a style="float: right;margin-bottom: 3px"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
             </div>
@@ -4360,6 +4360,7 @@
         refCoproperty.collection("Properties").where("code", "==", entries.code).get().then(function(existingList) {
             if (existingList.docs.length > 0) {
               M.toast({html:"Error: property with this code already exists"}); 
+              document.getElementById("propertyAddButton").disabled=false;
             } else {
               refCoproperty.collection("Properties").add(entries).then(function(pFS) {
                   memberGet(entries.owner).then(function (ownerHere){
@@ -4416,6 +4417,7 @@
               .then(function(existingList) {
                 if (existingList.docs.length > 0) {
                   M.toast({html:"Error: property with this code already exists"}); 
+                  document.getElementById("propertyWriteButton").disabled=false;
                 } else {
                     updateProperty(entries);
                   };
@@ -4803,6 +4805,7 @@
         document.getElementById("property_cellar_add").value="";
         document.getElementById("property_owner_add").value="";
         listMembers(document.getElementById("property_owner_add"),"");
+        document.getElementById("propertyAddButton").disabled=false;
         M.updateTextFields();
         M.FormSelect.init(document.querySelectorAll('select'));
       };
@@ -4821,6 +4824,7 @@
           M.toast({html:"Please select Owner"});
           valid=false;
         };
+        if (!valid) {document.getElementById("propertyAddButton").disabled=false;};
         return valid;
       };
 
@@ -4834,6 +4838,7 @@
           M.toast({html:"Please enter valid Type"});
           valid=false;
         };
+        if (!valid) {document.getElementById("propertyWriteButton").disabled=false;};
         return valid;
       };
 
@@ -4858,6 +4863,7 @@
         document.getElementById("property_code_edit").value=selectedPropertyObject.code;
         document.getElementById("property_type_edit").value=selectedPropertyObject.type;
         document.getElementById("property_cellar_edit").value=selectedPropertyObject.cellar;
+        document.getElementById("propertyWriteButton").disabled=false;
         M.updateTextFields();
         M.FormSelect.init(document.querySelectorAll('select')); 
       };
