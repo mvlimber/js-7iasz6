@@ -5512,7 +5512,7 @@
             var resultRow = transactionFS.data();
             total += reportTransaction(resultRow);
             consumptionTable.push(resultRow);
-            function checkIdConsumptionCC(ccHere){return ccHere.idFS == resultRow.costCenter};
+            function checkIdConsumptionCC(cc){return cc.idFS == resultRow.costCenter};
                 
             if (consumptionType == "WATER") {if (!costCenterWater) {costCenterWater = ccsInReport.find(checkIdConsumptionCC);};};
             if (consumptionType == "HEATI") {if (!costCenterHeating) {costCenterHeating = ccsInReport.find(checkIdConsumptionCC);};};
@@ -5577,7 +5577,6 @@
           return;
         };
               
-        
         membersInReport.forEach(function(m){
           var hisProperties = propertiesBySynchrone(m);
           if (hisProperties.length){
@@ -5767,6 +5766,10 @@
             consumptions.forEach(function(c){
               
               function completeAndPushTotal() {
+                function getQuota(cc, propertyId){
+                  if (cc.distribution[propertyId]) {return cc.distribution[propertyId]}
+                  else {return 0} ;
+                };
                 function checkPropInTotals(tc) {return (tc.propertyId == totalConsumptionRow.propertyId);};
                 var totalChargesRow = totalCharges.find(checkPropInTotals);
                 totalConsumptionRow.water_payed= -1* Number((totalWater * costCenterWater.distribution[totalConsumptionRow.propertyId]/ costCenterWater.totalQuota).toFixed(2));
@@ -5774,7 +5777,9 @@
                 totalConsumptionRow.water_regu = Number((totalConsumptionRow.water_payed + totalConsumptionRow.water).toFixed(2));
                 totalChargesRow.water_regu = totalConsumptionRow.water_regu;
                 grandTotalConsumtions.water_regu += totalConsumptionRow.water_regu;
-                totalConsumptionRow.heating_payed= -1* Number((totalHeating * costCenterHeating.distribution[totalConsumptionRow.propertyId]/ costCenterHeating.totalQuota).toFixed(2));
+                /*if (costCenterHeating.distribution[totalConsumptionRow.propertyId]) {
+                totalConsumptionRow.heating_payed= -1* Number((totalHeating * costCenterHeating.distribution[totalConsumptionRow.propertyId]/ costCenterHeating.totalQuota).toFixed(2));};*/
+                totalConsumptionRow.heating_payed= -1* Number((totalHeating * getQuota(costCenterHeating,totalConsumptionRow.propertyId)/ costCenterHeating.totalQuota).toFixed(2));
                 grandTotalConsumtions.heating_payed += totalConsumptionRow.heating_payed;
                 totalConsumptionRow.heating_regu = Number((totalConsumptionRow.heating_payed + totalConsumptionRow.heating).toFixed(2));
                 grandTotalConsumtions.heating_regu += totalConsumptionRow.heating_regu;
