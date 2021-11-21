@@ -5549,7 +5549,14 @@
         var amountsDue = [];
         if (metersIncluded){
           headerCharges = headerChargesMetersIncluded;
-          mrsInReport = await meterReadingsGet();   
+          mrsInReport = await meterReadingsGet(); 
+          function meterReadingInPeriod(mr){
+            return (lastReguDate.localeCompare(mr.readings[0].date) < 1) && (closeDateTransactions.localeCompare(mr.readings[0].date) >= 0);
+          };
+          if (!mrsInReport.every(meterReadingInPeriod)) {
+            M.toast({html:"Not all meter readings are within regularisation period" });
+            return;
+          }; 
         };
         var totalColdWaterDifference = 0;
         var totalHotWaterDifference = 0;
