@@ -777,7 +777,7 @@
                   </div>
                 </div>
               </form>
-              <button id="transactionSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; writeTransactionRule()">Save<i class="material-icons right">send</i></button>
+              <button id="transactionRuleSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; writeTransactionRule()">Save<i class="material-icons right">send</i></button>
               <a style="float: right;margin-left: 20px;margin-bottom: 3px"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
                 Cancel</a>
@@ -3537,6 +3537,7 @@
         document.getElementById("transactionRule_communication").value=object.communication;
         listOwners(document.getElementById("transactionRule_owner"), object.owner, true);
         toggleTransactionRule();
+        document.getElementById("transactionRuleSubmitButton").disabled=false;;
         var elems = document.querySelectorAll('select');
         M.FormSelect.init(elems);
         M.updateTextFields();
@@ -3584,11 +3585,11 @@
           valid=false;
         };
 
-       if ((document.getElementById("transactionRule_type").value == "Owner Payment") && (!document.getElementById("transactionRule_owner").value)) {
-          M.toast({html:"Please select owner"});
-          valid=false;
+        if ((document.getElementById("transactionRule_type").value == "Owner Payment") && (!document.getElementById("transactionRule_owner").value)) {
+            M.toast({html:"Please select owner"});
+            valid=false;
         };
-        
+        if (!valid) {document.getElementById("transactionRuleSubmitButton").disabled=false;};
         return valid;
       };
       
