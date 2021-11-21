@@ -659,7 +659,7 @@
 
               </form>
               <br>
-              <button id="transaction_save_button" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeTransaction()">Save and go to adding evidence<i class="material-icons right">send</i></button>
+              <button id="transaction_save_button" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabeld=true; writeTransaction()">Save and go to adding evidence<i class="material-icons right">send</i></button>
               <a style="float: right;margin-left: 20px;margin-bottom: 3px"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
                 Cancel</a>
@@ -777,7 +777,7 @@
                   </div>
                 </div>
               </form>
-              <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeTransactionRule()">Save<i class="material-icons right">send</i></button>
+              <button id="transactionSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; writeTransactionRule()">Save<i class="material-icons right">send</i></button>
               <a style="float: right;margin-left: 20px;margin-bottom: 3px"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
                 Cancel</a>
@@ -2784,6 +2784,7 @@
           valid=false;
         };
       };
+      if (!valid) {document.getElementById("transaction_save_button").disabled=false;};
       return valid;
     };
     
@@ -2820,6 +2821,7 @@
       document.getElementById("transaction_date").value=object.date;
       document.getElementById("transaction_bookDate").value=object.bookDate;
       document.getElementById("transaction_communication").value=object.communication;
+      document.getElementById("transaction_save_button").disabled=false;
       if (object.type == "PRIVA") {
         transaction.distribution = object.distribution;
         document.getElementById("transaction_properties_frame").style.display = "block";
@@ -2919,6 +2921,7 @@
       buttonIcon.innerHTML = "send";
       document.getElementById("transaction_save_button").appendChild(buttonIcon);
       emptyHTMLSet(document.getElementById("transaction_distribution_table_add"));
+      document.getElementById("transaction_save_button").disabled=false;
       var elems = document.querySelectorAll('select');
       M.FormSelect.init(elems);
       M.updateTextFields();  
@@ -2940,6 +2943,7 @@
       buttonIcon.setAttribute("class","material-icons right");
       buttonIcon.innerHTML = "send";
       document.getElementById("transaction_save_button").appendChild(buttonIcon);
+      document.getElementById("transaction_save_button").disabled=false;
       var elems = document.querySelectorAll('select');
       M.FormSelect.init(elems);
       M.updateTextFields();
