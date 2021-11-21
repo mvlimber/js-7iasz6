@@ -1096,7 +1096,7 @@
                 <span class="helper-text" data-error="Max 3 characters. Example 12" >Max 3 characters. Example 12</span>
               </div>
             </form>
-            <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeMember()">Submit<i class="material-icons right">send</i></button>
+            <button id="memberSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; writeMember()">Submit<i class="material-icons right">send</i></button>
             <a style="float: right;margin-bottom: 3px"
               class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
               Cancel</a>
@@ -4172,6 +4172,7 @@
           document.getElementById("member_street"+modeArg).value=object.street;
           document.getElementById("member_houseNumber"+modeArg).value=object.houseNumber;
           document.getElementById("member_bus"+modeArg).value=object.bus;
+          document.getElementById("memberSubmitButton").disabled=false;
           if (!modeArg) {
             var ownerOfEl = document.getElementById("member_ownerOf");
             emptyHTMLSet(ownerOfEl);
@@ -4210,6 +4211,7 @@
           document.getElementById("member_street_edit").value="";
           document.getElementById("member_houseNumber_edit").value="";
           document.getElementById("member_bus_edit").value="";
+          document.getElementById("memberSubmitButton").disabled=false;
           M.updateTextFields();
         };
 
@@ -4243,6 +4245,7 @@
                 M.toast({html:"Please enter valid Bus"});
                 valid=false;
               };
+              if (!valid) {document.getElementById("memberSubmitButton").disabled=false;};
               return valid;
         };
     </script>
