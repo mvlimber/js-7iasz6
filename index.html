@@ -2174,6 +2174,7 @@
 
       function readCloseAndReguDate (chargesReportsFS) {
         if  (chargesReportsFS.docs.length > 0) {
+              document.getElementById("initialSaldos_frame").style.display = "none";
               var lastReportData = chargesReportsFS.docs[0].data();
               lastCloseDate= lastReportData.endDate;
               lastCopropertySaldo = lastReportData.copropertySaldo;
@@ -2188,6 +2189,7 @@
               lastReguDate = currentCoproperty.initialStartDate;
               lastCopropertySaldo = currentCoproperty.initialSaldo;
               lastOwnersSaldo = currentCoproperty.initialSaldos;
+              document.getElementById("initialSaldos_frame").style.display = "block";
             };
       };
 
