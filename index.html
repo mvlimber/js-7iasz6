@@ -374,7 +374,7 @@
               </div>
             </form>
             
-            <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="writeDocument()">Save<i class="material-icons right">send</i></button>
+            <button id="documentSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; writeDocument()">Save<i class="material-icons right">send</i></button>
             <a style="float: right;margin-left: 20px;margin-bottom: 3px"
               class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
               Cancel</a>
@@ -2446,6 +2446,7 @@
       document.getElementById("documentFileText").value="";
       /*listTransactions(document.getElementById("document_link"),object.link)*/
       toggleDocument();
+      document.getElementById("documentSubmitButton").disabled=false;
       var elems = document.querySelectorAll('select');
       M.FormSelect.init(elems);
       M.updateTextFields();
@@ -2518,6 +2519,7 @@
           valid=false;
         };
       };
+      if(!valid) {document.getElementById("documentSubmitButton").disabled=false;};
       return valid;
     };
     
