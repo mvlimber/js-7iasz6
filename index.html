@@ -163,7 +163,7 @@
               onclick="loadProperties()">Properties</a></li>
         <li class="tab side text-teal"><a class="waves-effect" href="#Members" style="font-size:22px"
             onclick="loadMembers()">Members</a></li>
-        <li id="tabSettings" style="display:none" class="tab side text-teal"><a class="waves-effect" href="#Settings"
+        <li id="tabSettings" class="tab side text-teal"><a class="waves-effect" href="#Settings"
             style="font-size:22px" onclick="loadSettings()">Settings</a></li>
       </ul>
 
@@ -1621,8 +1621,6 @@
                           document.getElementById("Properties_MetersAdd").setAttribute("class","displayBlock");
                           document.getElementById("Properties_OwnersAdd_button").style.visibility="visible";
                           document.getElementById("tabTransactionRules").style.display = "block";
-                          document.getElementById("tabSettings").style.display = "block";
-                          
                         };
                         openApplication();
                       }).catch(function(error) {
