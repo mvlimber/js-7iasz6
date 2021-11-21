@@ -1434,7 +1434,7 @@
                   <span class="helper-text" data-error="Required field"></span>
                 </div>
               </form>
-              <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="costCenterAddPrepare()">Save<i class="material-icons right">send</i></button>
+              <button id="costCenterAddSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; costCenterAddPrepare()">Save<i class="material-icons right">send</i></button>
               <a style="float: right;margin-bottom: 3px"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
             </div>
@@ -4515,7 +4515,7 @@
             if (Boolean(selectedMeterData.coproperty)) {
               refCoproperty.collection("Meters").doc(selectedMeterId).update(entries).then(function(docrefmeter) {
                 meterReadingsLoaded = false;
-                refreshSettings();
+                refreshCopropertyMeters();
                 M.Modal.getInstance(document.getElementById("meterWrite")).close();
               }).catch(function(error) {
                 M.toast({html:"Error occurred editing meter:" + error}); 
@@ -4540,7 +4540,7 @@
               entries.coproperty = true;
               refCoproperty.collection("Meters").add(entries).then(function(docrefmeter) {
                 meterReadingsLoaded = false;
-                refreshSettings();
+                refreshCopropertyMeters();
                 handlingCopropertyMeter = false;
                 M.Modal.getInstance(document.getElementById("meterWrite")).close();
               }).catch(function(error) {
@@ -5062,9 +5062,12 @@
             costCenters=null;
             refreshCostCenters();
             M.Modal.getInstance(document.getElementById("costCenterAdd")).close();
+            document.getElementById("costCenter_name_add").value ="";
+            document.getElementById("costCenterAddSubmitButton").disabled=false;
           })
         }  else {
-          M.toast({html:"Please enter new name"});
+          M.toast({html:"Please enter cost center name"});
+          document.getElementById("costCenterAddSubmitButton").disabled=false;
         };
       };
 
@@ -5113,10 +5116,10 @@
             M.Modal.getInstance(document.getElementById("costCenterNameEdit")).close();
           })
         } else {
-          M.toast({html:"Please enter new name"});
+          M.toast({html:"Please enter cost center name"});
         };
       }; 
-
+ 
       function costCenterQuotaEditPrepare(){
         if (document.getElementById("costCenter_quota_edit").checkValidity()) {
           costCenterQuotaEdit(selectedCostCenterId, selectedCCPropertyId, Number(document.getElementById("costCenter_quota_edit").value)).then(function() {
