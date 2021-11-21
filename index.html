@@ -5565,7 +5565,11 @@
         var payedByProvisionsTotal = 0;
         var totalPayments = 0;
 
-        /* make table saldos per owner and yet complete last salso and provisions*/
+        /* make table saldos per owner and yet complete last saldo and provisions*/
+        function checkCCId(cc) {return (cc.idFS == currentCoproperty.provisionsCC)};
+        var ccHere = ccsInReport.find(checkCCId);
+              
+        
         membersInReport.forEach(function(m){
           var hisProperties = propertiesBySynchrone(m);
           if (hisProperties.length){
@@ -5573,13 +5577,14 @@
             if (lastOwnersSaldo[m.idFS]) {lastOS = lastOwnersSaldo[m.idFS]};
             var provisionHere = 0;
             if (currentCoproperty.provisionsCC){
-              function checkCCId(cc) {return (cc.idFS == currentCoproperty.provisionsCC)};
-              var ccHere = ccsInReport.find(checkCCId);
               var quotaHere = 0;
-              hisProperties.forEach(function(p){quotaHere += ccHere.distribution[p.idFS]});
+              hisProperties.forEach(function(p){
+                if(ccHere.distribution[p.idFS]) {quotaHere += ccHere.distribution[p.idFS]};
+              });
               var provisionHere = -1 * Number((currentCoproperty.provisions * quotaHere / ccHere.totalQuota).toFixed(2));
             };
-            ownersSaldo.push({ownerId: m.idFS, owner: m.firstName + " " + m.lastName, oldSaldo: lastOS, payments: 0, charges:0, provisions:provisionHere , newSaldo:0})};
+            ownersSaldo.push({ownerId: m.idFS, owner: m.firstName + " " + m.lastName, oldSaldo: lastOS, payments: 0, charges:0, provisions:provisionHere , newSaldo:0});
+          };
         });
         
         /* initialise common charges holder tabels*/
