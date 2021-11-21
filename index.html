@@ -5095,7 +5095,7 @@
         refCoproperty.collection("Transactions").where("costCenter","==",costCenter_to_remove.idFS).get().then(function(trArray){
           if (trArray.length>0) {
             M.toast({html:"Cost Center is in use and cannot be removed"});
-          }else {
+          } else {
             refCoproperty.collection("CostCenters").doc(costCenter_to_remove.idFS).delete().then(function(){
               refreshCostCenters();
               M.Modal.getInstance(document.getElementById("costCenterPrepareRemove")).close();
