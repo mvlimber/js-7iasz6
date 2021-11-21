@@ -1384,7 +1384,7 @@
             </tbody>
           </table>
           <br>
-          <button style="float: right;margin-bottom: 3px" class="btn-small waves-light modal-trigger" data-target="meterWrite" onclick="addCopropertyMeter()">New Meter Common Parts<i class="material-icons right">add</i></button>
+          <button id="commonPartsNewMeterButton" style="visibility: hidden; float: right;margin-bottom: 3px" class="btn-small waves-light modal-trigger" data-target="meterWrite" onclick="addCopropertyMeter()">New Meter Common Parts<i class="material-icons right">add</i></button>
           <br><br><h5>Cost Centers</h5>
           <table class="striped">
           <thead id="costCenters_tableHead">
@@ -1393,19 +1393,19 @@
           </tbody>
           </table>
           <br>
-          <button style="float: right;margin-bottom: 3px" class="btn-small waves-light modal-trigger" data-target="costCenterAdd" ">New Cost Center<i class="material-icons right">add</i></button>
+          <button id="costCentersNewButton" style="visibility: hidden; float: right;margin-bottom: 3px" class="btn-small waves-light modal-trigger" data-target="costCenterAdd" ">New Cost Center<i class="material-icons right">add</i></button>
           <br><br><br><br>
           <table><tr>
             <td><h5>Periodic Provisions</h5></td>
             <td id=provisionsCostCenterView></td>
             <td><p id="provisions"></p></td>
-            <td><button style="float: right;margin-bottom: 3px" class="btn-floating waves-light modal-trigger" data-target="provisionsEdit" onclick="provisionsEditPrepare()"><i class="material-icons right">edit</i></button></td>
+            <td><button id="provisionsEditButton" style="visibility: hidden; float: right;margin-bottom: 3px" class="btn-floating waves-light modal-trigger" data-target="provisionsEdit" onclick="provisionsEditPrepare()"><i class="material-icons right">edit</i></button></td>
           </tr></table>
           <div id="initialSaldos_frame">
             <table><tr>
               <td><h5>Initial Saldo Condomynium</h5></td>
               <td><p id="initialSaldo"></p></td>
-              <td><button style="float: right;margin-bottom: 3px" class="btn-floating waves-light modal-trigger" data-target="initialCopropertySaldoEdit" onclick="initialCopropertySaldoEditPrepare()"><i class="material-icons right">edit</i></button></td>
+              <td><button id="initialCopropertySaldoEditButton" style="visibility: hidden; float: right;margin-bottom: 3px" class="btn-floating waves-light modal-trigger" data-target="initialCopropertySaldoEdit" onclick="initialCopropertySaldoEditPrepare()"><i class="material-icons right">edit</i></button></td>
             </tr></table>
             <h5>Initial Saldos Owners</h5>
             <table class="striped">
@@ -1621,6 +1621,10 @@
                           document.getElementById("Properties_MetersAdd").setAttribute("class","displayBlock");
                           document.getElementById("Properties_OwnersAdd_button").style.visibility="visible";
                           document.getElementById("tabTransactionRules").style.display = "block";
+                          document.getElementById("commonPartsNewMeterButton").style.visibility = "visible";
+                          document.getElementById("costCentersNewButton").style.visibility = "visible";
+                          document.getElementById("provisionsEditButton").style.visibility = "visible";
+                          document.getElementById("initialCopropertySaldoEditButton").style.visibility = "visible";
                         };
                         openApplication();
                       }).catch(function(error) {
@@ -5301,20 +5305,22 @@
                 column = document.createElement("td");
                 column.innerHTML = memberHereSaldo.toLocaleString("nl-BE",currencyStyle) ;
                 row.appendChild(column);
-                column = document.createElement("td");
-                var cellContent = document.createElement('button');
-                cellContent.setAttribute("style", "float:left");
-                cellContent.setAttribute("data-target", "initialSaldoEdit");
-                cellContent.setAttribute('class','btn-floating waves-light modal-trigger');
-                cellContent.setAttribute('onclick','initialSaldoSelect('+JSON.stringify(memberHere.idFS)+','+JSON.stringify(memberHereSaldo)+')');
-                var cellButtonIcon = document.createElement('i');
-                cellButtonIcon.setAttribute('class','material-icons right');
-                cellButtonIcon.innerHTML="edit";         
-                cellContent.appendChild(cellButtonIcon);
-                column.appendChild(cellContent);
-                row.appendChild(column);
+                if (currentUser.role == roleAdministrator) {
+                  column = document.createElement("td");
+                  var cellContent = document.createElement('button');
+                  cellContent.setAttribute("style", "float:left");
+                  cellContent.setAttribute("data-target", "initialSaldoEdit");
+                  cellContent.setAttribute('class','btn-floating waves-light modal-trigger');
+                  cellContent.setAttribute('onclick','initialSaldoSelect('+JSON.stringify(memberHere.idFS)+','+JSON.stringify(memberHereSaldo)+')');
+                  var cellButtonIcon = document.createElement('i');
+                  cellButtonIcon.setAttribute('class','material-icons right');
+                  cellButtonIcon.innerHTML="edit";         
+                  cellContent.appendChild(cellButtonIcon);
+                  column.appendChild(cellContent);
+                  row.appendChild(column);
+                };
                 ISEl.appendChild(row);
-              }
+              };
             })
           })
         })
