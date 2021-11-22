@@ -945,7 +945,7 @@
           <table class="striped">
             <thead>
               <tr>
-                <th style="white-space: nowrap"> First and Last Name </th>
+                <th style="white-space: nowrap"> Name </th>
                 <!--<th> Email </th>-->
                 <th> Mobile </th>
               </tr>
@@ -965,15 +965,29 @@
             <h5> View member</h5>
             <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
               <form class="col s12">
-                <div class="input-field col s12 m4">
-                  <i class="material-icons prefix">account_circle</i>
-                  <input id="member_firstName" type="text" readonly>
-                  <label for="member_firstName" >First Name</label>
+                <div id="memberPersonFrame">
+                    <div class="input-field col s12 m4">
+                      <i class="material-icons prefix">account_circle</i>
+                      <input id="member_firstName" type="text" readonly>
+                      <label for="member_firstName" >First Name</label>
+                    </div>
+                    <div class="input-field col s12 m8">
+                      <i class="material-icons prefix">account_circle</i>
+                      <input id="member_lastName" type="text" readonly>
+                      <label for="member_lastName" >Last Name</label>
+                    </div>
                 </div>
-                <div class="input-field col s12 m8">
-                  <i class="material-icons prefix">account_circle</i>
-                  <input id="member_lastName" type="text" readonly>
-                  <label for="member_lastName" >Last Name</label>
+                <div id="memberCompanyFrame">
+                  <div class="input-field col s12 m8">
+                    <i class="material-icons prefix">business</i>
+                    <input id="member_firstName" type="text" readonly>
+                    <label for="member_firstName" >Company Name</label>
+                  </div>
+                  <div class="input-field col s12 m4">
+                    <i class="material-icons prefix">business</i>
+                    <input id="member_lastName" type="text" readonly>
+                    <label for="member_lastName" >Registration Number</label>
+                  </div>
                 </div>
                 <div class="input-field col s12">
                   <input id="member_email" type="email" readonly>
@@ -1039,18 +1053,34 @@
               
             <h5> Enter member data</h5>
             <form class="col s12">
+              <div id="memberPersonFrame_edit">
+                <div class="input-field col s12 m4">
+                  <i class="material-icons prefix">account_circle</i>
+                  <input id="member_firstName_edit" type="text" class="validate" maxlength="50" >
+                  <label for="member_firstName_edit" >First Name<b><font color='red'>*</font></b></label>
+                  <span class="helper-text" data-error="maximum 50 characters" ></span>
+                </div>
+                <div class="input-field col s12 m8">
+                  <i class="material-icons prefix">account_circle</i>
+                  <input id="member_lastName_edit" type="text" class="validate" maxlength="50" >
+                  <label for="member_lastName_edit" >Last Name <b><font color='red'>*</font></b></label>
+                  <span class="helper-text" data-error="maximum 50 characters" ></span>
+                </div>
+              </div>
+              <div id="memberPersonFrame_edit">
               <div class="input-field col s12 m4">
-                <i class="material-icons prefix">account_circle</i>
-                <input id="member_firstName_edit" type="text" class="validate" maxlength="50" required aria-required="true">
-                <label for="member_firstName_edit" >First Name<b><font color='red'>*</font></b></label>
+                <i class="material-icons prefix">business</i>
+                <input id="member_firstName_edit" type="text" class="validate" maxlength="50" >
+                <label for="member_firstName_edit">Company Name<b><font color='red'>*</font></b></label>
                 <span class="helper-text" data-error="maximum 50 characters" ></span>
               </div>
               <div class="input-field col s12 m8">
-                <i class="material-icons prefix">account_circle</i>
-                <input id="member_lastName_edit" type="text" class="validate" maxlength="50" required aria-required="true">
-                <label for="member_lastName_edit" >Last Name <b><font color='red'>*</font></b></label>
+                <i class="material-icons prefix">business</i>
+                <input id="member_lastName_edit" type="text" class="validate" maxlength="50" >
+                <label for="member_lastName_edit" >Registration Number<b><font color='red'>*</font></b></label>
                 <span class="helper-text" data-error="maximum 50 characters" ></span>
               </div>
+            </div>
               <div class="input-field col s12">
                 <input id="member_email_edit" type="email" class="validate" maxlength="70" >
                 <label for="member_email_edit" >Email</label>
