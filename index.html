@@ -980,13 +980,13 @@
                 <div id="memberCompanyFrame">
                   <div class="input-field col s12 m8">
                     <i class="material-icons prefix">business</i>
-                    <input id="member_firstName" type="text" readonly>
-                    <label for="member_firstName" >Company Name</label>
+                    <input id="member_companyName" type="text" readonly>
+                    <label for="member_companyName">Company Name</label>
                   </div>
                   <div class="input-field col s12 m4">
                     <i class="material-icons prefix">business</i>
-                    <input id="member_lastName" type="text" readonly>
-                    <label for="member_lastName" >Registration Number</label>
+                    <input id="member_registrationNumber" type="text" readonly>
+                    <label for="member_registrationNumber">Registration Number</label>
                   </div>
                 </div>
                 <div class="input-field col s12">
@@ -1053,6 +1053,10 @@
               
             <h5> Enter member data</h5>
             <form class="col s12">
+              <div class="input-field col s12 m12">
+                <select id="member_type" required required="true" onchange="toggleMember()"></select>
+                <label>Type<b><font color='red'>*</font></b></label>
+              </div>
               <div id="memberPersonFrame_edit">
                 <div class="input-field col s12 m4">
                   <i class="material-icons prefix">account_circle</i>
@@ -1825,27 +1829,27 @@
     function hasCounterparty(aTransType) {return ((aTransType != "") && (aTransType != "OWNER") )};
 
     var TransRuleType = {
-      MAINT : 'repair maintenance',
-      RENOV: 'installation renovation',
-      INSUR: 'insurance building',
-      SERVI: 'services',
-      EQUIP: 'small equipment',
-      ELECT: 'electricity',
-      WATER: 'water',
-      HEATI: 'heating',
-      OWNER: 'owner payment',
-      PROVI: 'payed with provision'
+      MAINT : 'Repair Maintenance',
+      RENOV: 'Installation Renovation',
+      INSUR: 'Insurance Building',
+      SERVI: 'Services',
+      EQUIP: 'Small Equipment',
+      ELECT: 'Electricity',
+      WATER: 'Water',
+      HEATI: 'Heating',
+      OWNER: 'Owner Payment',
+      PROVI: 'Payed with Provision'
     };
 
     var MeterStatus = {
-      ACTIF: 'active',
-      PASSI: 'removed'
+      ACTIF: 'Active',
+      PASSI: 'Removed'
     };
 
     var MeterType = {
-      COLWA: 'cold water',
-      HOTWA: 'hot water',
-      HEATI: 'heating'
+      COLWA: 'Cold Water',
+      HOTWA: 'Hot Water',
+      HEATI: 'Heating'
     };
 
     var ConsumptionTableType = {
@@ -1862,10 +1866,10 @@
     };
 
     var NotificationType = {
-      ADMIN: 'administration',
-      MOVIN:  'moving',
-      WORKS: 'works',
-      OTHER: 'other'
+      ADMIN: 'Administration',
+      MOVIN:  'Moving',
+      WORKS: 'Works',
+      OTHER: 'Other'
     };
 
     var ReportType = {
@@ -1899,6 +1903,11 @@
       PURRE: 'Purchase Receipt',
       OTHER: 'Other'
     };
+
+    var MemberType = {
+      PERSO: 'Person',
+      COMPA: 'Company'
+    }
 
     function insertSelectOptions (elBeforeID, keyValuePairs, defaultString, defaultKey) {
       // either defaulString or defaultKey should be nul
