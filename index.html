@@ -2279,14 +2279,14 @@
     async function documentsGet(){
       if (documents) {return documents;}
       else {
-        var querySnapshot = await refCoproperty.collection("Documents").where("before","!=","").orderBy("before","asc").get();
+        var querySnapshot = await refCoproperty.collection("Documents").where("before","!=","").orderBy("before","asc").limit(50).get();
         var documentsBefore = [];
         querySnapshot.forEach(function(objectFS) {
           var thisObject = objectFS.data();
           thisObject.idFS = objectFS.id;
           documentsBefore.push(thisObject);
         });
-        querySnapshot = await refCoproperty.collection("Documents").where("before","==","").get();
+        querySnapshot = await refCoproperty.collection("Documents").where("before","==","").limit(50).get();
         var documentsDone = [];
         querySnapshot.forEach(function(objectFS) {
           var thisObject = objectFS.data();
@@ -2699,7 +2699,7 @@
           
         function refreshTransactions(){
           emptyHTMLSet(transactionsTable);
-          refCoproperty.collection("Transactions").orderBy("bookDate","desc").get().then(function(objectsFSArray){
+          refCoproperty.collection("Transactions").orderBy("bookDate","desc").limit(50).get().then(function(objectsFSArray){
             if (objectsFSArray.docs.length){
               document.getElementById("transactionsTable_frame").style.display = "block";
               document.getElementById("transactions_absentPhrase").style.display = "none";
