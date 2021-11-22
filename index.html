@@ -4145,7 +4145,6 @@
       };
 
       function updateMember(member){
-        /*copy member and remove IDfs*/
         refCoproperty.collection("Members").doc(selectedMemberId).update(member)
           .then(function(docref) {
             var updatedSelectedMember = getMemberEntries();
