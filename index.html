@@ -373,6 +373,11 @@
                 <label for="document_freeType">Free text type<b><font color='red'>*</font></b></label>
                 <span class="helper-text" data-error="Maximum 20 characters"></span>
               </div>
+              <div class="input-field col s12 m12">
+                <textarea id="document_comment" class="materialize-textarea" maxlength="150"></textarea>
+                <label for="document_text">Comment</label>
+                <span class="helper-text" data-error="maximum 150 characters" >maximum 150 characters</span>
+          </div>
             </form>
             
             <button id="documentSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; writeDocument()">Save<i class="material-icons right">send</i></button>
@@ -2313,9 +2318,10 @@
       var objectsRow= document.createElement('li');
       objectsRow.setAttribute("style","border-style:solid;border-width:1px;");
       var header = document.createElement('div');
-      /*var headerIcon = document.createElement('i');
+      var headerIcon = document.createElement('i');
       headerIcon.setAttribute("class","material-icons");
-      header.appendChild(headerIcon);*/
+      headerIcon.innerHTML = DocumentIcon[d.type];
+      header.appendChild(headerIcon);
       header.setAttribute("class","collapsible-header");
       var title = document.createElement('h6');
       title.setAttribute("style","text-align:center");
@@ -2330,6 +2336,13 @@
       titleRight.setAttribute("style","float:right");
       var body= document.createElement('div');
       body.setAttribute("style","position: relative");
+      if (d.comment){
+        var commentDiv = document.createElement('div');
+        commentDiv.setAttribute("style","margin-top: 0px; margin-bottom : 20px");
+        var commentEl= document.createTextNode("comment: "+d.comment);
+        commentDiv.appendChild(commentEl);
+        body.appendChild(commentDiv);
+      };
       var bodyText = document.createElement('div');
       bodyText.setAttribute("style","margin-top: 0px");
       var bodyRight = document.createElement('span');
@@ -2436,6 +2449,7 @@
         link:"",
         freeType:"",
         updatedOn:"",
+        comment: "",
         idFS:null
         };
     };
@@ -2450,6 +2464,7 @@
       document.getElementById("document_counterparty").value=object.counterparty;
       document.getElementById("document_before").value=object.before;
       document.getElementById("document_freeType").value=object.freeType;
+      document.getElementById("document_comment").value=object.comment;
       documentFile =null;
       document.getElementById("documentFileText").value="";
       /*listTransactions(document.getElementById("document_link"),object.link)*/
@@ -2502,6 +2517,10 @@
         M.toast({html:"Please enter valid free text type"});
         valid=false;
       };
+      if (!document.getElementById("document_comment").checkValidity()) {
+        M.toast({html:"Please enter valid comment"});
+        valid=false;
+      };
       var typeElement = document.getElementById("document_type");
       if ((typeElement.value == "OTHER") && (!document.getElementById("document_freeType").value)){
         M.toast({html:"when Type = Other, Free text type is required"});
@@ -2548,6 +2567,7 @@
         link: document.getElementById("document_link").value,
         freeType: document.getElementById("document_freeType").value,
         updatedOn: getToDaysDate(),
+        comment: document.getElementById("document_comment").value
       };
     };
     
