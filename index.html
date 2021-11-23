@@ -4196,17 +4196,20 @@
 
         function getMemberEntries() {
           return {
-                firstName: document.getElementById("member_firstName_edit").value,
-                lastName: document.getElementById("member_lastName_edit").value,
-                email: document.getElementById("member_email_edit").value,
-                phoneHome: document.getElementById("member_phoneHome_edit").value,
-                phoneMobile: document.getElementById("member_phoneMobile_edit").value,
-                country: document.getElementById("member_country_edit").value,
-                zip: document.getElementById("member_zip_edit").value,
-                town: document.getElementById("member_town_edit").value,
-                street: document.getElementById("member_street_edit").value,
-                houseNumber: document.getElementById("member_houseNumber_edit").value,
-                bus: document.getElementById("member_bus_edit").value
+            type: document.getElementById("member_type_edit").value,
+            firstName: document.getElementById("member_firstName_edit").value,
+            lastName: document.getElementById("member_lastName_edit").value,
+            companyName: document.getElementById("member_companyName_edit").value,
+            registrationNumber: document.getElementById("member_registrationNumber_edit").value,
+            email: document.getElementById("member_email_edit").value,
+            phoneHome: document.getElementById("member_phoneHome_edit").value,
+            phoneMobile: document.getElementById("member_phoneMobile_edit").value,
+            country: document.getElementById("member_country_edit").value,
+            zip: document.getElementById("member_zip_edit").value,
+            town: document.getElementById("member_town_edit").value,
+            street: document.getElementById("member_street_edit").value,
+            houseNumber: document.getElementById("member_houseNumber_edit").value,
+            bus: document.getElementById("member_bus_edit").value
           };
         };
         
@@ -4341,12 +4344,21 @@
 
         function validateMemberEntries() {
               var valid= true;
-              if (!document.getElementById("member_firstName_edit").checkValidity()) {
+              var typeHere = document.getElementById("member_type_edit").value;
+              if ((typeHere == "PERSO") && (!document.getElementById("member_firstName_edit").value)) {
                 M.toast({html:"Please enter First Name"});
+                valid=false; 
+              };
+              if ((typeHere == "PERSO") && (!document.getElementById("member_lastName_edit").value)) {
+                M.toast({html:"Please enter Last Name"});
                 valid=false;
               };
-              if (!document.getElementById("member_lastName_edit").checkValidity()) {
-                M.toast({html:"Please enter Last Name"});
+              if ((typeHere == "COMPA") && (!document.getElementById("member_companyName_edit").value)) {
+                M.toast({html:"Please enter Company Name"});
+                valid=false;
+              };
+              if ((typeHere == "COMPA") && (!document.getElementById("member_registrationNumber_edit").value)) {
+                M.toast({html:"Please enter Registration Number"});
                 valid=false;
               };
               if (!document.getElementById("member_email_edit").checkValidity()) {
