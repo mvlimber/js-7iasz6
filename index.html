@@ -4236,7 +4236,6 @@
           selectedMemberId=object.idFS;
           selectedMemberObject=object;
           mode="edit";
-          document.getElementById("member_type"+modeArg).value=object.type;
           document.getElementById("member_firstName"+modeArg).value=object.firstName;
           document.getElementById("member_lastName"+modeArg).value=object.lastName;
           document.getElementById("member_companyName"+modeArg).value=object.companyName;
@@ -4251,8 +4250,11 @@
           document.getElementById("member_houseNumber"+modeArg).value=object.houseNumber;
           document.getElementById("member_bus"+modeArg).value=object.bus;
           document.getElementById("memberSubmitButton").disabled=false;
-          if (modeArg) {toggleMember_edit();}
+          if (modeArg) {
+            document.getElementById("member_type"+modeArg).value=object.type;
+            toggleMember_edit();}
           else {
+            toggleMember_view();
             var ownerOfEl = document.getElementById("member_ownerOf");
             emptyHTMLSet(ownerOfEl);
             refCoproperty.collection("Properties").where("owner", "==", object.idFS).get().then (function (querySnapshot){
@@ -4284,6 +4286,16 @@
           } else {
             document.getElementById("memberPersonFrame_edit").style.display="none";
             document.getElementById("memberCompanyFrame_edit").style.display="block";
+          };
+        };
+
+        function toggleMember_view() {
+          if (selectedMemberObject.type == "PERSO"){
+            document.getElementById("memberPersonFrame").style.display="block";
+            document.getElementById("memberCompanyFrame").style.display="none";
+          } else {
+            document.getElementById("memberPersonFrame").style.display="none";
+            document.getElementById("memberCompanyFrame").style.display="block";
           };
         };
 
