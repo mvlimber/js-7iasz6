@@ -2731,7 +2731,7 @@
 
           if (object.type == "OWNER") {
             memberGet(object.owner).then (function(m){
-              viewButton.innerHTML = "<font color='blue'>" + m.firstName + " " + m.lastName + "</font>";
+              viewButton.innerHTML = "<font color='blue'>" + denomination(m) + "</font>";
             });
           } else {
             viewButton.innerHTML = "<font color='blue'>" + object.name + "</font>";
@@ -2873,7 +2873,7 @@
       };
       if (!hasCostCenter(result.type)) { result.costCenter = ""};
       if (result.type == "OWNER") {
-        memberGet(result.owner).then(function(m){result.name = m.firstName + " " + m.lastName;});
+        memberGet(result.owner).then(function(m){result.name = denomination(m);});
       } else {result.owner = ""}
       return result;
     };
@@ -2918,7 +2918,7 @@
         if (object.type == "OWNER") {
           document.getElementById("transaction_owner_field").style.display = "block";
           memberGet(object.owner).then(function(m){
-            document.getElementById("transaction_owner").value = m.firstName + " " + m. lastName;
+            document.getElementById("transaction_owner").value = denomination(m);
             var elems = document.querySelectorAll('select');
             M.FormSelect.init(elems);
             M.updateTextFields();
@@ -3552,8 +3552,8 @@
         if (tR.type == "OWNER") {
           headerIcon.innerHTML = "input";
           memberGet(tR.owner).then (function(owner){
-            title.innerHTML = "Owner payment from " + owner.firstName + " " + owner.lastName ;
-            text.innerHTML += " <b>AND</b><br>   owner = "+owner.firstName + " " + owner.lastName;
+            title.innerHTML = "Owner payment from " + denomination(owner) ;
+            text.innerHTML += " <b>AND</b><br>   owner = "+denomination(owner);
           });
         } else {
           headerIcon.innerHTML = "payment";
@@ -4052,6 +4052,11 @@
         };
       }; 
       
+      function denomination(m) {
+              if (m.type == "PERSO") {return m.firstName + " "+ m.lastName}
+              else {return m.companyName};
+      };
+
       async function memberGet(id){
         function checkId(m){return m.idFS == id};
         var ms = await membersGet();
@@ -4094,7 +4099,7 @@
         elA.setAttribute('class','modal-trigger');
         elA.setAttribute('style','border:none;background-color:Transparent');
         elA.setAttribute('onclick','setSelectedMember('+JSON.stringify(m)+',"")');
-        elA.innerHTML = "<font color='#0000FF'>"+m.firstName+" "+m.lastName+"</font>";
+        elA.innerHTML = "<font color='#0000FF'>"+denomination(m)+"</font>";
         return elA;
       };
 
@@ -4794,7 +4799,7 @@
              option = document.createElement("option");
               option.setAttribute("value",member.id);
               if (member.id == selectedOption) {option.setAttribute("selected",true);};
-              option.innerHTML = member.data().firstName + " " + member.data().lastName;
+              option.innerHTML = denomination(member.data());
               el.appendChild(option);
           });
           var elems = document.querySelectorAll('select');
@@ -4820,7 +4825,7 @@
                 option = document.createElement("option");
                 option.setAttribute("value",memberHere.idFS);
                 if (memberHere.idFS == selectedOption) {option.setAttribute("selected",true);};
-                option.innerHTML = memberHere.firstName + " " + memberHere.lastName;
+                option.innerHTML = denomination(memberHere);
                 el.appendChild(option);
               };
               var elems = document.querySelectorAll('select');
@@ -4887,7 +4892,7 @@
         var ownerEl = document.getElementById("property_owner");
         refCoproperty.collection("Members").doc(object.owner).get().then(function(member) {
               ownerEl.setAttribute('onclick','setSelectedMember('+JSON.stringify(member.id)+','+JSON.stringify(member.data())+',"")');
-              ownerEl.innerHTML = "<font color='#0000FF'>"+member.data().firstName + " " + member.data().lastName+"</font>";
+              ownerEl.innerHTML = "<font color='#0000FF'>"+denomination(member.data())+"</font>";
         });
         refCoproperty.collection("Properties").doc(id).collection("PreviousOwners").get().then(function(existingList) {
           if (existingList.docs.length > 0) {
@@ -5738,7 +5743,7 @@
               });
               var provisionHere = -1 * Number((currentCoproperty.provisions * quotaHere / ccHere.totalQuota).toFixed(2));
             };
-            ownersSaldo.push({ownerId: m.idFS, owner: m.firstName + " " + m.lastName, oldSaldo: lastOS, payments: 0, charges:0, provisions:provisionHere , newSaldo:0});
+            ownersSaldo.push({ownerId: m.idFS, owner: denomination(m), oldSaldo: lastOS, payments: 0, charges:0, provisions:provisionHere , newSaldo:0});
           };
         });
         
@@ -5771,7 +5776,7 @@
             rowTotalCharges.property = p.code; 
             rowTotalCharges.ownerId = p.owner;
             var thisOwner= membersInReport.find(checkMemberId);
-            rowTotalCharges.owner = thisOwner.firstName + " " + thisOwner.lastName;
+            rowTotalCharges.owner = denomination(thisOwner);
             rowTotalCharges.private = 0;
             ccsInReport.forEach(function(cc) {
               var quotaHere = cc.distribution[p.idFS];
