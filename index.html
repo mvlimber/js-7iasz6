@@ -330,7 +330,7 @@
         <h5 >There are no Documents yet</h5>
         </div>
         <br>
-        <button style="float: right" data-target="documentEdit" class="btn-small waves-light modal-trigger" onclick="resetDocument()"><i class="material-icons right">add</i>New document</button>
+        <button id="documentNewButton" style="visibility: hidden; float: right" data-target="documentEdit" class="btn-small waves-light modal-trigger" onclick="resetDocument()"><i class="material-icons right">add</i>New document</button>
         <div id="documentEdit" class="modal">
           <div class="modal-content">
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
@@ -1664,6 +1664,7 @@
                           document.getElementById("costCentersNewButton").style.visibility = "visible";
                           document.getElementById("provisionsEditButton").style.visibility = "visible";
                           document.getElementById("initialCopropertySaldoEditButton").style.visibility = "visible";
+                          document.getElementById("documentNewButton").style.visibility = "visible";
                         };
                         openApplication();
                       }).catch(function(error) {
@@ -2361,21 +2362,21 @@
 
     function loadDocument(d){
       var objectsRow= document.createElement('li');
-      objectsRow.setAttribute("style","border-style:solid;border-width:1px;");
+      objectsRow.setAttribute("style","border-style:solid;border-color: darkgrey");
       var header = document.createElement('div');
       var headerIcon = document.createElement('i');
       headerIcon.setAttribute("class","material-icons");
       headerIcon.innerHTML = DocumentIcon[d.type];
       header.appendChild(headerIcon);
       header.setAttribute("class","collapsible-header");
-      var title = document.createElement('h6');
+      var title = document.createElement('div');
       title.setAttribute("style","text-align:center");
       if (d.type == "GEASS") {title.innerHTML = "";}
       else {title.innerHTML = d.counterparty;};
       var titleLeft = document.createElement('span');
       titleLeft.setAttribute("style","float:left");
-      if (d.type != "OTHER"){titleLeft.innerHTML = "<b>"+DocumentType[d.type]+"</b>"}
-      else {titleLeft.innerHTML = "<b>"+d.freeType+"</b>"};
+      if (d.type != "OTHER"){titleLeft.innerHTML = DocumentType[d.type]}
+      else {titleLeft.innerHTML = d.freeType};
       title.appendChild(titleLeft);
       var titleRight = document.createElement('span');
       titleRight.setAttribute("style","float:right");
