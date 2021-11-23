@@ -4891,8 +4891,10 @@
         document.getElementById("property_cellar").value=object.cellar;
         var ownerEl = document.getElementById("property_owner");
         refCoproperty.collection("Members").doc(object.owner).get().then(function(member) {
-              ownerEl.setAttribute('onclick','setSelectedMember('+JSON.stringify(member.id)+','+JSON.stringify(member.data())+',"")');
-              ownerEl.innerHTML = "<font color='#0000FF'>"+denomination(member.data())+"</font>";
+              var mHere =  member.data();
+              mHere.idFS = member.id;
+              ownerEl.setAttribute('onclick','setSelectedMember('+JSON.stringify(mHere)+',"")');
+              ownerEl.innerHTML = "<font color='#0000FF'>"+denomination(mHere)+"</font>";
         });
         refCoproperty.collection("Properties").doc(id).collection("PreviousOwners").get().then(function(existingList) {
           if (existingList.docs.length > 0) {
