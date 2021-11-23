@@ -4236,6 +4236,7 @@
           selectedMemberId=object.idFS;
           selectedMemberObject=object;
           mode="edit";
+          document.getElementById("member_type"+modeArg).value=object.type;
           document.getElementById("member_firstName"+modeArg).value=object.firstName;
           document.getElementById("member_lastName"+modeArg).value=object.lastName;
           document.getElementById("member_companyName"+modeArg).value=object.companyName;
@@ -4250,9 +4251,8 @@
           document.getElementById("member_houseNumber"+modeArg).value=object.houseNumber;
           document.getElementById("member_bus"+modeArg).value=object.bus;
           document.getElementById("memberSubmitButton").disabled=false;
-          if (modeArg) {toggleMember_edit();};
-          
-          if (!modeArg) {
+          if (modeArg) {toggleMember_edit();}
+          else {
             var ownerOfEl = document.getElementById("member_ownerOf");
             emptyHTMLSet(ownerOfEl);
             refCoproperty.collection("Properties").where("owner", "==", object.idFS).get().then (function (querySnapshot){
@@ -4278,7 +4278,7 @@
         };
 
         function toggleMember_edit() {
-          if (selectedMemberObject.type == "PERSO"){
+          if (document.getElementById("member_type_edit").value == "PERSO"){
             document.getElementById("memberPersonFrame_edit").style.display="block";
             document.getElementById("memberCompanyFrame_edit").style.display="none";
           } else {
