@@ -1894,11 +1894,11 @@
     };
     var DocumentType = {
       GEASS: 'General Assembly',
-      INVOI: 'Invoice',
-      QUOTE: 'Quote',
-      PAYRE: 'Payment Reminder',
-      PURRE: 'Purchase Receipt',
-      OTHER: 'Other'
+      INVOI: 'Invoice&nbsp;',
+      QUOTE: 'Quote&nbsp;&nbsp;&nbsp;',
+      PAYRE: 'Reminder',
+      PURRE: 'Receipt&nbsp;',
+      OTHER: 'Other&nbsp;&nbsp;&nbsp;'
     };
 
     var EvidenceType = {
@@ -2374,7 +2374,7 @@
       if (d.type == "GEASS") {title.innerHTML = "";}
       else {title.innerHTML = d.counterparty;};
       var titleLeft = document.createElement('span');
-      titleLeft.setAttribute("style","float:left");
+      titleLeft.setAttribute("style","float:left;font-family:'Lucida Console'; monospace");
       if (d.type != "OTHER"){titleLeft.innerHTML = DocumentType[d.type]}
       else {titleLeft.innerHTML = d.freeType};
       title.appendChild(titleLeft);
@@ -2394,12 +2394,12 @@
       var bodyRight = document.createElement('span');
       bodyRight.setAttribute("style","float:right");
       if ((d.type != "GEASS")&&(d.before)){
-        titleRight.innerHTML = "<font color='red'>before " + d.before+"</font>";
+        titleRight.innerHTML = "<font color='red'>" + d.before+"</font>";
         bodyRight.innerHTML = "updated:" +d.updatedOn;
         bodyText.appendChild(bodyRight);
         body.appendChild(bodyText);
         body.appendChild(document.createElement('br'));
-      } else {titleRight.innerHTML = "updated:" +d.updatedOn};
+      } else {titleRight.innerHTML = d.updatedOn};
       title.appendChild(titleRight);
       header.appendChild (title);
       objectsRow.appendChild(header);
