@@ -1,8 +1,9 @@
+
 <!DOCTYPE html>
 <html>
 
 <head>
-  <base target="_top">
+  <base target="_top"> 
   <title style:"color:#00796b bold">MyCondos</title>
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <link rel="icon"
@@ -16,6 +17,7 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>-->
+  <script src="https://github.com/Dogfalo/materialize/blob/v1-dev/js/select.js"></script>
 
   <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com//firebasejs/8.2.0/firebase-auth.js"></script>
@@ -23,6 +25,7 @@
   <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-storage.js"></script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
   <script>
     var firebaseConfig = {
@@ -222,9 +225,9 @@
                     <span class="helper-text" data-error="maximum 30 characters" >maximum 30 characters</span>
                   </div>
                   <div class="input-field col s12 m12">
-                    <textarea id="notification_text" class="materialize-textarea" required required="true"></textarea>
+                    <textarea id="notification_text" class="materialize-textarea" required required="true" maxlength="300"></textarea>
                     <label for="notification_text">Text<b><font color='red'>*</font></b></label>
-                    <span class="helper-text" data-error="maximum 250 characters" >maximum 250 characters</span>
+                    <span class="helper-text" data-error="maximum 300 characters" >maximum 300 characters</span>
                 </div>
                 </form>
               </div>
@@ -331,14 +334,14 @@
         </div>
         <br>
         <button id="documentNewButton" style="visibility: hidden; float: right" data-target="documentEdit" class="btn-small waves-light modal-trigger" onclick="resetDocument()"><i class="material-icons right">add</i>New document</button>
-        <div id="documentEdit" class="modal">
+        <div id="documentEdit" class="modal full">
           <div class="modal-content">
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
             <h5>Upload document and enter its attributes</h5>
             <form>
               <div class="input-field" id="document_file">
               </div>
-              <div class="file-field input-field col s12 m6">
+              <div class="file-field input-field col s12 m12">
                 <div class="btn-small">
                   <span id="documentUploadButtonLabel">PDF Document<b><font color='red'>*</font></b><i class="material-icons right">attach_file</i></span>
                   <input type="file" id="documentFile">
@@ -350,33 +353,37 @@
               </div>
             </form>
             <form>
+              <div class="row">
               <div class="input-field col s12 m4">
               <select id="document_type" required required="true" onchange="toggleDocument()"></select>
               <label>Type<b><font color='red'>*</font></b></label>
               </div>
               <div class="input-field col s12 m4" id="document_counterparty_field">
-                <input id="document_counterparty" type="text" class="validate" maxlength="30" >
+                <input id="document_counterparty" type="text" class="validate" maxlength="20" >
                 <label for="document_counterparty">Counterparty<b><font color='red'>*</font></b></label>
-                <span class="helper-text" data-error="Maximum 30 characters"></span>
-              </div>
+                <span class="helper-text" data-error="Maximum 20 characters">Up to 20 characters</span>
+              </div> 
               <div class="input-field col s12 m4" id="document_before_field">
-                <input id="document_before" type="text" class="datepicker validate" >
+                <input id="document_before" type="text" class="datepicker datepickerFuture validate" >
                 <label for="document_before">Before</label>
                 <span class="helper-text">reminder date</span>
               </div>
+              <!--
               <div class="input-field col s12 m4" id="document_link_field">
                 <select id="document_link" ></select>
                 <label>Link to</label>
-              </div>
+              </div>-->
               <div class="input-field col s12 m4" id="document_freeType_field">
-                <input id="document_freeType" type="text" class="validate" maxlength="20">
+                <input id="document_freeType" type="text" class="validate" maxlength="8">
                 <label for="document_freeType">Free text type<b><font color='red'>*</font></b></label>
-                <span class="helper-text" data-error="Maximum 20 characters"></span>
+                <span class="helper-text" data-error="Maximum 8 characters">up to 8 characters</span>
               </div>
               <div class="input-field col s12 m12">
                 <textarea id="document_comment" class="materialize-textarea" maxlength="150"></textarea>
                 <label for="document_text">Comment</label>
                 <span class="helper-text" data-error="maximum 150 characters" >maximum 150 characters</span>
+
+              </div>
           </div>
             </form>
             
@@ -402,82 +409,82 @@
        
         </div>
         <!------------------------------------------------------------------------------------------------------>
-        <div id="transactionView" class="modal">
-        <div class="modal-content">
-          <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
-          <h5> View Transaction</h5>
-          <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
-            <form class="col s12">
-              <div class="input-field col s12 m4">
-                <input id="transaction_type" type="text" readonly>
-                <label for="transaction_type">type</label>
+        <div id="transactionView" class="modal full">
+          <div class="modal-content">
+            <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
+            <h5> View Transaction</h5>
+            <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
+              <form class="col s12">
+                <div class="input-field col s12 m4">
+                  <input id="transaction_type" type="text" readonly>
+                  <label for="transaction_type">type</label>
+                </div>
+                <div class="input-field col s12 m4" id="transaction_costCenter_field">
+                  <input id="transaction_costCenter" type="text" readonly>
+                  <label for="transaction_type">cost center</label>
+                </div>
+                <div class="input-field col s12 m4" id="transaction_name_field">
+                  <input id="transaction_name" type="text" readonly>
+                  <label for="transaction_name">Counterparty</label>
+                </div>
+                <div class="input-field col s12 m4" id="transaction_owner_field">
+                  <input id="transaction_owner" type="text" readonly>
+                  <label for="transaction_owner">Owner</label>
+                </div>
+                <div class="input-field col s12 m4">
+                  <input id="transaction_account" type="text" readonly>
+                  <label for="transaction_account">Account</label>
+                </div>
+                <div class="input-field col s12 m8">
+                  <input id="transaction_communication" type="text" readonly>
+                  <label for="transaction_communication">Communication</label>
+                </div>
+                <div class="input-field col s12 m4">
+                  <input id="transaction_amount" type="text" readonly>
+                  <label for="transaction_amount">Amount</label>
+                </div>
+                <div class="input-field col s12 m4">
+                  <input id="transaction_date" type="text" readonly>
+                  <label for="transaction_date">Transaction Date</label>
+                </div>
+                <div class="input-field col s12 m4">
+                  <input id="transaction_bookDate" type="text" readonly>
+                  <label for="transaction_bookDate">Accountancy Date</label>
+                </div>
+                <div id="transaction_properties_frame" style="display:none" >
+                  <table class="striped">
+                    <caption><b>Private transaction: Amount distributed to following properties:</b></caption>
+                    <thead>
+                      <tr>
+                        <th>Property</th>
+                        <th>Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody id="transaction_distribution_table">
+                    </tbody>
+                  </table>
+                </div>
+              </form>
+              <div id="Transactions_Edit" class="displayHidden">
+                <button id="transaction_edit_button" style="float: right;margin-bottom: 3px" data-target="transactionAdd" class="btn-small waves-light modal-trigger" onclick="editTransaction(selectedTransactionId, transaction)">Edit<i class="material-icons right">edit</i></button>
               </div>
-              <div class="input-field col s12 m4" id="transaction_costCenter_field">
-                <input id="transaction_costCenter" type="text" readonly>
-                <label for="transaction_type">cost center</label>
-              </div>
-              <div class="input-field col s12 m4" id="transaction_name_field">
-                <input id="transaction_name" type="text" readonly>
-                <label for="transaction_name">Counterparty</label>
-              </div>
-              <div class="input-field col s12 m4" id="transaction_owner_field">
-                <input id="transaction_owner" type="text" readonly>
-                <label for="transaction_owner">Owner</label>
-              </div>
-              <div class="input-field col s12 m4">
-                <input id="transaction_account" type="text" readonly>
-                <label for="transaction_account">Account</label>
-              </div>
-              <div class="input-field col s12 m8">
-                <input id="transaction_communication" type="text" readonly>
-                <label for="transaction_communication">Communication</label>
-              </div>
-              <div class="input-field col s12 m4">
-                <input id="transaction_amount" type="text" readonly>
-                <label for="transaction_amount">Amount</label>
-              </div>
-              <div class="input-field col s12 m4">
-                <input id="transaction_date" type="text" readonly>
-                <label for="transaction_date">Transaction Date</label>
-              </div>
-              <div class="input-field col s12 m4">
-                <input id="transaction_bookDate" type="text" readonly>
-                <label for="transaction_bookDate">Accountancy Date</label>
-              </div>
-              <div id="transaction_properties_frame" style="display:none" >
-                <table class="striped">
-                  <caption><b>Private transaction: Amount distributed to following properties:</b></caption>
-                  <thead>
-                    <tr>
-                      <th>Property</th>
-                      <th>Amount</th>
-                    </tr>
-                  </thead>
-                  <tbody id="transaction_distribution_table">
-                  </tbody>
-                </table>
-              </div>
-            </form>
-            <div id="Transactions_Edit" class="displayHidden">
-              <button id="transaction_edit_button" style="float: right;margin-bottom: 3px" data-target="transactionAdd" class="btn-small waves-light modal-trigger" onclick="editTransaction(selectedTransactionId, transaction)">Edit<i class="material-icons right">edit</i></button>
             </div>
-          </div>
-          <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
-            <h6 style="font-size:20px ">Transaction Evidence</h6>
-            <table class="striped">
-              <tbody id="transactionEvidenceTable">
-              </tbody>
-            </table>
-            <br>
-            <div id="Transactions_EvidenceAdd" class="displayHidden">
-              <button style="float: right;margin-bottom: 3px" data-target="transactionNewDocument" class="btn-small waves-light modal-trigger" onclick="emptyTransactionEvidenceFields()"><i class="material-icons right">add</i>New Document</button>
+            <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
+              <h6 style="font-size:20px ">Transaction Evidence Documents</h6>
+              <table class="striped">
+                <tbody id="transactionEvidenceTable">
+                </tbody>
+              </table>
+              <br>
+              <div id="Transactions_EvidenceAdd" class="displayHidden">
+                <button style="float: right;margin-bottom: 3px" data-target="transactionNewDocument" class="btn-small waves-light modal-trigger" onclick="emptyTransactionEvidenceFields()"><i class="material-icons right">add</i>New</button>
+              </div>
+              <div id="Transactions_EvidenceLink" class="displayHidden">
+                <button style="float: right;margin-bottom: 3px;margin-right: 3px" data-target="transactionNewEvidenceLink" class="btn-small waves-light modal-trigger" onclick="emptyTransactionEvidenceLinkFields()"><i class="material-icons right">link</i>Link </button>
             </div>
-            <div id="Transactions_EvidenceLink" class="displayHidden">
-              <button style="float: right;margin-bottom: 3px;margin-right: 3px" data-target="transactionNewEvidenceLink" class="btn-small waves-light modal-trigger" onclick="emptyTransactionEvidenceLinkFields()"><i class="material-icons right">link</i>Link Document</button>
+            </div>
+            <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
           </div>
-          </div>
-          <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
-        </div>
         </div> 
         <div id="transactionEvidenceRemove" class="modal">
         <div class="modal-content">
@@ -586,7 +593,7 @@
             <br><br>
             <button disabled style="float: right" data-target="transactionLoad" class="btn-small waves-light modal-trigger" onclick="emptyTransactionLoadFields()"><i class="material-icons right">add</i>Load transactions</button>
           </div>
-          <div id="transactionAdd" class="modal">
+          <div id="transactionAdd" class="modal full">
             <div class="modal-content" >
               <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
               
@@ -748,7 +755,7 @@
               <form>
                 <div class="w3-panel ">
                   <h6><b>IF:</b> rule fires when all if-values match</h6>
-                  <div class="input-field col s6 m4">
+                  <div class="input-field col s12 m4">
                     <input id="transactionRule_account" type="text" maxlength="19" class="validate"
                       pattern="^BE\d{14}$|^BE\d{2}\s\d{4}\s\d{4}\s\d{4}$" required required="true">
                     <label for="transactionRule_account"><b>IF</b> Account<b><font color='red'>*</font></b></label>
@@ -885,7 +892,7 @@
             </div>
           </div>
           
-          <div id="meterReadingView" class="modal">
+          <div id="meterReadingView" class="modal full">
             <div class="modal-content">
               <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
               <h5>View meter readings</h5>
@@ -959,7 +966,7 @@
           </div>
         </div>
         <!--- shared views ------------------------------------------------------------------------------------>
-        <div id="memberView" class="modal">
+        <div id="memberView" class="modal full">
           <div class="modal-content">
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
             <h5> View member</h5>
@@ -1048,7 +1055,7 @@
           </div>
         </div>
 
-        <div id="memberWrite" class="modal">
+        <div id="memberWrite" class="modal full">
           <div class="modal-content">
           <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
               
@@ -1149,7 +1156,7 @@
 
         </div>
 
-        <div id="propertyView" class="modal">
+        <div id="propertyView" class="modal full">
           <div class="modal-content">
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
             <h5> View property</h5>
@@ -1212,16 +1219,19 @@
                 </table>
               </div>
               <div id="Properties_OccupantsAdd" class="displayHidden">
-                <div class="input-field col s6 m4">
+                <div class="input-field col s10 m4">
                   <select id="property_occupant_add" onchange="enableOccupantAdd()">
                   </select>
                 </div>
-                <div class="input-field col s6 m4">
+                <div class="input-field col s2 m4">
                   <a id="buttonOccupantAdd" class="btn-floating waves-light disabled" onclick="addOccupant()"><i class="material-icons right">add</i></a>
                 </div>
               </div>
             </div>
-            <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
+            
+          </div>
+          <div class="modal-footer">
+          <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
           </div>
         </div>
 
@@ -1302,7 +1312,7 @@
               <form class="col s12">
                 <div class="row">
                 <div class="input-field col s6 m6">
-                  <input id="property_code_add" type="text" pattern="([A-Z]|[0-9]){1,4}" class="validate" required aria-required="true">
+                  <input id="property_code_add" type="text" pattern="([A-Z]|[0-9]){1,4}" maxlength="4" class="validate" required aria-required="true">
                   <label for="property_code_add">Code<b><font color='red'>*</font></b></label>
                   <span class="helper-text" data-error="Max 4 capitals or numbers. Example: A1">Max 4 capitals or numbers. Example: A1</span>
                 </div>
@@ -1388,7 +1398,7 @@
               <h5> Edit property data</h5>
               <form class="col s12">
                 <div class="input-field col s6 m4">
-                  <input id="property_code_edit" type="text" pattern="([A-Z]|[0-9]){1,4}" class="validate" required aria-required="true">
+                  <input id="property_code_edit" type="text" pattern="([A-Z]|[0-9]){1,4}" maxlength="4" class="validate" required aria-required="true">
                   <label for="property_code_edit">Code<b><font color='red'>*</font></b></label>
                   <span class="helper-text" data-error="Max 4 capitals or numbers. Example: A1">Max 4 capitals or numbers. Example: A1</span>
                 </div>
@@ -1765,12 +1775,35 @@
     };
     var elems = document.querySelectorAll('select');
     var instances = M.FormSelect.init(elems); 
+    
+
+
+/*function isIPhoneMobile () {
+   // credit to Timothy Huang for this regex test:
+   // https://dev.to/timhuang/a-simple-way-to-detect-if-browser-is-on-a-mobile-device-with-javascript-44j3
+   if(/iPhone|iPad|iPod Mini/i.test(navigator.userAgent)){
+       return true
+   }
+   else {
+       return false
+   };
+};*/
+
+if (navigator.vendor.toLowerCase().indexOf('apple') > -1){  
+  console.log("Only display in Safari")  ;
+ 
+
+      var i;
+      for (i = 0; i < elems.length; i++) {elems[i].setAttribute("class" , "browser-default");};
+    };
 
     const tabsContainer = document.querySelector(".tabs");
     M.Tabs.init(tabsContainer,options);
     elems = document.querySelectorAll('.datepicker');
     instances = M.Datepicker.init(elems, {maxDate: new Date(),format: 'yyyy-mm-dd'});
-
+    elems = document.querySelectorAll('.datepickerFuture');
+    instances = M.Datepicker.init(elems, {minDate: new Date(),format: 'yyyy-mm-dd'});
+    
     
     elems = document.querySelectorAll('.modal');
     instances = M.Modal.init(elems, {dismissible:false,preventScrolling:false});
@@ -1894,7 +1927,7 @@
     };
     var DocumentType = {
       GEASS: 'General Assembly',
-      INVOI: 'Invoice&nbsp;',
+      INVOI: 'Invoice',
       QUOTE: 'Quote&nbsp;&nbsp;&nbsp;',
       PAYRE: 'Reminder',
       PURRE: 'Receipt&nbsp;',
@@ -2011,6 +2044,7 @@
 
       function loadNotification (n){
         var objectsRow= document.createElement('li');
+        objectsRow.setAttribute("style","border-style:solid;border-color: darkgrey");
         var header = document.createElement('div');
         header.setAttribute("class","collapsible-header");
         var headerIcon = document.createElement('i');
@@ -2088,6 +2122,7 @@
         var elems = document.querySelectorAll('select');
         M.FormSelect.init(elems);
         M.updateTextFields();
+        M.textareaAutoResize(document.getElementById("notification_text"));
       };
 
       function validateNotification(){
@@ -2339,7 +2374,12 @@
           thisObject.idFS = objectFS.id;
           documentsDone.push(thisObject);
         });
-        documents = documentsBefore.concat(documentsDone.sort(function(a, b){return a.updatedOn - a.updatedOn}));
+        var documentsDoneSorted = documentsDone.sort(function(a, b){
+          if (b.updatedOn < a.updatedOn) {return -1;};
+          if (b.updatedOn > a.updatedOn) {return 1;};
+          return 0;
+          });
+        documents = documentsBefore.concat(documentsDoneSorted);
         return documents;
       };
     };
@@ -2372,29 +2412,32 @@
       var title = document.createElement('div');
       title.setAttribute("style","text-align:center");
       if (d.type == "GEASS") {title.innerHTML = "";}
-      else {title.innerHTML = d.counterparty;};
+      else {title.innerHTML = (d.counterparty).substr(0,20);};
       var titleLeft = document.createElement('span');
-      titleLeft.setAttribute("style","float:left;font-family:'Lucida Console'; monospace");
-      if (d.type != "OTHER"){titleLeft.innerHTML = DocumentType[d.type]}
-      else {titleLeft.innerHTML = d.freeType};
+      /*titleLeft.setAttribute("style","float:left;font-family:'Lucida Console'; monospace");*/
+      titleLeft.setAttribute("style","float:left;margin-rigth: 25%");
+      if (d.type != "OTHER"){
+        /*titleLeft.innerHTML = ((DocumentType[d.type]) + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;').substr(0,8);*/
+        titleLeft.innerHTML = DocumentType[d.type];
+      }
+      else {titleLeft.innerHTML = d.freeType };
       title.appendChild(titleLeft);
       var titleRight = document.createElement('span');
       titleRight.setAttribute("style","float:right");
       var body= document.createElement('div');
       body.setAttribute("style","position: relative");
-      if (d.comment){
-        var commentDiv = document.createElement('div');
-        commentDiv.setAttribute("style","margin-top: 0px; margin-bottom : 20px");
-        var commentEl= document.createTextNode("comment: "+d.comment);
-        commentDiv.appendChild(commentEl);
-        body.appendChild(commentDiv);
-      };
+      
       var bodyText = document.createElement('div');
       bodyText.setAttribute("style","margin-top: 0px");
       var bodyRight = document.createElement('span');
       bodyRight.setAttribute("style","float:right");
       if ((d.type != "GEASS")&&(d.before)){
         titleRight.innerHTML = "<font color='red'>" + d.before+"</font>";
+        bodyRight.innerHTML = "<font color='red'>" +"Act Before: " + d.before+ "</font>";
+        bodyText.appendChild(bodyRight);
+        bodyText.appendChild(document.createElement('br'));
+        bodyRight = document.createElement('span');
+        bodyRight.setAttribute("style","float:right");
         bodyRight.innerHTML = "updated:" +d.updatedOn;
         bodyText.appendChild(bodyRight);
         body.appendChild(bodyText);
@@ -2404,6 +2447,13 @@
       header.appendChild (title);
       objectsRow.appendChild(header);
       body.setAttribute("class","collapsible-body");
+      if (d.comment){
+        var commentDiv = document.createElement('div');
+        commentDiv.setAttribute("style","margin-top: 0px; margin-bottom : 20px");
+        var commentEl= document.createTextNode("comment: "+d.comment);
+        commentDiv.appendChild(commentEl);
+        body.appendChild(commentDiv);
+      };
       if (currentUser.role == roleAdministrator) {
         if (!d.link) {
           var removeButton = document.createElement('button');
@@ -2487,8 +2537,6 @@
     
     function newEmptyDocumentFields(){
       return {
-        reportFile: "",
-        reportFileText: "",
         type: "",
         counterparty: "",
         before: "",
@@ -2511,6 +2559,7 @@
       document.getElementById("document_before").value=object.before;
       document.getElementById("document_freeType").value=object.freeType;
       document.getElementById("document_comment").value=object.comment;
+      document.getElementById("documentFile").value="";
       documentFile =null;
       document.getElementById("documentFileText").value="";
       /*listTransactions(document.getElementById("document_link"),object.link)*/
@@ -2523,11 +2572,12 @@
 
     function toggleDocument(){
       var typeElement = document.getElementById("document_type");
+      /*
       if (["INVOI", "QUOTE","PAYRE"].includes(typeElement.value)) {
         document.getElementById("document_link_field").style.display = "block";
       } else {
         document.getElementById("document_link_field").style.display = "none";
-      };
+      };*/
       if (typeElement.value == "OTHER") {
         document.getElementById("document_freeType_field").style.display = "block";
       } else {
@@ -2542,7 +2592,7 @@
       };
       var dUBL = document.getElementById("documentUploadButtonLabel");
       if (paper.idFS){dUBL.innerHTML = "option: replace PDF file with"}
-      else {dUBL.innerHTML = "PDF file<b><font color='red'>*</font></b>"};
+      else {dUBL.innerHTML = "File<b><font color='red'>*</font></b>"};
     };
 
     function validateDocument(){
@@ -2610,7 +2660,7 @@
         type: thisType,
         counterparty: document.getElementById("document_counterparty").value,
         before: thisBefore,
-        link: document.getElementById("document_link").value,
+        link: paper.link, /*document.getElementById("document_link").value,*/
         freeType: document.getElementById("document_freeType").value,
         updatedOn: getToDaysDate(),
         comment: document.getElementById("document_comment").value
@@ -3507,6 +3557,7 @@
       function loadTransactionRule(tR){
         
         var objectsRow= document.createElement('li');
+        objectsRow.setAttribute("style","border-style:solid;border-color: darkgrey");
         var header = document.createElement('div');
         var headerIcon = document.createElement('i');
         headerIcon.setAttribute("class","material-icons");
