@@ -3069,7 +3069,7 @@ if (navigator.vendor.toLowerCase().indexOf('apple') > -1){
         option.setAttribute("value","");
         option.setAttribute("disabled",true);
         option.setAttribute("selected",true);
-        option.innerHTML = "Select Property";
+        option.innerHTML = "Select Property<b><font color='red'>*</font></b>";
         el.appendChild(option);
       };
       refCoproperty.collection("Properties").get().then(function(querySnapshot) {
@@ -4833,7 +4833,7 @@ if (navigator.vendor.toLowerCase().indexOf('apple') > -1){
           option.setAttribute("value","");
           option.setAttribute("disabled",true);
           option.setAttribute("selected",true);
-          option.innerHTML = "Select Member";
+          option.innerHTML = "Select Member<b><font color='red'>*</font></b>";
           el.appendChild(option);
         };
         refCoproperty.collection("Members").get().then(function(querySnapshot) {
@@ -4857,7 +4857,7 @@ if (navigator.vendor.toLowerCase().indexOf('apple') > -1){
           option.setAttribute("value","");
           option.setAttribute("disabled",true);
           option.setAttribute("selected",true);
-          option.innerHTML = "Select Owner";
+          option.innerHTML = "Select Owner<b><font color='red'>*</font></b>";
           el.appendChild(option);
         };
         membersGet().then(function(membersHere) {
@@ -5206,7 +5206,7 @@ if (navigator.vendor.toLowerCase().indexOf('apple') > -1){
           option.setAttribute("value","");
           option.setAttribute("disabled",true);
           option.setAttribute("selected",true);
-          option.innerHTML = "Select Cost Center";
+          option.innerHTML = "Select Cost Center<b><font color='red'>*</font></b>";
           el.appendChild(option);
         };
         costCentersGet().then(function(querySnapshot) {
