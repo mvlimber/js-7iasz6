@@ -217,7 +217,7 @@
                 <form>
                   <div class="input-field col s12 m4">
                     <select id="notification_type" required required="true"></select>
-                    <label>Type<b><font color='red'>*</font></b></label>
+                    
                   </div>
                   <div class="input-field col s12 m4">
                     <input id="notification_title" type="text" required required="true" maxlength="30">
@@ -286,11 +286,11 @@
                   </div>
                   <div class="input-field col s12 m6">
                     <select id="chargesReport_metersIncluded" required aria-required="true">
-                    <option value="" disabled selected>Indicate if meter readings should be included</option>
-                    <option>Yes</option>
-                    <option>No</option>
+                      <option value="" disabled selected>Include Meter Readings?<b><font color='red'>*</font></b></option>
+                      <option>Yes</option>
+                      <option>No</option>
                     </select>
-                    <label>Include Meter Readings<b><font color='red'>*</font></b></label>
+                   
                   </div>
                 </form>
               </div>
@@ -356,7 +356,6 @@
               <div class="row">
               <div class="input-field col s12 m4">
               <select id="document_type" required required="true" onchange="toggleDocument()"></select>
-              <label>Type<b><font color='red'>*</font></b></label>
               </div>
               <div class="input-field col s12 m4" id="document_counterparty_field">
                 <input id="document_counterparty" type="text" class="validate" maxlength="20" >
@@ -524,7 +523,7 @@
               <form>
                 <div class="input-field col s12 m4">
                   <select id="transactionEvidence_type" required required="true" onchange="toggleTransactionEvidenceNew()"></select>
-                  <label>Type<b><font color='red'>*</font></b></label>
+                  
                 </div> 
                 <div class="input-field col s12 m4" id="transactionEvidence_freeType_field">
                   <input id="transactionEvidence_freeType" type="text" class="validate" maxlength="20">
@@ -550,7 +549,7 @@
               <form>
                 <div class="input-field col s12 m4">
                   <select id="transactionLink_document" required required="true"></select>
-                  <label>Document<b><font color='red'>*</font></b></label>
+                  
                 </div> 
                 
               </form>
@@ -601,11 +600,11 @@
               <form>
                 <div class="input-field col s12 m4">
                   <select id="transaction_type_add" required required="true" onchange="toggleTransaction()"></select>
-                  <label>Type<b><font color='red'>*</font></b></label>
+                  
                 </div>
                 <div class="input-field col s12 m4" id="transaction_costCenter_add_field">
                   <select id="transaction_costCenter_add"></select>
-                  <label>Cost Center<b><font color='red'>*</font></b></label>
+                  
                 </div>
                 <div class="input-field col s12 m4" id="transaction_name_add_field">
                   <input id="transaction_name_add" type="text" class="validate" maxlength="50">
@@ -614,9 +613,8 @@
                 </div>
                 <div class="input-field col s12 m4" id="transaction_owner_add_field" >
                   <select id="transaction_owner_add" >
-                    <option value="" disabled selected>Select Owner</option>
+                    <option value="" disabled selected>Select Owner*</option>
                   </select>
-                  <label for="transaction_owner_add">Owner<b><font color='red'>*</font></b></label>
                 </div>
                 <div class="input-field col s12 m4">
                   <input id="transaction_account_add" type="text" maxlength="19" class="validate"
@@ -649,7 +647,6 @@
                   <div class="input-field col s12 m4">
                     <select id="transaction_properties_add">
                     </select>
-                    <label>Property<b><font color='red'>*</font></b></label>
                   </div>
                   <div class="input-field col s12 m4">
                     <input id="transaction_distribution_amount_add" type="number" class="validate" min="-999999" max="999999" step="0.01" required required="true">
@@ -776,17 +773,14 @@
                   <h6><b>THEN:</b>below fields will be set with value given</h6> 
                   <div class="input-field col s12 m4">
                     <select id="transactionRule_type" required required="true" onchange="toggleTransactionRule()"></select>
-                    <label><b>THEN </b>Type<b><font color='red'>*</font></b></label>
                   </div>
                   <div class="input-field col s12 m4" id="transactionRule_costCenter_field">
                     <select id="transactionRule_costCenter"></select>
-                    <label><b>THEN </b>Cost Center<b><font color='red'>*</font></b></label>
                   </div>
                   <div class="input-field col s12 m4" id="transactionRule_owner_field" >
                     <select id="transactionRule_owner" >
-                      <option value="" disabled selected>Select Owner</option>
+                      <option value="" disabled selected>Select Owner*</option>
                     </select>
-                    <label for="transactionRule__owner"><b>THEN </b>Owner<b><font color='red'>*</font></b></label>
                   </div>
                 </div>
               </form>
@@ -1062,9 +1056,8 @@
             <h5> Enter member data</h5>
             <form class="col s12">
               <div class="col s12 m12">
-                <div class="input-field col s4 m4">
+                <div class="input-field col s12 m4">
                   <select id="member_type_edit" required required="true" onchange="toggleMember_edit()"></select>
-                  <label>Type<b><font color='red'>*</font></b></label>
                 </div>
               </div>
               <div id="memberPersonFrame_edit">
@@ -1243,7 +1236,6 @@
             <form class="col s12">
               <div class="input-field col s12 m4">
                 <select id="meter_type" required aria-required="true"></select>
-                <label for="meter_type">Type<b><font color='red'>*</font></b></label>
               </div>
               <div class="input-field col s12 m4">
                 <input id="meter_id" type="text" maxlength="10" class="validate" required aria-required="true" pattern="([A-Z]|[0-9]){4,10}">
@@ -1252,7 +1244,6 @@
               </div>
               <div class="input-field col s12 m4">
                 <select id="meter_status" required aria-required="true"></select>
-                <label for="meter_status">Status<b><font color='red'>*</font></b></label>
               </div>
             </form>
             <button id="meterSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; writeMeter()">Submit<i class="material-icons right">send</i></button>
@@ -1317,8 +1308,7 @@
                   <span class="helper-text" data-error="Max 4 capitals or numbers. Example: A1">Max 4 capitals or numbers. Example: A1</span>
                 </div>
                 <div class="input-field col s6 m6">
-                  <select placeholder="Placeholder" id="property_type_add" required aria-required="true"></select>
-                  <label for="property_type_add">Type<b><font color='red'>*</font></b></label>
+                  <select id="property_type_add" required aria-required="true"></select>
                 </div>
                 </div>
                 <div class="row">
@@ -1405,7 +1395,6 @@
                
                   <div class="input-field col s6 m4">
                     <select id="property_type_edit" required aria-required="true"></select>
-                    <label for="property_type_edit">Type<b><font color='red'>*</font></b></label>
                   </div>
                   <div class="input-field col s6 m4">
                     <input id="property_cellar_edit" type="text" maxlength="10" class="validate">
@@ -1554,8 +1543,7 @@
               </div>
               <div class="input-field col s12 m4">
                 <select id="provisions_costCenter_edit"></select>
-                <label>Cost Center<b><font color='red'>*</font></b></label>
-            </div>
+              </div>
             </form>
             <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="provisionsWrite()">Save<i class="material-icons right">send</i></button>
             <a style="float: right;margin-bottom: 3px"
@@ -1953,7 +1941,7 @@ if (navigator.vendor.toLowerCase().indexOf('apple') > -1){
       if (defaultString) {
         var defaultt = document.createElement("option");
         defaultt.setAttribute("value", "");
-        defaultt.innerHTML = "Select " + defaultString;
+        defaultt.innerHTML = "Select " + defaultString + "<b><font color='red'>*</font></b>";
         el.insertAdjacentElement('beforeend', defaultt);
       };
       Object.keys(keyValuePairs).forEach(function(key){
