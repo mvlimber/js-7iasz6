@@ -1761,8 +1761,11 @@
         swipeable: false,
         responsiveThreshold: Infinity
     };
-    var elems = document.querySelectorAll('select');
-    var instances = M.FormSelect.init(elems); 
+    var elems = document.querySelectorAll('.tooltipped');
+    var instances = M.Tooltip.init(elems);
+    
+    elems = document.querySelectorAll('select');
+    instances = M.FormSelect.init(elems); 
     
 
 
@@ -2381,6 +2384,8 @@ if (navigator.vendor.toLowerCase().indexOf('apple') > -1){
           document.getElementById("documentsList").style.display = "block";
           document.getElementById("documents_absentPhrase").style.display = "none";
           objectsArray.forEach(function(d){loadDocument(d);});
+          var elems = document.querySelectorAll('.tooltipped');
+          var instances = M.Tooltip.init(elems);
         } else {
           document.getElementById("documentsList").style.display = "none";
           document.getElementById("documents_absentPhrase").style.display = "block";
@@ -2443,19 +2448,23 @@ if (navigator.vendor.toLowerCase().indexOf('apple') > -1){
         body.appendChild(commentDiv);
       };
       if (currentUser.role == roleAdministrator) {
-        if (!d.link) {
+        
           var removeButton = document.createElement('button');
           removeButton.setAttribute('style','float: right;margin-bottom: 3px');
-          removeButton.setAttribute('class','modal-trigger btn-floating waves-light red');
+          removeButton.setAttribute('class','modal-trigger btn-floating waves-light red tooltipped');
+          removeButton.setAttribute('data-position',"top");
+          removeButton.setAttribute('data-tooltip',"I am a tooltip hihi");
           removeButton.setAttribute("data-target", "documentRemove");
           removeButton.setAttribute('onclick','popupRemoveDocument('+JSON.stringify(d)+')');
           var cellButtonIcon = document.createElement('i');
           cellButtonIcon.setAttribute('class','material-icons right');
           cellButtonIcon.innerHTML="delete";           
           removeButton.appendChild(cellButtonIcon);
-          body.appendChild(removeButton);
+          if (d.link) {removeButton.disabled=true};
+          
+    body.appendChild(removeButton);
         
-        };
+        
         var editButton = document.createElement('button');
         editButton.setAttribute('style','float: right;margin-right: 5px');
         editButton.setAttribute('class','modal-trigger btn-floating waves-light');
@@ -2494,6 +2503,7 @@ if (navigator.vendor.toLowerCase().indexOf('apple') > -1){
       body.appendChild(document.createElement('br'));
       objectsRow.appendChild(body);
       documentsList.appendChild (objectsRow);
+      
       refCopropertyFiles.child("Documents").child(d.idFS).getDownloadURL().then(function(url) {
        getFileButton.setAttribute('onclick','showFile('+JSON.stringify(url)+')');
       });

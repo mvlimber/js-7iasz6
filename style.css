@@ -10,7 +10,7 @@ a:link { text-transform: none}
         startingTop: 0%;
         endingTop: 0%;
       }
-          
+
       .modal.full {                                                                                                      
         width: 100vw; 
         max-height: 100vh; 
@@ -18,13 +18,24 @@ a:link { text-transform: none}
         top: 0 !important;
         scroll-behavior: smooth;
       }
+      
+      .material-tooltip {
+        background-color: black;
+      }
+          
+      /* Safari 11+ */
+@media not all and (min-resolution:.001dpcm)
+{ @supports (-webkit-appearance:none) and (stroke-color:transparent) {
+  .modal.full { 
+    height: 90vh; 
+  }
+  
+}}
+      
       div.displayHidden {display: none;}
       div.displayBlock {display: block;}
       form.displayHidden {display: none;}
       form.displayBlock {display: block;}
-
-
-
 
         header, main, footer {
   padding-left: 300px;
