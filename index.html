@@ -225,7 +225,7 @@
                     <span class="helper-text" data-error="maximum 30 characters" >maximum 30 characters</span>
                   </div>
                   <div class="input-field col s12 m12">
-                    <textarea id="notification_text" class="materialize-textarea" required required="true" maxlength="300"></textarea>
+                    <textarea id="notification_text" class="materialize-textarea" required required="true"  data-length="300" maxlength="300"></textarea>
                     <label for="notification_text">Text<b><font color='red'>*</font></b></label>
                     <span class="helper-text" data-error="maximum 300 characters" >maximum 300 characters</span>
                 </div>
@@ -1761,13 +1761,17 @@
         swipeable: false,
         responsiveThreshold: Infinity
     };
-    var elems = document.querySelectorAll('.tooltipped');
-    var instances = M.Tooltip.init(elems);
+    
+    
+
+    var elems = document.querySelectorAll('.has-character-counter');
+    var instances = M.CharacterCounter.init(elems);
     
     elems = document.querySelectorAll('select');
     instances = M.FormSelect.init(elems); 
     
-
+    /*elems = document.querySelectorAll('.tooltipped');
+    instances = M.Tooltip.init(elems);*/
 
 /*function isIPhoneMobile () {
    // credit to Timothy Huang for this regex test:
@@ -2113,7 +2117,9 @@ if (navigator.vendor.toLowerCase().indexOf('apple') > -1){
         var elems = document.querySelectorAll('select');
         M.FormSelect.init(elems);
         M.updateTextFields();
-        M.textareaAutoResize(document.getElementById("notification_text"));
+        var elems = document.querySelectorAll('textarea');
+        M.CharacterCounter.init(elems);
+        M.textareaAutoResize(elems);
       };
 
       function validateNotification(){
