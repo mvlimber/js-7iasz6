@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html>
+<html> 
 
 <head>
   <base target="_top"> 
@@ -378,7 +378,7 @@
                 <span class="helper-text" data-error="Maximum 8 characters">up to 8 characters</span>
               </div>
               <div class="input-field col s12 m12">
-                <textarea id="document_comment" class="materialize-textarea" maxlength="150"></textarea>
+                <textarea id="document_comment" class="materialize-textarea" maxlength="150" data-length="150"></textarea>
                 <label for="document_text">Comment</label>
                 <span class="helper-text" data-error="maximum 150 characters" >maximum 150 characters</span>
 
@@ -2575,6 +2575,9 @@ if (navigator.vendor.toLowerCase().indexOf('apple') > -1){
       var elems = document.querySelectorAll('select');
       M.FormSelect.init(elems);
       M.updateTextFields();
+      var elems = document.querySelectorAll('textarea');
+        M.CharacterCounter.init(elems);
+      
     };
 
     function toggleDocument(){
