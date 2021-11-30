@@ -11,7 +11,13 @@ a:link { text-transform: none}
         endingTop: 0%;
       }
           
-
+      .modal.full {                                                                                                      
+        width: 100vw; 
+        max-height: 100vh; 
+        height: 100vh;
+        top: 0 !important;
+        scroll-behavior: smooth;
+      }
       div.displayHidden {display: none;}
       div.displayBlock {display: block;}
       form.displayHidden {display: none;}
