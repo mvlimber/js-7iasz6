@@ -1,5 +1,6 @@
-
 <!DOCTYPE html>
+
+
 <html> 
 
 <head>
@@ -27,7 +28,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-  <script src="./config.js"></script>
+  <!--<script src="./config.js"></script>-->
   
   <!--
   <script>
@@ -45,8 +46,11 @@
       var fileStorageRef =firebase.storage().ref();
   </script>
     -->
+    <script type="module">
+    import getConfig from "./config.js";
+    </script>
     <script>
-      //import "./config.js";
+      var firebaseConfig = getConfig();
       firebase.initializeApp(firebaseConfig);
       var firestore=firebase.firestore();
       var fileStorageRef =firebase.storage().ref();
