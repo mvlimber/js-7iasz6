@@ -27,6 +27,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+  <script src="./config.js"></script>
+  
+  <!--
   <script>
     var firebaseConfig = {
         apiKey: "AIzaSyDVT644vSE0ue8KyDy-o9YwbYPX3m0ZmSc",
@@ -37,6 +40,13 @@
         appId: "1:636221237434:web:3db507acbf4a6a1e0d7a83",
         measurementId: "G-2JL08QYJJ3"
       };
+      firebase.initializeApp(firebaseConfig);
+      var firestore=firebase.firestore();
+      var fileStorageRef =firebase.storage().ref();
+  </script>
+    -->
+    <script>
+      //import "./config.js";
       firebase.initializeApp(firebaseConfig);
       var firestore=firebase.firestore();
       var fileStorageRef =firebase.storage().ref();
