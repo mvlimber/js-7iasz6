@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 
-
 <html> 
 
 <head>
@@ -38,6 +37,7 @@
         appId: "1:636221237434:web:3db507acbf4a6a1e0d7a83",
         measurementId: "G-2JL08QYJJ3"
       };
+      var thisCoproperty = "OrncEBHp37pJYisfxf79";
       firebase.initializeApp(firebaseConfig);
       var firestore=firebase.firestore();
       var fileStorageRef =firebase.storage().ref();
@@ -1631,6 +1631,26 @@
        
     };
     
+    function enableAdminFunctions(){
+      document.getElementById("Reports_Generate").setAttribute("class","displayBlock");
+      document.getElementById("Transactions_Add").setAttribute("class","displayBlock");
+      document.getElementById("Transactions_Edit").setAttribute("class","displayBlock");
+      document.getElementById("Transactions_EvidenceAdd").setAttribute("class","displayBlock");
+      document.getElementById("Transactions_EvidenceLink").style.display = "block";
+      document.getElementById("Members_Add").setAttribute("class","displayBlock");
+      document.getElementById("Members_Edit").setAttribute("class","displayBlock");
+      document.getElementById("Properties_Add").setAttribute("class","displayBlock");
+      document.getElementById("Properties_Edit").setAttribute("class","displayBlock");
+      document.getElementById("Properties_MetersAdd").setAttribute("class","displayBlock");
+      document.getElementById("Properties_OwnersAdd_button").style.visibility="visible";
+      document.getElementById("tabTransactionRules").style.display = "block";
+      document.getElementById("commonPartsNewMeterButton").style.visibility = "visible";
+      document.getElementById("costCentersNewButton").style.visibility = "visible";
+      document.getElementById("provisionsEditButton").style.visibility = "visible";
+      document.getElementById("initialCopropertySaldoEditButton").style.visibility = "visible";
+      document.getElementById("documentNewButton").style.visibility = "visible";
+    };
+    
     function login(){
       if (validateLoginEntries()) {
         var email = document.getElementById("login_email").value.toLowerCase();
@@ -1648,23 +1668,7 @@
                         currentUser.id = membersFS.docs[0].id;
                         if (membersFS.docs[0].data().role) {
                           currentUser.role = roleAdministrator;
-                          document.getElementById("Reports_Generate").setAttribute("class","displayBlock");
-                          document.getElementById("Transactions_Add").setAttribute("class","displayBlock");
-                          document.getElementById("Transactions_Edit").setAttribute("class","displayBlock");
-                          document.getElementById("Transactions_EvidenceAdd").setAttribute("class","displayBlock");
-                          document.getElementById("Transactions_EvidenceLink").style.display = "block";
-                          document.getElementById("Members_Add").setAttribute("class","displayBlock");
-                          document.getElementById("Members_Edit").setAttribute("class","displayBlock");
-                          document.getElementById("Properties_Add").setAttribute("class","displayBlock");
-                          document.getElementById("Properties_Edit").setAttribute("class","displayBlock");
-                          document.getElementById("Properties_MetersAdd").setAttribute("class","displayBlock");
-                          document.getElementById("Properties_OwnersAdd_button").style.visibility="visible";
-                          document.getElementById("tabTransactionRules").style.display = "block";
-                          document.getElementById("commonPartsNewMeterButton").style.visibility = "visible";
-                          document.getElementById("costCentersNewButton").style.visibility = "visible";
-                          document.getElementById("provisionsEditButton").style.visibility = "visible";
-                          document.getElementById("initialCopropertySaldoEditButton").style.visibility = "visible";
-                          document.getElementById("documentNewButton").style.visibility = "visible";
+                          enableAdminFunctions();
                         };
                         openApplication();
                       }).catch(function(error) {
@@ -1807,7 +1811,6 @@ if (navigator.vendor.toLowerCase().indexOf('apple') > -1){
 
     M.CharacterCounter.init(document.querySelectorAll('.has-character-counter'));
 
-    const thisCoproperty = "OrncEBHp37pJYisfxf79";
     var refCoproperty = firestore.collection("CoProperties").doc(thisCoproperty);
     var refCopropertyFiles = fileStorageRef.child(thisCoproperty);
     var editMode = "_edit";
