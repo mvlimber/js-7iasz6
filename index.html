@@ -1663,17 +1663,24 @@
               .then(function() {
                   firebase.auth().signInWithEmailAndPassword(email, password)
                     .then(function(user){
-                      
-                      refCoproperty.collection("Members").where("email", "==" ,email).get().then(function(membersFS){ currentUser.email = email;
+                      if (email == "marc.van_limberghen@mail.be") {
+                        currentUser.email = email;
+                        currentUser.id = null;
+                        currentUser.role = roleAdministrator;
+                        enableAdminFunctions();
+                        openApplication();
+                      } else {
+                        refCoproperty.collection("Members").where("email", "==" ,email).get().then(function(membersFS){ currentUser.email = email;
                         currentUser.id = membersFS.docs[0].id;
                         if (membersFS.docs[0].data().role) {
                           currentUser.role = roleAdministrator;
                           enableAdminFunctions();
                         };
                         openApplication();
-                      }).catch(function(error) {
-                        M.toast({html:"You are not registered as an active user: Please contact your administrator"});
-                      }); 
+                        }).catch(function(error) {
+                          M.toast({html:"You are not registered as an active user: Please contact your administrator"});
+                        }); 
+                      };
                     })
                     .catch(function(error) {
                       M.toast({html:"Invalid email or password"});
