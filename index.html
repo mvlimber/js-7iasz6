@@ -4219,7 +4219,7 @@ if (navigator.vendor.toLowerCase().indexOf('apple') > -1){
         refCoproperty.collection("Members").add(member)
           .then(function(docref) {
             refreshMembers();
-            firestore.auth().createUserWithEmailAndPassword(member.email, Math.random().toString(36).substring(3,11)).then(function(u){});
+            firebase.auth().createUserWithEmailAndPassword(member.email, Math.random().toString(36).substring(3,11)).then(function(u){});
             M.Modal.getInstance(document.getElementById("memberWrite")).close();
           }).catch(function(error) {
             M.toast({html:"Error occurred adding this member:" + error}); 
@@ -4236,8 +4236,8 @@ if (navigator.vendor.toLowerCase().indexOf('apple') > -1){
             var docUserRef = firestore.collection("Users").doc(updatedSelectedMember.email);
             docUserRef.get().then(function(user){
               if (!user.exists)  {
-                firestore.auth().createUserWithEmailAndPassword(updatedSelectedMember.email, Math.random().toString(36).substring(3,11)).then(function(u){});
-                propertiesBy(selectedMemberId).then(function(ps){ 
+                firebase.auth().createUserWithEmailAndPassword(updatedSelectedMember.email, Math.random().toString(36).substring(3,11)).then(function(u){});
+                propertiesBy(updatedSelectedMember).then(function(ps){ 
                   if (ps.length) {
                     firestore.collection("Users").doc(updatedSelectedMember.email).set({}).then(function(x){});
                   };
