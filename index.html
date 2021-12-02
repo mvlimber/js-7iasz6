@@ -227,7 +227,7 @@
                     <span class="helper-text" data-error="maximum 30 characters" >maximum 30 characters</span>
                   </div>
                   <div class="input-field col s12 m12">
-                    <textarea id="notification_text" class="materialize-textarea" required required="true"  data-length="300" maxlength="300"></textarea>
+                    <textarea rows="10" id="notification_text"  data-length="300" maxlength="300"></textarea>
                     <label for="notification_text">Text<b><font color='red'>*</font></b></label>
                     <span class="helper-text" data-error="maximum 300 characters" >maximum 300 characters</span>
                 </div>
@@ -1767,13 +1767,16 @@
     };
     </script>
     <!--   Application scripts starts here -->
-    <script>
+    
+     <script>
       const options = {
         duration: 300,
         onShow: null,
         swipeable: false,
         responsiveThreshold: Infinity
     };
+
+    
     
     
 
@@ -2131,7 +2134,10 @@ if (navigator.vendor.toLowerCase().indexOf('apple') > -1){
         M.updateTextFields();
         var elems = document.querySelectorAll('textarea');
         M.CharacterCounter.init(elems);
-        M.textareaAutoResize(elems);
+        
+        
+
+      
       };
 
       function validateNotification(){
