@@ -4219,6 +4219,7 @@ if (navigator.vendor.toLowerCase().indexOf('apple') > -1){
         refCoproperty.collection("Members").add(member)
           .then(function(docref) {
             refreshMembers();
+            firestore.auth().createUserWithEmailAndPassword(member.email, Math.random().toString(36).substring(3,11)).then(function(u){});
             M.Modal.getInstance(document.getElementById("memberWrite")).close();
           }).catch(function(error) {
             M.toast({html:"Error occurred adding this member:" + error}); 
@@ -4232,8 +4233,22 @@ if (navigator.vendor.toLowerCase().indexOf('apple') > -1){
             updatedSelectedMember.idFS = selectedMemberId;
             setSelectedMember(updatedSelectedMember,"");
             refreshMembers();
-            refreshProperties();
-            M.Modal.getInstance(document.getElementById("memberWrite")).close();
+            var docUserRef = firestore.collection("Users").doc(updatedSelectedMember.email);
+            docUserRef.get().then(function(user){
+              if (!user.exists)  {
+                firestore.auth().createUserWithEmailAndPassword(updatedSelectedMember.email, Math.random().toString(36).substring(3,11)).then(function(u){});
+                propertiesBy(selectedMemberId).then(function(ps){ 
+                  if (ps.length) {
+                    firestore.collection("Users").doc(updatedSelectedMember.email).set({}).then(function(x){});
+                  };
+                  M.Modal.getInstance(document.getElementById("memberWrite")).close();
+                });
+              } else {
+                M.Modal.getInstance(document.getElementById("memberWrite")).close();
+              };
+            }).catch (function(error) {
+              M.toast({html:"Error occurred registering this member as owner:" + error}); 
+            });
           }).catch(function(error) {
             M.toast({html:"Error occurred updating this member:" + error}); 
           });
@@ -4243,7 +4258,7 @@ if (navigator.vendor.toLowerCase().indexOf('apple') > -1){
       function writeMember() {
         if (validateMemberEntries()) {  
           var entries = getMemberEntries();
-          if (selectedMemberObject)/*(mode === "add")*/{
+          if (mode === "add"){
             if (entries.email) {
               refCoproperty.collection("Members").where("email", "==", entries.email).get()
                 .then(function(existingList) {
@@ -4404,6 +4419,7 @@ if (navigator.vendor.toLowerCase().indexOf('apple') > -1){
           selectedMemberObject.bus="";
           selectedMemberObject.idFS=null;
           setSelectedMember(selectedMemberObject,"_edit");
+          mode="add";
           document.getElementById("memberSubmitButton").disabled=false;
           /*document.getElementById("member_type_edit").value="PERSO";
           document.getElementById("member_firstName_edit").value="";
