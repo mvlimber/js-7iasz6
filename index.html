@@ -227,8 +227,8 @@
                     <span class="helper-text" data-error="maximum 30 characters" >maximum 30 characters</span>
                   </div>
                   <div class="input-field col s12 m12">
-                    <textarea rows="10" id="notification_text"  data-length="300" maxlength="300"></textarea>
-                    <label for="notification_text">Text<b><font color='red'>*</font></b></label>
+                    <textarea id="notification_text"  data-length="300" maxlength="300"></textarea>
+                    <!--<label for="notification_text">Text<b><font color='red'>*</font></b></label>-->
                     <span class="helper-text" data-error="maximum 300 characters" >maximum 300 characters</span>
                 </div>
                 </form>
@@ -2052,7 +2052,9 @@ if (navigator.vendor.toLowerCase().indexOf('apple') > -1){
           
       };
 
-      function loadNotification (n){
+      function addLinebreaks (anyString) {return anyString.replaceAll("\n", "<br />\r\n");};
+
+function loadNotification (n){
         var objectsRow= document.createElement('li');
         objectsRow.setAttribute("style","border-style:solid;border-color: darkgrey");
         var header = document.createElement('div');
@@ -2068,7 +2070,7 @@ if (navigator.vendor.toLowerCase().indexOf('apple') > -1){
         var body= document.createElement('div');
         body.setAttribute("class","collapsible-body");
         var text = document.createElement('DIV');
-        text.innerHTML = n.text + "<br><b>Updated on: </b>" + n.updatedOn + "<br><b>Edited by: </b>";
+        text.innerHTML = addLinebreaks(n.text) + "<br><b>Updated on: </b>" + n.updatedOn + "<br><b>Edited by: </b>";
         memberGet(n.editedBy).then (function(author){
           text.appendChild(memberLink(author));
           body.appendChild(text);
