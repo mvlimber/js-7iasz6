@@ -24,6 +24,14 @@ body {
 .material-tooltip {
   background-color: black;
 }
+
+textarea {
+  outline-color: #26A69A;
+  -webkit-appearance: textarea;
+  -moz-appearance:    textarea;
+  appearance:         textarea;
+
+}
           
       /* Safari 11+ */
 @media not all and (min-resolution:.001dpcm)
