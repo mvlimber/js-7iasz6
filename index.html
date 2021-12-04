@@ -467,7 +467,9 @@
                 </div>
               </form>
               <div id="Transactions_Edit" class="displayHidden">
-                <button id="transaction_edit_button" style="float: right;margin-bottom: 3px" data-target="transactionAdd" class="btn-small waves-light modal-trigger" onclick="editTransaction(selectedTransactionId, transaction)">Edit<i class="material-icons right">edit</i></button>
+              <button id="transaction_edit_button" style="float: right;margin-bottom: 3px" data-target="transactionAdd" class="btn-small waves-light modal-trigger" onclick="editTransaction(selectedTransactionId, transaction)">Edit<i class="material-icons right">edit</i></button>
+              <button id="transaction_remove_button" style="float: right;margin-bottom: 3px;margin-right: 5px" data-target="transactionRemove" class="btn-small waves-light modal-trigger red" onclick="prepareRemoveTransaction(selectedTransactionId, transaction)">Remove<i class="material-icons right">delete</i></button>
+              
               </div>
             </div>
             <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
@@ -487,22 +489,33 @@
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
           </div>
         </div> 
-        <div id="transactionEvidenceRemove" class="modal">
+        <div id="transactionRemove" class="modal">
         <div class="modal-content">
-        <h5> You are about to remove the document from the list of evidences</h5>
-        <p>
-        <form>
-        <label>
-          <input type="checkbox" class="filled-in" id="transactionEvidenceFileDelete"/>
-          <span><h6>Also permanently delete the document and file itself</h6></span>
-        </label>
-        </form>
-        
-          <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="removeTransactionEvidence(transactionEvidenceId_to_remove)">Confirm<i class="material-icons right">send</i></button>
+          <h5> Please confirm you want to permanently remove this transaction</h5>
+        </div>
+        <div class="modal-footer">
+          <button style="float: right;margin-left: 20px" class="modal-close btn-small waves-light" type="submit" onclick="removeTransaction()">Confirm<i class="material-icons right">send</i></button>
           <a style="float: right"
             class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
             Cancel</a>
+        </div>
       </div>
+        <div id="transactionEvidenceRemove" class="modal">
+        <div class="modal-content">
+          <h5> You are about to remove the document from the list of evidences</h5>
+          <p>
+          <form>
+          <label>
+            <input type="checkbox" class="filled-in" id="transactionEvidenceFileDelete"/>
+            <span><h6>Also permanently delete the document and file itself</h6></span>
+          </label>
+          </form>
+          
+            <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="removeTransactionEvidence(transactionEvidenceId_to_remove)">Confirm<i class="material-icons right">send</i></button>
+            <a style="float: right"
+              class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
+              Cancel</a>
+        </div>
         </div>
         <div id="transactionNewDocument" class="modal">
           <div class="modal-content">
@@ -3229,6 +3242,22 @@ function loadNotification (n){
         document.getElementById("transaction_name_add_field").style.display = "none";
       };
     };
+
+    function prepareRemoveTransaction(selectedTransactionId, selectedTransactionObject){
+      refCoproperty.collection("Documents").where("link","==",selectedTransactionId).get().then(function(objectsFSArray){
+        if (objectsFSArray.length){M.toast({html:"Please remove evidence before deleting transaction"});}
+        else {M.Modal.getInstance(document.getElementById("transactionRemove")).open();}
+    };
+
+    function removeTransaction (){
+      refCoproperty.collection("Transactions").doc(selectedTransactionId).delete().then(function(){
+          refreshTransactions();
+          M.Modal.getInstance(document.getElementById("transactionRemove")).close();
+        }).catch(function(error) {
+            M.toast({html:"System error removing transaction rule:" + error});
+        });
+    };
+
       /* Transaction Evidence scripts start here---------------------------------------------*/
     
       function emptyTransactionEvidenceLinkFields(){
