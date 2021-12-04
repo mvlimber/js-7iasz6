@@ -3246,7 +3246,8 @@ function loadNotification (n){
     function prepareRemoveTransaction(selectedTransactionId, selectedTransactionObject){
       refCoproperty.collection("Documents").where("link","==",selectedTransactionId).get().then(function(objectsFSArray){
         if (objectsFSArray.length){M.toast({html:"Please remove evidence before deleting transaction"});}
-        else {M.Modal.getInstance(document.getElementById("transactionRemove")).open();}
+        else {M.Modal.getInstance(document.getElementById("transactionRemove")).open();};
+      });
     };
 
     function removeTransaction (){
