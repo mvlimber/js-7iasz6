@@ -468,7 +468,7 @@
               </form>
               <div id="Transactions_Edit" class="displayHidden">
               <button id="transaction_edit_button" style="float: right;margin-bottom: 3px" data-target="transactionAdd" class="btn-small waves-light modal-trigger" onclick="editTransaction(selectedTransactionId, transaction)">Edit<i class="material-icons right">edit</i></button>
-              <button id="transaction_remove_button" style="float: right;margin-bottom: 3px;margin-right: 5px" data-target="transactionRemove" class="btn-small waves-light modal-trigger red" onclick="prepareRemoveTransaction(selectedTransactionId, transaction)">Remove<i class="material-icons right">delete</i></button>
+              <button id="transaction_remove_button" style="float: right;margin-bottom: 3px;margin-right: 5px" class="btn-small waves-light red" onclick="prepareRemoveTransaction()">Remove<i class="material-icons right">delete</i></button>
               
               </div>
             </div>
@@ -3243,9 +3243,9 @@ function loadNotification (n){
       };
     };
 
-    function prepareRemoveTransaction(selectedTransactionId, selectedTransactionObject){
+    function prepareRemoveTransaction(){
       refCoproperty.collection("Documents").where("link","==",selectedTransactionId).get().then(function(objectsFSArray){
-        if (objectsFSArray.length){M.toast({html:"Please remove evidence before deleting transaction"});}
+        if (objectsFSArray.docs.length){M.toast({html:"Please remove evidence before deleting transaction"});}
         else {M.Modal.getInstance(document.getElementById("transactionRemove")).open();};
       });
     };
