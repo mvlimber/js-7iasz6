@@ -1951,10 +1951,10 @@ if (navigator.vendor.toLowerCase().indexOf('apple') > -1){
     var DocumentType = {
       GEASS: 'General Assembly',
       INVOI: 'Invoice',
-      QUOTE: 'Quote&nbsp;&nbsp;&nbsp;',
+      QUOTE: 'Quote',
       PAYRE: 'Reminder',
-      PURRE: 'Receipt&nbsp;',
-      OTHER: 'Other&nbsp;&nbsp;&nbsp;'
+      PURRE: 'Receipt',
+      OTHER: 'Other'
     };
 
     var EvidenceType = {
@@ -3254,6 +3254,7 @@ function loadNotification (n){
       refCoproperty.collection("Transactions").doc(selectedTransactionId).delete().then(function(){
           refreshTransactions();
           M.Modal.getInstance(document.getElementById("transactionRemove")).close();
+          M.Modal.getInstance(document.getElementById("transactionView")).close();
         }).catch(function(error) {
             M.toast({html:"System error removing transaction rule:" + error});
         });
