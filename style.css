@@ -27,9 +27,8 @@ body {
 
 textarea {
   outline-color: #26A69A;
-  overflow: auto; /* overflow is needed */
-  resize: both;
-  -webkit-appearance:textarea
+  
+  
 }
           
       /* Safari 11+ */
