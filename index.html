@@ -1052,8 +1052,8 @@ It was a ff dark and stormy night...
                 <hr>
                 <div class="row col s12 m12">
                   <div class="row col s10 m10">
-                    <p id="member_udatedOn" style="font-size:12px"><b>Updated on: </b></p>
-                    <p id="member_udatedBy" style="font-size:12px"><b>Updated by: </b></p>
+                    <p style="font-size:12px"><b>Updated On: </b><span id="member_updatedOn"></span> </p>
+                    <p style="font-size:12px"><b>Updated by: </b><span id="member_updatedBy"></span> </p>
                   </div>
                   <div id="Members_Edit" class="displayHidden">
                     <button style="float: right;margin-bottom: 3px" data-target="memberWrite" class="btn-floating waves-light modal-trigger" onclick="setSelectedMember(selectedMemberObject,editMode)"><i class="material-icons right">edit</i></button>
@@ -3799,7 +3799,7 @@ function loadNotification (n){
         var d = new Date();
         return {
           updatedOn: d.toDateString(),
-          updatedby: currentUser.id
+          updatedBy: currentUser.id
         };
       };
       
@@ -4414,23 +4414,28 @@ function loadNotification (n){
             toggleMember_edit();}
           else {
             toggleMember_view();
-            document.getElementById("member_udatedOn").innerHTML  += object.updatedOn;
-            document.getElementById("member_udatedBy").innerHTML  += object.updatedOn;
-            var ownerOfEl = document.getElementById("member_ownerOf");
-            emptyHTMLSet(ownerOfEl);
-            refCoproperty.collection("Properties").where("owner", "==", object.idFS).get().then (function (querySnapshot){
-              querySnapshot.forEach (function (property) {
-                ownerOfEl.appendChild(propertyLinkFromMemberView(property));
+            document.getElementById("member_updatedOn").innerHTML  = object.updatedOn;
+            console.log("object",object);
+            console.log("updatedBy",object.updatedBy);
+            memberGet(object.updatedBy).then(function(updater) {
+              emptyHTMLSet(document.getElementById("member_updatedBy"));
+              document.getElementById("member_updatedBy").appendChild(memberLink(updater));
+              var ownerOfEl = document.getElementById("member_ownerOf");
+              emptyHTMLSet(ownerOfEl);
+              refCoproperty.collection("Properties").where("owner", "==", object.idFS).get().then (function (querySnapshot){
+                querySnapshot.forEach (function (property) {
+                  ownerOfEl.appendChild(propertyLinkFromMemberView(property));
+                });
               });
-            });
-            var occupantOfEl = document.getElementById("member_occupantOf");
-            emptyHTMLSet(occupantOfEl);
-            refCoproperty.collection("Properties").get().then (function (querySnapshotProperties){
-              querySnapshotProperties.forEach (function (property) {
-                property.ref.collection("Occupants").where("occupant", "==", object.idFS).get().then (function (querySnapshotOccupants){
-                  if (querySnapshotOccupants.docs.length > 0) {
-                    occupantOfEl.appendChild(propertyLinkFromMemberView(property));
-                  };
+              var occupantOfEl = document.getElementById("member_occupantOf");
+              emptyHTMLSet(occupantOfEl);
+              refCoproperty.collection("Properties").get().then (function (querySnapshotProperties){
+                querySnapshotProperties.forEach (function (property) {
+                  property.ref.collection("Occupants").where("occupant", "==", object.idFS).get().then (function (querySnapshotOccupants){
+                    if (querySnapshotOccupants.docs.length > 0) {
+                      occupantOfEl.appendChild(propertyLinkFromMemberView(property));
+                    };
+                  });
                 });
               });
             });
@@ -4483,19 +4488,7 @@ function loadNotification (n){
           setSelectedMember(selectedMemberObject,"_edit");
           mode="add";
           document.getElementById("memberSubmitButton").disabled=false;
-          /*document.getElementById("member_type_edit").value="PERSO";
-          document.getElementById("member_firstName_edit").value="";
-          document.getElementById("member_lastName_edit").value="";
-          document.getElementById("member_email_edit").value="";
-          document.getElementById("member_phoneHome_edit").value="";
-          document.getElementById("member_phoneMobile_edit").value="";
-          document.getElementById("member_country_edit").value="";
-          document.getElementById("member_zip_edit").value="";
-          document.getElementById("member_town_edit").value="";
-          document.getElementById("member_street_edit").value="";
-          document.getElementById("member_houseNumber_edit").value="";
-          document.getElementById("member_bus_edit").value="";
-          document.getElementById("memberSubmitButton").disabled=false;*/
+          
           var elems = document.querySelectorAll('select');
           M.FormSelect.init(elems);
           M.updateTextFields();
