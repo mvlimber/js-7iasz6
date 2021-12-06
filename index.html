@@ -1,11 +1,7 @@
 <!DOCTYPE html>
 
 <html>
-<p style="min-height:350px" >
-  ziezo
 
-  
-</p>
 <head>
   <base target="_top"> 
   <title style:"color:#00796b bold">MyCondos</title>
@@ -2086,7 +2082,7 @@ function loadNotification (n){
         var body= document.createElement('div');
         body.setAttribute("class","collapsible-body");
         var text = document.createElement('DIV');
-        text.innerHTML = addLinebreaks(n.text) + "<br><b>Updated on: </b>" + n.updatedOn + "<br><b>Edited by: </b>";
+        text.innerHTML = addLinebreaks(n.text) + "<br><b>Updated on: </b>" + n.updatedOn + "<br><b>Updated by: </b>";
         memberGet(n.editedBy).then (function(author){
           text.appendChild(memberLink(author));
           body.appendChild(text);
@@ -3670,20 +3666,26 @@ function loadNotification (n){
         objectsRow.appendChild(body);
         transactionRulesList.appendChild (objectsRow);
         
-        if (tR.type == "OWNER") {
-          headerIcon.innerHTML = "input";
-          memberGet(tR.owner).then (function(owner){
-            title.innerHTML = "Owner payment from " + denomination(owner) ;
-            text.innerHTML += " <b>AND</b><br>   owner = "+denomination(owner);
-          });
-        } else {
-          headerIcon.innerHTML = "payment";
-          title.innerHTML = "Expense " + tR.name;
-          
-          costCenterGet(tR.costCenter).then(function(cc){text.innerHTML += " <b>AND</b><br>   cost center = "+ cc.name;})
-          
-        };
-        
+        memberGet(tr.updatedBy).then (function(author){
+          text.innerHTML += "<br><br><b>Updated on: </b>" + tr.updatedOn + "<b>Updated by: </b>";
+          text.appendChild(memberLink(author));
+          if (tR.type == "OWNER") {
+            headerIcon.innerHTML = "input";
+            memberGet(tR.owner).then (function(owner){
+              title.innerHTML = "Owner payment from " + denomination(owner) ;
+              text.innerHTML += " <b>AND</b><br>   owner = "+denomination(owner);
+              text.innerHTML += "<br><br><b>Updated on: </b>" + tr.updatedOn + "<b>Updated by: </b>";
+              text.appendChild(memberLink(author));
+            });
+          } else {
+            headerIcon.innerHTML = "payment";
+            title.innerHTML = "Expense " + tR.name;
+            costCenterGet(tR.costCenter).then(function(cc){
+              text.innerHTML += " <b>AND</b><br>   cost center = "+ cc.name;
+              text.innerHTML += "<br><br><b>Updated on: </b>" + tr.updatedOn + "<b>Updated by: </b>";
+              text.appendChild(memberLink(author));})
+          };
+        });
       };
 
       var transactionRulesLoaded = false;
@@ -3788,15 +3790,23 @@ function loadNotification (n){
         return valid;
       };
       
-      function getTransactionRuleEntries(){
+      function getUpdateInfo(){
+        var d = new Date();
         return {
+          updatedOn: d.toDateString(),
+          updatedby: currentUser.id
+        };
+      };
+      
+      function getTransactionRuleEntries(){
+        return Object.assign({
           type: document.getElementById("transactionRule_type").value,
           costCenter: document.getElementById("transactionRule_costCenter").value,
           account: document.getElementById("transactionRule_account").value,
           name: document.getElementById("transactionRule_name").value,
           communication:document.getElementById("transactionRule_communication").value,
           owner:document.getElementById("transactionRule_owner").value,
-        };
+        },getUpdateInfo());
       };
       
       function writeTransactionRule(){
