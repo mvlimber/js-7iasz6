@@ -2968,7 +2968,7 @@ function loadNotification (n){
     };
     
     function getTransactionEntriesAdd() {
-      var result = {
+      var result = Object.assign({
         type: document.getElementById("transaction_type_add").value,
         costCenter:document.getElementById("transaction_costCenter_add").value,
         account: document.getElementById("transaction_account_add").value,
@@ -2978,7 +2978,7 @@ function loadNotification (n){
         communication: document.getElementById("transaction_communication_add").value,
         bookDate: document.getElementById("transaction_bookDate_add").value,
         owner: document.getElementById("transaction_owner_add").value,
-      };
+      }, getUpdateInfo());
       if (!hasCostCenter(result.type)) { result.costCenter = ""};
       if (result.type == "OWNER") {
         memberGet(result.owner).then(function(m){result.name = denomination(m);});
@@ -3026,10 +3026,11 @@ function loadNotification (n){
         document.getElementById("transaction_costCenter_field").style.display = "block";
         costCenterGet(object.costCenter).then(function (cc){
           document.getElementById("transaction_costCenter").value=cc.name;
-          insertUpdatedBy(object, "member");
+          
           var elems = document.querySelectorAll('select');
           M.FormSelect.init(elems);
           M.updateTextFields();
+          insertUpdatedBy(object, "transaction");
         });
       } else {
         document.getElementById("transaction_costCenter_field").style.display = "none";
@@ -3037,16 +3038,18 @@ function loadNotification (n){
           document.getElementById("transaction_owner_field").style.display = "block";
           memberGet(object.owner).then(function(m){
             document.getElementById("transaction_owner").value = denomination(m);
-            insertUpdatedBy(object, "member");
             var elems = document.querySelectorAll('select');
             M.FormSelect.init(elems);
             M.updateTextFields();
+            insertUpdatedBy(object, "transaction");
+            
           })
         } else {document.getElementById("transaction_owner_field").style.display = "none";
           insertUpdatedBy(object, "member");
           var elems = document.querySelectorAll('select');
           M.FormSelect.init(elems);
           M.updateTextFields();
+          insertUpdatedBy(object, "transaction");
       };
       };
     };    
