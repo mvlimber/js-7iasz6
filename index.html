@@ -470,6 +470,10 @@ It was a ff dark and stormy night...
                   </table>
                 </div>
               </form>
+              <div class="row col s10 m10">
+                <p style="font-size:12px">Updated On: <span id="transaction_updatedOn"></span> </p>
+                <p style="font-size:12px">Updated by: <span id="transaction_updatedBy"></span> </p>
+            </div>
               <div id="Transactions_Edit" class="displayHidden">
               <button id="transaction_edit_button" style="float: right;margin-bottom: 3px" data-target="transactionAdd" class="btn-small waves-light modal-trigger" onclick="editTransaction(selectedTransactionId, transaction)">Edit<i class="material-icons right">edit</i></button>
               <button id="transaction_remove_button" style="float: right;margin-bottom: 3px;margin-right: 5px" class="btn-small waves-light red" onclick="prepareRemoveTransaction()">Remove<i class="material-icons right">delete</i></button>
@@ -1050,14 +1054,13 @@ It was a ff dark and stormy night...
                   <label for="member_bus">Bus</label>
                 </div>
                 <hr>
-                <div class="row col s12 m12">
-                  <div class="row col s10 m10">
-                    <p style="font-size:12px"><b>Updated On: </b><span id="member_updatedOn"></span> </p>
-                    <p style="font-size:12px"><b>Updated by: </b><span id="member_updatedBy"></span> </p>
-                  </div>
-                  <div id="Members_Edit" class="displayHidden">
+                <div class="row col s10 m10">
+                  <p style="font-size:12px">Updated On: <span id="member_updatedOn"></span> </p>
+                  <p style="font-size:12px">Updated by: <span id="member_updatedBy"></span> </p>
+                </div>
+                <div id="Members_Edit" class="displayHidden">
                     <button style="float: right;margin-bottom: 3px" data-target="memberWrite" class="btn-floating waves-light modal-trigger" onclick="setSelectedMember(selectedMemberObject,editMode)"><i class="material-icons right">edit</i></button>
-                  </div>
+                 <!-- </div>-->
                 </div>
               </form>
             </div>
@@ -2986,6 +2989,14 @@ function loadNotification (n){
     function setSelectedTransactionById(id){
       refCoproperty.collection("Transactions").doc(id).get().then(function(trFS){setSelectedTransaction(id,trFS.data())});
     };
+
+    function insertUpdatedBy(object, objectClassName){
+      memberGet(object.updatedBy).then(function(updater) {
+        var el = document.getElementById(objectClassName + "_updatedBy");
+        emptyHTMLSet(el);
+        el.appendChild(memberLink(updater));
+      });
+    };
     
     function setSelectedTransaction(id,object) {
       selectedTransactionId = id;
@@ -2998,6 +3009,7 @@ function loadNotification (n){
       document.getElementById("transaction_bookDate").value=object.bookDate;
       document.getElementById("transaction_communication").value=object.communication;
       document.getElementById("transaction_save_button").disabled=false;
+      document.getElementById("transaction_updatedOn").innerHTML  = object.updatedOn;
       if (object.type == "PRIVA") {
         transaction.distribution = object.distribution;
         document.getElementById("transaction_properties_frame").style.display = "block";
@@ -3014,6 +3026,7 @@ function loadNotification (n){
         document.getElementById("transaction_costCenter_field").style.display = "block";
         costCenterGet(object.costCenter).then(function (cc){
           document.getElementById("transaction_costCenter").value=cc.name;
+          insertUpdatedBy(object, "member");
           var elems = document.querySelectorAll('select');
           M.FormSelect.init(elems);
           M.updateTextFields();
@@ -3024,11 +3037,13 @@ function loadNotification (n){
           document.getElementById("transaction_owner_field").style.display = "block";
           memberGet(object.owner).then(function(m){
             document.getElementById("transaction_owner").value = denomination(m);
+            insertUpdatedBy(object, "member");
             var elems = document.querySelectorAll('select');
             M.FormSelect.init(elems);
             M.updateTextFields();
           })
         } else {document.getElementById("transaction_owner_field").style.display = "none";
+          insertUpdatedBy(object, "member");
           var elems = document.querySelectorAll('select');
           M.FormSelect.init(elems);
           M.updateTextFields();
@@ -4415,8 +4430,6 @@ function loadNotification (n){
           else {
             toggleMember_view();
             document.getElementById("member_updatedOn").innerHTML  = object.updatedOn;
-            console.log("object",object);
-            console.log("updatedBy",object.updatedBy);
             memberGet(object.updatedBy).then(function(updater) {
               emptyHTMLSet(document.getElementById("member_updatedBy"));
               document.getElementById("member_updatedBy").appendChild(memberLink(updater));
