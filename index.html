@@ -1196,6 +1196,10 @@ It was a ff dark and stormy night...
                   <input id="property_cellar" type="text" readonly>
                   <label for="property_cellar">Cellar(s)</label>
                 </div>
+                <div class="row col s10 m10">
+                  <p style="font-size:12px">Updated On: <span id="property_updatedOn"></span> </p>
+                  <p style="font-size:12px">Updated by: <span id="property_updatedBy"></span> </p>
+                </div>
                 <div id="Properties_Edit" class="displayHidden">
                   <button style="float: right;margin-bottom: 3px;margin-top: 30px" data-target="propertyWrite" class="btn-floating waves-light modal-trigger" onclick="setEditPropertyEntries()"><i class="material-icons right">edit</i></button>
                 </div>
@@ -5061,13 +5065,17 @@ function loadNotification (n){
         document.getElementById("property_code").value=object.code;
         document.getElementById("property_type").value=PropType[object.type];
         document.getElementById("property_cellar").value=object.cellar;
+        document.getElementById("property_updatedOn").innerHTML  = object.updatedOn;
         var ownerEl = document.getElementById("property_owner");
+        memberGet(object.updatedBy).then(function(updater) {
+              emptyHTMLSet(document.getElementById("property_updatedBy"));
+              document.getElementById("property_updatedBy").appendChild(memberLink(updater));
         refCoproperty.collection("Members").doc(object.owner).get().then(function(member) {
               var mHere =  member.data();
               mHere.idFS = member.id;
               ownerEl.setAttribute('onclick','setSelectedMember('+JSON.stringify(mHere)+',"")');
               ownerEl.innerHTML = "<font color='#0000FF'>"+denomination(mHere)+"</font>";
-        });
+        });});
         refCoproperty.collection("Properties").doc(id).collection("PreviousOwners").get().then(function(existingList) {
           if (existingList.docs.length > 0) {
             document.getElementById("previousOwnersButton").setAttribute("class","displayBlock");
@@ -5129,20 +5137,20 @@ function loadNotification (n){
       };
 
       function getAddPropertyEntries() {
-        return {
+        return Object.assign({
               code: document.getElementById("property_code_add").value,
               type: document.getElementById("property_type_add").value,
               cellar: document.getElementById("property_cellar_add").value,
               owner: document.getElementById("property_owner_add").value,
-            };
+            },getUpdateInfo());
       };
 
       function getEditPropertyEntries() {
-        return {
+        return Object.assign({
               code: document.getElementById("property_code_edit").value,
               type: document.getElementById("property_type_edit").value,
               cellar: document.getElementById("property_cellar_edit").value,
-            };
+            },getUpdateInfo());
       };
 
       function setEditPropertyEntries() {
