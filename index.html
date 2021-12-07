@@ -2561,17 +2561,15 @@ function loadNotification (n){
       footer = document.createElement('p');
       footer.setAttribute("style","font-size:12px");
       footer.innerHTML = "Updated By: ";
-      footer.appendChild(memberLink(d.updatedBy));
       updatedFooter.appendChild(footer);
       body.appendChild(updatedFooter);
       objectsRow.appendChild(body);
-
-      
-
       documentsList.appendChild (objectsRow);
-      
-      refCopropertyFiles.child("Documents").child(d.idFS).getDownloadURL().then(function(url) {
-       getFileButton.setAttribute('onclick','showFile('+JSON.stringify(url)+')');
+      memberGet(d.updatedBy).then(function(author){
+        footer.appendChild(memberLink(author));
+        refCopropertyFiles.child("Documents").child(d.idFS).getDownloadURL().then(function(url) {
+          getFileButton.setAttribute('onclick','showFile('+JSON.stringify(url)+')');
+        });
       });
     };
 
