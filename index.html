@@ -5654,7 +5654,9 @@ function loadNotification (n){
 
       function initialSaldoWrite(){
         currentCoproperty.initialSaldos[selectedMemberForInitialSaldo]= Number(document.getElementById("initialSaldo_amount").value);
-        refCoproperty.update({initialSaldos:currentCoproperty.initialSaldos }).then(function(){
+        refCoproperty.update(
+          Object.assign({initialSaldos:currentCoproperty.initialSaldos},getUpdateInfo())
+          ).then(function(){
           refreshHome();
           refreshInitialSaldos();
           M.Modal.getInstance(document.getElementById("initialSaldoEdit")).close();
@@ -5679,7 +5681,9 @@ function loadNotification (n){
 
       function initialCopropertySaldoWrite(){
         currentCoproperty.initialSaldo = Number(document.getElementById("initialCopropertySaldo_amount").value);
-        refCoproperty.update({initialSaldo:currentCoproperty.initialSaldo}).then(function(){
+        refCoproperty.update(
+          Object.assign({initialSaldo:currentCoproperty.initialSaldo},getUpdateInfo())
+          ).then(function(){
           refreshHome();
           refreshInitialSaldos();
           M.Modal.getInstance(document.getElementById("initialCopropertySaldoEdit")).close();
@@ -5691,7 +5695,9 @@ function loadNotification (n){
       function provisionsWrite(){
         currentCoproperty.provisions = Number(document.getElementById("provisions_edit").value);
         currentCoproperty.provisionsCC = document.getElementById("provisions_costCenter_edit").value;
-        refCoproperty.update({provisions:currentCoproperty.provisions, provisionsCC:currentCoproperty.provisionsCC }).then(function(){
+        refCoproperty.update(
+          Object.assign({provisions:currentCoproperty.provisions, provisionsCC:currentCoproperty.provisionsCC},getUpdateInfo())
+          ).then(function(){
           refreshHome();
           refreshCopropertyAttributes();
           M.Modal.getInstance(document.getElementById("provisionsEdit")).close();
