@@ -507,7 +507,7 @@ It was a ff dark and stormy night...
             class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
             Cancel</a>
         </div>
-      </div>
+        </div>
         <div id="transactionEvidenceRemove" class="modal">
         <div class="modal-content">
           <h5> You are about to remove the document from the list of evidences</h5>
@@ -1582,23 +1582,27 @@ It was a ff dark and stormy night...
             <a style="float: right;margin-bottom: 3px"
               class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
           </div>
-        </div>
-          <div id="initialCopropertySaldoEdit" class="modal">
-          <div class="modal-content">
-            <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
-            <h5> Enter initial condomynium saldo</h5>
-            <form class="col s12">
-              <div class="input-field col s12 m4">
-                <input id="initialCopropertySaldo_amount" type="number" class="validate" min="-999999" max="999999" step="0.01" required required="true">
-                <label for="initialCopropertySaldo_amount">Amount<b><font color='red'>*</font></b></label>
-                <span class="helper-text" data-error="Positive or negative amount. Example: -10234.56">Positive or negative amount. Example: -1234.56"</span>
-              </div>
-            </form>
-            <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="initialCopropertySaldoWrite()">Save<i class="material-icons right">send</i></button>
-            <a style="float: right;margin-bottom: 3px"
-              class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
           </div>
-        </div>
+          <div id="initialCopropertySaldoEdit" class="modal">
+            <div class="modal-content">
+              <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
+              <h5> Enter initial condomynium saldo</h5>
+              <form class="col s12">
+                <div class="input-field col s12 m4">
+                  <input id="initialCopropertySaldo_amount" type="number" class="validate" min="-999999" max="999999" step="0.01" required required="true">
+                  <label for="initialCopropertySaldo_amount">Amount<b><font color='red'>*</font></b></label>
+                  <span class="helper-text" data-error="Positive or negative amount. Example: -10234.56">Positive or negative amount. Example: -1234.56"</span>
+                </div>
+              </form>
+              <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="initialCopropertySaldoWrite()">Save<i class="material-icons right">send</i></button>
+              <a style="float: right;margin-bottom: 3px"
+                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+            </div>
+          </div>
+          <div class="row col s10 m10">
+            <p style="font-size:12px">Updated On: <span id="coproperty_updatedOn"></span> </p>
+            <p style="font-size:12px">Updated by: <span id="coproperty_updatedBy"></span> </p>
+          </div> 
         </div>
       </div>
     </main>
@@ -5587,7 +5591,11 @@ function loadNotification (n){
           refreshCopropertyAttributes();
           copropertyAttributesLoaded = true;
         };
-        
+        document.getElementById("coproperty_updatedOn").innerHTML  = currentCoproperty.updatedOn;
+        memberGet(currentCoproperty.updatedBy).then(function(updater) {
+          emptyHTMLSet(document.getElementById("coproperty_updatedBy"));
+          document.getElementById("coproperty_updatedBy").appendChild(memberLink(updater));
+        });
       };
 
       function addCopropertyMeter(){
