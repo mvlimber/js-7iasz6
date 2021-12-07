@@ -2552,12 +2552,8 @@ function loadNotification (n){
         getTransactionButton.appendChild(icon);
         body.appendChild(getTransactionButton);
       };
-      body.appendChild(document.createElement('br'));
-      body.appendChild(document.createElement('br'));
-      objectsRow.appendChild(body);
-
+      
       var updatedFooter = document.createElement('div');
-      updatedFooter.setAttribute("class","row col s10 m10");
       var footer = document.createElement('p');
       footer.setAttribute("style","font-size:12px");
       footer.innerHTML = "Updated On: " + d.updatedOn;
@@ -2567,7 +2563,8 @@ function loadNotification (n){
       footer.innerHTML = "Updated By: ";
       footer.appendChild(memberLink(d.updatedBy));
       updatedFooter.appendChild(footer);
-      objectsRow.appendChild(updatedFooter);
+      body.appendChild(updatedFooter);
+      objectsRow.appendChild(body);
 
       
 
@@ -2727,15 +2724,14 @@ function loadNotification (n){
       var thisBefore;
       if (thisType == "GEASS"){thisBefore = ""}
       else {thisBefore = document.getElementById("document_before").value};
-      return {
+      return Object.assign({
         type: thisType,
         counterparty: document.getElementById("document_counterparty").value,
         before: thisBefore,
         link: paper.link, /*document.getElementById("document_link").value,*/
         freeType: document.getElementById("document_freeType").value,
-        updatedOn: getToDaysDate(),
         comment: document.getElementById("document_comment").value
-      };
+      },getUpdateInfo());
     };
     
     function writeDocument(){
@@ -3830,9 +3826,8 @@ function loadNotification (n){
       };
       
       function getUpdateInfo(){
-        var d = new Date();
         return {
-          updatedOn: d.toDateString(),
+          updatedOn: getToDaysDate(),
           updatedBy: currentUser.id
         };
       };
