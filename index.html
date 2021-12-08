@@ -5615,10 +5615,10 @@ function loadNotification (n){
         });
       };
       function refreshCopropertyCostCentersUpdateInfo() {
-        document.getElementById("copropertyCostCenters_updatedOn").innerHTML  = currentCoproperty.updatedOn;
+        document.getElementById("costCenters_updatedOn").innerHTML  = currentCoproperty.updatedOn;
         memberGet(currentCoproperty.updatedBy).then(function(updater) {
-          emptyHTMLSet(document.getElementById("copropertyCostCenters_updatedBy"));
-          document.getElementById("coproperty_updatedBy").appendChild(memberLink(updater));
+          emptyHTMLSet(document.getElementById("costCenters_updatedBy"));
+          document.getElementById("costCenters_updatedBy").appendChild(memberLink(updater));
         });
       };
       
