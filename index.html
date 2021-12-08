@@ -1463,7 +1463,10 @@ It was a ff dark and stormy night...
           <tbody id="costCenters_tableBody">
           </tbody>
           </table>
-          <br>
+          <div class="row col s10 m10">
+            <p style="font-size:12px">Updated On: <span id="costCenters_updatedOn"></span> </p>
+            <p style="font-size:12px">Updated by: <span id="costCenters_updatedBy"></span> </p>
+          </div>
           <button id="costCentersNewButton" style="visibility: hidden; float: right;margin-bottom: 3px" class="btn-small waves-light modal-trigger" data-target="costCenterAdd" ">New Cost Center<i class="material-icons right">add</i></button>
           <br><br><br><br>
           <table><tr>
@@ -2024,7 +2027,8 @@ if (navigator.vendor.toLowerCase().indexOf('apple') > -1){
         refCoproperty.get().then(function(copropertyFS){
           currentCopropertyId = copropertyFS.id;
           currentCoproperty = copropertyFS.data();
-          
+          refreshCopropertyUpdateInfo();
+          refreshCopropertyCostCentersUpdateInfo()
           emptyHTMLSet(document.getElementById("Home_CopropertyName"));
           var textN = document.createTextNode(currentCoproperty.name);
           document.getElementById("Home_CopropertyName").appendChild(textN);
@@ -5364,18 +5368,27 @@ function loadNotification (n){
         });       
       };     
       
+      function getCostCentersUpdateInfo(){
+        return {
+          costCentersUpdatedOn: getToDaysDate(),
+          costCentersUpdatedBy: currentUser.id
+        };
+      };
       async function costCenterAdd(ccName){
         var cc = {
           name: ccName,
           distribution: {},
         };
         refCoproperty.collection("CostCenters").add(cc).then(function(newCC) {
-          refreshCostCenters();
+          refCoproperty.update(getCostCentersUpdateInfo()).then(function(){
+            refreshCostCenters();
+          });
         });
       };
 
       async function costCenterNameEdit(id, newName){
         refCoproperty.collection("CostCenters").doc(id).update({"name": newName}).then(function(newCC) {  
+          refCoproperty.update(getCostCentersUpdateInfo()).then(function(){});
         });
       };
 
@@ -5591,13 +5604,24 @@ function loadNotification (n){
           refreshCopropertyAttributes();
           copropertyAttributesLoaded = true;
         };
+        refreshCopropertyUpdateInfo();
+      };
+
+      function refreshCopropertyUpdateInfo() {
         document.getElementById("coproperty_updatedOn").innerHTML  = currentCoproperty.updatedOn;
         memberGet(currentCoproperty.updatedBy).then(function(updater) {
           emptyHTMLSet(document.getElementById("coproperty_updatedBy"));
           document.getElementById("coproperty_updatedBy").appendChild(memberLink(updater));
         });
       };
-
+      function refreshCopropertyCostCentersUpdateInfo() {
+        document.getElementById("copropertyCostCenters_updatedOn").innerHTML  = currentCoproperty.updatedOn;
+        memberGet(currentCoproperty.updatedBy).then(function(updater) {
+          emptyHTMLSet(document.getElementById("copropertyCostCenters_updatedBy"));
+          document.getElementById("coproperty_updatedBy").appendChild(memberLink(updater));
+        });
+      };
+      
       function addCopropertyMeter(){
         addMeter();
         handlingCopropertyMeter = true;
