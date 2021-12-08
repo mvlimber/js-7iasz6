@@ -5381,14 +5381,17 @@ function loadNotification (n){
         };
         refCoproperty.collection("CostCenters").add(cc).then(function(newCC) {
           refCoproperty.update(getCostCentersUpdateInfo()).then(function(){
-            refreshCostCenters();
+            refCoproperty.update(getCostCentersUpdateInfo()).then(function(){
+              refreshCostCenters();
+              refreshHome();
+            });
           });
         });
       };
 
       async function costCenterNameEdit(id, newName){
         refCoproperty.collection("CostCenters").doc(id).update({"name": newName}).then(function(newCC) {  
-          refCoproperty.update(getCostCentersUpdateInfo()).then(function(){});
+          refCoproperty.update(getCostCentersUpdateInfo()).then(function(){refreshHome();});
         });
       };
 
@@ -5396,6 +5399,7 @@ function loadNotification (n){
         var update = {};
         update["distribution."+pId] = newQuota;
         refCoproperty.collection("CostCenters").doc(ccId).update(update).then(function() {  
+          refCoproperty.update(getCostCentersUpdateInfo()).then(function(){refreshHome();});
         });
       };
 
@@ -5615,8 +5619,8 @@ function loadNotification (n){
         });
       };
       function refreshCopropertyCostCentersUpdateInfo() {
-        document.getElementById("costCenters_updatedOn").innerHTML  = currentCoproperty.updatedOn;
-        memberGet(currentCoproperty.updatedBy).then(function(updater) {
+        document.getElementById("costCenters_updatedOn").innerHTML  = currentCoproperty.costCentersUpdatedOn;
+        memberGet(currentCoproperty.costCentersUpdatedBy).then(function(updater) {
           emptyHTMLSet(document.getElementById("costCenters_updatedBy"));
           document.getElementById("costCenters_updatedBy").appendChild(memberLink(updater));
         });
