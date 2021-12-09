@@ -915,16 +915,16 @@ It was a ff dark and stormy night...
               <h5>View meter readings</h5>
               <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
                 <h6><b>New Meter Reading</b></h6>
-                <div class="input-field col s12 m4">
-                  <div class="input-field">
+                
+                  <div class="input-field col s6 m3">
                     <input id="meterReading_reading" type="text" readonly>
                     <label for="meterReading_reading">Reading</label>
                   </div>
-                  <div class="input-field ">
+                  <div class="input-field col s6 m3">
                     <input id="meterReading_date" type="text" readonly>
                     <label for="meterReading_date">Date</label>
                   </div>
-                </div>
+                
                 <div id="meterReading_picture_frame" class="col s12 m6">
                   <img id="meterReading_picture_img" width="300" height="225" class="center" >
                 </div>
@@ -956,7 +956,7 @@ It was a ff dark and stormy night...
                   <thead>
                     <th>reading</th>
                     <th>date</th>
-                    <th>picture</th>
+                    <th>updated by</th>
                   </thead>
                   <tbody id="meterReadingHistory">
                   </tbody>
@@ -4064,6 +4064,9 @@ function loadNotification (n){
         if (containsNewReading) {
           document.getElementById("meterReading_reading").value = mr.readings[0].reading;
           document.getElementById("meterReading_date").value = mr.readings[0].date;
+          memberGet(mr.readings[0].updatedBy).then (function(author){
+            document.getElementById("meterReading_updatedBy").appendChild(memberLink(author));
+            
           fillHistory(mr.readings.slice(1,mr.readings.length));
           if (mr.readings[0].picture) {
             picturePresent = true;
@@ -4078,11 +4081,12 @@ function loadNotification (n){
           } else {
             document.getElementById("meterReading_picture_frame").style.display="none";
             picturePresent = false;
-          };
+          };});
         } else {
           document.getElementById("meterReading_reading").value = "";
           document.getElementById("meterReading_date").value ="";
           document.getElementById("meterReading_picture_frame").style.display="none";
+          document.getElementById("meterReading_updatedBy").value="";
           picturePresent = false;
           fillHistory(mr.readings);
         };
@@ -4163,12 +4167,14 @@ function loadNotification (n){
             thisReading[0].reading = Number(document.getElementById("meterReading_reading_edit").value);
             thisReading[0].date = document.getElementById("meterReading_date_edit").value;
             thisReading[0].picture = picturePresent;
+            thisReading[0].updatedBy = currentUser.id;
           } else {
             thisReading.unshift({
               counter : thisReading[0].counter + 1,
               picture : picturePresent,
               reading : Number(document.getElementById("meterReading_reading_edit").value),
               date: document.getElementById("meterReading_date_edit").value,
+              updatedBy: currentUser.id
             });
           };
           var thisRefFS;
