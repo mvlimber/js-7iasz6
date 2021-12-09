@@ -915,20 +915,21 @@ It was a ff dark and stormy night...
               <h5>View meter readings</h5>
               <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
                 <h6><b>New Meter Reading</b></h6>
-                <form>
-                  <div class="input-field col s12 m4">
-                    <div class="input-field">
-                      <input id="meterReading_reading" type="text" readonly>
-                      <label for="meterReading_reading">Reading</label>
-                    </div>
-                    <div class="input-field ">
-                      <input id="meterReading_date" type="text" readonly>
-                      <label for="meterReading_date">Date</label>
-                    </div>
+                <div class="input-field col s12 m4">
+                  <div class="input-field">
+                    <input id="meterReading_reading" type="text" readonly>
+                    <label for="meterReading_reading">Reading</label>
                   </div>
-                </form>
-                <div id="meterReading_picture_frame" class="col s8 m4">
+                  <div class="input-field ">
+                    <input id="meterReading_date" type="text" readonly>
+                    <label for="meterReading_date">Date</label>
+                  </div>
+                </div>
+                <div id="meterReading_picture_frame" class="col s12 m6">
                   <img id="meterReading_picture_img" width="300" height="225" class="center" >
+                </div>
+                <div class="row col s10 m4">
+                  <p style="font-size:12px">Updated by: <span id="meterReading_updatedBy"></span> </p>
                 </div>
                 <div id="meterReading_edit_button_frame">
                   <button id="meterReading_edit_button" style="float: right;float: bottom;margin-bottom: 3px" data-target="meterReadingEdit" class="btn-floating waves-light modal-trigger" onclick="prepareMeterReadingEdit()"><i class="material-icons right">edit</i></button>
@@ -944,9 +945,7 @@ It was a ff dark and stormy night...
                   <input id="meterReading_type" type="text" readonly>
                   <label for="meterReading_type">Type</label>
                 </div>
-                <div class="row col s10 m10">
-                  <p style="font-size:12px">Updated by: <span id="member_updatedBy"></span> </p>
-                </div>
+                
                 <div class="input-field col s4 m4">
                   <input id="meterReading_id" type="text" readonly>
                   <label for="meterReading_id">ID Meter</label>
