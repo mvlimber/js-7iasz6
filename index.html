@@ -1034,11 +1034,11 @@ It was a ff dark and stormy night...
                   <input  id="member_country" type="text" readonly >
                   <label for="member_country" >Country</label>
                 </div>
-                <div class="input-field col s12 m6">
+                <div class="input-field col s8 m6">
                   <input  id="member_town" type="text" readonly >
                   <label for="member_town">Town</label>
                 </div>
-                <div class="input-field col s12 m2">
+                <div class="input-field col s4 m2">
                   <input  id="member_zip" type="number" readonly>
                   <label for="member_zip" >Zip</label>
                 </div>
@@ -4015,15 +4015,20 @@ function loadNotification (n){
           emptyHTMLSet(historyEl);
           readingsHere.forEach(function(r){
             var row = document.createElement('tr');
+            var columnLink = document.createElement('td');
+            var cellLink = document.createTextNode(r.reading);
+            columnLink.appendChild(cellLink);
+            row.appendChild(columnLink);
             var column = document.createElement('td');
-            var cell = document.createTextNode(r.reading);
+            var cell = document.createTextNode(r.date);
             column.appendChild(cell);
             row.appendChild(column);
             column = document.createElement('td');
-            cell = document.createTextNode(r.date);
-            column.appendChild(cell);
-            row.appendChild(column);
-            column = document.createElement('td');
+            memberGet(r.updatedBy).then (function(author){
+              column.appendChild(memberLink(author));
+              
+
+
             cell = document.createTextNode(" ");
             column.appendChild(cell);
             row.appendChild(column);
@@ -4035,11 +4040,11 @@ function loadNotification (n){
               cellB.setAttribute('data-target','fileShow');
               refCopropertyFiles.child(mr.property).child("Meters").child(mr.idFS).child((r.counter).toString()).getDownloadURL().then(function(url){
                 cellB.setAttribute('onclick','showFile('+JSON.stringify(url)+')');
-                cellB.innerHTML = "<font color='#0000FF'>" + "open picture" + "</font>";
-                column.appendChild(cellB);
-            
+                cellB.innerHTML = "<font color='#0000FF'>" + r.reading + "</font>";
+                emptyHTMLSet(columnLink);
+                columnLink.appendChild(cellB);
               });
-            } else {column.appendChild(cell);};
+            };});
           });
         };
         var fileStoreRef;
@@ -4064,6 +4069,7 @@ function loadNotification (n){
         if (containsNewReading) {
           document.getElementById("meterReading_reading").value = mr.readings[0].reading;
           document.getElementById("meterReading_date").value = mr.readings[0].date;
+          emptyHTMLSet(document.getElementById("meterReading_updatedBy"));
           memberGet(mr.readings[0].updatedBy).then (function(author){
             document.getElementById("meterReading_updatedBy").appendChild(memberLink(author));
             
