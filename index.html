@@ -440,7 +440,7 @@ It was a ff dark and stormy night...
                   <input id="transaction_account" type="text" readonly>
                   <label for="transaction_account">Account</label>
                 </div>
-                <div class="input-field col s12 m8">
+                <div class="input-field col s12 m8" id="transaction_communication_field" >
                   <input id="transaction_communication" type="text" readonly>
                   <label for="transaction_communication">Communication</label>
                 </div>
@@ -3021,6 +3021,13 @@ function loadNotification (n){
       });
     };
     
+    function hideEmptyFields(listOfFields){
+      listOfFields.forEach(function(field){
+        if (document.getElementById("transaction_"+field).value) {document.getElementById("transaction_"+field+"_field").style.display="block"}
+        else {document.getElementById("transaction_"+field+"_field").style.display="none"};
+      });
+    };
+    
     function setSelectedTransaction(id,object) {
       selectedTransactionId = id;
       transaction = object;
@@ -3049,7 +3056,7 @@ function loadNotification (n){
         document.getElementById("transaction_costCenter_field").style.display = "block";
         costCenterGet(object.costCenter).then(function (cc){
           document.getElementById("transaction_costCenter").value=cc.name;
-          
+          hideEmptyFields(["costCenter","name","owner","communication"]);
           var elems = document.querySelectorAll('select');
           M.FormSelect.init(elems);
           M.updateTextFields();
@@ -3061,6 +3068,7 @@ function loadNotification (n){
           document.getElementById("transaction_owner_field").style.display = "block";
           memberGet(object.owner).then(function(m){
             document.getElementById("transaction_owner").value = denomination(m);
+            hideEmptyFields(["costCenter","name","owner","communication"]);
             var elems = document.querySelectorAll('select');
             M.FormSelect.init(elems);
             M.updateTextFields();
@@ -3069,6 +3077,7 @@ function loadNotification (n){
           })
         } else {document.getElementById("transaction_owner_field").style.display = "none";
           insertUpdatedBy(object, "member");
+          hideEmptyFields(["costCenter","name","owner","communication"]);
           var elems = document.querySelectorAll('select');
           M.FormSelect.init(elems);
           M.updateTextFields();
