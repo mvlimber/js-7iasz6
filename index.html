@@ -5913,6 +5913,11 @@ function loadNotification (n){
           
       async function generateChargesReport(closeDateTransactions, metersIncluded){  
         ccsInReport = await costCentersGet(); 
+        if (!ccsInReport.length){
+        M.toast({html:"Please enter cost centers first" });
+        document.getElementById("chargesReportSubmitButton").disabled=false;
+        return;
+        };
         ccsInReport.forEach(function(cc){
           var totalQuota =0;
           Object.values(cc.distribution).forEach(function(quota){totalQuota +=quota;});
