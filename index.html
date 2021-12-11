@@ -436,7 +436,7 @@ It was a ff dark and stormy night...
                   <input id="transaction_owner" type="text" readonly>
                   <label for="transaction_owner">Owner</label>
                 </div>
-                <div class="input-field col s12 m4">
+                <div class="input-field col s12 m4" id="transaction_account_field">
                   <input id="transaction_account" type="text" readonly>
                   <label for="transaction_account">Account</label>
                 </div>
@@ -3056,7 +3056,7 @@ function loadNotification (n){
         document.getElementById("transaction_costCenter_field").style.display = "block";
         costCenterGet(object.costCenter).then(function (cc){
           document.getElementById("transaction_costCenter").value=cc.name;
-          hideEmptyFields(["costCenter","name","owner","communication"]);
+          hideEmptyFields(["costCenter","name","account","owner","communication"]);
           var elems = document.querySelectorAll('select');
           M.FormSelect.init(elems);
           M.updateTextFields();
@@ -3068,7 +3068,7 @@ function loadNotification (n){
           document.getElementById("transaction_owner_field").style.display = "block";
           memberGet(object.owner).then(function(m){
             document.getElementById("transaction_owner").value = denomination(m);
-            hideEmptyFields(["costCenter","name","owner","communication"]);
+            hideEmptyFields(["costCenter","name","account","owner","communication"]);
             var elems = document.querySelectorAll('select');
             M.FormSelect.init(elems);
             M.updateTextFields();
@@ -3077,7 +3077,7 @@ function loadNotification (n){
           })
         } else {document.getElementById("transaction_owner_field").style.display = "none";
           insertUpdatedBy(object, "member");
-          hideEmptyFields(["costCenter","name","owner","communication"]);
+          hideEmptyFields(["costCenter","name","account","owner","communication"]);
           var elems = document.querySelectorAll('select');
           M.FormSelect.init(elems);
           M.updateTextFields();
