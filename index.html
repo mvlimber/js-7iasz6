@@ -445,7 +445,7 @@ It was a ff dark and stormy night...
         
           </form>
           
-          <button id="documentSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; writeDocument()">Save<i class="material-icons right">send</i></button>
+          <button id="documentSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; createDocument()">Save<i class="material-icons right">send</i></button>
           <a style="float: right;margin-left: 20px;margin-bottom: 3px"
             class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
             Cancel</a>
@@ -2755,7 +2755,7 @@ function loadNotification (n){
         M.toast({html:"when Type = Other, Free text type is required"});
         valid=false;
       };
-      if ((typeElement.value != "") && (typeElement.value != "GEASS") && (!((document.getElementById("document_counterparty").value) ||(document.getElementById("document_theme").value)){
+      if ((typeElement.value != "") && (typeElement.value != "GEASS") && (!((document.getElementById("document_counterparty").value) ||(document.getElementById("document_theme").value)))){
         M.toast({html:"Please enter counterparty or theme"});
         valid=false;
       };
@@ -2800,9 +2800,8 @@ function loadNotification (n){
     };
     
     function createDocument(){
-      if (validateDocument()) { 
+      if (validateNewDocument()) { 
         var entries =  getNewDocumentEntries();
-        
         var firstFile = {
           type: entries.type,
           counterparty: entries.counterparty,
@@ -2812,14 +2811,14 @@ function loadNotification (n){
         };
         entries.files=[firstFile];
         refCoproperty.collection("Documents").add(entries).then(function(docref) {
-            var fileRef = refCopropertyFiles.child("Documents").child(docref.id); 
-            fileRef.put(documentFile).then (function (){
-              refreshDocuments();
-              M.Modal.getInstance(document.getElementById("documentEdit")).close();
-            }).catch(function(error) {
-              M.toast({html:"Error adding document: " + error});
-            });
+          var fileRef = refCopropertyFiles.child("Documents").child(docref.id).child("0"); 
+          fileRef.put(documentFile).then (function (){
+            refreshDocuments();
+            M.Modal.getInstance(document.getElementById("documentEdit")).close();
+          }).catch(function(error) {
+            M.toast({html:"Error adding document: " + error});
           });
+        });
       };
     }
     
