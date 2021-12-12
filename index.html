@@ -340,52 +340,35 @@ It was a ff dark and stormy night...
         </div>
         <br>
         <button id="documentNewButton" style="visibility: hidden; float: right" data-target="documentNew" class="btn-small waves-light modal-trigger" onclick="resetDocument()"><i class="material-icons right">add</i>New document</button>
-        <!--
         <div id="documentEdit" class="modal full">
           <div class="modal-content">
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
-            <h5>Upload document and enter its attributes</h5>
+            <h5>Update attributes document map</h5>
+            
             <form>
-              <div class="input-field" id="document_file">
-              </div>
-              <div class="file-field input-field col s12 m12">
-                <div class="btn-small">
-                  <span id="documentUploadButtonLabel">PDF Document<b><font color='red'>*</font></b><i class="material-icons right">attach_file</i></span>
-                  <input type="file" id="documentFile">
-                </div>
-                <div class="file-path-wrapper">
-                  <input class="file-path validate" type="text" id="documentFileText">
-                  <span class="helper-text" data-error="only pfd, jpeg or png files" >pfd, jpeg or png file</span>
-                </div>
-              </div>
-            </form>
-            <form>
-              <div class="row">
               <div class="input-field col s12 m4">
-              <select id="document_type" required required="true" onchange="toggleDocument()"></select>
+                <select id="document_type_edit" required required="true" onchange="toggleDocumentEdit()"></select>
               </div>
-              <div class="input-field col s12 m4" id="document_counterparty_field">
-                <input id="document_counterparty" type="text" class="validate" maxlength="20" data-length="20" >
-                <label for="document_counterparty">Counterparty<b><font color='red'>*</font></b></label>
-                <span class="helper-text" data-error="Maximum 20 characters">Up to 20 characters</span>
-              </div> 
-              <div class="input-field col s12 m4" id="document_before_field">
-                <input id="document_before" type="text" class="datepicker datepickerFuture validate" >
-                <label for="document_before">Before</label>
-                <span class="helper-text">reminder date</span>
+              <div class="input-field col s12 m4" id="document_before_field_edit">
+                <input id="document_before_edit" type="text" class="datepicker datepickerFuture validate" >
+                <label for="document_before_edit">Before</label>
+                <span class="helper-text">by when action needed if any</span>
               </div>
-              <div class="input-field col s12 m4" id="document_freeType_field">
-                <input id="document_freeType" type="text" class="validate" maxlength="8" data-length="8" >
-                <label for="document_freeType">Free text type<b><font color='red'>*</font></b></label>
-                <span class="helper-text" data-error="Maximum 8 characters">up to 8 characters</span>
+              <div class="input-field col s12 m4" id="document_freeType_field_edit">
+                <input id="document_freeType_edit" type="text" class="validate" maxlength="8" data-length="8" >
+                <label for="document_freeType_edit">Free text type<b><font color='red'>*</font></b></label>
+                <span class="helper-text">displayed as self-choosen type</span>
+              </div>
+              <div class="input-field col s12 m4" id="document_theme_field_edit">
+                <input id="document_theme_edit" type="text" class="validate" maxlength="20" data-length="20" >
+                <label for="document_theme_edit">Theme</label>
+                <span class="helper-text" >displayed in title bar if no counterparty</span>
               </div>
               <div class="input-field col s12 m12">
-                <textarea id="document_comment" maxlength="150" data-length="150"></textarea>
-                <label for="document_text">Comment</label>
+                <textarea id="document_comment_edit" maxlength="150" data-length="150"></textarea>
+                <label for="document_text_edit">Comment</label>
                 <span class="helper-text" data-error="maximum 150 characters" >maximum 150 characters</span>
-
               </div>
-          </div>
             </form>
             
             <button id="documentSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; writeDocument()">Save<i class="material-icons right">send</i></button>
@@ -394,7 +377,7 @@ It was a ff dark and stormy night...
               Cancel</a>
           </div>
         </div>
-        -->
+        
         <div id="documentNew" class="modal full">
         <div class="modal-content">
           <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
@@ -425,7 +408,7 @@ It was a ff dark and stormy night...
             </div> 
             <div class="input-field col s12 m4" id="document_theme_field">
               <input id="document_theme" type="text" class="validate" maxlength="20" data-length="20" >
-              <label for="document_counterparty">Theme</label>
+              <label for="document_theme">Theme</label>
               <span class="helper-text" >displayed in title bar if no counterparty</span>
             </div> 
             <div class="input-field col s12 m4" id="document_before_field">
@@ -2632,7 +2615,7 @@ function loadNotification (n){
       documentsList.appendChild (objectsRow);
       memberGet(d.updatedBy).then(function(author){
         footer.appendChild(memberLink(author));
-        refCopropertyFiles.child("Documents").child(d.idFS).getDownloadURL().then(function(url) {
+        refCopropertyFiles.child("Documents").child(d.idFS).child("0").getDownloadURL().then(function(url) {
           getFileButton.setAttribute('onclick','showFile('+JSON.stringify(url)+')');
         });
       });
