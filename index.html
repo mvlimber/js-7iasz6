@@ -2525,11 +2525,6 @@ function loadNotification (n){
         titleRight.innerHTML = "<font color='red'>" + d.before+"</font>";
         bodyRight.innerHTML = "<font color='red'>" +"Act Before: " + d.before+ "</font>";
         bodyText.appendChild(bodyRight);
-        bodyText.appendChild(document.createElement('br'));
-        bodyRight = document.createElement('span');
-        bodyRight.setAttribute("style","float:right");
-        bodyRight.innerHTML = "updated:" +d.updatedOn;
-        bodyText.appendChild(bodyRight);
         body.appendChild(bodyText);
         body.appendChild(document.createElement('br'));
       } else {titleRight.innerHTML = d.updatedOn};
@@ -2693,7 +2688,7 @@ function loadNotification (n){
       document.getElementById("document_freeType_edit").value=object.freeType;
       document.getElementById("document_comment_edit").value=object.comment;
       toggleDocumentEdit();
-      document.getElementById("documentSubmitEditButton").disabled=false;
+      document.getElementById("documentEditSubmitButton").disabled=false;
       var elems = document.querySelectorAll('select');
       M.FormSelect.init(elems);
       M.updateTextFields();
