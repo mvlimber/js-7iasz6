@@ -2537,19 +2537,34 @@ function loadNotification (n){
         var fileBorder = document.createElement('div');
         fileBorder.setAttribute("class","w3-panel w3-border");
         fileBorder.setAttribute("style","box:3px 10px 8px #888888");
+        var fields = document.createElement('div');
+        fields.setAttribute("style","with:100%");
         var fieldLeft = document.createElement('span');
         fieldLeft.setAttribute("style","float:left");
-        if (documentFile.type == 'OTHER'){fieldLeft.innerHTML= "<b>Type: </b>" + documentFile.freeType;}
-        else {fieldLeft.innerHTML= "<b>Type: </b>" + DocumentType[documentFile.type];};
-        fileBorder.appendChild(fieldLeft);
+        if (documentFile.type == 'OTHER'){fieldLeft.innerHTML= "<b>File with Type: </b>" + documentFile.freeType;}
+        else {fieldLeft.innerHTML= "<b>File with Type: </b>" + DocumentType[documentFile.type];};
+        fields.appendChild(fieldLeft);
         if (documentFile.counterparty){
           var fieldRight = document.createElement('span');
           fieldRight.setAttribute("style","float:right");
           fieldRight.innerHTML="<b>Counterparty: </b>" + documentFile.counterparty;
-          fileBorder.appendChild(fieldRight);
+          fields.appendChild(fieldRight);
         };
+        fileBorder.appendChild(fields);
+        fileBorder.appendChild(document.createElement('br'));
+        var fileFooter = makeFooter(documentFile);
+        var getFileButton = document.createElement("button");
+        getFileButton.setAttribute('class','btn-small waves-light');
+        getFileButton.setAttribute('style','float:right;margin-right:5px');
+        var icon = document.createElement('i');
+        icon.setAttribute("class","material-icons right");
+        icon.innerHTML = "file_download";
+        getFileButton.appendChild(icon);
+        fileFooter.appendChild(getFileButton);
+        fileBorder.appendChild(fileFooter);
         body.appendChild(fileBorder);
-        body.appendChild(makeFooter(documentFile));
+        
+        
       });
       
       if (currentUser.role == roleAdministrator) {
@@ -2903,13 +2918,13 @@ function loadNotification (n){
     function createDocument(){
       if (validateNewDocument()) { 
         var entries =  getNewDocumentEntries();
-        var firstFile = {
+        var firstFile = Object.assign({
           type: entries.type,
           counterparty: entries.counterparty,
           comments:"",
           updatedBy: currentUser.id,
           counter:0
-        };
+        },getUpdateInfo());
         entries.files=[firstFile];
         if (!entries.theme){entries.theme = entries.counterparty};
         refCoproperty.collection("Documents").add(entries).then(function(docref) {
