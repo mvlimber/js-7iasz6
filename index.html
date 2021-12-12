@@ -344,15 +344,9 @@ It was a ff dark and stormy night...
           <div class="modal-content">
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
             <h5>Update attributes document map</h5>
-            
             <form>
               <div class="input-field col s12 m4">
                 <select id="document_type_edit" required required="true" onchange="toggleDocumentEdit()"></select>
-              </div>
-              <div class="input-field col s12 m4" id="document_before_field_edit">
-                <input id="document_before_edit" type="text" class="datepicker datepickerFuture validate" >
-                <label for="document_before_edit">Before</label>
-                <span class="helper-text">by when action needed if any</span>
               </div>
               <div class="input-field col s12 m4" id="document_freeType_field_edit">
                 <input id="document_freeType_edit" type="text" class="validate" maxlength="8" data-length="8" >
@@ -360,9 +354,14 @@ It was a ff dark and stormy night...
                 <span class="helper-text">displayed as self-choosen type</span>
               </div>
               <div class="input-field col s12 m4" id="document_theme_field_edit">
-                <input id="document_theme_edit" type="text" class="validate" maxlength="20" data-length="20" >
-                <label for="document_theme_edit">Theme</label>
-                <span class="helper-text" >displayed in title bar if no counterparty</span>
+                <input id="document_theme_edit" type="text" class="validate" maxlength="20" data-length="20" required required="true">
+                <label for="document_theme_edit">Theme<b><font color='red'>*</font></b></label>
+                <span class="helper-text" >displayed in title bar</span>
+              </div>
+              <div class="input-field col s12 m4" id="document_before_field_edit">
+                <input id="document_before_edit" type="text" class="datepicker datepickerFuture validate" >
+                <label for="document_before_edit">Before</label>
+                <span class="helper-text">by when action needed if any</span>
               </div>
               <div class="input-field col s12 m12">
                 <textarea id="document_comment_edit" maxlength="150" data-length="150"></textarea>
@@ -370,7 +369,6 @@ It was a ff dark and stormy night...
                 <span class="helper-text" data-error="maximum 150 characters" >maximum 150 characters</span>
               </div>
             </form>
-            
             <button id="documentSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; writeDocument()">Save<i class="material-icons right">send</i></button>
             <a style="float: right;margin-left: 20px;margin-bottom: 3px"
               class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
@@ -2206,7 +2204,7 @@ function loadNotification (n){
         M.updateTextFields();
         var elems = document.querySelectorAll('textarea');
         M.CharacterCounter.init(elems);
-        var elems = document.querySelectorAll('text');
+        var elems = document.querySelectorAll('input[data-length]');
         M.CharacterCounter.init(elems);
         
         
@@ -2682,7 +2680,7 @@ function loadNotification (n){
       M.updateTextFields();
       var elems = document.querySelectorAll('textarea');
         M.CharacterCounter.init(elems);
-        elems = document.querySelectorAll('input[type=text]');
+        elems = document.querySelectorAll('input[data-length]');
         M.CharacterCounter.init(elems);
     };
 
@@ -2709,6 +2707,20 @@ function loadNotification (n){
       var dUBL = document.getElementById("documentUploadButtonLabel");
       if (paper.idFS){dUBL.innerHTML = "option: replace PDF file with"}
       else {dUBL.innerHTML = "File<b><font color='red'>*</font></b>"};
+    };
+
+    function toggleDocumentEdit(){
+      var typeElement = document.getElementById("document_type_edit");
+      if (typeElement.value == "OTHER") {
+        document.getElementById("document_freeType_field_edit").style.display = "block";
+      } else {
+        document.getElementById("document_freeType_field_edit").style.display = "none";
+      };
+      if ((typeElement.value) && (typeElement.value != "GEASS"))  {
+        document.getElementById("document_theme_field").style.display = "block";
+      } else {
+        document.getElementById("document_counterparty_field").style.display = "none";
+      };  
     };
 
     function validateNewDocument(){
