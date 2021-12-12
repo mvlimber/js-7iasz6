@@ -340,7 +340,7 @@ It was a ff dark and stormy night...
         </div>
         <br>
         <button id="documentNewButton" style="visibility: hidden; float: right" data-target="documentNew" class="btn-small waves-light modal-trigger" onclick="resetDocument()"><i class="material-icons right">add</i>New document</button>
-        <div id="documentEdit" class="modal full">
+        <div id="documentEdit" class="modal">
           <div class="modal-content">
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
             <h5>Update attributes document map</h5>
@@ -365,7 +365,7 @@ It was a ff dark and stormy night...
               </div>
               <div class="input-field col s12 m12">
                 <textarea id="document_comment_edit" maxlength="150" data-length="150"></textarea>
-                <label for="document_text_edit">Comment</label>
+                <label for="document_comment_edit">Comment</label>
                 <span class="helper-text" data-error="maximum 150 characters" >maximum 150 characters</span>
               </div>
             </form>
@@ -2729,15 +2729,18 @@ function loadNotification (n){
 
     function toggleDocumentEdit(){
       var typeElement = document.getElementById("document_type_edit");
+      var themeElement = document.getElementById("document_theme_edit");
+      if (!themeElement.value) {themeElement.value=""};
+      
       if (typeElement.value == "OTHER") {
         document.getElementById("document_freeType_field_edit").style.display = "block";
       } else {
         document.getElementById("document_freeType_field_edit").style.display = "none";
       };
       if ((typeElement.value) && (typeElement.value != "GEASS"))  {
-        document.getElementById("document_theme_field").style.display = "block";
+        document.getElementById("document_theme_field_edit").style.display = "block";
       } else {
-        document.getElementById("document_counterparty_field").style.display = "none";
+        document.getElementById("document_theme_field_edit").style.display = "none";
       };  
     };
 
@@ -2791,6 +2794,37 @@ function loadNotification (n){
       if(!valid) {document.getElementById("documentSubmitButton").disabled=false;};
       return valid;
     };
+
+    function validateDocument(){
+      var valid = true;
+      var typeElement = document.getElementById("document_type_edit");
+      if (!typeElement.checkValidity()) {
+        M.toast({html:"Please enter type"});
+        valid=false;
+      };
+      if (!document.getElementById("document_before_edit").checkValidity()) {
+        M.toast({html:"Please enter valid reminder date"});
+        valid=false;
+      };
+      if (!document.getElementById("document_freeType_edit").checkValidity()) {
+        M.toast({html:"Please enter valid free text type"});
+        valid=false;
+      };
+      if (!document.getElementById("document_comment_edit").checkValidity()) {
+        M.toast({html:"Please enter valid comment"});
+        valid=false;
+      };
+      if ((typeElement.value == "OTHER") && (!document.getElementById("document_freeType").value)){
+        M.toast({html:"when Type = Other, Free text type is required"});
+        valid=false;
+      };
+      if ((typeElement.value != "") && (typeElement.value != "GEASS") && (!(document.getElementById("document_theme_edit").value))){
+        M.toast({html:"Please enter theme"});
+        valid=false;
+      };
+      if(!valid) {document.getElementById("documentSubmitButton").disabled=false;};
+      return valid;
+    };
     
     function getToDaysDate(){
       var d = new Date(); 
@@ -2805,10 +2839,26 @@ function loadNotification (n){
       return Object.assign({
         type: thisType,
         counterparty: document.getElementById("document_counterparty").value,
+        theme: document.getElementById("document_theme").value,
         before: thisBefore,
         link: paper.link, /*document.getElementById("document_link").value,*/
         freeType: document.getElementById("document_freeType").value,
         comment: document.getElementById("document_comment").value
+      },getUpdateInfo());
+    };
+
+    function getDocumentEntries(){
+      var thisType = document.getElementById("document_type_edit").value;
+      var thisBefore;
+      if (thisType == "GEASS"){thisBefore = ""}
+      else {thisBefore = document.getElementById("document_before_edit").value};
+      return Object.assign({
+        type: thisType,
+        theme: document.getElementById("document_theme_edit").value,
+        before: thisBefore,
+        link: paper.link, /*document.getElementById("document_link").value,*/
+        freeType: document.getElementById("document_freeType_edit").value,
+        comment: document.getElementById("document_comment_edit").value
       },getUpdateInfo());
     };
     
@@ -2827,7 +2877,7 @@ function loadNotification (n){
           var fileRef = refCopropertyFiles.child("Documents").child(docref.id).child("0"); 
           fileRef.put(documentFile).then (function (){
             refreshDocuments();
-            M.Modal.getInstance(document.getElementById("documentEdit")).close();
+            M.Modal.getInstance(document.getElementById("documentNew")).close();
           }).catch(function(error) {
             M.toast({html:"Error adding document: " + error});
           });
