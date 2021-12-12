@@ -2532,13 +2532,8 @@ function loadNotification (n){
       header.appendChild (title);
       objectsRow.appendChild(header);
       body.setAttribute("class","collapsible-body");
-      if (d.comment){
-        var commentDiv = document.createElement('div');
-        commentDiv.setAttribute("style","margin-top: 0px; margin-bottom : 20px");
-        var commentEl= document.createTextNode("comment: "+d.comment);
-        commentDiv.appendChild(commentEl);
-        body.appendChild(commentDiv);
-      };
+      
+      
       if (currentUser.role == roleAdministrator) {
           
           var removeButton = document.createElement('button');
@@ -2596,7 +2591,13 @@ function loadNotification (n){
       };
       
       var updatedFooter = document.createElement('div');
-      var footer = document.createElement('p');
+      if (d.comment){
+        var commentDiv = document.createElement('div');
+        commentDiv.setAttribute("style","margin-top: 0px; margin-bottom : 20px");
+        var commentEl= document.createTextNode("comment: "+d.comment);
+        commentDiv.appendChild(commentEl);
+        updatedFooter.appendChild(commentDiv);
+      };var footer = document.createElement('p');
       footer.setAttribute("style","font-size:12px");
       footer.innerHTML = "Updated On: " + d.updatedOn;
       updatedFooter.appendChild(footer);
@@ -2670,7 +2671,7 @@ function loadNotification (n){
       document.getElementById("documentFileText").value="";
       /*listTransactions(document.getElementById("document_link"),object.link)*/
       toggleDocument();
-      document.getElementById("documentSubmitNewButton").disabled=false;
+      document.getElementById("documentNewSubmitButton").disabled=false;
       var elems = document.querySelectorAll('select');
       M.FormSelect.init(elems);
       M.updateTextFields();
