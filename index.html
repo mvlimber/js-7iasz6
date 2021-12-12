@@ -2728,7 +2728,7 @@ function loadNotification (n){
       else {dUBL.innerHTML = "File<b><font color='red'>*</font></b>"};
     };
 
-    function validateDocument(){
+    function validateNewDocument(){
       var valid = true;
       if (!document.getElementById("document_type").checkValidity()) {
         M.toast({html:"Please enter type"});
@@ -2784,7 +2784,7 @@ function loadNotification (n){
       return (d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate());
     };
     
-    function getDocumentEntries(){
+    function getNewDocumentEntries(){
       var thisType = document.getElementById("document_type").value;
       var thisBefore;
       if (thisType == "GEASS"){thisBefore = ""}
@@ -2798,6 +2798,30 @@ function loadNotification (n){
         comment: document.getElementById("document_comment").value
       },getUpdateInfo());
     };
+    
+    function createDocument(){
+      if (validateDocument()) { 
+        var entries =  getNewDocumentEntries();
+        
+        var firstFile = {
+          type: entries.type,
+          counterparty: entries.counterparty,
+          comments:"",
+          updatedBy: currentUser.id,
+          counter:0
+        };
+        entries.files=[firstFile];
+        refCoproperty.collection("Documents").add(entries).then(function(docref) {
+            var fileRef = refCopropertyFiles.child("Documents").child(docref.id); 
+            fileRef.put(documentFile).then (function (){
+              refreshDocuments();
+              M.Modal.getInstance(document.getElementById("documentEdit")).close();
+            }).catch(function(error) {
+              M.toast({html:"Error adding document: " + error});
+            });
+          });
+      };
+    }
     
     function writeDocument(){
       if (validateDocument()) { 
