@@ -2049,6 +2049,7 @@ if (navigator.vendor.toLowerCase().indexOf('apple') > -1){
     insertSelectOptions("meter_status", MeterStatus, "", "ACTIF");
     insertSelectOptions("notification_type", NotificationType, "type");
     insertSelectOptions("document_type", DocumentType, "type");
+    insertSelectOptions("document_type_edit", DocumentType, "type");
     insertSelectOptions("transactionEvidence_type", EvidenceType, "type");
     insertSelectOptions("member_type_edit", MemberType, "", "PERSO");
     
@@ -2568,7 +2569,7 @@ function loadNotification (n){
         editButton.setAttribute('style','float: right;margin-right: 5px');
         editButton.setAttribute('class','modal-trigger btn-floating waves-light');
         editButton.setAttribute("data-target", "documentEdit");
-        editButton.setAttribute('onclick','selectDocument('+JSON.stringify(d)+')');
+        editButton.setAttribute('onclick','prepareEditDocument('+JSON.stringify(d)+')');
         cellButtonIcon = document.createElement('i');
         cellButtonIcon.setAttribute('class','material-icons right');
         cellButtonIcon.innerHTML="edit";           
@@ -2675,6 +2676,23 @@ function loadNotification (n){
       /*listTransactions(document.getElementById("document_link"),object.link)*/
       toggleDocument();
       document.getElementById("documentSubmitButton").disabled=false;
+      var elems = document.querySelectorAll('select');
+      M.FormSelect.init(elems);
+      M.updateTextFields();
+      var elems = document.querySelectorAll('textarea');
+        M.CharacterCounter.init(elems);
+        elems = document.querySelectorAll('input[data-length]');
+        M.CharacterCounter.init(elems);
+    };
+
+    function prepareEditDocument(object) {
+      paper = object;
+      document.getElementById("document_type_edit").value=object.type;
+      document.getElementById("document_theme_edit").value=object.theme;
+      document.getElementById("document_before_edit").value=object.before;
+      document.getElementById("document_freeType_edit").value=object.freeType;
+      document.getElementById("document_comment_edit").value=object.comment;
+      toggleDocumentEdit();
       var elems = document.querySelectorAll('select');
       M.FormSelect.init(elems);
       M.updateTextFields();
