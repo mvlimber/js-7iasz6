@@ -2532,7 +2532,17 @@ function loadNotification (n){
       header.appendChild (title);
       objectsRow.appendChild(header);
       body.setAttribute("class","collapsible-body");
+      d.files.forEach(function(documentFile){
+        var fileBorder = document.createElement('div');
+        fileBorder.setAttribute("class","w3-panel w3-border");
+        fileBorder.setAttribute("style","box:3px 10px 8px #888888");
+        var fieldLeft = document.createElement('span');
+        fieldLeft.setAttribute("style","float:left;margin-rigth: 25%");
+        if (documentFile.type == 'OTHER'){fieldLeft.innerHTML= "<b>Type: </b>" + documentFile.freeType;}
+        else {fieldLeft.innerHTML= "<b>Type: </b>" + documentFile.type;};
+
       
+      });
       
       if (currentUser.role == roleAdministrator) {
           
