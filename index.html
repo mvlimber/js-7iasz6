@@ -2541,8 +2541,8 @@ function loadNotification (n){
         fields.setAttribute("style","with:100%");
         var fieldLeft = document.createElement('span');
         fieldLeft.setAttribute("style","float:left");
-        if (documentFile.type == 'OTHER'){fieldLeft.innerHTML= "<b>File with Type: </b>" + documentFile.freeType;}
-        else {fieldLeft.innerHTML= "<b>File with Type: </b>" + DocumentType[documentFile.type];};
+        if (documentFile.type == 'OTHER'){fieldLeft.innerHTML= "<b>File Type: </b>" + documentFile.freeType;}
+        else {fieldLeft.innerHTML= "<b>File Type: </b>" + DocumentType[documentFile.type];};
         fields.appendChild(fieldLeft);
         if (documentFile.counterparty){
           var fieldRight = document.createElement('span');
@@ -2554,7 +2554,7 @@ function loadNotification (n){
         fileBorder.appendChild(document.createElement('br'));
         var fileFooter = makeFooter(documentFile);
         var getFileButton = document.createElement("button");
-        getFileButton.setAttribute('class','btn-small waves-light');
+        getFileButton.setAttribute('class','btn-floating waves-light');
         getFileButton.setAttribute('style','float:right;margin-right:5px');
         var icon = document.createElement('i');
         icon.setAttribute("class","material-icons right");
@@ -2599,15 +2599,6 @@ function loadNotification (n){
         editButton.appendChild(cellButtonIcon);
         body.appendChild(editButton);
       };
-      var getFileButton = document.createElement("button");
-      getFileButton.setAttribute('class','btn-small waves-light');
-      getFileButton.setAttribute('style','margin-right:5px');
-      getFileButton.innerHTML = "DownLoad";
-      var icon = document.createElement('i');
-      icon.setAttribute("class","material-icons right");
-      icon.innerHTML = "file_download";
-      getFileButton.appendChild(icon);
-      body.appendChild(getFileButton);
       if (d.link) {
         var getTransactionButton = document.createElement("button");
         getTransactionButton.setAttribute('class','btn-small waves-light modal-trigger');
@@ -2643,9 +2634,9 @@ function loadNotification (n){
       documentsList.appendChild (objectsRow);
       memberGet(d.updatedBy).then(function(author){
         footer.appendChild(memberLink(author));
-        refCopropertyFiles.child("Documents").child(d.idFS).child("0").getDownloadURL().then(function(url) {
-          getFileButton.setAttribute('onclick','showFile('+JSON.stringify(url)+')');
-        });
+        //refCopropertyFiles.child("Documents").child(d.idFS).child("0").getDownloadURL().then(function(url) {
+        //  getFileButton.setAttribute('onclick','showFile('+JSON.stringify(url)+')');
+        //});
       });
     };
 
