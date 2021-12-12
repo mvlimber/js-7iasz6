@@ -369,7 +369,7 @@ It was a ff dark and stormy night...
                 <span class="helper-text" data-error="maximum 150 characters" >maximum 150 characters</span>
               </div>
             </form>
-            <button id="documentSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; writeDocument()">Save<i class="material-icons right">send</i></button>
+            <button id="documentEditSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; writeDocument()">Save<i class="material-icons right">send</i></button>
             <a style="float: right;margin-left: 20px;margin-bottom: 3px"
               class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
               Cancel</a>
@@ -426,7 +426,7 @@ It was a ff dark and stormy night...
         
           </form>
           
-          <button id="documentSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; createDocument()">Save<i class="material-icons right">send</i></button>
+          <button id="documentNewSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; createDocument()">Save<i class="material-icons right">send</i></button>
           <a style="float: right;margin-left: 20px;margin-bottom: 3px"
             class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
             Cancel</a>
@@ -2502,7 +2502,7 @@ function loadNotification (n){
       var title = document.createElement('div');
       title.setAttribute("style","text-align:center");
       if (d.type == "GEASS") {title.innerHTML = "";}
-      else {title.innerHTML = (d.counterparty).substr(0,20);};
+      else {title.innerHTML = (d.theme).substr(0,20);};
       var titleLeft = document.createElement('span');
       /*titleLeft.setAttribute("style","float:left;font-family:'Lucida Console'; monospace");*/
       titleLeft.setAttribute("style","float:left;margin-rigth: 25%");
@@ -2675,7 +2675,7 @@ function loadNotification (n){
       document.getElementById("documentFileText").value="";
       /*listTransactions(document.getElementById("document_link"),object.link)*/
       toggleDocument();
-      document.getElementById("documentSubmitButton").disabled=false;
+      document.getElementById("documentSubmitNewButton").disabled=false;
       var elems = document.querySelectorAll('select');
       M.FormSelect.init(elems);
       M.updateTextFields();
@@ -2693,6 +2693,7 @@ function loadNotification (n){
       document.getElementById("document_freeType_edit").value=object.freeType;
       document.getElementById("document_comment_edit").value=object.comment;
       toggleDocumentEdit();
+      document.getElementById("documentSubmitEditButton").disabled=false;
       var elems = document.querySelectorAll('select');
       M.FormSelect.init(elems);
       M.updateTextFields();
@@ -2791,7 +2792,7 @@ function loadNotification (n){
           valid=false;
         };
       };
-      if(!valid) {document.getElementById("documentSubmitButton").disabled=false;};
+      if(!valid) {document.getElementById("documentNewSubmitButton").disabled=false;};
       return valid;
     };
 
@@ -2822,7 +2823,7 @@ function loadNotification (n){
         M.toast({html:"Please enter theme"});
         valid=false;
       };
-      if(!valid) {document.getElementById("documentSubmitButton").disabled=false;};
+      if(!valid) {document.getElementById("documentEditSubmitButton").disabled=false;};
       return valid;
     };
     
@@ -2873,6 +2874,7 @@ function loadNotification (n){
           counter:0
         };
         entries.files=[firstFile];
+        if (!entries.theme){entries.theme = entries.counterparty};
         refCoproperty.collection("Documents").add(entries).then(function(docref) {
           var fileRef = refCopropertyFiles.child("Documents").child(docref.id).child("0"); 
           fileRef.put(documentFile).then (function (){
