@@ -2513,24 +2513,16 @@ function loadNotification (n){
       };
       if (currentUser.role == roleAdministrator) {
           
-          var removeButton = document.createElement('button');
-          removeButton.setAttribute('style','float: right;margin-bottom: 3px');
-          removeButton.setAttribute('class','btn-floating waves-light red');
-          removeButton.setAttribute('onclick','prepareRemoveDocument('+JSON.stringify(d)+')');
-          var cellButtonIcon = document.createElement('i');
-          cellButtonIcon.setAttribute('class','material-icons right');
-          cellButtonIcon.innerHTML="delete";           
-          removeButton.appendChild(cellButtonIcon);
-          if (d.link) {
-            removeButton.disabled=true;
-            var buttonSpan = document.createElement('span');
-            buttonSpan.setAttribute("class","tooltipped");
-            buttonSpan.setAttribute('data-tooltip',"I am a tooltip hihi hihi");
-            buttonSpan.appendChild(removeButton);
-            body.appendChild(buttonSpan);
-          } else {body.appendChild(removeButton);};
+        var removeButton = document.createElement('button');
+        removeButton.setAttribute('style','float: right;margin-bottom: 3px');
+        removeButton.setAttribute('class','btn-floating waves-light red');
+        removeButton.setAttribute('onclick','prepareRemoveDocument('+JSON.stringify(d)+')');
+        var cellButtonIcon = document.createElement('i');
+        cellButtonIcon.setAttribute('class','material-icons right');
+        cellButtonIcon.innerHTML="delete";           
+        removeButton.appendChild(cellButtonIcon);
+        body.appendChild(removeButton);
           
-        
         var editButton = document.createElement('button');
         editButton.setAttribute('style','float: right;margin-right: 5px');
         editButton.setAttribute('class','modal-trigger btn-floating waves-light');
