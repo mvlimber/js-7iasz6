@@ -3456,14 +3456,14 @@ function loadNotification (n){
       };
 
       function getTransactionEvidenceEntries() {
-        var d = {
+        var d = Object.assign({
           type: document.getElementById("transactionEvidence_type").value,
           counterparty: transaction.name,
           before: "",
           link: selectedTransactionId,
           freeType: document.getElementById("transactionEvidence_freeType").value,
           updatedOn: getToDaysDate(),
-        };
+        },getUpdateInfo());
         return d;
       };
       
