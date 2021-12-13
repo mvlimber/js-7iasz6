@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 <html>
@@ -339,99 +340,66 @@ It was a ff dark and stormy night...
         <h5 >There are no Documents yet</h5>
         </div>
         <br>
-        <button id="documentNewButton" style="visibility: hidden; float: right" data-target="documentNew" class="btn-small waves-light modal-trigger" onclick="resetDocument()"><i class="material-icons right">add</i>New document</button>
-        <div id="documentEdit" class="modal">
+        <button id="documentNewButton" style="visibility: hidden; float: right" data-target="documentEdit" class="btn-small waves-light modal-trigger" onclick="resetDocument()"><i class="material-icons right">add</i>New document</button>
+        <div id="documentEdit" class="modal full">
           <div class="modal-content">
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
-            <h5>Update attributes document map</h5>
+            <h5>Upload document and enter its attributes</h5>
             <form>
-              <div class="input-field col s12 m4">
-                <select id="document_type_edit" required required="true" onchange="toggleDocumentEdit()"></select>
+              <div class="input-field" id="document_file">
               </div>
-              <div class="input-field col s12 m4" id="document_freeType_field_edit">
-                <input id="document_freeType_edit" type="text" class="validate" maxlength="8" data-length="8" >
-                <label for="document_freeType_edit">Free text type<b><font color='red'>*</font></b></label>
-                <span class="helper-text">displayed as self-choosen type</span>
-              </div>
-              <div class="input-field col s12 m4" id="document_theme_field_edit">
-                <input id="document_theme_edit" type="text" class="validate" maxlength="20" data-length="20" required required="true">
-                <label for="document_theme_edit">Theme<b><font color='red'>*</font></b></label>
-                <span class="helper-text" >displayed in title bar</span>
-              </div>
-              <div class="input-field col s12 m4" id="document_before_field_edit">
-                <input id="document_before_edit" type="text" class="datepicker datepickerFuture validate" >
-                <label for="document_before_edit">Before</label>
-                <span class="helper-text">by when action needed if any</span>
-              </div>
-              <div class="input-field col s12 m12">
-                <textarea id="document_comment_edit" maxlength="150" data-length="150"></textarea>
-                <label for="document_comment_edit">Comment</label>
-                <span class="helper-text" data-error="maximum 150 characters" >maximum 150 characters</span>
+              <div class="file-field input-field col s12 m12">
+                <div class="btn-small">
+                  <span id="documentUploadButtonLabel">PDF Document<b><font color='red'>*</font></b><i class="material-icons right">attach_file</i></span>
+                  <input type="file" id="documentFile">
+                </div>
+                <div class="file-path-wrapper">
+                  <input class="file-path validate" type="text" id="documentFileText">
+                  <span class="helper-text" data-error="only pfd, jpeg or png files" >pfd, jpeg or png file</span>
+                </div>
               </div>
             </form>
-            <button id="documentEditSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; writeDocument()">Save<i class="material-icons right">send</i></button>
+            <form>
+              <div class="row">
+              <div class="input-field col s12 m4">
+              <select id="document_type" required required="true" onchange="toggleDocument()"></select>
+              </div>
+              <div class="input-field col s12 m4" id="document_counterparty_field">
+                <input id="document_counterparty" type="text" class="validate" maxlength="20" data-length="20" >
+                <label for="document_counterparty">Counterparty<b><font color='red'>*</font></b></label>
+                <span class="helper-text" data-error="Maximum 20 characters">Up to 20 characters</span>
+              </div> 
+              <div class="input-field col s12 m4" id="document_before_field">
+                <input id="document_before" type="text" class="datepicker datepickerFuture validate" >
+                <label for="document_before">Before</label>
+                <span class="helper-text">reminder date</span>
+              </div>
+              <!--
+              <div class="input-field col s12 m4" id="document_link_field">
+                <select id="document_link" ></select>
+                <label>Link to</label>
+              </div>-->
+              <div class="input-field col s12 m4" id="document_freeType_field">
+                <input id="document_freeType" type="text" class="validate" maxlength="8" data-length="8" >
+                <label for="document_freeType">Free text type<b><font color='red'>*</font></b></label>
+                <span class="helper-text" data-error="Maximum 8 characters">up to 8 characters</span>
+              </div>
+              <div class="input-field col s12 m12">
+                <textarea id="document_comment" maxlength="150" data-length="150"></textarea>
+                <label for="document_text">Comment</label>
+                <span class="helper-text" data-error="maximum 150 characters" >maximum 150 characters</span>
+
+              </div>
+          </div>
+            </form>
+            
+            <button id="documentSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; writeDocument()">Save<i class="material-icons right">send</i></button>
             <a style="float: right;margin-left: 20px;margin-bottom: 3px"
               class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
               Cancel</a>
           </div>
         </div>
         
-        <div id="documentNew" class="modal full">
-        <div class="modal-content">
-          <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
-          <h5>Upload document and enter its attributes</h5>
-          <h6>(This will create a map: you can add documents later on)</h6>
-          <form>
-            <div class="input-field" id="document_file">
-            </div>
-            <div class="file-field input-field col s12 m12">
-              <div class="btn-small">
-                <span id="documentUploadButtonLabel">File<b><font color='red'>*</font></b><i class="material-icons right">attach_file</i></span>
-                <input type="file" id="documentFile">
-              </div>
-              <div class="file-path-wrapper">
-                <input class="file-path validate" type="text" id="documentFileText">
-                <span class="helper-text" data-error="only pfd, jpeg or png files" >pfd, jpeg or png file</span>
-              </div>
-            </div>
-          </form>
-          <form>
-            <div class="input-field col s12 m4">
-              <select id="document_type" required required="true" onchange="toggleDocument()"></select>
-            </div>
-            <div class="input-field col s12 m4" id="document_counterparty_field">
-              <input id="document_counterparty" type="text" class="validate" maxlength="20" data-length="20" >
-              <label for="document_counterparty">Counterparty</label>
-              <span class="helper-text" >f.i. name supplier</span>
-            </div> 
-            <div class="input-field col s12 m4" id="document_theme_field">
-              <input id="document_theme" type="text" class="validate" maxlength="20" data-length="20" >
-              <label for="document_theme">Theme</label>
-              <span class="helper-text" >displayed in title bar if no counterparty</span>
-            </div> 
-            <div class="input-field col s12 m4" id="document_before_field">
-              <input id="document_before" type="text" class="datepicker datepickerFuture validate" >
-              <label for="document_before">Before</label>
-              <span class="helper-text">by when action needed if any</span>
-            </div>
-            <div class="input-field col s12 m4" id="document_freeType_field">
-              <input id="document_freeType" type="text" class="validate" maxlength="8" data-length="8" >
-              <label for="document_freeType">Free text type<b><font color='red'>*</font></b></label>
-              <span class="helper-text" >displayed as self-choosen type</span>
-            </div>
-            <div class="input-field col s12 m12">
-              <textarea id="document_comment" maxlength="150" data-length="150"></textarea>
-              <label for="document_text">Comment</label>
-            </div>
-        
-          </form>
-          
-          <button id="documentNewSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; createDocument()">Save<i class="material-icons right">send</i></button>
-          <a style="float: right;margin-left: 20px;margin-bottom: 3px"
-            class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
-            Cancel</a>
-        </div>
-      </div>
         
         <div id="documentRemove" class="modal">
           <div class="modal-content">
@@ -2049,7 +2017,6 @@ if (navigator.vendor.toLowerCase().indexOf('apple') > -1){
     insertSelectOptions("meter_status", MeterStatus, "", "ACTIF");
     insertSelectOptions("notification_type", NotificationType, "type");
     insertSelectOptions("document_type", DocumentType, "type");
-    insertSelectOptions("document_type_edit", DocumentType, "type");
     insertSelectOptions("transactionEvidence_type", EvidenceType, "type");
     insertSelectOptions("member_type_edit", MemberType, "", "PERSO");
     
@@ -2205,7 +2172,7 @@ function loadNotification (n){
         M.updateTextFields();
         var elems = document.querySelectorAll('textarea');
         M.CharacterCounter.init(elems);
-        var elems = document.querySelectorAll('input[data-length]');
+        var elems = document.querySelectorAll('text');
         M.CharacterCounter.init(elems);
         
         
@@ -2502,7 +2469,7 @@ function loadNotification (n){
       var title = document.createElement('div');
       title.setAttribute("style","text-align:center");
       if (d.type == "GEASS") {title.innerHTML = "";}
-      else {title.innerHTML = (d.theme).substr(0,20);};
+      else {title.innerHTML = (d.counterparty).substr(0,20);};
       var titleLeft = document.createElement('span');
       /*titleLeft.setAttribute("style","float:left;font-family:'Lucida Console'; monospace");*/
       titleLeft.setAttribute("style","float:left;margin-rigth: 25%");
@@ -2525,6 +2492,11 @@ function loadNotification (n){
         titleRight.innerHTML = "<font color='red'>" + d.before+"</font>";
         bodyRight.innerHTML = "<font color='red'>" +"Act Before: " + d.before+ "</font>";
         bodyText.appendChild(bodyRight);
+        bodyText.appendChild(document.createElement('br'));
+        bodyRight = document.createElement('span');
+        bodyRight.setAttribute("style","float:right");
+        bodyRight.innerHTML = "updated:" +d.updatedOn;
+        bodyText.appendChild(bodyRight);
         body.appendChild(bodyText);
         body.appendChild(document.createElement('br'));
       } else {titleRight.innerHTML = d.updatedOn};
@@ -2532,41 +2504,13 @@ function loadNotification (n){
       header.appendChild (title);
       objectsRow.appendChild(header);
       body.setAttribute("class","collapsible-body");
-      
-      d.files.forEach(function(documentFile){
-        var fileBorder = document.createElement('div');
-        fileBorder.setAttribute("class","w3-panel w3-border");
-        fileBorder.setAttribute("style","box:3px 10px 8px #888888");
-        var fields = document.createElement('div');
-        fields.setAttribute("style","with:100%");
-        var fieldLeft = document.createElement('span');
-        fieldLeft.setAttribute("style","float:left");
-        if (documentFile.type == 'OTHER'){fieldLeft.innerHTML= "<b>File Type: </b>" + documentFile.freeType;}
-        else {fieldLeft.innerHTML= "<b>File Type: </b>" + DocumentType[documentFile.type];};
-        fields.appendChild(fieldLeft);
-        if (documentFile.counterparty){
-          var fieldRight = document.createElement('span');
-          fieldRight.setAttribute("style","float:right");
-          fieldRight.innerHTML="<b>Counterparty: </b>" + documentFile.counterparty;
-          fields.appendChild(fieldRight);
-        };
-        fileBorder.appendChild(fields);
-        fileBorder.appendChild(document.createElement('br'));
-        var fileFooter = makeFooter(documentFile);
-        var getFileButton = document.createElement("button");
-        getFileButton.setAttribute('class','btn-floating waves-light');
-        getFileButton.setAttribute('style','float:right;margin-right:5px');
-        var icon = document.createElement('i');
-        icon.setAttribute("class","material-icons right");
-        icon.innerHTML = "file_download";
-        getFileButton.appendChild(icon);
-        fileFooter.appendChild(getFileButton);
-        fileBorder.appendChild(fileFooter);
-        body.appendChild(fileBorder);
-        
-        
-      });
-      
+      if (d.comment){
+        var commentDiv = document.createElement('div');
+        commentDiv.setAttribute("style","margin-top: 0px; margin-bottom : 20px");
+        var commentEl= document.createTextNode("comment: "+d.comment);
+        commentDiv.appendChild(commentEl);
+        body.appendChild(commentDiv);
+      };
       if (currentUser.role == roleAdministrator) {
           
           var removeButton = document.createElement('button');
@@ -2592,13 +2536,22 @@ function loadNotification (n){
         editButton.setAttribute('style','float: right;margin-right: 5px');
         editButton.setAttribute('class','modal-trigger btn-floating waves-light');
         editButton.setAttribute("data-target", "documentEdit");
-        editButton.setAttribute('onclick','prepareEditDocument('+JSON.stringify(d)+')');
+        editButton.setAttribute('onclick','selectDocument('+JSON.stringify(d)+')');
         cellButtonIcon = document.createElement('i');
         cellButtonIcon.setAttribute('class','material-icons right');
         cellButtonIcon.innerHTML="edit";           
         editButton.appendChild(cellButtonIcon);
         body.appendChild(editButton);
       };
+      var getFileButton = document.createElement("button");
+      getFileButton.setAttribute('class','btn-small waves-light');
+      getFileButton.setAttribute('style','margin-right:5px');
+      getFileButton.innerHTML = "DownLoad";
+      var icon = document.createElement('i');
+      icon.setAttribute("class","material-icons right");
+      icon.innerHTML = "file_download";
+      getFileButton.appendChild(icon);
+      body.appendChild(getFileButton);
       if (d.link) {
         var getTransactionButton = document.createElement("button");
         getTransactionButton.setAttribute('class','btn-small waves-light modal-trigger');
@@ -2615,13 +2568,7 @@ function loadNotification (n){
       };
       
       var updatedFooter = document.createElement('div');
-      if (d.comment){
-        var commentDiv = document.createElement('div');
-        commentDiv.setAttribute("style","margin-top: 0px; margin-bottom : 20px");
-        var commentEl= document.createTextNode("comment: "+d.comment);
-        commentDiv.appendChild(commentEl);
-        updatedFooter.appendChild(commentDiv);
-      };var footer = document.createElement('p');
+      var footer = document.createElement('p');
       footer.setAttribute("style","font-size:12px");
       footer.innerHTML = "Updated On: " + d.updatedOn;
       updatedFooter.appendChild(footer);
@@ -2634,33 +2581,10 @@ function loadNotification (n){
       documentsList.appendChild (objectsRow);
       memberGet(d.updatedBy).then(function(author){
         footer.appendChild(memberLink(author));
-        //refCopropertyFiles.child("Documents").child(d.idFS).child("0").getDownloadURL().then(function(url) {
-        //  getFileButton.setAttribute('onclick','showFile('+JSON.stringify(url)+')');
-        //});
+        refCopropertyFiles.child("Documents").child(d.idFS).getDownloadURL().then(function(url) {
+          getFileButton.setAttribute('onclick','showFile('+JSON.stringify(url)+')');
+        });
       });
-    };
-
-    function makeFooter(docOrFile){
-      var updatedFooter = document.createElement('div');
-      if (docOrFile.comment){
-        var commentDiv = document.createElement('div');
-        commentDiv.setAttribute("style","margin-top: 0px; margin-bottom : 20px");
-        var commentEl= document.createTextNode("comment: "+docOrFile.comment);
-        commentDiv.appendChild(commentEl);
-        updatedFooter.appendChild(commentDiv);
-      };
-      var footer = document.createElement('p');
-      footer.setAttribute("style","font-size:12px");
-      footer.innerHTML = "Updated On: " + docOrFile.updatedOn;
-      updatedFooter.appendChild(footer);
-      footer = document.createElement('p');
-      footer.setAttribute("style","font-size:12px");
-      footer.innerHTML = "Updated By: ";
-      memberGet(docOrFile.updatedBy).then(function(author){
-        footer.appendChild(memberLink(author));
-        updatedFooter.appendChild(footer);
-      });
-      return updatedFooter;
     };
 
     function loadDocuments(){
@@ -2691,7 +2615,6 @@ function loadNotification (n){
       return {
         type: "",
         counterparty: "",
-        theme: "",
         before: "",
         link:"",
         freeType:"",
@@ -2709,7 +2632,6 @@ function loadNotification (n){
       paper = object;
       document.getElementById("document_type").value=object.type;
       document.getElementById("document_counterparty").value=object.counterparty;
-      document.getElementById("document_theme").value=object.theme;
       document.getElementById("document_before").value=object.before;
       document.getElementById("document_freeType").value=object.freeType;
       document.getElementById("document_comment").value=object.comment;
@@ -2718,31 +2640,13 @@ function loadNotification (n){
       document.getElementById("documentFileText").value="";
       /*listTransactions(document.getElementById("document_link"),object.link)*/
       toggleDocument();
-      document.getElementById("documentNewSubmitButton").disabled=false;
+      document.getElementById("documentSubmitButton").disabled=false;
       var elems = document.querySelectorAll('select');
       M.FormSelect.init(elems);
       M.updateTextFields();
       var elems = document.querySelectorAll('textarea');
         M.CharacterCounter.init(elems);
-        elems = document.querySelectorAll('input[data-length]');
-        M.CharacterCounter.init(elems);
-    };
-
-    function prepareEditDocument(object) {
-      paper = object;
-      document.getElementById("document_type_edit").value=object.type;
-      document.getElementById("document_theme_edit").value=object.theme;
-      document.getElementById("document_before_edit").value=object.before;
-      document.getElementById("document_freeType_edit").value=object.freeType;
-      document.getElementById("document_comment_edit").value=object.comment;
-      toggleDocumentEdit();
-      document.getElementById("documentEditSubmitButton").disabled=false;
-      var elems = document.querySelectorAll('select');
-      M.FormSelect.init(elems);
-      M.updateTextFields();
-      var elems = document.querySelectorAll('textarea');
-        M.CharacterCounter.init(elems);
-        elems = document.querySelectorAll('input[data-length]');
+        elems = document.querySelectorAll('input[type=text]');
         M.CharacterCounter.init(elems);
     };
 
@@ -2760,35 +2664,18 @@ function loadNotification (n){
         document.getElementById("document_freeType_field").style.display = "none";
       };
       if ((typeElement.value) && (typeElement.value != "GEASS"))  {
+        document.getElementById("document_before_field").style.display = "block";
         document.getElementById("document_counterparty_field").style.display = "block";
-        document.getElementById("document_theme_field").style.display = "block";
       } else {
+        document.getElementById("document_before_field").style.display = "none";
         document.getElementById("document_counterparty_field").style.display = "none";
-        document.getElementById("document_theme_field").style.display = "none";
       };
       var dUBL = document.getElementById("documentUploadButtonLabel");
       if (paper.idFS){dUBL.innerHTML = "option: replace PDF file with"}
       else {dUBL.innerHTML = "File<b><font color='red'>*</font></b>"};
     };
 
-    function toggleDocumentEdit(){
-      var typeElement = document.getElementById("document_type_edit");
-      var themeElement = document.getElementById("document_theme_edit");
-      if (!themeElement.value) {themeElement.value=""};
-      
-      if (typeElement.value == "OTHER") {
-        document.getElementById("document_freeType_field_edit").style.display = "block";
-      } else {
-        document.getElementById("document_freeType_field_edit").style.display = "none";
-      };
-      if ((typeElement.value) && (typeElement.value != "GEASS"))  {
-        document.getElementById("document_theme_field_edit").style.display = "block";
-      } else {
-        document.getElementById("document_theme_field_edit").style.display = "none";
-      };  
-    };
-
-    function validateNewDocument(){
+    function validateDocument(){
       var valid = true;
       if (!document.getElementById("document_type").checkValidity()) {
         M.toast({html:"Please enter type"});
@@ -2815,8 +2702,8 @@ function loadNotification (n){
         M.toast({html:"when Type = Other, Free text type is required"});
         valid=false;
       };
-      if ((typeElement.value != "") && (typeElement.value != "GEASS") && (!((document.getElementById("document_counterparty").value) ||(document.getElementById("document_theme").value)))){
-        M.toast({html:"Please enter counterparty or theme"});
+      if ((typeElement.value != "") && (typeElement.value != "GEASS") && (!document.getElementById("document_counterparty").value)){
+        M.toast({html:"Please enter counterparty"});
         valid=false;
       };
       documentFile = document.getElementById('documentFile').files[0];
@@ -2835,38 +2722,7 @@ function loadNotification (n){
           valid=false;
         };
       };
-      if(!valid) {document.getElementById("documentNewSubmitButton").disabled=false;};
-      return valid;
-    };
-
-    function validateDocument(){
-      var valid = true;
-      var typeElement = document.getElementById("document_type_edit");
-      if (!typeElement.checkValidity()) {
-        M.toast({html:"Please enter type"});
-        valid=false;
-      };
-      if (!document.getElementById("document_before_edit").checkValidity()) {
-        M.toast({html:"Please enter valid reminder date"});
-        valid=false;
-      };
-      if (!document.getElementById("document_freeType_edit").checkValidity()) {
-        M.toast({html:"Please enter valid free text type"});
-        valid=false;
-      };
-      if (!document.getElementById("document_comment_edit").checkValidity()) {
-        M.toast({html:"Please enter valid comment"});
-        valid=false;
-      };
-      if ((typeElement.value == "OTHER") && (!document.getElementById("document_freeType").value)){
-        M.toast({html:"when Type = Other, Free text type is required"});
-        valid=false;
-      };
-      if ((typeElement.value != "") && (typeElement.value != "GEASS") && (!(document.getElementById("document_theme_edit").value))){
-        M.toast({html:"Please enter theme"});
-        valid=false;
-      };
-      if(!valid) {document.getElementById("documentEditSubmitButton").disabled=false;};
+      if(!valid) {document.getElementById("documentSubmitButton").disabled=false;};
       return valid;
     };
     
@@ -2875,7 +2731,7 @@ function loadNotification (n){
       return (d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate());
     };
     
-    function getNewDocumentEntries(){
+    function getDocumentEntries(){
       var thisType = document.getElementById("document_type").value;
       var thisBefore;
       if (thisType == "GEASS"){thisBefore = ""}
@@ -2883,52 +2739,12 @@ function loadNotification (n){
       return Object.assign({
         type: thisType,
         counterparty: document.getElementById("document_counterparty").value,
-        theme: document.getElementById("document_theme").value,
         before: thisBefore,
         link: paper.link, /*document.getElementById("document_link").value,*/
         freeType: document.getElementById("document_freeType").value,
         comment: document.getElementById("document_comment").value
       },getUpdateInfo());
     };
-
-    function getDocumentEntries(){
-      var thisType = document.getElementById("document_type_edit").value;
-      var thisBefore;
-      if (thisType == "GEASS"){thisBefore = ""}
-      else {thisBefore = document.getElementById("document_before_edit").value};
-      return Object.assign({
-        type: thisType,
-        theme: document.getElementById("document_theme_edit").value,
-        before: thisBefore,
-        link: paper.link, /*document.getElementById("document_link").value,*/
-        freeType: document.getElementById("document_freeType_edit").value,
-        comment: document.getElementById("document_comment_edit").value
-      },getUpdateInfo());
-    };
-    
-    function createDocument(){
-      if (validateNewDocument()) { 
-        var entries =  getNewDocumentEntries();
-        var firstFile = Object.assign({
-          type: entries.type,
-          counterparty: entries.counterparty,
-          comments:"",
-          updatedBy: currentUser.id,
-          counter:0
-        },getUpdateInfo());
-        entries.files=[firstFile];
-        if (!entries.theme){entries.theme = entries.counterparty};
-        refCoproperty.collection("Documents").add(entries).then(function(docref) {
-          var fileRef = refCopropertyFiles.child("Documents").child(docref.id).child("0"); 
-          fileRef.put(documentFile).then (function (){
-            refreshDocuments();
-            M.Modal.getInstance(document.getElementById("documentNew")).close();
-          }).catch(function(error) {
-            M.toast({html:"Error adding document: " + error});
-          });
-        });
-      };
-    }
     
     function writeDocument(){
       if (validateDocument()) { 
