@@ -2515,9 +2515,8 @@ function loadNotification (n){
           
           var removeButton = document.createElement('button');
           removeButton.setAttribute('style','float: right;margin-bottom: 3px');
-          removeButton.setAttribute('class','modal-trigger btn-floating waves-light red');
-          removeButton.setAttribute("data-target", "documentRemove");
-          removeButton.setAttribute('onclick','popupRemoveDocument('+JSON.stringify(d)+')');
+          removeButton.setAttribute('class','btn-floating waves-light red');
+          removeButton.setAttribute('onclick','prepareRemoveDocument('+JSON.stringify(d)+')');
           var cellButtonIcon = document.createElement('i');
           cellButtonIcon.setAttribute('class','material-icons right');
           cellButtonIcon.innerHTML="delete";           
@@ -2596,6 +2595,15 @@ function loadNotification (n){
       };
     };
     
+    function prepareRemoveDocument(d) {
+      if (d.link){
+        M.toast({html:"Remove link or document from within linked transaction"});
+      } else {
+        paper=d;
+        M.Modal.getInstance(document.getElementById("documentRemove")).open();
+      }
+    }
+
     function popupRemoveDocument(d){paper=d;};
     function removeDocument(){
       refCoproperty.collection("Documents").doc(paper.idFS).delete().then(function(){
