@@ -5636,17 +5636,27 @@ function loadNotification (n){
 
       function refreshCopropertyUpdateInfo() {
         document.getElementById("coproperty_updatedOn").innerHTML  = currentCoproperty.updatedOn;
+        if (currentCoproperty.updatedBy == "SYSTE") {
+          emptyHTMLSet(document.getElementById("coproperty_updatedBy"));
+          document.getElementById("coproperty_updatedBy").appendChild(document.createTextNode("System"));
+        } else {
         memberGet(currentCoproperty.updatedBy).then(function(updater) {
           emptyHTMLSet(document.getElementById("coproperty_updatedBy"));
           document.getElementById("coproperty_updatedBy").appendChild(memberLink(updater));
         });
+        };
       };
       function refreshCopropertyCostCentersUpdateInfo() {
         document.getElementById("costCenters_updatedOn").innerHTML  = currentCoproperty.costCentersUpdatedOn;
-        memberGet(currentCoproperty.costCentersUpdatedBy).then(function(updater) {
+        if (currentCoproperty.updatedBy == "SYSTE") {
           emptyHTMLSet(document.getElementById("costCenters_updatedBy"));
-          document.getElementById("costCenters_updatedBy").appendChild(memberLink(updater));
-        });
+          document.getElementById("costCenters_updatedBy").appendChild(document.createTextNode("System"));
+        } else {
+          memberGet(currentCoproperty.costCentersUpdatedBy).then(function(updater) {
+            emptyHTMLSet(document.getElementById("costCenters_updatedBy"));
+            document.getElementById("costCenters_updatedBy").appendChild(memberLink(updater));
+          });
+        };
       };
       
       function addCopropertyMeter(){
