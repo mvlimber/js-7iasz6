@@ -1280,6 +1280,27 @@ It was a ff dark and stormy night...
               <div class="input-field col s12 m4">
                 <select id="meter_status" required aria-required="true"></select>
               </div>
+              <div class="input-field col s12 m4">
+                <select id="meter_digits" required aria-required="true">
+                  <option value="" disabled selected>number of digits before the comma</option>
+                  <option value="1">1</option>
+                  <option value="1">2</option>
+                  <option value="1">3</option>
+                  <option value="1">4</option>
+                  <option value="1">5</option>
+                  <option value="1">6</option>
+                  <option value="1">7</option>
+                  <option value="1">8</option>
+                </select>
+              </div>
+              <div class="input-field col s12 m4">
+              <select id="meter_decimals" required aria-required="true">
+                <option value="" disabled selected>number of digits after the comma</option>
+                <option value="1">0</option>
+                <option value="1">1</option>
+                <option value="1">2</option>
+              </select>
+            </div>
             </form>
             <button id="meterSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; writeMeter()">Submit<i class="material-icons right">send</i></button>
             <a style="float: right;margin-bottom: 3px"
@@ -4831,6 +4852,8 @@ function loadNotification (n){
         document.getElementById("meter_type").value=meterData.type;
         document.getElementById("meter_id").value=meterData.meter;
         document.getElementById("meter_status").value=meterData.status;
+        document.getElementById("meter_digits").value=meterData.digits;
+        document.getElementById("meter_decimals").value=meterData.decimals;
         document.getElementById("meterSubmitButton").disabled=false;
         var elems = document.querySelectorAll('select');
         M.FormSelect.init(elems);
@@ -4851,6 +4874,14 @@ function loadNotification (n){
           M.toast({html:"Please enter Status"});
           valid=false;
         };
+        if (!document.getElementById("meter_digits").checkValidity()) {
+          M.toast({html:"Please enter Status"});
+          valid=false;
+        };
+        if (!document.getElementById("meter_decimals").checkValidity()) {
+          M.toast({html:"Please enter Status"});
+          valid=false;
+        };
         if (!valid) {document.getElementById("meterSubmitButton").disabled=false;};
         return valid;
       };
@@ -4862,6 +4893,8 @@ function loadNotification (n){
               type: document.getElementById("meter_type").value,
               meter: document.getElementById("meter_id").value,
               status: document.getElementById("meter_status").value,
+              digits: Number(document.getElementById("meter_digits").value),
+              decimals: Number(document.getElementById("meter_decimals").value),
             };
             if (Boolean(selectedMeterData.coproperty)) {
               refCoproperty.collection("Meters").doc(selectedMeterId).update(entries).then(function(docrefmeter) {
@@ -4885,6 +4918,8 @@ function loadNotification (n){
               type: document.getElementById("meter_type").value,
               meter: document.getElementById("meter_id").value,
               status: document.getElementById("meter_status").value,
+              digits: Number(document.getElementById("meter_digits").value),
+              decimals: Number(document.getElementById("meter_decimals").value),
               readings: []
             };
             if (handlingCopropertyMeter) {
@@ -4916,6 +4951,9 @@ function loadNotification (n){
         document.getElementById("meter_type").value="";
         document.getElementById("meter_id").value="";
         document.getElementById("meter_status").value="ACTIF";
+        document.getElementById("meter_digits").value="";
+        document.getElementById("meter_decimals").value="";
+        
         document.getElementById("meterSubmitButton").disabled=false;
         var elems = document.querySelectorAll('select');
         M.FormSelect.init(elems);
