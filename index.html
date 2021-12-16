@@ -4006,7 +4006,8 @@ function loadNotification (n){
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);  
 
-        cellContent = document.createTextNode(mr.readings[0].date);
+        if (mr.readings[0]) {cellContent = document.createTextNode(mr.readings[0].date);}
+        else {cellContent = document.createTextNode("");};
         cell = document.createElement('td');
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);
@@ -4146,8 +4147,8 @@ function loadNotification (n){
         if (meterReading.decimals){
           stepAtt = "0.";
           var nul = "0";
-          var stapAttPart = nul.repeat(meterReading.decimals - 1);
-          stepAtt =+ stapAttPart; stapAtt += "1";
+          var stepAttPart = nul.repeat(meterReading.decimals - 1);
+          stepAtt =+ stepAttPart; stepAtt += "1";
           document.getElementById("meterReading_reading_helper_edit").innerHTML =  "maximum " + meterReading.digits + " digits before and " + meterReading.decimals + " digits after the comma";
           document.getElementById("meterReading_reading_helper_edit").setAttribute("helper-text", "maximum " + meterReading.digits + " digits before and " + meterReading.decimals + " digits after the comma");
         } else {
