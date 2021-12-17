@@ -4102,7 +4102,7 @@ function loadNotification (n){
         document.getElementById("meterReading_id").value = mr.meter;
         if ((currentUser.role == roleAdministrator) || (currentUser.id == thisProperty.owner)) {
          document.getElementById("meterReading_edit_button_frame").style.display= "block";
-        } else{document.getElementById("meterReading_edit_button_frame").style.display= "none"}
+        } else{document.getElementById("meterReading_edit_button_frame").style.display= "none"};
         containsNewReading = (mr.readings[0]) && (lastReguDate.localeCompare(mr.readings[0].date) < 1);
         if (containsNewReading) {
           document.getElementById("meterReading_reading").value = mr.readings[0].reading;
@@ -4208,13 +4208,13 @@ function loadNotification (n){
         };
         var readingPicture = document.getElementById('meterReading_picture_edit_file').files[0];
         let allowed_mime_types = [ 'image/jpeg', 'image/png' ];
-        let allowed_size_kb = 500;
+        let allowed_size_kb = 2000;
         if (readingPicture) {
           if(allowed_mime_types.indexOf(readingPicture.type) == -1) {
             M.toast({html:"Incorrect file type (only jpeg or png allowed)"});
             valid=false;
           } else if(readingPicture.size > allowed_size_kb*1024) {
-            M.toast({html:"Picture exceeds max size 500KB"});
+            M.toast({html:"Picture exceeds max size 2MB"});
             valid=false;
           } else (picturePresent = true);
         }
@@ -4232,8 +4232,11 @@ function loadNotification (n){
             thisReading[0].picture = picturePresent;
             thisReading[0].updatedBy = currentUser.id;
           } else {
+            var oldCounter;
+            if (thisReading[0]) {oldCounter = thisReading[0].counter}
+            else {oldCounter= -1};
             thisReading.unshift({
-              counter : thisReading[0].counter + 1,
+              counter : oldCounter + 1,
               picture : picturePresent,
               reading : Number(document.getElementById("meterReading_reading_edit").value),
               date: document.getElementById("meterReading_date_edit").value,
