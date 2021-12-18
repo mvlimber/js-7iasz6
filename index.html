@@ -4208,13 +4208,13 @@ function loadNotification (n){
         };
         var readingPicture = document.getElementById('meterReading_picture_edit_file').files[0];
         let allowed_mime_types = [ 'image/jpeg', 'image/png' ];
-        let allowed_size_kb = 2000;
+        let allowed_size_kb = 4000;
         if (readingPicture) {
           if(allowed_mime_types.indexOf(readingPicture.type) == -1) {
             M.toast({html:"Incorrect file type (only jpeg or png allowed)"});
             valid=false;
           } else if(readingPicture.size > allowed_size_kb*1024) {
-            M.toast({html:"Picture exceeds max size 2MB"});
+            M.toast({html:"Picture exceeds max size 4MB"});
             valid=false;
           } else (picturePresent = true);
         }
