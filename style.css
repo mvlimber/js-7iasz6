@@ -21,6 +21,10 @@ body {
   scroll-behavior: smooth;
 }
 
+.row{
+  padding: 0 !important;
+}
+
 .material-tooltip {
   background-color: black;
 }
