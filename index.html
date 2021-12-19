@@ -1268,16 +1268,19 @@ It was a ff dark and stormy night...
             <h5>Enter meter</h5>
               <form>
                 <div class="row">
-                  <div class="input-field col s12 m4">
+                  <div class="input-field col s6 m4">
                     <input id="meter_id" type="text" maxlength="10" data-length="10" class="validate" required aria-required="true" pattern="([A-Z]|[0-9]){4,10}">
                     <label for="meter_id">ID meter<b><font color='red'>*</font></b></label>
                     <span class="helper-text" data-error="Digits or capitals,f.i. 99DB5175">Digits or capitals,f.i. 99DB5175</span>
                   </div>
+                    <div class="input-field col s6 m6">
+                    <select id="meter_type" required aria-required="true"></select>
+                  </div>
                 </div>
                 <div class="row">
-                  <div class="input-field col s12 m6">
+                  <div class="input-field col s6 m4">
                     <select id="meter_digits" required aria-required="true">
-                      <option value="" disabled selected>number of digits before the comma*</option>
+                      <option value="" disabled selected>Select*</option>
                       <option value="1">1</option>
                       <option value="2">2</option>
                       <option value="3">3</option>
@@ -1287,34 +1290,29 @@ It was a ff dark and stormy night...
                       <option value="7">7</option>
                       <option value="8">8</option>
                     </select>
-                    <span class="helper-text" data-error="digits before the comma" >digits before the comma</span>
+                    <span class="helper-text" data-error="digits before the comma" >digits before comma</span>
                   </div>
-                  <div class="input-field col s12 m6">
+                  <div class="input-field col s6 m4">
                     <select id="meter_decimals" required aria-required="true">
-                      <option value="" disabled selected>number of digits after the comma*</option>
+                      <option value="" disabled selected>Select*</option>
                       <option value="0">0</option>
                       <option value="1">1</option>
                       <option value="2">2</option>
                     </select>
-                    <span class="helper-text" data-error="digits after the comma">digits after the comma</span>
+                    <span class="helper-text" data-error="digits after comma">digits before comma</span>
                   </div>
-                </div>
-                <div class="row">
-                  <div class="input-field col s12 m6">
-                    <select id="meter_type" required aria-required="true"></select>
-                  </div>
-                  <div class="input-field col s12 m6">
-                        <select id="meter_status" required aria-required="true"></select>
+                  <div class="input-field col s6 m4">
+                    <select id="meter_status" required aria-required="true"></select>
                   </div>
                 </div>
               </form>
+              <button id="meterSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; writeMeter()">Submit<i class="material-icons right">send</i></button>
+              <a style="float: right;margin-bottom: 3px"
+                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+          </div>
+          
             
-          </div>
-          <div class="modal-footer">
-            <button id="meterSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; writeMeter()">Submit<i class="material-icons right">send</i></button>
-            <a style="float: right;margin-bottom: 3px"
-              class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
-          </div>
+          
         </div>
         <!------------------------------------------------------------------------------------------>
         <div id="Properties" class="col s12">
