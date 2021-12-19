@@ -1083,14 +1083,14 @@ It was a ff dark and stormy night...
         <div id="memberWrite" class="modal full">
           <div class="modal-content">
           <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
-              
             <h5> Enter member data</h5>
             <form >
+              <div id="memberPersonFrame_edit" class="row">
               <div class="input-field col s12 m4">
                   <select id="member_type_edit" required required="true" onchange="toggleMember_edit()"></select>
               </div>
-              
-              <div id="memberPersonFrame_edit">
+              </div>
+              <div id="memberPersonFrame_edit" class="row">
                 <div class="input-field col s12 m4">
                   <i class="material-icons prefix">account_circle</i>
                   <input id="member_firstName_edit" type="text" class="validate" maxlength="50" data-length="50" >
@@ -1104,7 +1104,7 @@ It was a ff dark and stormy night...
                   <span class="helper-text" data-error="maximum 50 characters" ></span>
                 </div>
               </div>
-              <div id="memberCompanyFrame_edit">
+              <div id="memberCompanyFrame_edit" class="row">
                 <div class="input-field col s12 m8">
                   <i class="material-icons prefix">business</i>
                   <input id="member_companyName_edit" type="text" class="validate" maxlength="50" data-length="50" >
@@ -1118,6 +1118,7 @@ It was a ff dark and stormy night...
                   <span class="helper-text" data-error="maximum 50 characters" ></span>
                 </div>
               </div>
+              <div class="row">
               <div class="input-field col s12">
                 <i class="material-icons prefix">email</i>
                 <input id="member_email_edit" type="email" class="validate" maxlength="70" >
@@ -1169,6 +1170,7 @@ It was a ff dark and stormy night...
                 <input  id="member_bus_edit" type="text" class="validate" maxlength="3" data-length="3" >
                 <label for="member_bus_edit">Bus</label>
                 <span class="helper-text" data-error="Example: 12" >Example: 12</span>
+              </div>
               </div>
             </form>
             <button id="memberSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; writeMember()">Submit<i class="material-icons right">send</i></button>
