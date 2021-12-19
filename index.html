@@ -1128,7 +1128,7 @@ It was a ff dark and stormy night...
                 <i class="material-icons prefix">phone</i>
                 <input id="member_phoneHome_edit" type="tel" pattern="([+]?[0-9]|[ ])*" maxlength="30" class="validate">
                 <label for="member_phoneHome_edit">Telephone Home</label>
-                <span class="helper-text" data-error="Only +, digits or spaces, max 30. Example: +32 2 456 789" >Only digits or spaces. Example: +32 2 456 789</span>
+                <span class="helper-text" data-error="Only +, digits or spaces, max 30. Example: +32 2 456 789" >Digits or spaces, f.i. +32 2 456 789</span>
               </div>
               <div class="input-field col s12 m6">
                 <i class="material-icons prefix">phone</i>
@@ -1152,7 +1152,7 @@ It was a ff dark and stormy night...
               <div class="input-field col s6 m2">
                 <input  id="member_zip_edit" type="text" class="validate" min="0" maxlength="10" data-length="10" >
                 <label for="member_zip_edit" >Zip</label>
-                <span class="helper-text" data-error="Max 10 characters. For Belgium 4 digits. Example Belgium: 1730">"Example Belgium: 1730"</span>
+                <span class="helper-text" data-error="For Belgium 4 digits,f.i. 1730">"Example Belgium: 1730"</span>
               </div>
 
               <div class="input-field col s12 m4">
@@ -1163,12 +1163,12 @@ It was a ff dark and stormy night...
               <div class="input-field col s6 m2">
                 <input  id="member_houseNumber_edit" type="text" class="validate" maxlength="10" data-length="10" >
                 <label for="member_houseNumber_edit">Number</label>
-                <span class="helper-text" data-error="Max 10 characters. Example 26A">Max 10 characters. Example 26A</span>
+                <span class="helper-text" data-error="Example: 26A">Example: 26A</span>
               </div>
               <div class="input-field col s6 m2">
                 <input  id="member_bus_edit" type="text" class="validate" maxlength="3" data-length="3" >
                 <label for="member_bus_edit">Bus</label>
-                <span class="helper-text" data-error="Max 3 characters. Example 12" >Max 3 characters. Example 12</span>
+                <span class="helper-text" data-error="Example: 12" >Example: 12</span>
               </div>
             </form>
             <button id="memberSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; writeMember()">Submit<i class="material-icons right">send</i></button>
@@ -1844,30 +1844,12 @@ It was a ff dark and stormy night...
         responsiveThreshold: Infinity
     };
 
-    var elems = document.querySelectorAll('select');
-    var instances = M.FormSelect.init(elems); 
-
-    elems = document.querySelectorAll('input[data-length]');
-        M.CharacterCounter.init(elems);
+    var elems = document.querySelectorAll('input[data-length]');
+    M.CharacterCounter.init(elems);
     
-    /*elems = document.querySelectorAll('.tooltipped');
-    instances = M.Tooltip.init(elems);*/
-
-/*function isIPhoneMobile () {
-   // credit to Timothy Huang for this regex test:
-   // https://dev.to/timhuang/a-simple-way-to-detect-if-browser-is-on-a-mobile-device-with-javascript-44j3
-   if(/iPhone|iPad|iPod Mini/i.test(navigator.userAgent)){
-       return true
-   }
-   else {
-       return false
-   };
-};*/
-
-if (navigator.vendor.toLowerCase().indexOf('apple') > -1){  
-  console.log("Only display in Safari")  ;
- 
-
+    elems = document.querySelectorAll('select');
+    var instances = M.FormSelect.init(elems);
+    if (navigator.vendor.toLowerCase().indexOf('apple') > -1){  
       var i;
       for (i = 0; i < elems.length; i++) {elems[i].setAttribute("class" , "browser-default");};
     };
