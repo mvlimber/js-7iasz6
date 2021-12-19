@@ -1358,17 +1358,17 @@ It was a ff dark and stormy night...
 
           <div id="propertyAdd" class="modal">
             <div class="modal-content">
-            <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
-              
+              <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
               <h5> New Property</h5>
-              <form >
+              <div class="row">
+              <form>
                 <div class="input-field col s6 m6">
                   <select id="property_type_add" required aria-required="true"></select>
                 </div>
                 <div class="input-field col s6 m6">
                   <input id="property_code_add" type="text" pattern="([A-Z]|[0-9]){1,4}" maxlength="4" data-length="4" class="validate" required aria-required="true">
                   <label for="property_code_add">Code<b><font color='red'>*</font></b></label>
-                  <span class="helper-text" data-error="Capitals or numbers,e.g. A1">Capitals or numbers,e;g. A1</span>
+                  <span class="helper-text" data-error="Capitals or numbers,f.i. A1">Capitals or numbers,f.i. A1</span>
                 </div>
                 
                 
@@ -1383,8 +1383,8 @@ It was a ff dark and stormy night...
                   <label for="property_cellar_add">Cellar(s)</label>
                   <span class="helper-text" data-error="A string of max 10 digits: Example: C1, C2">A string of max 10 digits: Example: C1,C2</span>
                 </div>
-                
               </form>
+              </div>
             </div>
             <div class="modal-footer col s12 m12">
               <button id="propertyAddButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; addProperty()">Save and complete by adding meters<i class="material-icons right">send</i></button>
