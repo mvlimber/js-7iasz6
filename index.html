@@ -1359,7 +1359,7 @@ It was a ff dark and stormy night...
                   <select id="property_owner_add" required aria-required="true">
                     <option value="" disabled selected>Select the owner</option>
                   </select>
-                  <label for="property_owner_add">Owner<b><font color='red'>*</font></b></label>
+                  <span class="helper-text" >Owner</span>
                 </div>
                 <div class="input-field col s12 m6">
                   <input id="property_cellar_add" type="text" maxlength="10" data-length="10" class="validate">
@@ -1368,12 +1368,13 @@ It was a ff dark and stormy night...
                 </div>
               </form>
               </div>
-            </div>
-            <div class="modal-footer col s12 m12">
-              <button id="propertyAddButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; addProperty()">Save and complete by adding meters<i class="material-icons right">send</i></button>
+            
+            
+              <button id="propertyAddButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; addProperty()">Save and complete<i class="material-icons right">send</i></button>
               <a style="float: right;margin-bottom: 3px"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
-            </div>
+            
+          </div>
           </div>
 
           <div id="newOwner" class="modal">
