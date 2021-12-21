@@ -991,30 +991,26 @@ It was a ff dark and stormy night...
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
             <h5> View member</h5>
             <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
-                
-                    <div class="input-field col s12 m4" id="member_firstName_frame">
-                      <i class="material-icons prefix">account_circle</i>
-                      <input id="member_firstName" type="text" readonly>
-                      <label for="member_firstName" >First Name</label>
-                    </div>
-                    <div class="input-field col s12 m8" id="member_lastName_frame">
-                      <i class="material-icons prefix">account_circle</i>
-                      <input id="member_lastName" type="text" readonly>
-                      <label for="member_lastName" >Last Name</label>
-                    </div>
-                
-                
-                  <div class="input-field col s12 m8" id ="member_companyName_frame" >
-                    <i class="material-icons prefix">business</i>
-                    <input id="member_companyName" type="text" readonly>
-                    <label for="member_companyName">Company Name</label>
-                  </div>
-                  <div class="input-field col s12 m4" id ="member_registrationNumber_frame">
-                    <i class="material-icons prefix">business</i>
-                    <input id="member_registrationNumber" type="text" readonly>
-                    <label for="member_registrationNumber">Registration Number</label>
-                  </div>
-                
+                <div class="input-field col s12 m4" id="member_firstName_frame">
+                  <i class="material-icons prefix">account_circle</i>
+                  <input id="member_firstName" type="text" readonly>
+                  <label for="member_firstName" >First Name</label>
+                </div>
+                <div class="input-field col s12 m8" id="member_lastName_frame">
+                  <i class="material-icons prefix">account_circle</i>
+                  <input id="member_lastName" type="text" readonly>
+                  <label for="member_lastName" >Last Name</label>
+                </div>
+                <div class="input-field col s12 m8" id ="member_companyName_frame" >
+                  <i class="material-icons prefix">business</i>
+                  <input id="member_companyName" type="text" readonly>
+                  <label for="member_companyName">Company Name</label>
+                </div>
+                <div class="input-field col s12 m4" id ="member_registrationNumber_frame">
+                  <i class="material-icons prefix">business</i>
+                  <input id="member_registrationNumber" type="text" readonly>
+                  <label for="member_registrationNumber">Registration Number</label>
+                </div>
                 <div class="input-field col s12">
                 <i class="material-icons prefix">email</i>
                 <input id="member_email" type="email" readonly>
@@ -1085,38 +1081,34 @@ It was a ff dark and stormy night...
           <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
             <h5> Enter member data</h5>
             <form >
-              <div id="memberPersonFrame_edit" class="row">
+              <div class="row">
               <div class="input-field col s12 m4">
                   <select id="member_type_edit" required required="true" onchange="toggleMember_edit()"></select>
               </div>
               </div>
-              <div id="memberPersonFrame_edit" class="row">
-                <div class="input-field col s12 m4">
-                  <i class="material-icons prefix">account_circle</i>
-                  <input id="member_firstName_edit" type="text" class="validate" maxlength="50" data-length="50" >
-                  <label for="member_firstName_edit" >First Name<b><font color='red'>*</font></b></label>
-                  <span class="helper-text" data-error="maximum 50 characters" ></span>
-                </div>
-                <div class="input-field col s12 m8">
-                  <i class="material-icons prefix">account_circle</i>
-                  <input id="member_lastName_edit" type="text" class="validate" maxlength="50" data-length="50" >
-                  <label for="member_lastName_edit" >Last Name <b><font color='red'>*</font></b></label>
-                  <span class="helper-text" data-error="maximum 50 characters" ></span>
-                </div>
+              <div class="input-field col s12 m4" id="member_firstName_edit_frame">
+                <i class="material-icons prefix">account_circle</i>
+                <input id="member_firstName_edit" type="text" class="validate" maxlength="50" data-length="50" >
+                <label for="member_firstName_edit" >First Name<b><font color='red'>*</font></b></label>
+                <span class="helper-text" data-error="maximum 50 characters" ></span>
               </div>
-              <div id="memberCompanyFrame_edit" class="row">
-                <div class="input-field col s12 m8" id="member_companyName_edit_frame">
-                  <i class="material-icons prefix">business</i>
-                  <input id="member_companyName_edit" type="text" class="validate" maxlength="50" data-length="50" >
-                  <label for="member_companyName_edit">Company Name<b><font color='red'>*</font></b></label>
-                  <span class="helper-text" data-error="maximum 50 characters" ></span>
-                </div>
-                <div class="input-field col s12 m4" id="member_registrationNumber_edit_frame">
-                  <i class="material-icons prefix">business</i>
-                  <input id="member_registrationNumber_edit" type="text" class="validate" maxlength="50" data-length="50" >
-                  <label for="member_registrationNumber_edit" >Registration Number<b><font color='red'>*</font></b></label>
-                  <span class="helper-text" data-error="maximum 50 characters" ></span>
-                </div>
+              <div class="input-field col s12 m8" id="member_lastName_edit_frame">
+                <i class="material-icons prefix">account_circle</i>
+                <input id="member_lastName_edit" type="text" class="validate" maxlength="50" data-length="50" >
+                <label for="member_lastName_edit" >Last Name <b><font color='red'>*</font></b></label>
+                <span class="helper-text" data-error="maximum 50 characters" ></span>
+              </div>
+              <div class="input-field col s12 m8" id="member_companyName_edit_frame">
+                <i class="material-icons prefix">business</i>
+                <input id="member_companyName_edit" type="text" class="validate" maxlength="50" data-length="50" >
+                <label for="member_companyName_edit">Company Name<b><font color='red'>*</font></b></label>
+                <span class="helper-text" data-error="maximum 50 characters" ></span>
+              </div>
+              <div class="input-field col s12 m4" id="member_registrationNumber_edit_frame">
+                <i class="material-icons prefix">business</i>
+                <input id="member_registrationNumber_edit" type="text" class="validate" maxlength="50" data-length="50" >
+                <label for="member_registrationNumber_edit" >Registration Number<b><font color='red'>*</font></b></label>
+                <span class="helper-text" data-error="maximum 50 characters" ></span>
               </div>
               <div class="row">
               <div class="input-field col s12">
@@ -4536,12 +4528,15 @@ function loadNotification (n){
 
         function toggleMember_edit() {
           if (document.getElementById("member_type_edit").value == "PERSO"){
-            document.getElementById("memberPersonFrame_edit").style.display="block";
-            document.getElementById("memberCompanyFrame_edit").style.display="none";
-            
+            document.getElementById("member_firstName_edit_frame").style.display="block";
+            document.getElementById("member_lastName_edit_frame").style.display="block";
+            document.getElementById("member_companyName_edit_frame").style.display="none";
+            document.getElementById("member_registrationNumber_edit_frame").style.display="none";
           } else {
-            document.getElementById("memberPersonFrame_edit").style.display="none";
-            document.getElementById("memberCompanyFrame_edit").style.display="block";
+            document.getElementById("member_firstName_edit_frame").style.display="none";
+            document.getElementById("member_lastName_edit_frame").style.display="none";
+            document.getElementById("member_companyName_edit_frame").style.display="block";
+            document.getElementById("member_registrationNumber_edit_frame").style.display="block";
           };
         };
 
