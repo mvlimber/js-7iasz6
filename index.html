@@ -341,7 +341,7 @@ It was a ff dark and stormy night...
         </div>
         <br>
         <button id="documentNewButton" style="visibility: hidden; float: right" data-target="documentEdit" class="btn-small waves-light modal-trigger" onclick="resetDocument()"><i class="material-icons right">add</i>New document</button>
-        <div id="documentEdit" class="modal full">
+        <div id="documentEdit" class="modal">
           <div class="modal-content">
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
             <h5>Upload document and enter its attributes</h5>
@@ -360,14 +360,13 @@ It was a ff dark and stormy night...
               </div>
             </form>
             <form>
-              <div class="row">
+              
               <div class="input-field col s12 m4">
-              <select id="document_type" required required="true" onchange="toggleDocument()"></select>
+                <select id="document_type" required required="true" onchange="toggleDocument()"></select>
               </div>
               <div class="input-field col s12 m4" id="document_counterparty_field">
                 <input id="document_counterparty" type="text" class="validate" maxlength="20" data-length="20" >
                 <label for="document_counterparty">Counterparty<b><font color='red'>*</font></b></label>
-                <span class="helper-text" data-error="Maximum 20 characters">Up to 20 characters</span>
               </div> 
               <div class="input-field col s12 m4" id="document_before_field">
                 <input id="document_before" type="text" class="datepicker datepickerFuture validate" >
@@ -382,15 +381,12 @@ It was a ff dark and stormy night...
               <div class="input-field col s12 m4" id="document_freeType_field">
                 <input id="document_freeType" type="text" class="validate" maxlength="8" data-length="8" >
                 <label for="document_freeType">Free text type<b><font color='red'>*</font></b></label>
-                <span class="helper-text" data-error="Maximum 8 characters">up to 8 characters</span>
               </div>
               <div class="input-field col s12 m12">
                 <textarea id="document_comment" maxlength="150" data-length="150"></textarea>
                 <label for="document_text">Comment</label>
-                <span class="helper-text" data-error="maximum 150 characters" >maximum 150 characters</span>
-
               </div>
-          </div>
+          
             </form>
             
             <button id="documentSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; writeDocument()">Save<i class="material-icons right">send</i></button>
@@ -1320,7 +1316,6 @@ It was a ff dark and stormy night...
             <button style="float: right" data-target="propertyAdd" class="btn-small waves-light modal-trigger" onclick="resetSelectedProperty()"><i class="material-icons right">add</i>New Property</button>
           </div>
 
-
           <div id="previousOwners" class="modal">
             <div class="modal-content">
               <a style="float: right"
@@ -1368,12 +1363,9 @@ It was a ff dark and stormy night...
                 </div>
               </form>
               </div>
-            
-            
               <button id="propertyAddButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; addProperty()">Save and complete<i class="material-icons right">send</i></button>
               <a style="float: right;margin-bottom: 3px"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
-            
           </div>
           </div>
 
@@ -2637,8 +2629,7 @@ function loadNotification (n){
       M.updateTextFields();
       var elems = document.querySelectorAll('textarea');
         M.CharacterCounter.init(elems);
-        elems = document.querySelectorAll('input[type=text]');
-        M.CharacterCounter.init(elems);
+        
     };
 
     function toggleDocument(){
