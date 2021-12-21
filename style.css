@@ -15,6 +15,7 @@ body {
 
 .modal.full {                                                                      
   width: 100vw; 
+  max-width: 1750px;
   max-height: 100vh; 
   height: 100vh;
   top: 0 !important;
