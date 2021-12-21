@@ -991,30 +991,30 @@ It was a ff dark and stormy night...
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
             <h5> View member</h5>
             <div class="w3-panel w3-border" style="box-shadow: 5px 10px 8px #888888">
-                <div id="memberPersonFrame">
-                    <div class="input-field col s12 m4">
+                
+                    <div class="input-field col s12 m4" id="member_firstName_frame">
                       <i class="material-icons prefix">account_circle</i>
                       <input id="member_firstName" type="text" readonly>
                       <label for="member_firstName" >First Name</label>
                     </div>
-                    <div class="input-field col s12 m8">
+                    <div class="input-field col s12 m8" id="member_lastName_frame">
                       <i class="material-icons prefix">account_circle</i>
                       <input id="member_lastName" type="text" readonly>
                       <label for="member_lastName" >Last Name</label>
                     </div>
-                </div>
-                <div id="memberCompanyFrame">
-                  <div class="input-field col s12 m8">
+                
+                
+                  <div class="input-field col s12 m8" id ="member_companyName_frame" >
                     <i class="material-icons prefix">business</i>
                     <input id="member_companyName" type="text" readonly>
                     <label for="member_companyName">Company Name</label>
                   </div>
-                  <div class="input-field col s12 m4">
+                  <div class="input-field col s12 m4" id ="member_registrationNumber_frame">
                     <i class="material-icons prefix">business</i>
                     <input id="member_registrationNumber" type="text" readonly>
                     <label for="member_registrationNumber">Registration Number</label>
                   </div>
-                </div>
+                
                 <div class="input-field col s12">
                 <i class="material-icons prefix">email</i>
                 <input id="member_email" type="email" readonly>
@@ -1268,6 +1268,7 @@ It was a ff dark and stormy night...
           <div class="modal-content">
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
             <h5>Enter meter</h5>
+            <div class="row">
               <form>
                 <div class="input-field col s6 m6">
                   <select id="meter_type" required aria-required="true"></select>
@@ -1287,23 +1288,24 @@ It was a ff dark and stormy night...
                     <option value="8">8</option>
                   </select>
                   <span class="helper-text" data-error="digits before the comma" >digits before comma</span>
-                  </div>
-                  <div class="input-field col s6 m4">
-                    <select id="meter_decimals" required aria-required="true">
-                      <option value="" disabled selected>Select*</option>
-                      <option value="0">0</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                    </select>
-                    <span class="helper-text" data-error="digits after comma">digits before comma</span>
-                  </div>
-                  <div class="input-field col s6 m4">
-                    <select id="meter_status" required aria-required="true"></select>
-                    <span class="helper-text">active/removed</span>
-                  </div>
+                </div>
+                <div class="input-field col s6 m4">
+                  <select id="meter_decimals" required aria-required="true">
+                    <option value="" disabled selected>Select*</option>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
+                  <span class="helper-text" data-error="digits after comma">digits before comma</span>
+                </div>
+                <div class="input-field col s6 m4">
+                  <select id="meter_status" required aria-required="true"></select>
+                  <span class="helper-text">active/removed</span>
+                </div>
               </form>
+            </div>
           </div>
           <div class="modal-footer">
           <button id="meterSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; writeMeter()">Submit<i class="material-icons right">send</i></button>
@@ -1358,7 +1360,7 @@ It was a ff dark and stormy night...
           <div id="propertyAdd" class="modal">
             <div class="modal-content">
               <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
-              <h5> New Property</h5>
+              <h5>New Property</h5>
               <div class="row">
               <form>
                 <div class="input-field col s6 m6">
@@ -1369,8 +1371,6 @@ It was a ff dark and stormy night...
                   <label for="property_code_add">Code<b><font color='red'>*</font></b></label>
                   <span class="helper-text" data-error="Capitals or numbers,f.i. A1">Capitals or numbers,f.i. A1</span>
                 </div>
-                
-                
                 <div class="input-field col s12 m6">
                   <select id="property_owner_add" required aria-required="true">
                     <option value="" disabled selected>Select the owner</option>
@@ -1380,7 +1380,7 @@ It was a ff dark and stormy night...
                 <div class="input-field col s12 m6">
                   <input id="property_cellar_add" type="text" maxlength="10" data-length="10" class="validate">
                   <label for="property_cellar_add">Cellar(s)</label>
-                  <span class="helper-text" data-error="A string of max 10 digits: Example: C1, C2">A string of max 10 digits: Example: C1,C2</span>
+                  <span class="helper-text" data-error="Example: C1, C2">Example: C1,C2</span>
                 </div>
               </form>
               </div>
@@ -4538,6 +4538,7 @@ function loadNotification (n){
           if (document.getElementById("member_type_edit").value == "PERSO"){
             document.getElementById("memberPersonFrame_edit").style.display="block";
             document.getElementById("memberCompanyFrame_edit").style.display="none";
+            
           } else {
             document.getElementById("memberPersonFrame_edit").style.display="none";
             document.getElementById("memberCompanyFrame_edit").style.display="block";
@@ -4546,11 +4547,15 @@ function loadNotification (n){
 
         function toggleMember_view() {
           if (selectedMemberObject.type == "PERSO"){
-            document.getElementById("memberPersonFrame").style.display="block";
-            document.getElementById("memberCompanyFrame").style.display="none";
+            document.getElementById("member_firstName_frame").style.display="block";
+            document.getElementById("member_lastName_frame").style.display="block";
+            document.getElementById("member_companyName_frame").style.display="none";
+            document.getElementById("member_registrationNumber_frame").style.display="none";
           } else {
-            document.getElementById("memberPersonFrame").style.display="none";
-            document.getElementById("memberCompanyFrame").style.display="block";
+            document.getElementById("member_firstName_frame").style.display="none";
+            document.getElementById("member_lastName_frame").style.display="none";
+            document.getElementById("member_companyName_frame").style.display="block";
+            document.getElementById("member_registrationNumber_frame").style.display="block";
           };
         };
 
