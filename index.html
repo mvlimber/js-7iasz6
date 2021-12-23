@@ -1992,6 +1992,8 @@
     insertSelectOptions("document_type", DocumentType, "type");
     insertSelectOptions("transactionEvidence_type", EvidenceType, "type");
     insertSelectOptions("member_type_edit", MemberType, "", "PERSO");
+
+    
     
     </script>
     <!--   Home scripts start here -->
@@ -2022,6 +2024,7 @@
       
       var homeLoaded = false;
       function loadHome() {
+        emptyDataCash();
         hideMenu();
         document.getElementById("logo-container").innerHTML = "MyCondos: Home";
         if (!homeLoaded) {
@@ -5793,6 +5796,27 @@ function loadNotification (n){
         }).catch(function(error) {
           M.toast({html:"System error writing provisions:" + error});
         });
+      };
+
+      function emptyDataCash() {
+      homeLoaded = false;
+      chargesReportsLoaded = false;
+      documentsLoaded = false;
+      documents = null;
+      transactionsLoaded = false;
+      transactionRulesLoaded = false;
+      transactionRules = null;
+      meterReadingsLoaded = false;
+      meterReadings = null;
+      membersLoaded = false;
+      members = null;
+      propertiesLoaded = false;
+      properties = null;
+      copropertyMetersLoaded = false;
+      costCentersLoaded = false;
+      costCenters = null;
+      initialSaldosLoaded = false;
+      copropertyAttributesLoaded = false;
       };
     </script>
     <!-- Charges report ----------------------------------------------------->
