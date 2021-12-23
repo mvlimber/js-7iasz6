@@ -1606,7 +1606,7 @@
       var lastLoadTime;
       var version;
 
-      function loadAll(){
+      async function loadAll(){
         var time = (new Date()).getTime();
         if ((time - lastLoadTime) > 12000) {
           var siRef = firestore.collection("System").doc("systeminfo");
@@ -2042,7 +2042,7 @@
       
       var homeLoaded = false;
       function loadHome() {
-        loadAll();
+      loadAll().then(function(){
         hideMenu();
         document.getElementById("logo-container").innerHTML = "MyCondos: Home";
         if (!homeLoaded) {
@@ -2050,6 +2050,7 @@
           refreshHome();
           homeLoaded = true;
         };
+      });
       };
     
       function checkBookDate (bookDate){
@@ -2364,13 +2365,14 @@ function loadNotification (n){
 
       var chargesReportsLoaded = false;
       function loadChargesReports() {
-        loadAll();
+      loadAll().then(function(){
         hideMenu();
         document.getElementById("logo-container").innerHTML = "MyCondos: Charges";
         if (!chargesReportsLoaded) {
               refreshChargesReports();
               chargesReportsLoaded = true;
             };
+      });
       };
 
       function popupChargesReportConfirmed(chargesReportId) {
@@ -2573,13 +2575,14 @@ function loadNotification (n){
     };
 
     function loadDocuments(){
-      loadAll();
+    loadAll().then(function(){
       hideMenu();
       document.getElementById("logo-container").innerHTML = "MyCondos: Documents";
       if (!documentsLoaded) {
         refreshDocuments();
         documentsLoaded = true;
       };
+    });
     };
     
     function prepareRemoveDocument(d) {
@@ -2881,13 +2884,14 @@ function loadNotification (n){
         };
 
         function loadTransactions(){
-          loadAll();
+        loadAll().then(function(){
           hideMenu();
           document.getElementById("logo-container").innerHTML = "MyCondos: Transactions";
           if (!transactionsLoaded) {
             refreshTransactions();
             transactionsLoaded = true;
           };
+        });
         };
       
       function writeTransaction() {
@@ -3741,14 +3745,15 @@ function loadNotification (n){
 
       var transactionRulesLoaded = false;
       function loadTransactionRules(){
-        loadAll();
+      loadAll().then(function(){
         hideMenu();
           document.getElementById("logo-container").innerHTML = "Transaction Rules";
           if (!transactionRulesLoaded) {
             refreshTransactionRules();
             transactionRulesLoaded = true;
           };
-        };
+      });
+      };
 
       var transactionRule;
 
@@ -4001,13 +4006,14 @@ function loadNotification (n){
       };
       
       function loadMeterReadings() {
-        loadAll();
+      loadAll().then(function(){  
         hideMenu();
         document.getElementById("logo-container").innerHTML = "MyCondos:Meter Readings";
         if (!meterReadingsLoaded) {
           refreshMeterReadings();
           meterReadingsLoaded = true;
         };
+      });
       };
       
       var meterReading;
@@ -4290,13 +4296,14 @@ function loadNotification (n){
       };
 
       function loadMembers(){
-        loadAll();
+      loadAll().then(function(){
         hideMenu();
         document.getElementById("logo-container").innerHTML = "MyCondos: Members";
         if (!membersLoaded) {
           refreshMembers();
           membersLoaded = true;
         };
+      });
       };
 
 
@@ -4713,13 +4720,14 @@ function loadNotification (n){
 
       var propertiesLoaded = false;
       function loadProperties(){
-        loadAll();
+      loadAll().then(function(){
         hideMenu();
         document.getElementById("logo-container").innerHTML = "MyCondos: Properties";
         if (!propertiesLoaded) {
           refreshProperties();
           propertiesLoaded = true;
         };
+      });
       };
 
       function propertyLink(property) {
@@ -5660,7 +5668,7 @@ function loadNotification (n){
       var initialSaldosLoaded = false;
       var copropertyAttributesLoaded = false;
       function loadSettings() {
-        loadAll();
+      loadAll().then(function(){
         hideMenu();
         document.getElementById("logo-container").innerHTML = "MyCondos: Settings";
         if (!copropertyMetersLoaded) {
@@ -5680,6 +5688,7 @@ function loadNotification (n){
           copropertyAttributesLoaded = true;
         };
         refreshCopropertyUpdateInfo();
+      });
       };
 
       function refreshCopropertyUpdateInfo() {
