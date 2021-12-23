@@ -1608,7 +1608,13 @@
 
       function loadAll(){
         var time = (new Date()).getTime();
-        if ((time - lastLoadTime) > 12000) {emptyDataCash()};
+        if ((time - lastLoadTime) > 12000) {
+          var siRef = firestore.collection("System").doc("systeminfo");
+          siRef.get().then(function(si){
+            if (si.data().version > version) {location.reload();}
+            else {emptyDataCash();};
+          });
+        };
       };
       
       var lastCloseDate;
@@ -1665,10 +1671,13 @@
 
     function openApplication() {
       lastLoadTime = (new Date()).getTime();
-      loadHome();
-          document.getElementById("loginPanel").setAttribute("class","displayHidden");
-          document.getElementById("applicationPanel").setAttribute("class","displayBlock");
-       
+      var siRef = firestore.collection("System").doc("systeminfo");
+      siRef.get().then(function(si){
+        version = si.data().version;
+        loadHome();
+        document.getElementById("loginPanel").setAttribute("class","displayHidden");
+        document.getElementById("applicationPanel").setAttribute("class","displayBlock");
+      }); 
     };
     
     function enableAdminFunctions(){
@@ -2355,13 +2364,13 @@ function loadNotification (n){
 
       var chargesReportsLoaded = false;
       function loadChargesReports() {
-      hideMenu();
-      document.getElementById("logo-container").innerHTML = "MyCondos: Charges";
-      
-      if (!chargesReportsLoaded) {
-            refreshChargesReports();
-            chargesReportsLoaded = true;
-          };
+        loadAll();
+        hideMenu();
+        document.getElementById("logo-container").innerHTML = "MyCondos: Charges";
+        if (!chargesReportsLoaded) {
+              refreshChargesReports();
+              chargesReportsLoaded = true;
+            };
       };
 
       function popupChargesReportConfirmed(chargesReportId) {
@@ -2564,6 +2573,7 @@ function loadNotification (n){
     };
 
     function loadDocuments(){
+      loadAll();
       hideMenu();
       document.getElementById("logo-container").innerHTML = "MyCondos: Documents";
       if (!documentsLoaded) {
@@ -2871,6 +2881,7 @@ function loadNotification (n){
         };
 
         function loadTransactions(){
+          loadAll();
           hideMenu();
           document.getElementById("logo-container").innerHTML = "MyCondos: Transactions";
           if (!transactionsLoaded) {
@@ -3730,7 +3741,8 @@ function loadNotification (n){
 
       var transactionRulesLoaded = false;
       function loadTransactionRules(){
-          hideMenu();
+        loadAll();
+        hideMenu();
           document.getElementById("logo-container").innerHTML = "Transaction Rules";
           if (!transactionRulesLoaded) {
             refreshTransactionRules();
@@ -3989,6 +4001,7 @@ function loadNotification (n){
       };
       
       function loadMeterReadings() {
+        loadAll();
         hideMenu();
         document.getElementById("logo-container").innerHTML = "MyCondos:Meter Readings";
         if (!meterReadingsLoaded) {
@@ -4277,6 +4290,7 @@ function loadNotification (n){
       };
 
       function loadMembers(){
+        loadAll();
         hideMenu();
         document.getElementById("logo-container").innerHTML = "MyCondos: Members";
         if (!membersLoaded) {
@@ -4699,8 +4713,9 @@ function loadNotification (n){
 
       var propertiesLoaded = false;
       function loadProperties(){
-          hideMenu();
-          document.getElementById("logo-container").innerHTML = "MyCondos: Properties";
+        loadAll();
+        hideMenu();
+        document.getElementById("logo-container").innerHTML = "MyCondos: Properties";
         if (!propertiesLoaded) {
           refreshProperties();
           propertiesLoaded = true;
@@ -5645,6 +5660,7 @@ function loadNotification (n){
       var initialSaldosLoaded = false;
       var copropertyAttributesLoaded = false;
       function loadSettings() {
+        loadAll();
         hideMenu();
         document.getElementById("logo-container").innerHTML = "MyCondos: Settings";
         if (!copropertyMetersLoaded) {
