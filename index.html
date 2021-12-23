@@ -1603,6 +1603,14 @@
       </div>
     </main>
     <script>
+      var lastLoadTime;
+      var version;
+
+      function loadAll(){
+        var time = (new Date()).getTime();
+        if ((time - lastLoadTime) > 12000) {emptyDataCash()};
+      };
+      
       var lastCloseDate;
       var lastReguDate;
       
@@ -1656,6 +1664,7 @@
     };
 
     function openApplication() {
+      lastLoadTime = (new Date()).getTime();
       loadHome();
           document.getElementById("loginPanel").setAttribute("class","displayHidden");
           document.getElementById("applicationPanel").setAttribute("class","displayBlock");
@@ -2024,7 +2033,7 @@
       
       var homeLoaded = false;
       function loadHome() {
-        emptyDataCash();
+        loadAll();
         hideMenu();
         document.getElementById("logo-container").innerHTML = "MyCondos: Home";
         if (!homeLoaded) {
