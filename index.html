@@ -3945,6 +3945,7 @@ function loadNotification (n){
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);  
 
+        
         if (mr.property) {cellContent = propertyLink(propertyGetSynchrone(mr.property));}
         else {cellContent = document.createTextNode("Common Parts");};
         cell = document.createElement('td');
@@ -4003,6 +4004,7 @@ function loadNotification (n){
             document.getElementById("meterReadings_absentPhrase").style.display = "block";
           };
         });
+        
       };
       
       function loadMeterReadings() {
