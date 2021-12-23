@@ -5841,7 +5841,7 @@ function loadNotification (n){
       transactionRulesLoaded = false;
       transactionRules = null;
       meterReadingsLoaded = false;
-      meterReadings = null;
+      /*meterReadings = null;*/
       membersLoaded = false;
       members = null;
       propertiesLoaded = false;
@@ -6032,6 +6032,7 @@ function loadNotification (n){
         var amountsDue = [];
         if (metersIncluded){
           headerCharges = headerChargesMetersIncluded;
+          meterReadings = null;
           mrsInReport = await meterReadingsGet(); 
           function meterReadingInPeriod(mr){
             return (lastReguDate.localeCompare(mr.readings[0].date) < 1) && (closeDateTransactions.localeCompare(mr.readings[0].date) >= 0);
