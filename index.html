@@ -6217,7 +6217,10 @@ function loadNotification (n){
                 c.water = Number((totalWater * c.difference / (totalColdWaterDifference+ totalHotWaterDifference)).toFixed(2));
               };
               if (c.type != "COLWA") {
-                c.heating = Number((totalHeating * c.difference / (totalHeatingDifference + totalHotWaterDifference)).toFixed(2));
+                var energyDifference;
+                if (c.type == "HOTWA") {energyDifference = c.difference * 1.5}
+                else {/* thus central heating*/energyDifference = c.difference};
+                c.heating = Number((totalHeating * energyDifference / (totalHeatingDifference + (totalHotWaterDifference *1.5))).toFixed(2));
               };
             });
             /* calculate totals including payed and regu */
