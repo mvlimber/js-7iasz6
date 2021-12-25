@@ -1609,12 +1609,13 @@
       async function loadAll(){
         var time = (new Date()).getTime();
         if ((time - lastLoadTime) > 12000) {
+          lastLoadTime = time;
           var siRef = firestore.collection("System").doc("systeminfo");
           siRef.get().then(function(si){
             if (si.data().version > version) {location.reload();}
             else {emptyDataCash();};
           });
-        };
+        } else {lastLoadTime = time};
       };
       
       var lastCloseDate;
