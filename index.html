@@ -3945,12 +3945,13 @@ function loadNotification (n){
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);  
 
-        
-        if (mr.property) {cellContent = propertyLink(propertyGetSynchrone(mr.property));}
+        var propCell = document.createElement('td');
+
+        /*if (mr.property) {cellContent = propertyLink(propertyGetSynchrone(mr.property));}
         else {cellContent = document.createTextNode("Common Parts");};
         cell = document.createElement('td');
-        cell.appendChild(cellContent);
-        objectsRow.appendChild(cell);
+        cell.appendChild(cellContent);*/
+        objectsRow.appendChild(propCell);
         
         var readingPresent = (mr.readings[0])&& (mr.readings[0].date.localeCompare(lastReguDate) > 0);
         if (readingPresent) {
@@ -3987,7 +3988,16 @@ function loadNotification (n){
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);
 
-        meterReadingsTable.appendChild (objectsRow);
+        if (mr.property){
+          propertyGet(mr.property).then(function(prop){
+            propCell.appendChild(propertyLink(prop));
+            meterReadingsTable.appendChild (objectsRow);
+          })
+        } else {
+          propCell.appendChild(document.createTextNode("Common Parts"));
+          meterReadingsTable.appendChild (objectsRow);
+        };
+
       };
 
       var meterReadingsTable = document.getElementById("meterReadingsTable");
