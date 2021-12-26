@@ -5662,64 +5662,63 @@ function loadNotification (n){
               */
               ccHeadEl.appendChild(headerCol);
             };
-          
-            propertiesGet().then(function(ps){
-              ps.forEach(function(p){
-                var row = document.createElement("tr");
-                var cell = document.createElement("td");
-                var cellContent = propertyLink(p);
-                cell.appendChild(cellContent);
-                row.appendChild(cell);
-
-                ccs.forEach(function(cc){
-                  cell = document.createElement("td");
-                  cell.setAttribute("align","Center");
-                  cell.setAttribute("style","text-align: right");
-                  var quota = cc.distribution[p.idFS];
-                  if (quota) {
-                    cell.innerHTML = quota;
-                    totals[cc.name] += quota;
-                  };
-                  row.appendChild(cell);
-                  if (currentUser.role == roleAdministrator) {
-                    cell = document.createElement("th");
-                    cellContent = document.createElement('button');
-                    cellContent.setAttribute("style", "float:left");
-                    cellContent.setAttribute("data-target", "costCenterQuotaEdit");
-                    cellContent.setAttribute('class','btn-floating waves-light modal-trigger');
-                    if (!quota) {quota = 0};
-                    cellContent.setAttribute('onclick','costCenterQuotaSelect('+JSON.stringify(cc.idFS)+','+JSON.stringify(p.idFS)+','+JSON.stringify(quota)+')');
-                    var cellButtonIcon = document.createElement('i');
-                    cellButtonIcon.setAttribute('class','material-icons right');
-                    cellButtonIcon.innerHTML="edit";         
-                    cellContent.appendChild(cellButtonIcon);
-                    cell.appendChild(cellContent);
-                    row.appendChild(cell);
-                  };
-                });
-
-                ccBodyEl.appendChild(row);
-              });
-              var totalsRow = document.createElement("tr");
+          });
+          propertiesGet().then(function(ps){
+            ps.forEach(function(p){
+              var row = document.createElement("tr");
               var cell = document.createElement("td");
-              cell.innerHTML = "<b>Total quotas</b>";
-              totalsRow.appendChild(cell);
+              var cellContent = propertyLink(p);
+              cell.appendChild(cellContent);
+              row.appendChild(cell);
+
               ccs.forEach(function(cc){
-                var cell = document.createElement("td");
+                cell = document.createElement("td");
+                cell.setAttribute("align","Center");
                 cell.setAttribute("style","text-align: right");
-                cell.innerHTML = totals[cc.name];
-                totalsRow.appendChild(cell);
+                var quota = cc.distribution[p.idFS];
+                if (quota) {
+                  cell.innerHTML = quota;
+                  totals[cc.name] += quota;
+                };
+                row.appendChild(cell);
                 if (currentUser.role == roleAdministrator) {
-                    cell = document.createElement("th");
-                    cellContent = document.createTextNode("");
-                    cell.appendChild(cellContent);
-                    totalsRow.appendChild(cell);
+                  cell = document.createElement("th");
+                  cellContent = document.createElement('button');
+                  cellContent.setAttribute("style", "float:left");
+                  cellContent.setAttribute("data-target", "costCenterQuotaEdit");
+                  cellContent.setAttribute('class','btn-floating waves-light modal-trigger');
+                  if (!quota) {quota = 0};
+                  cellContent.setAttribute('onclick','costCenterQuotaSelect('+JSON.stringify(cc.idFS)+','+JSON.stringify(p.idFS)+','+JSON.stringify(quota)+')');
+                  var cellButtonIcon = document.createElement('i');
+                  cellButtonIcon.setAttribute('class','material-icons right');
+                  cellButtonIcon.innerHTML="edit";         
+                  cellContent.appendChild(cellButtonIcon);
+                  cell.appendChild(cellContent);
+                  row.appendChild(cell);
                 };
               });
-              ccBodyEl.appendChild(totalsRow);
+
+              ccBodyEl.appendChild(row);
             });
+            var totalsRow = document.createElement("tr");
+            var cell = document.createElement("td");
+            cell.innerHTML = "<b>Total quotas</b>";
+            totalsRow.appendChild(cell);
+            ccs.forEach(function(cc){
+              var cell = document.createElement("td");
+              cell.setAttribute("style","text-align: right");
+              cell.innerHTML = totals[cc.name];
+              totalsRow.appendChild(cell);
+              if (currentUser.role == roleAdministrator) {
+                  cell = document.createElement("th");
+                  cellContent = document.createTextNode("");
+                  cell.appendChild(cellContent);
+                  totalsRow.appendChild(cell);
+              };
+            });
+            ccBodyEl.appendChild(totalsRow);
+          });
         });
-      });
       };
     
       var initialSaldosLoaded = false;
@@ -5871,7 +5870,6 @@ function loadNotification (n){
         document.getElementById("heatingCommon_edit").value = currentCoproperty.heatingCommon * 100;
         M.updateTextFields();
       };
-
 
       function initialCopropertySaldoWrite(){
         currentCoproperty.initialSaldo = Number(document.getElementById("initialCopropertySaldo_amount").value);
