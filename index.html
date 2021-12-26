@@ -1933,7 +1933,7 @@
       OWNER: 'owner payment',
       PROVI: 'payed with provision'
     };
-    function hasCostCenter(aTransType) {return ((aTransType != "") && (aTransType != "PRIVA") && (aTransType != "OWNER") && (aTransType != "PROVI") && (aTransType != "ELECT")&& (aTransType != "WATER")&& (aTransType != "HEATI"))};
+    function hasCostCenter(aTransType) {return ((aTransType != "") && (aTransType != "PRIVA") && (aTransType != "OWNER") && (aTransType != "PROVI") )};
     function hasCounterparty(aTransType) {return ((aTransType != "") && (aTransType != "OWNER") )};
 
     var TransRuleType = {
@@ -3072,6 +3072,8 @@ function loadNotification (n){
       document.getElementById("transaction_date").value=object.date;
       document.getElementById("transaction_bookDate").value=object.bookDate;
       document.getElementById("transaction_communication").value=object.communication;
+      document.getElementById("transaction_costCenter").value="";
+      document.getElementById("transaction_owner").value="";
       document.getElementById("transaction_save_button").disabled=false;
       document.getElementById("transaction_updatedOn").innerHTML  = object.updatedOn;
       if (object.type == "PRIVA") {
