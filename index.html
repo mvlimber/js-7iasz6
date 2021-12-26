@@ -5206,20 +5206,23 @@ function loadNotification (n){
               memberGet(object.owner).then().then(function(ownerMember) {
                 emptyHTMLSet(document.getElementById("property_owner"));
                 document.getElementById("property_owner").appendChild(memberLink(ownerMember));
-        });});
+
+                displayOccupants(id); 
+                displayMeters(id);
+                var elems = document.querySelectorAll('select');
+                M.FormSelect.init(elems);
+                M.updateTextFields();
+              });
+        });
+        /*
         refCoproperty.collection("Properties").doc(id).collection("PreviousOwners").get().then(function(existingList) {
           if (existingList.docs.length > 0) {
             document.getElementById("previousOwnersButton").setAttribute("class","displayBlock");
           } else {
             document.getElementById("previousOwnersButton").setAttribute("class","displayHidden");
           };
+        */
         
-        displayOccupants(id); 
-        displayMeters(id);
-        var elems = document.querySelectorAll('select');
-        M.FormSelect.init(elems);
-        M.updateTextFields();
-        });
       };
 
       function resetSelectedProperty() {
