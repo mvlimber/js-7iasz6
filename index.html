@@ -1932,7 +1932,7 @@
       OWNER: 'owner payment',
       PROVI: 'payed with provision'
     };
-    function hasCostCenter(aTransType) {return ((aTransType != "") && (aTransType != "PRIVA") && (aTransType != "OWNER") && (aTransType != "PROVI"))};
+    function hasCostCenter(aTransType) {return ((aTransType != "") && (aTransType != "PRIVA") && (aTransType != "OWNER") && (aTransType != "PROVI") && (aTransType != "ELECT")&& (aTransType != "WATER")&& (aTransType != "HEATI"))};
     function hasCounterparty(aTransType) {return ((aTransType != "") && (aTransType != "OWNER") )};
 
     var TransRuleType = {
