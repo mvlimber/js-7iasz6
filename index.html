@@ -5748,7 +5748,9 @@ function loadNotification (n){
           costCenterGet(currentCoproperty.provisionsCC).then(function(cc){
             CAEl.innerHTML = "cost center : " + cc.name;
           })
-        } else {CAEl.innerHTML = "";}
+        } else {CAEl.innerHTML = "";};
+        var heatingCPEl = document.getElementById("heatingCommonParts");
+        heatingCPEl.innerHTML = currentCoproperty.heatingCommon;
       };
       
       function refreshInitialSaldos(){
