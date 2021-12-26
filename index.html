@@ -6170,6 +6170,7 @@ function loadNotification (n){
         
         /* initialise common charges holder tabels*/
         var i = 0;
+        console.log("ccsInreport ", ccsInReport);
         ccsInReport.forEach(function(cc) {
           var ccId = cc.idFS;
           function checkId(ccHere){return ccHere.idFS == ccId};
@@ -6179,6 +6180,7 @@ function loadNotification (n){
           headerCharges.splice(2+i, 0, {id:ccId,name:ccId,prompt:"common charges " + ccsInReport.find(checkId).name,width: 40,align: "center",padding: 0});
           i += 1;
         });
+        console.log("headerCharges ", headerCharges);
         
         refCoproperty.collection("Transactions").where("bookDate", ">", lastCloseDate).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){
           /* fill common charges tables */
