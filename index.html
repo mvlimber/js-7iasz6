@@ -1468,6 +1468,11 @@
             <td><p id="provisions"></p></td>
             <td><button id="provisionsEditButton" style="visibility: hidden; float: right;margin-bottom: 3px" class="btn-floating waves-light modal-trigger" data-target="provisionsEdit" onclick="provisionsEditPrepare()"><i class="material-icons right">edit</i></button></td>
           </tr></table>
+          <table><tr>
+          <td><h5>Heating Common Parts</h5></td>
+          <td><p id="heatingCommonParts"></p></td>
+          <td><button id="heatingCommonPartsEditButton" style="visibility: hidden; float: right;margin-bottom: 3px" class="btn-floating waves-light modal-trigger" data-target="heatingCommonPartsEdit" onclick="heatingCommonPartsEditPrepare()"><i class="material-icons right">edit</i></button></td>
+        </tr></table>
           <div id="initialSaldos_frame">
             <table><tr>
               <td><h5>Initial Saldo Condomynium</h5></td>
@@ -1608,7 +1613,7 @@
 
       async function loadAll(){
         var time = (new Date()).getTime();
-        if ((time - lastLoadTime) > 12000) {
+        if ((time - lastLoadTime) > 90000) {
           lastLoadTime = time;
           var siRef = firestore.collection("System").doc("systeminfo");
           siRef.get().then(function(si){
@@ -1699,6 +1704,7 @@
       document.getElementById("provisionsEditButton").style.visibility = "visible";
       document.getElementById("initialCopropertySaldoEditButton").style.visibility = "visible";
       document.getElementById("documentNewButton").style.visibility = "visible";
+      document.getElementById("heatingCommonPartsEditButton").style.visibility = "visible";
     };
     
     function login(){
