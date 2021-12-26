@@ -6,7 +6,7 @@ a:link { text-transform: none}
 body {
   border-left: solid white;
 } 
-.modal {
+.modal.normal {
   max-height: 100%;
   max-width: 1750px;
   width: 100%;
