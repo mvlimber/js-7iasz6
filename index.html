@@ -1162,16 +1162,15 @@
                   <label for="property_code">Code</label>
                 </div>
                 <div class="input-field col s4 m4">
-                  <input id="property_type" type="text" readonly>
-                  <label for="property_type">Type</label>
+                <input id="property_type" type="text" readonly>
+                <label for="property_type">Type</label>
                 </div>
                 <div class="input-field col s4 m4">
                   <input id="property_cellar" type="text" readonly>
                   <label for="property_cellar">Cellar(s)</label>
                 </div>
                 <div class="input-field col s4 m4">
-                  <input id="property_owner" type="text" readonly>
-                  <label for="property_owner">Type</label>
+                  <p style="font-size:16px">Owner: <span id="property_owner"></span> </p>
                 </div>
                 <div class="row col s10 m10">
                   <p style="font-size:12px">Updated On: <span id="property_updatedOn"></span> </p>
@@ -5196,15 +5195,12 @@ function loadNotification (n){
         document.getElementById("property_type").value=PropType[object.type];
         document.getElementById("property_cellar").value=object.cellar;
         document.getElementById("property_updatedOn").innerHTML  = object.updatedOn;
-        var ownerEl = document.getElementById("property_owner");
         memberGet(object.updatedBy).then(function(updater) {
               emptyHTMLSet(document.getElementById("property_updatedBy"));
               document.getElementById("property_updatedBy").appendChild(memberLink(updater));
-        refCoproperty.collection("Members").doc(object.owner).get().then(function(member) {
-              var mHere =  member.data();
-              mHere.idFS = member.id;
-              ownerEl.setAttribute('onclick','setSelectedMember('+JSON.stringify(mHere)+',"")');
-              ownerEl.innerHTML = "<font color='#0000FF'>"+denomination(mHere)+"</font>";
+              memberGet(object.owner).then().then(function(ownerMember) {
+                emptyHTMLSet(document.getElementById("property_owner"));
+                document.getElementById("property_owner").appendChild(memberLink(ownerMember));
         });});
         refCoproperty.collection("Properties").doc(id).collection("PreviousOwners").get().then(function(existingList) {
           if (existingList.docs.length > 0) {
