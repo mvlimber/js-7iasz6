@@ -1470,8 +1470,8 @@
           </tr></table>
           <table><tr>
           <td><h5>Heating Common Parts</h5></td>
-          <td><p id="heatingCommonParts"></p></td>
-          <td><button id="heatingCommonPartsEditButton" style="visibility: hidden; float: right;margin-bottom: 3px" class="btn-floating waves-light modal-trigger" data-target="heatingCommonPartsEdit" onclick="heatingCommonPartsEditPrepare()"><i class="material-icons right">edit</i></button></td>
+          <td><p id="heatingCommon"></p></td>
+          <td><button id="heatingCommonEditButton" style="visibility: hidden; float: right;margin-bottom: 3px" class="btn-floating waves-light modal-trigger" data-target="heatingCommonEdit" onclick="heatingCommonEditPrepare()"><i class="material-icons right">edit</i></button></td>
         </tr></table>
           <div id="initialSaldos_frame">
             <table><tr>
@@ -1580,6 +1580,24 @@
               </div>
             </form>
             <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="provisionsWrite()">Save<i class="material-icons right">send</i></button>
+            <a style="float: right;margin-bottom: 3px"
+              class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
+          </div>
+          </div>
+          <div id="heatingCommonEdit" class="modal">
+          <div class="modal-content">
+            <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
+            <h5>Enter percentage applied for common heating</h5>
+            <form class="col s12 m6">
+              <div class="input-field col s12 m4">
+                <input id="heatingCommon_edit" type="number" class="validate" min="0" max="100" step="1" required required="true">
+                <label for="heatingCommon_edit">percentage<b><font color='red'>*</font></b></label>
+                <span class="helper-text" data-error="Example: 10. Represents 10%">Positive amount. Example: 10. Represents 10%"</span>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="heatingCommonWrite()">Save<i class="material-icons right">send</i></button>
             <a style="float: right;margin-bottom: 3px"
               class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
           </div>
@@ -1704,7 +1722,7 @@
       document.getElementById("provisionsEditButton").style.visibility = "visible";
       document.getElementById("initialCopropertySaldoEditButton").style.visibility = "visible";
       document.getElementById("documentNewButton").style.visibility = "visible";
-      document.getElementById("heatingCommonPartsEditButton").style.visibility = "visible";
+      document.getElementById("heatingCommonEditButton").style.visibility = "visible";
     };
     
     function login(){
@@ -5740,6 +5758,10 @@ function loadNotification (n){
         handlingCopropertyMeter = true;
       };
 
+      function toPercentageString(n) {
+          return n * 100 + "%";
+      }
+
       function refreshCopropertyAttributes(){
         var CAEl = document.getElementById("provisions");
         CAEl.innerHTML = currentCoproperty.provisions.toLocaleString("nl-BE",currencyStyle);
@@ -5749,8 +5771,8 @@ function loadNotification (n){
             CAEl.innerHTML = "cost center : " + cc.name;
           })
         } else {CAEl.innerHTML = "";};
-        var heatingCPEl = document.getElementById("heatingCommonParts");
-        heatingCPEl.innerHTML = currentCoproperty.heatingCommon;
+        var heatingCPEl = document.getElementById("heatingCommon");
+        heatingCPEl.innerHTML = toPercentageString(currentCoproperty.heatingCommon);
       };
       
       function refreshInitialSaldos(){
@@ -5822,6 +5844,11 @@ function loadNotification (n){
         listCostCenters(document.getElementById("provisions_costCenter_edit"),currentCoproperty.provisionsCC);
         var elems = document.querySelectorAll('select');
         M.FormSelect.init(elems);
+        M.updateTextFields();
+      };
+
+      function heatingCommonEditPrepare(){
+        document.getElementById("heatingCommon_edit").value = currentCoproperty.heatingCommon * 100;
         M.updateTextFields();
       };
 
