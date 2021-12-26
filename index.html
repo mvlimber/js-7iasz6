@@ -1431,6 +1431,10 @@
                     <label for="property_cellar_edit">Cellar(s)</label>
                     <span class="helper-text" data-error="A string of max 10 digits: Example: C1, C2">A string of max 10 digits: Example: C1,C2</span>
                   </div>
+                  <div class="input-field col s6 m4">
+                    <select id="property_owner_edit" required aria-required="true"></select>
+                    <span class="helper-text" >Owner</span>
+                  </div>
                 
               </form>
               <button id="propertyWriteButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; writeProperty()">Submit<i class="material-icons right">send</i></button>
@@ -4828,9 +4832,10 @@ function loadNotification (n){
             selectedPropertyObject.type=property.type;
             selectedPropertyObject.cellar=property.cellar;
             selectedPropertyObject.owner=property.owner;
-            document.getElementById("property_code").value=property.code;
+            /*document.getElementById("property_code").value=property.code;
             document.getElementById("property_type").value=PropType[property.type];
-            document.getElementById("property_cellar").value=property.cellar;
+            document.getElementById("property_cellar").value=property.cellar;*/
+            setSelectedProperty(selectedPropertyId,selectedPropertyObject);
             document.getElementById("property_owner").value=property.owner;
             M.Modal.getInstance(document.getElementById("propertyWrite")).close();
           }).catch(function(error) {
@@ -5288,6 +5293,7 @@ function loadNotification (n){
         document.getElementById("property_code_edit").value=selectedPropertyObject.code;
         document.getElementById("property_type_edit").value=selectedPropertyObject.type;
         document.getElementById("property_cellar_edit").value=selectedPropertyObject.cellar;
+        listMembers(document.getElementById("property_owner_edit"), selectedPropertyObject.owner);
         document.getElementById("property_owner_edit").value=selectedPropertyObject.owner;
         document.getElementById("propertyWriteButton").disabled=false;
         M.updateTextFields();
