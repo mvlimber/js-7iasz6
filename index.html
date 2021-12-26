@@ -1469,7 +1469,7 @@
             <td><button id="provisionsEditButton" style="visibility: hidden; float: right;margin-bottom: 3px" class="btn-floating waves-light modal-trigger" data-target="provisionsEdit" onclick="provisionsEditPrepare()"><i class="material-icons right">edit</i></button></td>
           </tr></table>
           <table><tr>
-          <td><h5>Heating Common Parts</h5></td>
+          <td><h5>Ratio Common Heating</h5></td>
           <td><p id="heatingCommon"></p></td>
           <td><button id="heatingCommonEditButton" style="visibility: hidden; float: right;margin-bottom: 3px" class="btn-floating waves-light modal-trigger" data-target="heatingCommonEdit" onclick="heatingCommonEditPrepare()"><i class="material-icons right">edit</i></button></td>
         </tr></table>
@@ -1588,7 +1588,7 @@
           <div class="modal-content">
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
             <h5>Enter percentage applied for common heating</h5>
-            <form class="col s12 m6">
+            <form class="col s12 m8">
               <div class="input-field col s12 m4">
                 <input id="heatingCommon_edit" type="number" class="validate" min="0" max="100" step="1" required required="true">
                 <label for="heatingCommon_edit">percentage<b><font color='red'>*</font></b></label>
@@ -5877,6 +5877,19 @@ function loadNotification (n){
           M.Modal.getInstance(document.getElementById("provisionsEdit")).close();
         }).catch(function(error) {
           M.toast({html:"System error writing provisions:" + error});
+        });
+      };
+
+      function heatingCommonWrite(){
+        currentCoproperty.heatingCommon = Number(document.getElementById("heatingCommon_edit").value) / 100;
+        refCoproperty.update(
+          Object.assign({heatingCommon:currentCoproperty.heatingCommon},getUpdateInfo())
+          ).then(function(){
+          refreshHome();
+          refreshCopropertyAttributes();
+          M.Modal.getInstance(document.getElementById("heatingCommonEdit")).close();
+        }).catch(function(error) {
+          M.toast({html:"System error writing common heating:" + error});
         });
       };
 
