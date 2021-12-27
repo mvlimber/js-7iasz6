@@ -6562,7 +6562,7 @@ function loadNotification (n){
         function printFooterPortrait () {
           doc.line(15, 280, 200, 280);
           doc.setFontSize(10);
-          doc.setTextColor("green");doc.text("MyCondos " ,15, 285);doc.setTextColor("black");
+          doc.setTextColor("green");doc.text("MyDigitalCondo " ,15, 285);doc.setTextColor("black");
           doc.text(footerText,35, 285);
           doc.text("Page " + currentPage + "/" + numPages, 185, 285);
           currentPage = currentPage + 1;
@@ -6570,7 +6570,7 @@ function loadNotification (n){
         function printFooterLandscape () {
           doc.line(10, 190, 280, 190);
           doc.setFontSize(10);
-          doc.setTextColor("green");doc.text("MyCondos" ,10, 195);doc.setTextColor("black");
+          doc.setTextColor("green");doc.text("MyDigitalCondo" ,10, 195);doc.setTextColor("black");
           doc.text(footerText,32, 195);
           doc.text("Page " + currentPage + "/" + numPages, 265, 195);
           currentPage = currentPage + 1;
@@ -6596,7 +6596,7 @@ function loadNotification (n){
         
         var doc = new jsPDF({ putOnlyUsedFonts: true, orientation: "portrait" });
         doc.setTextColor("green"); doc.setFontSize(32);
-        doc.text("MyCondos", 60, 20);
+        doc.text("MyDigitalCondo", 60, 20);
         doc.setTextColor("black"); doc.setFontSize(24); 
         doc.text("Report of Charges", 40, 40);
         doc.setFontSize(16);
