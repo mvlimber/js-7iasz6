@@ -5992,11 +5992,11 @@ function loadNotification (n){
       ];
 
       var headerCopropertySaldo = [
-        {id:"oldSaldo",name:"oldSaldo",prompt:"last saldo",width: 35,align: "center",padding: 0},
-        {id:"income",name:"income",prompt:"income",width: 35,align: "center",padding: 0},
-        {id:"expenses",name:"expenses",prompt:"expenses",width: 35,align: "center",padding: 0},
-        {id:"expensesProvisions",name:"expensesProvisions",prompt:"expenses payed with provisions",width: 35,align: "center",padding: 0},
-        {id:"newSaldo",name:"newSaldo",prompt:"new saldo",width: 35,align: "right",padding: 0}
+        {id:"oldSaldo",name:"oldSaldo",prompt:"last saldo",width: 45,align: "center",padding: 0},
+        {id:"income",name:"income",prompt:"income",width: 45,align: "center",padding: 0},
+        {id:"expenses",name:"expenses",prompt:"expenses",width: 45,align: "center",padding: 0},
+        {id:"expensesProvisions",name:"expensesProvisions",prompt:"expenses payed with provisions",width: 50,align: "center",padding: 0},
+        {id:"newSaldo",name:"newSaldo",prompt:"new saldo",width: 45,align: "right",padding: 0}
       ];
 
       var headerOwnersSaldo = [
@@ -6518,7 +6518,7 @@ function loadNotification (n){
             };
           });
           copropertySaldo[0].income = totalPayments;
-          totalHorizontal(copropertySaldo,["oldSaldo","income","expenses"],"newSaldo" );
+          totalHorizontal(copropertySaldo,["oldSaldo","income","expenses","expensesProvisions"],"newSaldo" );
           newCopropertySaldo = copropertySaldo[0].newSaldo;
           totalHorizontal(ownersSaldo,["oldSaldo","payments","charges","provisions"],"newSaldo" );
           ownersSaldo.forEach(function(os){
@@ -6529,7 +6529,7 @@ function loadNotification (n){
                    
 
           convertToCurrency(totalledCharges, totalChargesAmountFields);
-          convertToCurrency(copropertySaldo, ["oldSaldo","income","expenses","newSaldo"]);
+          convertToCurrency(copropertySaldo, ["oldSaldo","income","expenses","expensesProvisions","newSaldo"]);
           convertToCurrency(ownersSaldo, ["oldSaldo","payments","charges","provisions","newSaldo"]);
           convertToCurrency(amountsDue, ["amount"]);
           
