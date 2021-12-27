@@ -3083,8 +3083,12 @@ function loadNotification (n){
       } else {
         document.getElementById("transaction_properties_frame").style.display = "none";
       };
-      if (checkBookDate(object.bookDate)){document.getElementById("transaction_edit_button").disabled = false}
-      else {document.getElementById("transaction_edit_button").disabled = true};
+      if (checkBookDate(object.bookDate)){
+        document.getElementById("transaction_edit_button").disabled = false;
+        document.getElementById("transaction_remove_button").disabled = false}
+      else {
+        document.getElementById("transaction_edit_button").disabled = true;
+        document.getElementById("transaction_remove_button").disabled = true};
       refreshTransactionEvidence();
       if (hasCounterparty(object.type)){document.getElementById("transaction_name_field").style.display = "block"; }
       else {document.getElementById("transaction_name_field").style.display = "none"; }
@@ -5991,6 +5995,7 @@ function loadNotification (n){
         {id:"oldSaldo",name:"oldSaldo",prompt:"last saldo",width: 35,align: "center",padding: 0},
         {id:"income",name:"income",prompt:"income",width: 35,align: "center",padding: 0},
         {id:"expenses",name:"expenses",prompt:"expenses",width: 35,align: "center",padding: 0},
+        {id:"expensesProvisions",name:"expensesProvisions",prompt:"expenses payed with provisions",width: 35,align: "center",padding: 0},
         {id:"newSaldo",name:"newSaldo",prompt:"new saldo",width: 35,align: "right",padding: 0}
       ];
 
@@ -6130,6 +6135,7 @@ function loadNotification (n){
           oldSaldo: lastCopropertySaldo,
           income: 0,
           expenses: 0,
+          expensesProvisions: 0,
           newSaldo: 0
         }];
         var newOwnersSaldo = {};
@@ -6479,7 +6485,7 @@ function loadNotification (n){
             totallsRow.Total += tc.Total; grandTotalsRow.Total += tc.Total;
               /* fill charges colun in owner saldos table */
               function checkOwner(os){return os.ownerId == tc.ownerId};
-              ownersSaldo.find(checkOwner).charges = totallsRow.Total;
+              ownersSaldo.find(checkOwner).charges = totallsRow.Total * -1;
 
             nrOfProperties += 1;
             if ((nrOfProperties > 1) && (positionTotalCharges ==  totalCharges.length)) {totalledCharges.push(totallsRow);};
@@ -6487,11 +6493,11 @@ function loadNotification (n){
           });
           totalledCharges.push(generateEmptyRowTotalledCharges());
           totalledCharges.push(grandTotalsRow);
-
+ 
           ccsInReport.forEach(function(cc){
-            copropertySaldo[0].expenses += grandTotalsRow[cc.idFS];});
-          copropertySaldo[0].expenses += grandTotalsRow.private;
-          copropertySaldo[0].expenses += payedByProvisionsTotal;
+            copropertySaldo[0].expenses += -1 * grandTotalsRow[cc.idFS];});
+          copropertySaldo[0].expenses += -1 *grandTotalsRow.private;
+          copropertySaldo[0].expensesProvisions += -1 * payedByProvisionsTotal;
           
           function getId(cc){return cc.idFS};
           var totalChargesAmountFields = ccsInReport.map(getId);
@@ -6630,10 +6636,10 @@ function loadNotification (n){
           doc.text("Total charges", 30, 165);
           if (payedByProvisions.length > 1) {
             doc.text("Expenses payed with provisions", 30, 175);
-            doc.text("Saldos", 30, 185);
+            doc.text("Saldos owners and condomynium", 30, 185);
             doc.text("Amounts Due", 30, 195);
           }else {
-            doc.text("Saldos and amounts payable", 30, 175);
+            doc.text("Saldos owners and condomynium", 30, 175);
             doc.text("Amounts Due", 30, 185);
           };
         };
