@@ -6542,7 +6542,7 @@ function loadNotification (n){
       function writePDF (closeDateTransactions, newCopropertySaldo, newOwnersSaldo, metersIncludedHere, commonCharges ,privateCharges, totalCharges, waterCharges,heatingCharges,totalledConsumptionsHere,payedByProvisions, copropertySaldo,ownersSaldo, amountsDue){
         const rowsLandscapeConsumptions =16;
         const rowsLandscapePrivate =12;
-        const rowsLandscapeTotal =13;
+        const rowsLandscapeTotal =14;
         const rowsPortrait =17;
         var numPages = 0;
         Object.values(commonCharges).forEach(function(cC){numPages += Math.ceil(cC.transactions.length/rowsPortrait)});
