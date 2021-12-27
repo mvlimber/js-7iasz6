@@ -864,7 +864,7 @@
                     </div>
                     <br>
                     <div class="input-field ">
-                      <input id="meterReading_date_edit" type="text" class="datepicker validate" required required="true">
+                      <input id="meterReading_date_edit" type="date" required required="true">
                       <label for="meterReading_date_edit">Date<b><font color='red'>*</font></b></label>
                       <span class="helper-text" data-error="required field" ></span>
                     </div>
@@ -6542,7 +6542,7 @@ function loadNotification (n){
       function writePDF (closeDateTransactions, newCopropertySaldo, newOwnersSaldo, metersIncludedHere, commonCharges ,privateCharges, totalCharges, waterCharges,heatingCharges,totalledConsumptionsHere,payedByProvisions, copropertySaldo,ownersSaldo, amountsDue){
         const rowsLandscapeConsumptions =16;
         const rowsLandscapePrivate =12;
-        const rowsLandscapeTotal =14;
+        const rowsLandscapeTotal =15;
         const rowsPortrait =17;
         var numPages = 0;
         Object.values(commonCharges).forEach(function(cC){numPages += Math.ceil(cC.transactions.length/rowsPortrait)});
