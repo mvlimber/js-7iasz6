@@ -1254,7 +1254,7 @@
                   <span class="helper-text" data-error="Digits or capitals,f.i. 99DB5175">Digits or capitals,f.i. 99DB5175</span>
                 </div>
                 <div class="input-field col s6 m4">
-                  <select id="meter_digits" required aria-required="true">
+                  <select id="meter_digits" required aria-required="true" onchange="toggleMeter()">
                     <option value="" disabled selected>Select*</option>
                     <option value="4">4</option>
                     <option value="5">5</option>
@@ -1265,7 +1265,7 @@
                   <span class="helper-text" data-error="digits before the comma" >digits before comma</span>
                 </div>
                 <div class="input-field col s6 m4">
-                  <select id="meter_decimals" required aria-required="true">
+                  <select id="meter_decimals" required aria-required="true" onchange="toggleMeter()">
                     <option value="" disabled selected>Select*</option>
                     <option value="0">0</option>
                     <option value="1">1</option>
@@ -1278,6 +1278,25 @@
                 <div class="input-field col s6 m4">
                   <select id="meter_status" required aria-required="true"></select>
                   <span class="helper-text">active/removed</span>
+                </div>
+                <div class="input-field col s6 m4">
+                  <input id="meter_initialReading_edit" type="number" class="validate" max="9999999999" required required="true">
+                  <label for="meter_initialReading_edit">Reading<b><font color='red'>*</font></b></label>
+                  <span id="meter_initialReading_helper_edit" class="helper-text" ></span>
+                </div>
+              </form>
+              <form id="meterinitialReading_picture_form">
+                <div class="input-field">
+                </div>
+                <div class="file-field input-field col s12 m8">
+                  <div id="meterinitialReading_picture_button" class="btn-small">
+                    <span>Picture<i class="material-icons right">attach_file</i></span>
+                    <input type="file" id="meterInitialReading_picture_edit_file" >
+                  </div>
+                  <div class="file-path-wrapper">
+                    <input class="file-path validate" type="text" id="meterInitialReading_picture_edit_text">
+                    <span class="helper-text" data-error="only jpeg or png files" >jpeg or png file</span>
+                  </div>
                 </div>
               </form>
             </div>
@@ -4915,6 +4934,18 @@ function loadNotification (n){
       };
 
       
+      function toggleMeter(){
+        var digits = document.getElementById("meter_digits").value;
+        var decimals = document.getElementById("meter_decimals").value;
+        if ((digits != "") && (decimals != "") && ((!selectedMeterData)|| (selectedMeterData.readings.length < 2))) {
+          document.getElementById("meter_initialReading_edit").disabled= false;
+          document.getElementById("meterinitialReading_picture_button").setAttribute("class","btn-small ");
+        } else {
+          document.getElementById("meter_initialReading_edit").disabled= true;
+          document.getElementById("meterinitialReading_picture_button").setAttribute("class","btn-small disabled");
+        };
+      };
+      
       function editMeter(meter, meterData){
         selectedMeterId = meter;
         selectedMeterData = meterData;
@@ -4925,10 +4956,27 @@ function loadNotification (n){
         document.getElementById("meter_digits").value=meterData.digits;
         document.getElementById("meter_decimals").value=meterData.decimals;
         document.getElementById("meterSubmitButton").disabled=false;
+        toggleMeter();
         var elems = document.querySelectorAll('select');
         M.FormSelect.init(elems);
         M.updateTextFields();
       };
+
+      function addMeter(property){
+        selectedMeterId = "";
+        selectedMeterData = null;
+        document.getElementById("meter_type").value="";
+        document.getElementById("meter_id").value="";
+        document.getElementById("meter_status").value="ACTIF";
+        document.getElementById("meter_digits").value="";
+        document.getElementById("meter_decimals").value="";
+        toggleMeter();
+        document.getElementById("meterSubmitButton").disabled=false;
+        var elems = document.querySelectorAll('select');
+        M.FormSelect.init(elems);
+        M.updateTextFields();
+      };
+
 
       function validateMeterEntries(){
         var valid= true;
@@ -5016,20 +5064,7 @@ function loadNotification (n){
         };
       };
 
-      function addMeter(property){
-        selectedMeterId = "";
-        document.getElementById("meter_type").value="";
-        document.getElementById("meter_id").value="";
-        document.getElementById("meter_status").value="ACTIF";
-        document.getElementById("meter_digits").value="";
-        document.getElementById("meter_decimals").value="";
-        
-        document.getElementById("meterSubmitButton").disabled=false;
-        var elems = document.querySelectorAll('select');
-        M.FormSelect.init(elems);
-        M.updateTextFields();
-      };
-
+      
       
       function displayMeter(meterFS){
         var meterData = meterFS.data();
