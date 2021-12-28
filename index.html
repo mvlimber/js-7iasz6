@@ -201,7 +201,7 @@
     <main> 
       <div class="row">
         <div id="Home" class="col s12" display="flex">
-          <div id="notificationRemove" class="modal small">
+          <div id="notificationRemove" class="modal normal">
             <div class="modal-content">
               <h6> You are about to permanently remove this announcement. Please Confirm.</h6>  
             </div>
@@ -212,7 +212,7 @@
                 Cancel</a>
             </div>
           </div>
-          <div id="notificationEdit" class="modal small">
+          <div id="notificationEdit" class="modal normal">
             <div class="modal-content">
               <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
               <h5>Enter announcement title and text</h5>
@@ -272,7 +272,7 @@
         </div>
         <!------------------------------------------------------------------------------------------------------>
         <div id="Reports" class="col s12">
-          <div id="chargesReportAdd" class="modal small">
+          <div id="chargesReportAdd" class="modal normal">
             <div class="modal-content">
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
               
@@ -333,7 +333,7 @@
         </div>
         <br>
         <button id="documentNewButton" style="visibility: hidden; float: right" data-target="documentEdit" class="btn-small waves-light modal-trigger" onclick="resetDocument()"><i class="material-icons right">add</i>New document</button>
-        <div id="documentEdit" class="modal small">
+        <div id="documentEdit" class="modal normal">
           <div class="modal-content">
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
             <h5>Upload document and enter its attributes</h5>
@@ -388,7 +388,7 @@
           </div>
         </div>
         
-        <div id="documentRemove" class="modal small">
+        <div id="documentRemove" class="modal normal">
           <div class="modal-content">
             <h5> Please confirm you want to permanently remove this document</h5>
           </div>
@@ -484,7 +484,7 @@
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
           </div>
         </div> 
-        <div id="transactionRemove" class="modal small">
+        <div id="transactionRemove" class="modal normal">
         <div class="modal-content">
           <h5> Please confirm you want to permanently remove this transaction</h5>
         </div>
@@ -495,7 +495,7 @@
             Cancel</a>
         </div>
         </div>
-        <div id="transactionEvidenceRemove" class="modal small">
+        <div id="transactionEvidenceRemove" class="modal normal">
         <div class="modal-content">
           <h5> You are about to remove the document from the list of evidences</h5>
           <p>
@@ -512,7 +512,7 @@
               Cancel</a>
         </div>
         </div>
-        <div id="transactionNewDocument" class="modal small">
+        <div id="transactionNewDocument" class="modal normal">
           <div class="modal-content">
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
             <h5> New Transaction Evidence Document</h5>
@@ -550,7 +550,7 @@
               Cancel</a>
           </div>
         </div>
-        <div id="transactionNewEvidenceLink" class="modal small">
+        <div id="transactionNewEvidenceLink" class="modal normal">
           <div class="modal-content">
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
             <h5> Link to existing document</h5>
@@ -687,7 +687,7 @@
             </div>
           </div>
 
-          <div id="transactionLoad" class="modal small">
+          <div id="transactionLoad" class="modal normal">
             <div class="modal-content">
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
               
@@ -716,7 +716,7 @@
             </div>
           </div>
 
-          <div id="transactionLoadConfirm" class="modal small">
+          <div id="transactionLoadConfirm" class="modal normal">
             <div class="modal-content">
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
               
@@ -755,7 +755,7 @@
           </div>
           <br>
           <button style="float: right" data-target="transactionRuleEdit" class="btn-small waves-light modal-trigger" onclick="resetTransactionRule()"><i class="material-icons right">add</i>New transaction rule</button>
-          <div id="transactionRuleEdit" class="modal small">
+          <div id="transactionRuleEdit" class="modal normal">
             <div class="modal-content">
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
               
@@ -801,7 +801,7 @@
                 Cancel</a>
             </div>
           </div>
-          <div id="transactionRuleRemove" class="modal small">
+          <div id="transactionRuleRemove" class="modal normal">
             <div class="modal-content">
               <h5> Please confirm you want to permanently remove this transaction rule</h5>
             </div>
@@ -839,7 +839,7 @@
           <div id="meterReadings_absentPhrase" style="display:none">
             <h5>There are no Meter Readings yet</h5>
           </div>
-          <div id="pictureRemove" class="modal small">
+          <div id="pictureRemove" class="modal normal">
             <div class="modal-content">
               <h5> You are about to remove the meter reading picture</h5>
             </div>
@@ -851,7 +851,7 @@
             </div>
           </div>
 
-          <div id="meterReadingEdit" class="modal small">
+          <div id="meterReadingEdit" class="modal normal">
             <div class="modal-content">
               <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
               <h5>Enter meter reading and picture</h5>
@@ -1170,7 +1170,7 @@
                   <input id="property_cellar" type="text" readonly>
                   <label for="property_cellar">Cellar(s)</label>
                 </div>
-                <div class="input-field col s4 m4">
+                <div class="col s12 m4">
                   <p style="font-size:16px">Owner: <span id="property_owner"></span> </p>
                 </div>
                 <div class="row col s10 m10">
@@ -1239,7 +1239,7 @@
           </div>
         </div>
 
-        <div id="meterWrite" class="modal small">
+        <div id="meterWrite" class="modal normal">
           <div class="modal-content">
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
             <h5>Enter meter</h5>
@@ -1311,7 +1311,7 @@
             <button style="float: right" data-target="propertyAdd" class="btn-small waves-light modal-trigger" onclick="resetSelectedProperty()"><i class="material-icons right">add</i>New Property</button>
           </div>
 
-          <div id="previousOwners" class="modal small">
+          <div id="previousOwners" class="modal normal">
             <div class="modal-content">
               <a style="float: right"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Close</a>
@@ -1331,7 +1331,7 @@
             </div>
           </div>
 
-          <div id="propertyAdd" class="modal small">
+          <div id="propertyAdd" class="modal normal">
             <div class="modal-content">
               <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
               <h5>New Property</h5>
@@ -1364,7 +1364,7 @@
           </div>
           </div>
 
-          <div id="newOwner" class="modal small">
+          <div id="newOwner" class="modal normal">
             <div class="modal-content">
               <a style="float: right"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
@@ -1388,7 +1388,7 @@
             </div>
           </div>
 
-          <div id="previousOwner" class="modal small">
+          <div id="previousOwner" class="modal normal">
             <div class="modal-content">
               <a style="float: right"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
@@ -1418,19 +1418,19 @@
               
               <h5> Edit property data</h5>
               <form class="col s12">
-                <div class="input-field col s6 m4">
+                <div class="input-field col s6 m6">
                   <select id="property_type_edit" required aria-required="true"></select>
                 </div>
-                <div class="input-field col s6 m4">
+                <div class="input-field col s6 m6">
                   <input id="property_code_edit" type="text" pattern="([A-Z]|[0-9]){1,4}" maxlength="4" data-length="4" class="validate" required aria-required="true">
                   <label for="property_code_edit">Code<b><font color='red'>*</font></b></label>
-                  <span class="helper-text" data-error="Max 4 capitals or numbers. Example: A1">Max 4 capitals or numbers. Example: A1</span>
+                  <span class="helper-text" data-error="Max 4 capitals or numbers. Example: A1">Capitals or numbers. Example: A1</span>
                 </div>
-                <div class="input-field col s6 m4">
+                <div class="input-field col s12 m6">
                   <select id="property_owner_edit" required aria-required="true"></select>
                 <span class="helper-text" >Owner</span>
                 </div>
-                <div class="input-field col s6 m4">
+                <div class="input-field col s12 m6">
                   <input id="property_cellar_edit" type="text" maxlength="10" data-length="10" class="validate">
                   <label for="property_cellar_edit">Cellar(s)</label>
                   <span class="helper-text" data-error="A string of max 10 digits: Example: C1, C2">A string of max 10 digits: Example: C1,C2</span>
@@ -1497,7 +1497,7 @@
             </table>
           </div>
           
-          <div id="costCenterPrepareRemove" class="modal small">
+          <div id="costCenterPrepareRemove" class="modal normal">
             <div class="modal-content">
               <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
               <h5> You are about to permanently remove the cost center <i id="costCenter_to_remove"></i> </h5>
@@ -1507,7 +1507,7 @@
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
             </div>
           </div>
-          <div id="costCenterAdd" class="modal small">
+          <div id="costCenterAdd" class="modal normal">
             <div class="modal-content">
               <a style="float: right"
                 class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
@@ -1524,7 +1524,7 @@
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
             </div>
           </div>
-          <div id="costCenterNameEdit" class="modal small">
+          <div id="costCenterNameEdit" class="modal normal">
               <div class="modal-content">
                 <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
                 <h5> Enter name cost center</h5>
@@ -1540,7 +1540,7 @@
                   class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
               </div>
           </div>
-          <div id="costCenterQuotaEdit" class="modal small">
+          <div id="costCenterQuotaEdit" class="modal normal">
             <div class="modal-content">
               <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
               <h5> Enter quota</h5>
@@ -1556,7 +1556,7 @@
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
             </div>
           </div>
-          <div id="initialSaldoEdit" class="modal small">
+          <div id="initialSaldoEdit" class="modal normal">
             <div class="modal-content">
               <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
               <h5> Enter initial saldo</h5>
@@ -1572,7 +1572,7 @@
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
             </div>
           </div>
-          <div id="provisionsEdit" class="modal small">
+          <div id="provisionsEdit" class="modal normal">
           <div class="modal-content">
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
             <h5> Enter amount periodic funds raising, for entire condomynium</h5>
@@ -1591,7 +1591,7 @@
               class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
           </div>
           </div>
-          <div id="heatingCommonEdit" class="modal small">
+          <div id="heatingCommonEdit" class="modal normal">
           <div class="modal-content">
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
             <h5>Enter percentage applied for common heating</h5>
@@ -1609,7 +1609,7 @@
               class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
           </div>
           </div>
-          <div id="initialCopropertySaldoEdit" class="modal small">
+          <div id="initialCopropertySaldoEdit" class="modal normal">
             <div class="modal-content">
               <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
               <h5> Enter initial condomynium saldo</h5>
