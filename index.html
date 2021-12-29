@@ -1242,7 +1242,7 @@
         <div id="meterWrite" class="modal normal">
           <div class="modal-content">
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
-            <h5>Enter meter</h5>
+            <h5>Enter meter id, format and initial reading</h5>
             <div class="row">
               <form>
                 <div class="input-field col s6 m6">
@@ -1281,7 +1281,7 @@
                 </div>
                 <div class="input-field col s6 m4">
                   <input id="meter_initialReading_edit" type="number" class="validate" max="9999999999" required required="true">
-                  <label for="meter_initialReading_edit">Reading<b><font color='red'>*</font></b></label>
+                  <label for="meter_initialReading_edit">Initial Reading<b><font color='red'>*</font></b></label>
                   <span id="meter_initialReading_helper_edit" class="helper-text" ></span>
                 </div>
               </form>
@@ -4184,8 +4184,30 @@ function loadNotification (n){
         M.updateTextFields();
       };
 
-      function prepareMeterReadingEdit(){
+      function meterFormat(prefix){
         var nine = "9";
+        var maxAtt = nine.repeat(meterReading.digits);
+        document.getElementById(prefix + "_edit").setAttribute("max",maxAtt);
+        var stepAtt;
+        if (meterReading.decimals){
+          stepAtt = "0.";
+          var nul = "0";
+          var stepAttPart = nul.repeat(meterReading.decimals - 1);
+          stepAtt += stepAttPart; stepAtt += "1";
+          document.getElementById(prefix + "_helper_edit").innerHTML =  "maximum " + meterReading.digits + " digits before and " + meterReading.decimals + " digits after the comma";
+          document.getElementById("meterReading_reading_helper_edit").setAttribute("data-error", "maximum " + meterReading.digits + " digits before and " + meterReading.decimals + " digits after the comma");
+        } else {
+            document.getElementById("meterReading_reading_helper_edit").innerHTML =  "maximum " + meterReading.digits + " digits";
+            document.getElementById("meterReading_reading_helper_edit").setAttribute("data-error", "maximum " + meterReading.digits + " digits");
+            stepAtt = "1";
+          };
+        document.getElementById("meterReading_reading_edit").setAttribute("step",stepAtt);
+        
+      };
+      
+      function prepareMeterReadingEdit(){
+        meterFormat("meterReading_reading");
+        /*var nine = "9";
         var maxAtt = nine.repeat(meterReading.digits);
         document.getElementById("meterReading_reading_edit").setAttribute("max",maxAtt);
         var stepAtt;
@@ -4202,7 +4224,7 @@ function loadNotification (n){
             stepAtt = "1";
           };
         document.getElementById("meterReading_reading_edit").setAttribute("step",stepAtt);
-        
+        */
         
         if (containsNewReading) {
           document.getElementById("meterReading_reading_edit").value = meterReading.readings[0].reading;
