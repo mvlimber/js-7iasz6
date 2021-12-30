@@ -4184,21 +4184,21 @@ function loadNotification (n){
         M.updateTextFields();
       };
 
-      function meterFormat(prefix){
+      function meterFormat(prefix, digits, decimals){
         var nine = "9";
-        var maxAtt = nine.repeat(meterReading.digits);
+        var maxAtt = nine.repeat(digits);
         document.getElementById(prefix + "_edit").setAttribute("max",maxAtt);
         var stepAtt;
-        if (meterReading.decimals){
+        if (decimals){
           stepAtt = "0.";
           var nul = "0";
-          var stepAttPart = nul.repeat(meterReading.decimals - 1);
+          var stepAttPart = nul.repeat(decimals - 1);
           stepAtt += stepAttPart; stepAtt += "1";
-          document.getElementById(prefix + "_helper_edit").innerHTML =  "maximum " + meterReading.digits + " digits before and " + meterReading.decimals + " digits after the comma";
-          document.getElementById(prefix + "_helper_edit").setAttribute("data-error", "maximum " + meterReading.digits + " digits before and " + meterReading.decimals + " digits after the comma");
+          document.getElementById(prefix + "_helper_edit").innerHTML =  "maximum " + digits + " digits before and " + decimals + " digits after the comma";
+          document.getElementById(prefix + "_helper_edit").setAttribute("data-error", "maximum " + digits + " digits before and " + decimals + " digits after the comma");
         } else {
-            document.getElementById(prefix + "_helper_edit").innerHTML =  "maximum " + meterReading.digits + " digits";
-            document.getElementById(prefix + "_helper_edit").setAttribute("data-error", "maximum " + meterReading.digits + " digits");
+            document.getElementById(prefix + "_helper_edit").innerHTML =  "maximum " + digits + " digits";
+            document.getElementById(prefix + "_helper_edit").setAttribute("data-error", "maximum " + digits + " digits");
             stepAtt = "1";
           };
         document.getElementById(prefix + "_edit").setAttribute("step",stepAtt);
@@ -4206,7 +4206,7 @@ function loadNotification (n){
       };
       
       function prepareMeterReadingEdit(){
-        meterFormat("meterReading_reading");
+        meterFormat("meterReading_reading", meterReading.digits,meterReading.decimals);
         /*var nine = "9";
         var maxAtt = nine.repeat(meterReading.digits);
         document.getElementById("meterReading_reading_edit").setAttribute("max",maxAtt);
@@ -4962,7 +4962,7 @@ function loadNotification (n){
         if ((digits != "") && (decimals != "") && ((!selectedMeterData)|| (selectedMeterData.readings.length < 2))) {
           document.getElementById("meter_initialReading_edit").disabled= false;
           document.getElementById("meterinitialReading_picture_button").setAttribute("class","btn-small ");
-          meterFormat("meter_initialReading");
+          meterFormat("meter_initialReading", digits, decimals);
         } else {
           document.getElementById("meter_initialReading_edit").disabled= true;
           document.getElementById("meterinitialReading_picture_button").setAttribute("class","btn-small disabled");
