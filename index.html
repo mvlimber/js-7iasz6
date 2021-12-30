@@ -5046,7 +5046,7 @@ function loadNotification (n){
           var newPicture = false;
           var thisRefFS ;
           var fileStoreRef ;
-          if (Boolean(selectedMeterData.coproperty)){
+          if ((handlingCopropertyMeter) || (selectedMeterData && Boolean(selectedMeterData.coproperty))){
             thisRefFS = refCoproperty;
             fileStoreRef = refCopropertyFiles;
           } else {
@@ -5076,28 +5076,28 @@ function loadNotification (n){
               M.toast({html:"Error occurred editing meter:" + error}); 
             });
           } else {
-            if (document.getElementById("meter_initialReading_edit").value){entries.readings[0].picture = true}
+            if (document.getElementById("meterInitialReading_picture_edit_text").value){entries.readings[0].picture = true; newPicture = true}
             else {entries.readings[0].picture = false};
-            if (handlingCopropertyMeter) {
-              entries.coproperty = true;
-              refCoproperty.collection("Meters").add(entries).then(function(docrefmeter) {
+            thisRefFS.collection("Meters").add(entries).then(function(docrefmeter) {
+              if (newPicture){
+                var pictureFile = document.getElementById('meterInitialReading_picture_edit_file').files[0];
+                var fileRef = fileStoreRef.child("Meters").child(thisMeterIdFS).child(0.toString());  
+                fileRef.put(pictureFile).then (function (){
+                  meterReadingsLoaded = false;
+                  refreshCopropertyMeters();
+                  M.Modal.getInstance(document.getElementById("meterWrite")).close();
+                }).catch(function(error) {
+                  M.toast({html:"Error occurred editing picture initial reading:" + error}); 
+                });  
+              } else {
                 meterReadingsLoaded = false;
                 refreshCopropertyMeters();
-                handlingCopropertyMeter = false;
                 M.Modal.getInstance(document.getElementById("meterWrite")).close();
-              }).catch(function(error) {
-                M.toast({html:"Error occurred adding meter:" + error}); 
-              });
-            }
-            else {
-              refCoproperty.collection("Properties").doc(selectedPropertyId).collection("Meters").add(entries).then(function(docrefmeter) {
-                displayMeters(selectedPropertyId);
-                meterReadingsLoaded = false;
-                M.Modal.getInstance(document.getElementById("meterWrite")).close();
-              }).catch(function(error) {
-                M.toast({html:"Error occurred adding meter:" + error}); 
-              });
-            };
+              };
+            }).catch(function(error) {
+              M.toast({html:"Error occurred editing meter:" + error}); 
+            });
+  
           };
         };
       };
