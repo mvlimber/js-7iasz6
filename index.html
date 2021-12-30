@@ -4957,8 +4957,8 @@ function loadNotification (n){
 
       
       function toggleMeter(){
-        var digits = document.getElementById("meter_digits").value;
-        var decimals = document.getElementById("meter_decimals").value;
+        var digits = Number(document.getElementById("meter_digits").value);
+        var decimals = Number(document.getElementById("meter_decimals").value);
         if ((digits != "") && (decimals != "") && ((!selectedMeterData)|| (selectedMeterData.readings.length < 2))) {
           document.getElementById("meter_initialReading_edit").disabled= false;
           document.getElementById("meterinitialReading_picture_button").setAttribute("class","btn-small ");
@@ -4968,7 +4968,7 @@ function loadNotification (n){
           document.getElementById("meterinitialReading_picture_button").setAttribute("class","btn-small disabled");
         };
       };
-      
+       
       function editMeter(meter, meterData){
         selectedMeterId = meter;
         selectedMeterData = meterData;
@@ -4993,6 +4993,8 @@ function loadNotification (n){
         document.getElementById("meter_status").value="ACTIF";
         document.getElementById("meter_digits").value="";
         document.getElementById("meter_decimals").value="";
+        document.getElementById("meter_initialReading_edit").value="";
+        document.getElementById("meterInitialReading_picture_edit_text").value="";
         toggleMeter();
         document.getElementById("meterSubmitButton").disabled=false;
         var elems = document.querySelectorAll('select');
