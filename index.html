@@ -4978,6 +4978,8 @@ function loadNotification (n){
         document.getElementById("meter_status").value=meterData.status;
         document.getElementById("meter_digits").value=meterData.digits;
         document.getElementById("meter_decimals").value=meterData.decimals;
+        document.getElementById("meter_initialReading_edit").value=meterData.readings[0].reading;
+        document.getElementById("meterInitialReading_picture_edit_text").value="";
         document.getElementById("meterSubmitButton").disabled=false;
         toggleMeter();
         var elems = document.querySelectorAll('select');
@@ -5037,21 +5039,23 @@ function loadNotification (n){
             status: document.getElementById("meter_status").value,
             digits: Number(document.getElementById("meter_digits").value),
             decimals: Number(document.getElementById("meter_decimals").value),
-            readings:[],
+            readings:[{}],
           };
           entries.readings[0].reading = Number(document.getElementById("meter_initialReading_edit").value);
-          entries.readings[0].date = coproperty.initialStartDate;
+          entries.readings[0].date = currentCoproperty.initialStartDate;
           entries.readings[0].counter = 0;
           entries.readings[0].updatedBy = currentUser.id;
           var newPicture = false;
           var thisRefFS;
           var fileStoreRef;
-          if (handlingCopropertyMeter || (selectedMeterData && Boolean(selectedMeterData.coproperty))){
+          if (((!selectedMeterId) && handlingCopropertyMeter) || (selectedMeterId && Boolean(selectedMeterData.coproperty))){
             thisRefFS = refCoproperty;
             fileStoreRef = refCopropertyFiles;
+            entries.coproperty = true;
           } else {
             thisRefFS = refCoproperty.collection("Properties").doc(selectedPropertyId);
             fileStoreRef = refCopropertyFiles.child(selectedPropertyId);
+            entries.coproperty = false;
           };
           if (selectedMeterId) {
             if (document.getElementById("meterInitialReading_picture_edit_text").value){entries.readings[0].picture = true; newPicture = true}
