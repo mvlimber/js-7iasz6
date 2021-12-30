@@ -5031,14 +5031,21 @@ function loadNotification (n){
       
       function writeMeter(){
         if (validateMeterEntries()) {
+          var entries = {
+            type: document.getElementById("meter_type").value,
+            meter: document.getElementById("meter_id").value,
+            status: document.getElementById("meter_status").value,
+            digits: Number(document.getElementById("meter_digits").value),
+            decimals: Number(document.getElementById("meter_decimals").value),
+            readings:[];
+          };
+          entries.readings[0].reading = Number(document.getElementById("meter_reading_edit").value);
+          entries.readings[0].date = coproperty.initialStartDate;
+          entries.readings[0].picture = picturePresent;
+          entries.readings[0].updatedBy = currentUser.id;
           if (selectedMeterId) {
-            var entries = {
-              type: document.getElementById("meter_type").value,
-              meter: document.getElementById("meter_id").value,
-              status: document.getElementById("meter_status").value,
-              digits: Number(document.getElementById("meter_digits").value),
-              decimals: Number(document.getElementById("meter_decimals").value),
-            };
+            if (document.getElementById("meter_initialReading_edit").value){entries.readings[0].picture = true}
+            else {entries.readings[0].picture = selectedMeterData.readings[0].picture};
             if (Boolean(selectedMeterData.coproperty)) {
               refCoproperty.collection("Meters").doc(selectedMeterId).update(entries).then(function(docrefmeter) {
                 meterReadingsLoaded = false;
@@ -5057,14 +5064,8 @@ function loadNotification (n){
               });
             };
           } else {
-            var entries = {
-              type: document.getElementById("meter_type").value,
-              meter: document.getElementById("meter_id").value,
-              status: document.getElementById("meter_status").value,
-              digits: Number(document.getElementById("meter_digits").value),
-              decimals: Number(document.getElementById("meter_decimals").value),
-              readings: []
-            };
+            if (document.getElementById("meter_initialReading_edit").value){entries.readings[0].picture = true}
+            else {entries.readings[0].picture = false};
             if (handlingCopropertyMeter) {
               entries.coproperty = true;
               refCoproperty.collection("Meters").add(entries).then(function(docrefmeter) {
