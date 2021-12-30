@@ -5039,7 +5039,7 @@ function loadNotification (n){
             decimals: Number(document.getElementById("meter_decimals").value),
             readings:[];
           };
-          entries.readings[0].reading = Number(document.getElementById("meter_reading_edit").value);
+          entries.readings[0].reading = Number(document.getElementById("meter_initialReading_edit").value);
           entries.readings[0].date = coproperty.initialStartDate;
           entries.readings[0].picture = picturePresent;
           entries.readings[0].updatedBy = currentUser.id;
@@ -5054,31 +5054,27 @@ function loadNotification (n){
             fileStoreRef = refCopropertyFiles.child(selectedPropertyId);
           };
           if (selectedMeterId) {
-            if (document.getElementById("meter_initialReading_edit").value){entries.readings[0].picture = true; newPicture = true}
+            if (document.getElementById("meterInitialReading_picture_edit_text").value){entries.readings[0].picture = true; newPicture = true}
             else {entries.readings[0].picture = selectedMeterData.readings[0].picture};
-            if (Boolean(selectedMeterData.coproperty)) {
-              refCoproperty.collection("Meters").doc(selectedMeterId).update(entries).then(function(docrefmeter) {
-                if (newPicture)
-                  {
-                    var thisRefFS = refCoproperty;
-                    var fileStoreRef = refCopropertyFiles;
-                    
-                  }
+            thisRefFS.collection("Meters").doc(selectedMeterId).update(entries).then(function(docrefmeter) {
+              if (newPicture){
+                var pictureFile = document.getElementById('meterInitialReading_picture_edit_file').files[0];
+                var fileRef = fileStoreRef.child("Meters").child(thisMeterIdFS).child(0.toString());  
+                fileRef.put(pictureFile).then (function (){
+                  meterReadingsLoaded = false;
+                  refreshCopropertyMeters();
+                  M.Modal.getInstance(document.getElementById("meterWrite")).close();
+                }).catch(function(error) {
+                  M.toast({html:"Error occurred editing picture initial reading:" + error}); 
+                });  
+              } else {
                 meterReadingsLoaded = false;
                 refreshCopropertyMeters();
                 M.Modal.getInstance(document.getElementById("meterWrite")).close();
-              }).catch(function(error) {
-                M.toast({html:"Error occurred editing meter:" + error}); 
-              });
-            } else {
-              refCoproperty.collection("Properties").doc(selectedPropertyId).collection("Meters").doc(selectedMeterId).update(entries).then(function(docrefmeter) {
-                displayMeters(selectedPropertyId);
-                meterReadingsLoaded = false;
-                M.Modal.getInstance(document.getElementById("meterWrite")).close();
-              }).catch(function(error) {
-                M.toast({html:"Error occurred editing meter:" + error}); 
-              });
-            };
+              };
+            }).catch(function(error) {
+              M.toast({html:"Error occurred editing meter:" + error}); 
+            });
           } else {
             if (document.getElementById("meter_initialReading_edit").value){entries.readings[0].picture = true}
             else {entries.readings[0].picture = false};
