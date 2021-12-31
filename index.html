@@ -1273,7 +1273,7 @@
                     <option value="3">3</option>
                     <option value="4">4</option>
                   </select>
-                  <span class="helper-text" data-error="digits after comma">digits before comma</span>
+                  <span class="helper-text" data-error="digits after comma">digits after comma</span>
                 </div>
                 <div class="input-field col s6 m4">
                   <select id="meter_status" required aria-required="true"></select>
@@ -4957,15 +4957,19 @@ function loadNotification (n){
 
       
       function toggleMeter(){
-        var digits = Number(document.getElementById("meter_digits").value);
-        var decimals = Number(document.getElementById("meter_decimals").value);
-        if ((digits != "") && (decimals != "") && ((!selectedMeterData)|| (selectedMeterData.readings.length < 2))) {
+        var digitsString = document.getElementById("meter_digits").value;
+        var decimalsString = document.getElementById("meter_decimals").value;
+        var digits = Number(digitsString);
+        var decimals = Number(decimalsString);
+        if ((digitsString != "") && (decimalsString != "") && ((!selectedMeterData)|| (selectedMeterData.readings.length < 2))) {
           document.getElementById("meter_initialReading_edit").disabled= false;
           document.getElementById("meterinitialReading_picture_button").setAttribute("class","btn-small ");
           meterFormat("meter_initialReading", digits, decimals);
         } else {
           document.getElementById("meter_initialReading_edit").disabled= true;
           document.getElementById("meterinitialReading_picture_button").setAttribute("class","btn-small disabled");
+          document.getElementById("meter_initialReading_helper_edit").innerHTML =  "";
+          document.getElementById("meter_initialReading_helper_edit").setAttribute("data-error", "");
         };
       };
        
