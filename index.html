@@ -5031,6 +5031,22 @@ function loadNotification (n){
           M.toast({html:"Please enter number of digits after the comma"});
           valid=false;
         };
+        if (!document.getElementById("meter_reading_edit").checkValidity()) {
+          M.toast({html:"Please enter valid reading"});
+          valid=false;
+        };
+        var readingPicture = document.getElementById('meter_picture_edit_file').files[0];
+        let allowed_mime_types = [ 'image/jpeg', 'image/png' ];
+        let allowed_size_kb = 4000;
+        if (readingPicture) {
+          if(allowed_mime_types.indexOf(readingPicture.type) == -1) {
+            M.toast({html:"Incorrect file type (only jpeg or png allowed)"});
+            valid=false;
+          } else if(readingPicture.size > allowed_size_kb*1024) {
+            M.toast({html:"Picture exceeds max size 4MB"});
+            valid=false;
+          } else (picturePresent = true);
+        }
         if (!valid) {document.getElementById("meterSubmitButton").disabled=false;};
         return valid;
       };
