@@ -5038,15 +5038,15 @@ function loadNotification (n){
         var readingPicture = document.getElementById('meterInitialReading_picture_edit_file').files[0];
         let allowed_mime_types = [ 'image/jpeg', 'image/png' ];
         let allowed_size_kb = 4000;
-        if (readingPicture) {
+        
           if(allowed_mime_types.indexOf(readingPicture.type) == -1) {
             M.toast({html:"Incorrect file type (only jpeg or png allowed)"});
             valid=false;
           } else if(readingPicture.size > allowed_size_kb*1024) {
             M.toast({html:"Picture exceeds max size 4MB"});
             valid=false;
-          } else (picturePresent = true);
-        }
+          };
+        
         if (!valid) {document.getElementById("meterSubmitButton").disabled=false;};
         return valid;
       };
@@ -5105,11 +5105,12 @@ function loadNotification (n){
             thisRefFS.collection("Meters").add(entries).then(function(docrefmeter) {
               if (newPicture){
                 var pictureFile = document.getElementById('meterInitialReading_picture_edit_file').files[0];
-                var fileRef = fileStoreRef.child("Meters").child(selectedMeterId).child("0");  
+                var fileRef = fileStoreRef.child("Meters").child(docrefmeter.id).child("0");  
                 fileRef.put(pictureFile).then (function (){
                   handlingCopropertyMeter = false;
                   meterReadingsLoaded = false;
-                  refreshCopropertyMeters();
+                  if (entries.coproperty){refreshCopropertyMeters();}
+                  else {displayMeters(selectedPropertyId)};
                   M.Modal.getInstance(document.getElementById("meterWrite")).close();
                 }).catch(function(error) {
                   M.toast({html:"Error occurred editing picture initial reading:" + error}); 
@@ -5117,7 +5118,8 @@ function loadNotification (n){
               } else {
                 handlingCopropertyMeter = false;
                 meterReadingsLoaded = false;
-                refreshCopropertyMeters();
+                if (entries.coproperty){refreshCopropertyMeters();}
+                else {displayMeters(selectedPropertyId)};
                 M.Modal.getInstance(document.getElementById("meterWrite")).close();
               };
             }).catch(function(error) {
