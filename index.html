@@ -315,7 +315,7 @@
               <h6 style="float: right;margin-left: 20px">Generating the report might take a few seconds. Please confirm
                 the generated report after review</h6>
               <br><br>
-              <button id="chargesReportSubmitButton" style="float: right;margin-left: 20px" class="btn-small waves-light modal-trigger" data-target="loading" type="submit" onclick="this.disabled=true; prepareChargesReport()">Submit<i class="material-icons right">send</i></button>
+              <button id="chargesReportSubmitButton" style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; prepareChargesReport()">Submit<i class="material-icons right">send</i></button>
               <a style="float: right"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
                 Cancel</a>
@@ -398,7 +398,7 @@
           
             </form>
             
-            <button id="documentSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light modal-trigger" data-target="loading" type="submit" onclick="this.disabled=true; writeDocument()">Save<i class="material-icons right">send</i></button>
+            <button id="documentSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; writeDocument()">Save<i class="material-icons right">send</i></button>
             <a style="float: right;margin-left: 20px;margin-bottom: 3px"
               class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
               Cancel</a>
@@ -561,7 +561,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button id="transactionEvidenceDocumentSubmitButton" style="float: right;margin-left: 20px" class="btn-small waves-light modal-trigger" data-target="loading"  type="submit" onclick="this.disabled=true; writeTransactionEvidence()">Submit<i class="material-icons right">send</i></button>
+            <button id="transactionEvidenceDocumentSubmitButton" style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; writeTransactionEvidence()">Submit<i class="material-icons right">send</i></button>
             <a style="float: right"
               class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
               Cancel</a>
@@ -2322,12 +2322,13 @@ function loadNotification (n){
         };
         if (!valid) {
           document.getElementById("chargesReportSubmitButton").disabled=false;
-          M.Modal.getInstance(document.getElementById("loading")).close();};
+        };
         return valid;
       };
 
       function prepareChargesReport() {
       if (validateChargesReportAdd()) {
+        M.Modal.getInstance(document.getElementById("loading")).open();
         var metersIn = (document.getElementById("chargesReport_metersIncluded").value == "Yes");
         generateChargesReport(document.getElementById("chargesReport_closeDate").value, metersIn);
       };
@@ -2791,7 +2792,6 @@ function loadNotification (n){
       };
       if(!valid) {
         document.getElementById("documentSubmitButton").disabled=false;
-        M.Modal.getInstance(document.getElementById("loading")).close();
       };
       return valid;
     };
@@ -2818,6 +2818,7 @@ function loadNotification (n){
     
     function writeDocument(){
       if (validateDocument()) { 
+        M.Modal.getInstance(document.getElementById("loading")).open();
         var entries =  getDocumentEntries();
         if (paper.idFS) {
           refCoproperty.collection("Documents").doc(paper.idFS).set(entries).then(function() {
@@ -3536,7 +3537,6 @@ function loadNotification (n){
         };
         if (!valid) {
           document.getElementById("transactionEvidenceDocumentSubmitButton").disabled=false;
-          M.Modal.getInstance(document.getElementById("loading")).close();
         };
         return valid;
       };
@@ -3555,6 +3555,7 @@ function loadNotification (n){
       
       function writeTransactionEvidence() {
         if (validateTransactionEvidenceEntries()) {  
+          M.Modal.getInstance(document.getElementById("loading")).open();
           var entries = getTransactionEvidenceEntries();
           refCoproperty.collection("Documents").add(entries).then(function(docref) {
             var fileRef = refCopropertyFiles.child("Documents").child(docref.id); 
@@ -4319,7 +4320,6 @@ function loadNotification (n){
         };
         if (!valid) {
           document.getElementById("meterReadingSubmitButton").disabled=false;
-          M.Modal.getInstance(document.getElementById("loading")).close();
         };
         return valid;
       };
@@ -4327,6 +4327,7 @@ function loadNotification (n){
       function writeMeterReading(){
         var pictureFileText = document.getElementById("meterReading_picture_edit_text").value;
         if (validateMeterReading()) {
+          M.Modal.getInstance(document.getElementById("loading")).open();
           var thisReading = meterReading.readings;
           if (containsNewReading){
             thisReading[0].reading = Number(document.getElementById("meterReading_reading_edit").value);
