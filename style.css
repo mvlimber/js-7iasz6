@@ -23,6 +23,18 @@ body {
   scroll-behavior: smooth;
 }
 
+.modal.alert {                                                                      
+  height: 150px;
+  width: 150px;
+  
+}
+
+.centerAlert {
+  margin: auto;
+  width: 50%;
+  padding: 35px 0;
+}
+
 .row{
   padding: 0 !important;
 }

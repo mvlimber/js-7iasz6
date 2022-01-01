@@ -270,6 +270,23 @@
             </div>
           </div>
         </div>
+        <div id="loading" class="modal alert centerAlert">
+          <div class="center">
+          <div class="preloader-wrapper big active" >
+            <div class="spinner-layer spinner-blue-only">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div>
+              <div class="gap-patch">
+                <div class="circle"></div>
+              </div>
+              <div class="circle-clipper right">
+                <div class="circle"></div>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
         <!------------------------------------------------------------------------------------------------------>
         <div id="Reports" class="col s12">
           <div id="chargesReportAdd" class="modal normal">
@@ -1302,7 +1319,7 @@
             </div>
           </div>
           <div class="modal-footer">
-          <button id="meterSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; writeMeter()">Submit<i class="material-icons right">send</i></button>
+          <button id="meterSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light modal-trigger" data-target="loading"  type="submit" onclick="this.disabled=true; writeMeter()">Submit<i class="material-icons right">send</i></button>
            <a style="float: right;margin-bottom: 3px"
              class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
          </div>
@@ -5087,16 +5104,20 @@ function loadNotification (n){
                 fileRef.put(pictureFile).then (function (){
                   meterReadingsLoaded = false;
                   refreshCopropertyMeters();
+                  M.Modal.getInstance(document.getElementById("loading")).close();
                   M.Modal.getInstance(document.getElementById("meterWrite")).close();
                 }).catch(function(error) {
+                  M.Modal.getInstance(document.getElementById("loading")).close();
                   M.toast({html:"Error occurred editing picture initial reading:" + error}); 
                 });  
               } else {
                 meterReadingsLoaded = false;
                 refreshCopropertyMeters();
-                M.Modal.getInstance(document.getElementById("meterWrite")).close();
+                M.Modal.getInstance(document.getElementById("loading")).close();
+                  M.Modal.getInstance(document.getElementById("meterWrite")).close();
               };
             }).catch(function(error) {
+              M.Modal.getInstance(document.getElementById("loading")).close();
               M.toast({html:"Error occurred editing meter:" + error}); 
             });
           } else {
@@ -5111,8 +5132,10 @@ function loadNotification (n){
                   meterReadingsLoaded = false;
                   if (entries.coproperty){refreshCopropertyMeters();}
                   else {displayMeters(selectedPropertyId)};
+                  M.Modal.getInstance(document.getElementById("loading")).close();
                   M.Modal.getInstance(document.getElementById("meterWrite")).close();
                 }).catch(function(error) {
+                  M.Modal.getInstance(document.getElementById("loading")).close();
                   M.toast({html:"Error occurred editing picture initial reading:" + error}); 
                 });  
               } else {
@@ -5120,9 +5143,11 @@ function loadNotification (n){
                 meterReadingsLoaded = false;
                 if (entries.coproperty){refreshCopropertyMeters();}
                 else {displayMeters(selectedPropertyId)};
+                M.Modal.getInstance(document.getElementById("loading")).close();
                 M.Modal.getInstance(document.getElementById("meterWrite")).close();
               };
             }).catch(function(error) {
+              M.Modal.getInstance(document.getElementById("loading")).close();
               M.toast({html:"Error occurred editing meter:" + error}); 
             });
           };
