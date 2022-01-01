@@ -5130,7 +5130,8 @@ function loadNotification (n){
                 var fileRef = fileStoreRef.child("Meters").child(selectedMeterId).child("0");  
                 fileRef.put(pictureFile).then (function (){
                   meterReadingsLoaded = false;
-                  refreshCopropertyMeters();
+                  if (entries.coproperty){refreshCopropertyMeters();}
+                  else {displayMeters(selectedPropertyId)};
                   M.Modal.getInstance(document.getElementById("loading")).close();
                   M.Modal.getInstance(document.getElementById("meterWrite")).close();
                 }).catch(function(error) {
@@ -5139,7 +5140,8 @@ function loadNotification (n){
                 });  
               } else {
                 meterReadingsLoaded = false;
-                refreshCopropertyMeters();
+                if (entries.coproperty){refreshCopropertyMeters();}
+                else {displayMeters(selectedPropertyId)};
                 M.Modal.getInstance(document.getElementById("loading")).close();
                   M.Modal.getInstance(document.getElementById("meterWrite")).close();
               };
