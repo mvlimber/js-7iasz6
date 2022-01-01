@@ -4172,7 +4172,7 @@ function loadNotification (n){
         if ((currentUser.role == roleAdministrator) || (currentUser.id == thisProperty.owner)) {
          document.getElementById("meterReading_edit_button_frame").style.display= "block";
         } else{document.getElementById("meterReading_edit_button_frame").style.display= "none"};
-        containsNewReading = (mr.readings[0]) && (lastReguDate.localeCompare(mr.readings[0].date) < 1);
+        containsNewReading = (mr.readings[0]) && (lastReguDate.localeCompare(mr.readings[0].date) == -1);
         if (containsNewReading) {
           document.getElementById("meterReading_reading").value = mr.readings[0].reading;
           document.getElementById("meterReading_date").value = mr.readings[0].date;
@@ -5062,7 +5062,7 @@ function loadNotification (n){
         var readingPicture = document.getElementById('meterInitialReading_picture_edit_file').files[0];
         let allowed_mime_types = [ 'image/jpeg', 'image/png' ];
         let allowed_size_kb = 4000;
-        
+        if (readingPicture) {
           if(allowed_mime_types.indexOf(readingPicture.type) == -1) {
             M.toast({html:"Incorrect file type (only jpeg or png allowed)"});
             valid=false;
@@ -5070,7 +5070,7 @@ function loadNotification (n){
             M.toast({html:"Picture exceeds max size 4MB"});
             valid=false;
           };
-        
+        };
         if (!valid) {document.getElementById("meterSubmitButton").disabled=false;};
         return valid;
       };
