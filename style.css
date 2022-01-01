@@ -26,7 +26,7 @@ body {
 .modal.alert {                                                                      
   height: 150px;
   width: 150px;
-  
+  transform: translateY(+50%) !important;
 }
 
 .centerAlert {
