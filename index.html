@@ -1319,7 +1319,7 @@
             </div>
           </div>
           <div class="modal-footer">
-          <button id="meterSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light modal-trigger" data-target="loading"  type="submit" onclick="this.disabled=true; writeMeter()">Submit<i class="material-icons right">send</i></button>
+          <button id="meterSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light " type="submit" onclick="this.disabled=true; writeMeter()">Submit<i class="material-icons right">send</i></button>
            <a style="float: right;margin-bottom: 3px"
              class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
          </div>
@@ -5088,13 +5088,14 @@ function loadNotification (n){
         };
         if (!valid) {
           document.getElementById("meterSubmitButton").disabled=false;
-          M.Modal.getInstance(document.getElementById("loading")).close();
+          
         };
         return valid;
       };
       
       function writeMeter(){
         if (validateMeterEntries()) {
+          M.Modal.getInstance(document.getElementById("loading")).open();
           var entries = {
             type: document.getElementById("meter_type").value,
             meter: document.getElementById("meter_id").value,
