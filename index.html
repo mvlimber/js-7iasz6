@@ -4035,13 +4035,9 @@ function loadNotification (n){
 
         var propCell = document.createElement('td');
 
-        /*if (mr.property) {cellContent = propertyLink(propertyGetSynchrone(mr.property));}
-        else {cellContent = document.createTextNode("Common Parts");};
-        cell = document.createElement('td');
-        cell.appendChild(cellContent);*/
         objectsRow.appendChild(propCell);
         
-        var readingPresent = (mr.readings[0])&& (mr.readings[0].date.localeCompare(lastReguDate) > 0);
+        var readingPresent = (lastReguDate.localeCompare(mr.readings[0].date) == -1);
         if (readingPresent) {
            cellContent = document.createElement("i");
            cellContent.setAttribute("class","material-icons  green ");
@@ -4082,7 +4078,7 @@ function loadNotification (n){
             meterReadingsTable.appendChild (objectsRow);
           })
         } else {
-          propCell.appendChild(document.createTextNode("Common Parts"));
+          propCell.appendChild(document.createTextNode("Building"));
           meterReadingsTable.appendChild (objectsRow);
         };
 
@@ -4140,25 +4136,23 @@ function loadNotification (n){
             column = document.createElement('td');
             memberGet(r.updatedBy).then (function(author){
               column.appendChild(memberLink(author));
-              
-
-
-            cell = document.createTextNode(" ");
-            column.appendChild(cell);
-            row.appendChild(column);
-            historyEl.appendChild(row);
-            if (r.picture){
-              var cellB = document.createElement("button");
-              cellB.setAttribute('style','border:none;background-color:Transparent');
-              cellB.setAttribute('class','modal-trigger');
-              cellB.setAttribute('data-target','fileShow');
-              refCopropertyFiles.child(mr.property).child("Meters").child(mr.idFS).child((r.counter).toString()).getDownloadURL().then(function(url){
-                cellB.setAttribute('onclick','showFile('+JSON.stringify(url)+')');
-                cellB.innerHTML = "<font color='#0000FF'>" + r.reading + "</font>";
-                emptyHTMLSet(columnLink);
-                columnLink.appendChild(cellB);
-              });
-            };});
+              cell = document.createTextNode(" ");
+              column.appendChild(cell);
+              row.appendChild(column);
+              historyEl.appendChild(row);
+              if (r.picture){
+                var cellB = document.createElement("button");
+                cellB.setAttribute('style','border:none;background-color:Transparent');
+                cellB.setAttribute('class','modal-trigger');
+                cellB.setAttribute('data-target','fileShow');
+                refCopropertyFiles.child(mr.property).child("Meters").child(mr.idFS).child((r.counter).toString()).getDownloadURL().then(function(url){
+                  cellB.setAttribute('onclick','showFile('+JSON.stringify(url)+')');
+                  cellB.innerHTML = "<font color='#0000FF'>" + r.reading + "</font>";
+                  emptyHTMLSet(columnLink);
+                  columnLink.appendChild(cellB);
+                });
+              };
+            });
           });
         };
         var fileStoreRef;
@@ -4169,7 +4163,7 @@ function loadNotification (n){
           fileStoreRef = refCopropertyFiles.child(mr.property);
         }
         else {
-          thisPropertyCode= "Common parts";
+          thisPropertyCode= "Building";
           thisPropertyOwner = "";
           fileStoreRef = refCopropertyFiles;
         };
@@ -4179,29 +4173,29 @@ function loadNotification (n){
         if ((currentUser.role == roleAdministrator) || (currentUser.id == thisProperty.owner)) {
          document.getElementById("meterReading_edit_button_frame").style.display= "block";
         } else{document.getElementById("meterReading_edit_button_frame").style.display= "none"};
-        containsNewReading = (mr.readings[0]) && (lastReguDate.localeCompare(mr.readings[0].date) == -1);
+        containsNewReading = (lastReguDate.localeCompare(mr.readings[0].date) == -1);
         if (containsNewReading) {
           document.getElementById("meterReading_reading").value = mr.readings[0].reading;
           document.getElementById("meterReading_date").value = mr.readings[0].date;
           emptyHTMLSet(document.getElementById("meterReading_updatedBy"));
           memberGet(mr.readings[0].updatedBy).then (function(author){
             document.getElementById("meterReading_updatedBy").appendChild(memberLink(author));
-            
-          fillHistory(mr.readings.slice(1,mr.readings.length));
-          if (mr.readings[0].picture) {
-            picturePresent = true;
-            fileStoreRef.child("Meters").child(mr.idFS).child((mr.readings[0].counter).toString()).getDownloadURL().then(function(url) {
-              document.getElementById("meterReading_picture_img").setAttribute("src",url);
-              document.getElementById("meterReading_picture_frame").style.display="block";
-              meterReading.img = url;
-              var elems = document.querySelectorAll('select');
-              M.FormSelect.init(elems);
-              M.updateTextFields();
-            });
-          } else {
-            document.getElementById("meterReading_picture_frame").style.display="none";
-            picturePresent = false;
-          };});
+            fillHistory(mr.readings.slice(1,mr.readings.length));
+            if (mr.readings[0].picture) {
+              picturePresent = true;
+              fileStoreRef.child("Meters").child(mr.idFS).child((mr.readings[0].counter).toString()).getDownloadURL().then(function(url) {
+                document.getElementById("meterReading_picture_img").setAttribute("src",url);
+                document.getElementById("meterReading_picture_frame").style.display="block";
+                meterReading.img = url;
+                var elems = document.querySelectorAll('select');
+                M.FormSelect.init(elems);
+                M.updateTextFields();
+              });
+            } else {
+              document.getElementById("meterReading_picture_frame").style.display="none";
+              picturePresent = false;
+            };
+          });
         } else {
           document.getElementById("meterReading_reading").value = "";
           document.getElementById("meterReading_date").value ="";
@@ -4238,25 +4232,6 @@ function loadNotification (n){
       
       function prepareMeterReadingEdit(){
         meterFormat("meterReading_reading", meterReading.digits,meterReading.decimals);
-        /*var nine = "9";
-        var maxAtt = nine.repeat(meterReading.digits);
-        document.getElementById("meterReading_reading_edit").setAttribute("max",maxAtt);
-        var stepAtt;
-        if (meterReading.decimals){
-          stepAtt = "0.";
-          var nul = "0";
-          var stepAttPart = nul.repeat(meterReading.decimals - 1);
-          stepAtt += stepAttPart; stepAtt += "1";
-          document.getElementById("meterReading_reading_helper_edit").innerHTML =  "maximum " + meterReading.digits + " digits before and " + meterReading.decimals + " digits after the comma";
-          document.getElementById("meterReading_reading_helper_edit").setAttribute("data-error", "maximum " + meterReading.digits + " digits before and " + meterReading.decimals + " digits after the comma");
-        } else {
-            document.getElementById("meterReading_reading_helper_edit").innerHTML =  "maximum " + meterReading.digits + " digits";
-            document.getElementById("meterReading_reading_helper_edit").setAttribute("data-error", "maximum " + meterReading.digits + " digits");
-            stepAtt = "1";
-          };
-        document.getElementById("meterReading_reading_edit").setAttribute("step",stepAtt);
-        */
-        
         if (containsNewReading) {
           document.getElementById("meterReading_reading_edit").value = meterReading.readings[0].reading;
           document.getElementById("meterReading_date_edit").value = meterReading.readings[0].date;
@@ -4272,6 +4247,7 @@ function loadNotification (n){
         } else {
           document.getElementById("meterReading_reading_edit").value = "";
           document.getElementById("meterReading_date_edit").value ="";
+          document.getElementById("meterReading_picture_edit_text").value ="";
           document.getElementById("meterReading_picture_edit_frame").style.display="none";
           document.getElementById("meterReading_picture_form").style.display="block";
         };
