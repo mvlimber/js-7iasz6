@@ -2320,7 +2320,9 @@ function loadNotification (n){
             valid=false;
           };
         };
-        if (!valid) {document.getElementById("chargesReportSubmitButton").disabled=false;};
+        if (!valid) {
+          document.getElementById("chargesReportSubmitButton").disabled=false;
+          M.Modal.getInstance(document.getElementById("meterReadingEdit")).close();};
         return valid;
       };
 
@@ -2787,7 +2789,10 @@ function loadNotification (n){
           valid=false;
         };
       };
-      if(!valid) {document.getElementById("documentSubmitButton").disabled=false;};
+      if(!valid) {
+        document.getElementById("documentSubmitButton").disabled=false;
+        M.Modal.getInstance(document.getElementById("meterReadingEdit")).close();
+      };
       return valid;
     };
     
@@ -3529,7 +3534,10 @@ function loadNotification (n){
             M.toast({html:"Please select PDF File"});
             valid=false;
         };
-        if (!valid) {document.getElementById("transactionEvidenceDocumentSubmitButton").disabled=false;};
+        if (!valid) {
+          document.getElementById("transactionEvidenceDocumentSubmitButton").disabled=false;
+          M.Modal.getInstance(document.getElementById("meterReadingEdit")).close();
+        };
         return valid;
       };
 
@@ -4309,7 +4317,10 @@ function loadNotification (n){
             valid=false;
           } else (picturePresent = true);
         }
-        if (!valid) {document.getElementById("meterReadingSubmitButton").disabled=false;};
+        if (!valid) {
+          document.getElementById("meterReadingSubmitButton").disabled=false;
+          M.Modal.getInstance(document.getElementById("loading")).close();
+        };
         return valid;
       };
 
@@ -5071,7 +5082,10 @@ function loadNotification (n){
             valid=false;
           };
         };
-        if (!valid) {document.getElementById("meterSubmitButton").disabled=false;};
+        if (!valid) {
+          document.getElementById("meterSubmitButton").disabled=false;
+          M.Modal.getInstance(document.getElementById("meterReadingEdit")).close();
+        };
         return valid;
       };
       
