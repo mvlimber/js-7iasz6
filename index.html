@@ -315,7 +315,7 @@
               <h6 style="float: right;margin-left: 20px">Generating the report might take a few seconds. Please confirm
                 the generated report after review</h6>
               <br><br>
-              <button id="chargesReportSubmitButton" style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; prepareChargesReport()">Submit<i class="material-icons right">send</i></button>
+              <button id="chargesReportSubmitButton" style="float: right;margin-left: 20px" class="btn-small waves-light modal-trigger" data-target="loading" type="submit" onclick="this.disabled=true; prepareChargesReport()">Submit<i class="material-icons right">send</i></button>
               <a style="float: right"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
                 Cancel</a>
@@ -398,7 +398,7 @@
           
             </form>
             
-            <button id="documentSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; writeDocument()">Save<i class="material-icons right">send</i></button>
+            <button id="documentSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light modal-trigger" data-target="loading" type="submit" onclick="this.disabled=true; writeDocument()">Save<i class="material-icons right">send</i></button>
             <a style="float: right;margin-left: 20px;margin-bottom: 3px"
               class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
               Cancel</a>
@@ -561,7 +561,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button id="transactionEvidenceDocumentSubmitButton" style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; writeTransactionEvidence()">Submit<i class="material-icons right">send</i></button>
+            <button id="transactionEvidenceDocumentSubmitButton" style="float: right;margin-left: 20px" class="btn-small waves-light modal-trigger" data-target="loading"  type="submit" onclick="this.disabled=true; writeTransactionEvidence()">Submit<i class="material-icons right">send</i></button>
             <a style="float: right"
               class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
               Cancel</a>
@@ -2820,12 +2820,15 @@ function loadNotification (n){
               var fileRef = refCopropertyFiles.child("Documents").child(paper.idFS); 
               fileRef.put(documentFile).then (function (){
                 refreshDocuments();
+                M.Modal.getInstance(document.getElementById("loading")).close();
                 M.Modal.getInstance(document.getElementById("documentEdit")).close();
               }).catch(function(error) {
+                M.Modal.getInstance(document.getElementById("loading")).close();
                 M.toast({html:"Error updating file: " + error});
               });
             } else {
               refreshDocuments();
+              M.Modal.getInstance(document.getElementById("loading")).close();
               M.Modal.getInstance(document.getElementById("documentEdit")).close();
             };
           });
@@ -2834,8 +2837,10 @@ function loadNotification (n){
             var fileRef = refCopropertyFiles.child("Documents").child(docref.id); 
             fileRef.put(documentFile).then (function (){
               refreshDocuments();
+              M.Modal.getInstance(document.getElementById("loading")).close();
               M.Modal.getInstance(document.getElementById("documentEdit")).close();
             }).catch(function(error) {
+              M.Modal.getInstance(document.getElementById("loading")).close();
               M.toast({html:"Error adding document: " + error});
             });
           });
@@ -3549,12 +3554,14 @@ function loadNotification (n){
               refreshTransactionEvidence();
               documents = null;
               documentsLoaded = false;
-    
+              M.Modal.getInstance(document.getElementById("loading")).close();
               M.Modal.getInstance(document.getElementById("transactionNewDocument")).close();
             }).catch(function(error) {
+              M.Modal.getInstance(document.getElementById("loading")).close();
               M.toast({html:"Error creating transaction evidence file: " + error});
             });
           }).catch(function(error) {
+            M.Modal.getInstance(document.getElementById("loading")).close();
             M.toast({html:"System creating transaction evidence document: " + error});
           });
 
@@ -6793,12 +6800,15 @@ function loadNotification (n){
           var fileRef = refCopropertyFiles.child("ChargesReports").child(chargesReportFS.id);  
           fileRef.put(doc.output("blob")).then(function(snapshot) {
               refreshChargesReports();
+              M.Modal.getInstance(document.getElementById("loading")).close();
               M.Modal.getInstance(document.getElementById("chargesReportAdd")).close();
           }).catch(function(error) {
-                M.toast({html:"Error writing report file in store:" + error});
+            M.Modal.getInstance(document.getElementById("loading")).close();
+            M.toast({html:"Error writing report file in store:" + error});
           });
         }).catch(function(error) {
-            M.toast({html:"Error saving charges report:" + error});
+          M.Modal.getInstance(document.getElementById("loading")).close();
+          M.toast({html:"Error saving charges report:" + error});
         });
       };
       
