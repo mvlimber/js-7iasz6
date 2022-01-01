@@ -1060,7 +1060,7 @@
                   <p style="font-size:12px">Updated On: <span id="member_updatedOn"></span> </p>
                   <p style="font-size:12px">Updated by: <span id="member_updatedBy"></span> </p>
                 </div>
-                <div id="Members_Edit" class="displayHidden">
+                <div id="Members_Edit">
                     <button style="float: right;margin-bottom: 3px" data-target="memberWrite" class="btn-floating waves-light modal-trigger" onclick="setSelectedMember(selectedMemberObject,editMode)"><i class="material-icons right">edit</i></button>
                  <!-- </div>-->
                 </div>
@@ -1753,7 +1753,6 @@
       document.getElementById("Transactions_Edit").setAttribute("class","displayBlock");
       document.getElementById("Transactions_EvidenceAdd").setAttribute("class","displayBlock");
       document.getElementById("Transactions_EvidenceLink").style.display = "block";
-      document.getElementById("Members_Edit").setAttribute("class","displayBlock");
       document.getElementById("Properties_Add").setAttribute("class","displayBlock");
       document.getElementById("Properties_Edit").setAttribute("class","displayBlock");
       document.getElementById("Properties_MetersAdd").setAttribute("class","displayBlock");
@@ -4635,6 +4634,8 @@ function loadNotification (n){
           else {
             toggleMember_view();
             document.getElementById("member_updatedOn").innerHTML  = object.updatedOn;
+            if ((currentUser.role == roleAdministrator) ||(object.updatedBy == currentUser.id)) {document.getElementById("Members_Edit").setAttribute("class","displayBlock");}
+            else {document.getElementById("Members_Edit").setAttribute("class","displayHidden");};
             memberGet(object.updatedBy).then(function(updater) {
               emptyHTMLSet(document.getElementById("member_updatedBy"));
               document.getElementById("member_updatedBy").appendChild(memberLink(updater));
