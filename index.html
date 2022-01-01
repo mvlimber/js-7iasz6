@@ -2322,7 +2322,7 @@ function loadNotification (n){
         };
         if (!valid) {
           document.getElementById("chargesReportSubmitButton").disabled=false;
-          M.Modal.getInstance(document.getElementById("meterReadingEdit")).close();};
+          M.Modal.getInstance(document.getElementById("loading")).close();};
         return valid;
       };
 
@@ -2791,7 +2791,7 @@ function loadNotification (n){
       };
       if(!valid) {
         document.getElementById("documentSubmitButton").disabled=false;
-        M.Modal.getInstance(document.getElementById("meterReadingEdit")).close();
+        M.Modal.getInstance(document.getElementById("loading")).close();
       };
       return valid;
     };
@@ -3536,7 +3536,7 @@ function loadNotification (n){
         };
         if (!valid) {
           document.getElementById("transactionEvidenceDocumentSubmitButton").disabled=false;
-          M.Modal.getInstance(document.getElementById("meterReadingEdit")).close();
+          M.Modal.getInstance(document.getElementById("loading")).close();
         };
         return valid;
       };
@@ -4316,7 +4316,7 @@ function loadNotification (n){
             M.toast({html:"Picture exceeds max size 4MB"});
             valid=false;
           } else (picturePresent = true);
-        }
+        };
         if (!valid) {
           document.getElementById("meterReadingSubmitButton").disabled=false;
           M.Modal.getInstance(document.getElementById("loading")).close();
@@ -4362,12 +4362,14 @@ function loadNotification (n){
               var fileRef = fileStoreRef.child("Meters").child(thisMeterIdFS).child((thisReading[0].counter).toString());  
               fileRef.put(pictureFile).then (function (){
                 refreshMeterReadings();
-              selectMeterReading(meterReading);
-              M.Modal.getInstance(document.getElementById("meterReadingEdit")).close();
+                selectMeterReading(meterReading);
+                M.Modal.getInstance(document.getElementById("loading")).close();
+                M.Modal.getInstance(document.getElementById("meterReadingEdit")).close();
               });
               
             }).catch(function(error) {
-              /*M.toast({html:"Error occurred updating meter reading:" + error}); */
+              M.Modal.getInstance(document.getElementById("loading")).close();
+                /*M.toast({html:"Error occurred updating meter reading:" + error}); */
             });
           } else {
             // No new picture attached: either existing picture or no picture or pictuture was removed
@@ -4375,9 +4377,11 @@ function loadNotification (n){
             thisRefFS.collection("Meters").doc(thisMeterIdFS).update({readings:thisReading}).then(function() {
               refreshMeterReadings();
               selectMeterReading(meterReading);
-              M.Modal.getInstance(document.getElementById("meterReadingEdit")).close();
+              M.Modal.getInstance(document.getElementById("loading")).close();
+                M.Modal.getInstance(document.getElementById("meterReadingEdit")).close();
             }).catch(function(error) {
-              M.toast({html:"Error occurred updating meter reading:" + error}); 
+              M.Modal.getInstance(document.getElementById("loading")).close();
+                M.toast({html:"Error occurred updating meter reading:" + error}); 
             });
           };
         };
@@ -5084,7 +5088,7 @@ function loadNotification (n){
         };
         if (!valid) {
           document.getElementById("meterSubmitButton").disabled=false;
-          M.Modal.getInstance(document.getElementById("meterReadingEdit")).close();
+          M.Modal.getInstance(document.getElementById("loading")).close();
         };
         return valid;
       };
