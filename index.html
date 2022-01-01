@@ -3269,12 +3269,12 @@ function loadNotification (n){
         option.innerHTML = "Select Property<b><font color='red'>*</font></b>";
         el.appendChild(option);
       };
-      refCoproperty.collection("Properties").get().then(function(querySnapshot) {
-        querySnapshot.forEach(function(prFS) {
+      propertiesGet().then(function(querySnapshot) {
+        querySnapshot.forEach(function(prop) {
             option = document.createElement("option");
-            option.setAttribute("value",prFS.id);
-            if (prFS.id == selectedOption) {option.setAttribute("selected",true);};
-            option.innerHTML = prFS.data().code;
+            option.setAttribute("value",prop.idFS);
+            if (prop.idFS == selectedOption) {option.setAttribute("selected",true);};
+            option.innerHTML = prop.code;
             el.appendChild(option);
           });
         M.updateTextFields();
@@ -6510,14 +6510,14 @@ function loadNotification (n){
                 function checkPropInTotals(tc) {return (tc.propertyId == totalConsumptionRow.propertyId);};
                 var totalChargesRow = totalCharges.find(checkPropInTotals);
                 if (costCenterWater){
-                  totalConsumptionRow.water_payed= -1* Number((totalWater * getQuota(costCenterWater,totalConsumptionRow.propertyId)/ costCenterWater.totalQuota).toFixed(2));
+                  totalConsumptionRow.water_payed= Number((totalWater * getQuota(costCenterWater,totalConsumptionRow.propertyId)/ costCenterWater.totalQuota).toFixed(2));
                   grandTotalConsumtions.water_payed += totalConsumptionRow.water_payed;
                   totalConsumptionRow.water_regu = Number((totalConsumptionRow.water_payed + totalConsumptionRow.water).toFixed(2));
                   totalChargesRow.water_regu = totalConsumptionRow.water_regu;
                   grandTotalConsumtions.water_regu += totalConsumptionRow.water_regu;
                 };
                 if (costCenterHeating){
-                  totalConsumptionRow.heating_payed= -1* Number((totalHeating * getQuota(costCenterHeating,totalConsumptionRow.propertyId)/ costCenterHeating.totalQuota).toFixed(2));
+                  totalConsumptionRow.heating_payed= Number((totalHeating * getQuota(costCenterHeating,totalConsumptionRow.propertyId)/ costCenterHeating.totalQuota).toFixed(2));
                   grandTotalConsumtions.heating_payed += totalConsumptionRow.heating_payed;
                   totalConsumptionRow.heating_regu = Number((totalConsumptionRow.heating_payed + totalConsumptionRow.heating).toFixed(2));
                   grandTotalConsumtions.heating_regu += totalConsumptionRow.heating_regu;
@@ -6637,7 +6637,7 @@ function loadNotification (n){
             totallsRow.Total += tc.Total; grandTotalsRow.Total += tc.Total;
               /* fill charges colun in owner saldos table */
               function checkOwner(os){return os.ownerId == tc.ownerId};
-              ownersSaldo.find(checkOwner).charges = totallsRow.Total * -1;
+              ownersSaldo.find(checkOwner).charges = totallsRow.Total;
 
             nrOfProperties += 1;
             if ((nrOfProperties > 1) && (positionTotalCharges ==  totalCharges.length)) {totalledCharges.push(totallsRow);};
@@ -6647,9 +6647,9 @@ function loadNotification (n){
           totalledCharges.push(grandTotalsRow);
  
           ccsInReport.forEach(function(cc){
-            copropertySaldo[0].expenses += -1 * grandTotalsRow[cc.idFS];});
-          copropertySaldo[0].expenses += -1 *grandTotalsRow.private;
-          copropertySaldo[0].expensesProvisions += -1 * payedByProvisionsTotal;
+            copropertySaldo[0].expenses += grandTotalsRow[cc.idFS];});
+          copropertySaldo[0].expenses += grandTotalsRow.private;
+          copropertySaldo[0].expensesProvisions += payedByProvisionsTotal;
           
           function getId(cc){return cc.idFS};
           var totalChargesAmountFields = ccsInReport.map(getId);
