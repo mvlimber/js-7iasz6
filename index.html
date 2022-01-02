@@ -312,8 +312,8 @@
               </div>
             </div>
             <div class="modal-footer">
-              <h6 style="float: right;margin-left: 20px">Generating the report might take a few seconds. Please confirm
-                the generated report after review</h6>
+              <h6 style="float: right;margin-left: 20px">Please confirm
+                the generated report after your review</h6>
               <br><br>
               <button id="chargesReportSubmitButton" style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; prepareChargesReport()">Submit<i class="material-icons right">send</i></button>
               <a style="float: right"
@@ -323,7 +323,6 @@
           </div>
           <div id="chargesTable_frame">
           <table class="striped" >
-            <thead>
               <tr>
                 <th>Period</th>
                 <th>Meters included?</th>
@@ -6413,7 +6412,8 @@ function loadNotification (n){
               row.type = mr.type;  
               row.last_reading= mr.readings[1].reading;
               row.reading= mr.readings[0].reading;
-              row.difference= row.reading - row.last_reading;
+              row.difference= (row.reading*10000 - row.last_reading*10000)/10000;
+              /*row.difference= parseFloat(row.reading).toFixed(4) - parseFloat(row.last_reading).toFixed(4);*/
               if (mr.property) {
                 row.property = propertyGetSynchrone(mr.property).code;
                 row.propertyId = mr.property;
@@ -6441,6 +6441,7 @@ function loadNotification (n){
             /* calculate water building and common */
             function convertToStringHere(n){if (n) {return n.toString()} else {return " "} };
             function convertNumberToStringHere(n){if (n) {return n.toFixed(2);} else {return " "} };
+            function convertNumberToReadingStringHere(n){if (n) {return n.toFixed(4);} else {return " "} };
             function convertNumberToCurrencyHere(n){if (n) {return n.toLocaleString("nl-BE",currencyStyle);} else {return " "} };
             var thisBuildingWaterData= buildingWaterData[0];
             thisBuildingWaterData.last_reading = convertNumberToStringHere(thisBuildingWaterData.last_reading);
