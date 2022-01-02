@@ -6412,8 +6412,9 @@ function loadNotification (n){
               row.type = mr.type;  
               row.last_reading= mr.readings[1].reading;
               row.reading= mr.readings[0].reading;
-              row.difference= (row.reading*10000 - row.last_reading*10000)/10000;
-              /*row.difference= parseFloat(row.reading).toFixed(4) - parseFloat(row.last_reading).toFixed(4);*/
+              /*row.difference= (row.reading*10000 - row.last_reading*10000)/10000;*/
+              var td = parseFloat(row.reading).toFixed(4) - parseFloat(row.last_reading).toFixed(4);
+              row.difference= parseFloat(td);
               if (mr.property) {
                 row.property = propertyGetSynchrone(mr.property).code;
                 row.propertyId = mr.property;
@@ -6444,7 +6445,7 @@ function loadNotification (n){
             function convertNumberToReadingStringHere(n){if (n) {return n.toFixed(4);} else {return " "} };
             function convertNumberToCurrencyHere(n){if (n) {return n.toLocaleString("nl-BE",currencyStyle);} else {return " "} };
             var thisBuildingWaterData= buildingWaterData[0];
-            thisBuildingWaterData.last_reading = convertNumberToStringHere(thisBuildingWaterData.last_reading);
+            /*thisBuildingWaterData.last_reading = convertNumberToStringHere(thisBuildingWaterData.last_reading);
             thisBuildingWaterData.reading = convertNumberToStringHere(thisBuildingWaterData.reading);
             thisBuildingWaterData.difference = convertNumberToStringHere(thisBuildingWaterData.difference);
             var differenceCommonHere = totalWaterDifference - (totalColdWaterDifference + totalHotWaterDifference);
@@ -6452,7 +6453,7 @@ function loadNotification (n){
             thisBuildingWaterData.differenceCommon = convertNumberToStringHere(differenceCommonHere);
             thisBuildingWaterData.common = convertNumberToCurrencyHere(waterCommonHere);
             thisBuildingWaterData.private = convertNumberToCurrencyHere(totalWater - waterCommonHere);
-            console.log("buildingWaterData ",buildingWaterData);
+            console.log("buildingWaterData ",buildingWaterData);*/
             /* calculate individual comsumed amounts */
             consumptions.forEach(function(c){
               c.water = 0;c.water_payed = 0;c.water_regu = 0;
@@ -6572,7 +6573,7 @@ function loadNotification (n){
                 c.type = ConsumptionTableType[c.type];
                 c.reading= convertToStringHere(c.reading);
                 c.last_reading= convertToStringHere(c.last_reading);
-                c.difference= convertToStringHere(c.difference);  
+                c.difference= convertNumberToReadingStringHere(c.difference);  
                 c.water= convertNumberToCurrencyHere(c.water);
                 c.water_payed= " ";c.water_regu= " ";  
                 c.heating= " ";c.heating_payed= " ";c.heating_regu= " ";
@@ -6580,7 +6581,7 @@ function loadNotification (n){
                 if (c.type) {c.type = ConsumptionTableType[c.type]; } else {c.type = " "};
                 c.reading= convertToStringHere(c.reading);
                 c.last_reading= convertToStringHere(c.last_reading);
-                c.difference= convertToStringHere(c.difference);  
+                c.difference= convertNumberToReadingStringHere(c.difference);  
                 c.water= convertNumberToCurrencyHere(c.water);  
                 c.heating= convertNumberToCurrencyHere(c.heating);     
                 c.water_payed= convertNumberToCurrencyHere(c.water_payed);  
