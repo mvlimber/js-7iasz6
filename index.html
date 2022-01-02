@@ -6143,6 +6143,17 @@ function loadNotification (n){
         {id:"owner",name:"owner",prompt:"owner",width: 60,align: "center",padding: 0},
         {id:"amount",name:"amount",prompt:"amount due",width: 35,align: "right",padding: 0}
       ];
+
+      var headerBuildingWater = [
+        {id:"meter",name:"meter",prompt:"meter",width: 30,align: "center",padding: 0},
+        {id:"last_reading",name:"last_reading",prompt:"last reading",width: 28,align: "center",padding: 0},
+        {id:"reading",name:"reading",prompt:"new reading",width: 28,align: "center",padding: 0},
+        {id:"difference",name:"difference",prompt:"difference",width: 28,align: "center",padding: 0},
+        {id:"differenceCommon",name:"differenceCommon",prompt:"difference Common Parts",width: 28,align: "center",padding: 0},
+        {id:"common",name:"common",prompt:"consumption common parts",width: 30,align: "center",padding: 0},
+        {id:"private",name:"private",prompt:"total private consumption",width: 30,align: "center",padding: 0},
+        
+      ];
       
       var ccsInReport;
       var propertiesInReport;
@@ -6251,7 +6262,7 @@ function loadNotification (n){
           meterReadings = null;
           mrsInReport = await meterReadingsGet(); 
           function meterReadingInPeriod(mr){
-            return (lastReguDate.localeCompare(mr.readings[0].date) < 1) && (closeDateTransactions.localeCompare(mr.readings[0].date) >= 0);
+            return (lastReguDate.localeCompare(mr.readings[0].date) < 0) && (closeDateTransactions.localeCompare(mr.readings[0].date) >= 0);
           };
           if (!mrsInReport.every(meterReadingInPeriod)) {
             M.toast({html:"Not all meter readings are within regularisation period" });
@@ -6260,8 +6271,8 @@ function loadNotification (n){
           }; 
         };
         
-        var totalWaterDiffernce = 0;
-        var buildingWater = [];
+        var totalWaterDifference = 0;
+        var buildingWaterData = [];
         var totalColdWaterDifference = 0;
         var totalHotWaterDifference = 0;
         var totalHeatingDifference = 0;
@@ -6418,19 +6429,22 @@ function loadNotification (n){
               }
               else {
                 if (mr.type == "COLWA") {
-                  totalWaterDiffernce += row.difference;
-                  buildingWater.push(row);
+                  totalWaterDifference += row.difference;
+                  buildingWaterData.push(row);
                 }
               };
-              
-              
             });
+            if (!totalWaterDifference){
+              M.toast({html:"Cold Water Meter for Building is missing: please enter it first"});
+              document.getElementById("chargesReportSubmitButton").disabled=false;
+              return;
+            };
             /* calculate individual comsumed amounts */
             consumptions.forEach(function(c){
               c.water = 0;c.water_payed = 0;c.water_regu = 0;
               c.heating = 0;c.heating_payed = 0;c.heating_regu = 0;
               if (c.type != "HEATI") {
-                c.water = Number((totalWater * c.difference / (totalColdWaterDifference+ totalHotWaterDifference)).toFixed(2));
+                c.water = Number((totalWater * c.difference / (totalWaterDifference)).toFixed(2));
               };
               if (c.type != "COLWA") {
                 var energyDifference;
