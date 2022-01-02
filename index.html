@@ -6602,6 +6602,9 @@ function loadNotification (n){
             var totalRow = 0;
             ccsInReport.forEach(function(cc){totalRow += tC[cc.idFS]});
             totalRow += tC.private;
+            if (metersIncluded){
+              totalRow += tC.water_regu;totalRow += tC.heating_regu;
+            }
             tC.Total = totalRow; 
           });
           /* sort total charges */
