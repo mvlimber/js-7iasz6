@@ -6259,6 +6259,9 @@ function loadNotification (n){
             return;
           }; 
         };
+        
+        var totalWaterDiffernce = 0;
+        var buildingWater = [];
         var totalColdWaterDifference = 0;
         var totalHotWaterDifference = 0;
         var totalHeatingDifference = 0;
@@ -6404,16 +6407,23 @@ function loadNotification (n){
               if (mr.property) {
                 row.property = propertyGetSynchrone(mr.property).code;
                 row.propertyId = mr.property;
+                if (mr.type == "COLWA") {
+                  totalColdWaterDifference += row.difference;
+                } else if (mr.type == "HEATI") {
+                  totalHeatingDifference += row.difference;
+                } else if (mr.type == "HOTWA"){
+                  totalHotWaterDifference += row.difference;
+                };
+                consumptions.push(row);
               }
-              else {row.property = "Common",row.propertyId = null; };
-              if (mr.type == "COLWA") {
-                totalColdWaterDifference += row.difference;
-              } else if (mr.type == "HEATI") {
-                totalHeatingDifference += row.difference;
-              } else if (mr.type == "HOTWA"){
-                totalHotWaterDifference += row.difference;
+              else {
+                if (mr.type == "COLWA") {
+                  totalWaterDiffernce += row.difference;
+                  buildingWater.push(row);
+                }
               };
-              consumptions.push(row);
+              
+              
             });
             /* calculate individual comsumed amounts */
             consumptions.forEach(function(c){
