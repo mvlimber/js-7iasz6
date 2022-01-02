@@ -6152,7 +6152,6 @@ function loadNotification (n){
         {id:"differenceCommon",name:"differenceCommon",prompt:"difference Common Parts",width: 28,align: "center",padding: 0},
         {id:"common",name:"common",prompt:"consumption common parts",width: 30,align: "center",padding: 0},
         {id:"private",name:"private",prompt:"total private consumption",width: 30,align: "center",padding: 0},
-        
       ];
       
       var ccsInReport;
@@ -6439,6 +6438,20 @@ function loadNotification (n){
               document.getElementById("chargesReportSubmitButton").disabled=false;
               return;
             };
+            /* calculate water building and common */
+            function convertToStringHere(n){if (n) {return n.toString()} else {return " "} };
+            function convertNumberToStringHere(n){if (n) {return n.toFixed(2);} else {return " "} };
+            function convertNumberToCurrencyHere(n){if (n) {return n.toLocaleString("nl-BE",currencyStyle);} else {return " "} };
+            var thisBuildingWaterData= buildingWaterData[0];
+            thisBuildingWaterData.last_reading = convertNumberToStringHere(thisBuildingWaterData.last_reading);
+            thisBuildingWaterData.reading = convertNumberToStringHere(thisBuildingWaterData.reading);
+            thisBuildingWaterData.difference = convertNumberToStringHere(thisBuildingWaterData.difference);
+            var differenceCommonHere = totalWaterDifference - (totalColdWaterDifference + totalHotWaterDifference);
+            var waterCommonHere = Number((totalWater * differenceCommonHere / (totalWaterDifference)).toFixed(2));
+            thisBuildingWaterData.differenceCommon = convertNumberToStringHere(differenceCommonHere);
+            thisBuildingWaterData.common = convertNumberToCurrencyHere(waterCommonHere);
+            thisBuildingWaterData.private = convertNumberToCurrencyHere(totalWater - waterCommonHere);
+            console.log("buildingWaterData ",buildingWaterData);
             /* calculate individual comsumed amounts */
             consumptions.forEach(function(c){
               c.water = 0;c.water_payed = 0;c.water_regu = 0;
@@ -6548,9 +6561,7 @@ function loadNotification (n){
             });
             /* convert amounts to euro strings */
             totalledConsumptions.forEach(function(c){  
-              function convertToStringHere(n){if (n) {return n.toString()} else {return " "} };
-              function convertNumberToStringHere(n){if (n) {return n.toFixed(2);} else {return " "} };
-              function convertNumberToCurrencyHere(n){if (n) {return n.toLocaleString("nl-BE",currencyStyle);} else {return " "} };
+              
               if (c.property == "") {
                 c.meter="";c.type = "";c.reading= "";c.last_reading= "";c.difference= "";  
                 c.water= "";c.water_payed= "";c.water_regu= "";  
