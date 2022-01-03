@@ -2305,17 +2305,19 @@ function loadNotification (n){
       if (chargesReports) {return chargesReports}
       else {
         var querySnapshot = await refCoproperty.collection("ChargesReports").orderBy("endDate","desc").limit(50).get();
-        crsHere = [];
+        chargesReports = [];
         querySnapshot.forEach(function(objectFS) {
           var thisObject = objectFS.data();
           thisObject.idFS = objectFS.id;
-          crsHere.push(thisObject);
+          chargesReports.push(thisObject);
         });
-        var chargesReports = crsHere.sort(function(a, b){
-          if (b.endDate < a.endDate) {return 1;};
-          if (b.endDate > a.endDate) {return -1;};
+        /*console.log("chargesReports",chargesReports);
+        chargesReports.sort(function(a, b){
+          if (b.endDate < a.endDate) {return -1;};
+          if (b.endDate > a.endDate) {return 1;};
           return 0;
           });
+        console.log("chargesReports",chargesReports);  */
         return chargesReports;
       };
     };
@@ -2439,9 +2441,11 @@ function loadNotification (n){
             document.getElementById("chargesTable_frame").style.display = "block";
             document.getElementById("charges_absentPhrase").style.display = "none";
             readCloseAndReguDate (cRs);
-            cRs.forEach(function(cR){
-              loadChargesReport(cR);
-            });
+            var i = 0;
+            while (i<cRs.length){
+              loadChargesReport(cRs[i]);
+              i += 1;
+            };
           } else {
             readCloseAndReguDate (cRs);
             document.getElementById("chargesTable_frame").style.display = "none";
