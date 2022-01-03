@@ -2301,18 +2301,21 @@ function loadNotification (n){
     var lastCopropertySaldo;
     var lastOwnersSaldo;
   
-    
-
     async function chargesReportsGet(){
       if (chargesReports) {return chargesReports}
       else {
-        var querySnapshot = await refCoproperty.collection("Reports").orderBy("endDate","desc").limit(50).get();
-        chargesReports = [];
+        var querySnapshot = await refCoproperty.collection("ChargesReports").orderBy("endDate","desc").limit(50).get();
+        crsHere = [];
         querySnapshot.forEach(function(objectFS) {
           var thisObject = objectFS.data();
           thisObject.idFS = objectFS.id;
-          chargesReports.push(thisObject);
+          crsHere.push(thisObject);
         });
+        var chargesReports = crsHere.sort(function(a, b){
+          if (b.endDate < a.endDate) {return 1;};
+          if (b.endDate > a.endDate) {return -1;};
+          return 0;
+          });
         return chargesReports;
       };
     };
@@ -2411,7 +2414,7 @@ function loadNotification (n){
       function readCloseAndReguDate (cRs) {
         if  (cRs.length > 0) {
               document.getElementById("initialSaldos_frame").style.display = "none";
-              var lastReportData = cRs[0].data();
+              var lastReportData = cRs[0];
               lastCloseDate= lastReportData.endDate;
               lastCopropertySaldo = lastReportData.copropertySaldo;
               lastOwnersSaldo = lastReportData.ownersSaldo;
@@ -6068,6 +6071,7 @@ function loadNotification (n){
       function emptyDataCash() {
       homeLoaded = false;
       chargesReportsLoaded = false;
+      chargesReports = null;
       documentsLoaded = false;
       documents = null;
       transactionsLoaded = false;
