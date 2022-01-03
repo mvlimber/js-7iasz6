@@ -2356,20 +2356,20 @@ function loadNotification (n){
       };
     };
 
+    var chargesReportsTable = document.getElementById("chargesReportsTable");
+      
     function loadChargesReport (cR){
         if ((!cR.confirmed) && (currentUser.role !== roleAdministrator)) {return};
         var objectsRow= document.createElement('tr');
         
-        var cellContent = document.createElement("button");
-        cellContent.setAttribute('style','border:none;background-color:Transparent');
-        cellContent.setAttribute('class','modal-trigger');
-        cellContent.setAttribute('data-target','fileShow');
-        refCopropertyFiles.child("ChargesReports").child(cR.idFS).getDownloadURL().then(function(url) {
-          
-        cellContent.setAttribute('onclick','showFile('+JSON.stringify(url)+')');
-        cellContent.innerHTML = "<font color='#0000FF'>" + cR.startDate + " to " +cR.endDate + "</font>";
+        var cellDocLink = document.createElement("button");
+        cellDocLink.setAttribute('style','border:none;background-color:Transparent');
+        cellDocLink.setAttribute('class','modal-trigger');
+        cellDocLink.setAttribute('data-target','fileShow');
+
+        cellDocLink.innerHTML = "<font color='#0000FF'>" + cR.startDate + " to " +cR.endDate + "</font>";
         var cell = document.createElement('td');
-        cell.appendChild(cellContent);
+        cell.appendChild(cellDocLink);
         objectsRow.appendChild(cell);
         
         if (cR.metersIncluded) {cellContent = document.createTextNode("Yes");}
@@ -2377,7 +2377,7 @@ function loadNotification (n){
         cell = document.createElement('td');
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);  
-        
+        var cellContent;
         if (!cR.confirmed) {
           cellContent = document.createElement('button');
           cellContent.setAttribute('class','btn-small waves-light');
@@ -2407,11 +2407,12 @@ function loadNotification (n){
 
           document.getElementById("ChargesReport_Generate").setAttribute("class", "btn-small waves-light modal-trigger disabled"); 
         };
-        chargesReportsTable.appendChild (objectsRow);
+        chargesReportsTable.appendChild(objectsRow);
+        refCopropertyFiles.child("ChargesReports").child(cR.idFS).getDownloadURL().then(function(url) {
+          cellDocLink.setAttribute('onclick','showFile('+JSON.stringify(url)+')');
         });
       };
 
-      
       function readCloseAndReguDate (cRs) {
         if  (cRs.length > 0) {
               document.getElementById("initialSaldos_frame").style.display = "none";
