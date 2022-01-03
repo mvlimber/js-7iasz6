@@ -3429,6 +3429,7 @@ function loadNotification (n){
         var documentId = document.getElementById("transactionLink_document").value;
         refCoproperty.collection("Documents").doc(documentId).update({link:selectedTransactionId}).then(function(){
           refreshDocuments();
+          refreshTransactions();
           refreshTransactionEvidence();
           M.Modal.getInstance(document.getElementById("transactionNewEvidenceLink")).close();
         }).catch(function(error) {
@@ -3499,7 +3500,6 @@ function loadNotification (n){
 
       function refreshTransactionEvidence(){
         emptyHTMLSet(transactionEvidenceTable);
-        
         refCoproperty.collection("Documents").where("link","==",selectedTransactionId).get().then(function(objectsFSArray){
             objectsFSArray.forEach(function(objectFS){
               loadTransactionEvidence(objectFS);
@@ -3558,6 +3558,7 @@ function loadNotification (n){
             var fileRef = refCopropertyFiles.child("Documents").child(docref.id); 
             fileRef.put(transactionEvidenceFile).then (function (){
               refreshTransactionEvidence();
+              refreshTransactions();
               documents = null;
               documentsLoaded = false;
               M.Modal.getInstance(document.getElementById("loading")).close();
