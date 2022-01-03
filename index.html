@@ -2414,11 +2414,12 @@ function loadNotification (n){
 
       function refreshChargesReports(){
         emptyHTMLSet(chargesReportsTable);
-        refCoproperty.collection("ChargesReports").orderBy("endDate","asc").get().then(function(chargesReportsFS){
+        refCoproperty.collection("ChargesReports").orderBy("endDate","desc").get().then(function(chargesReportsFS){
           if (chargesReportsFS.docs.length) {
             document.getElementById("chargesTable_frame").style.display = "block";
             document.getElementById("charges_absentPhrase").style.display = "none";
-            readCloseAndReguDate (chargesReportsFS);
+            console.log("chargesReportsFS",chargesReportsFS);
+            /*readCloseAndReguDate (chargesReportsFS);*/  /*moet gecorrigeerd worden*/
             chargesReportsFS.forEach(function(objectFS){
               loadChargesReport(objectFS);
             });
