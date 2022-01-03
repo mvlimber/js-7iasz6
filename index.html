@@ -161,8 +161,7 @@
               onclick="loadDocuments()">Documents</a></li>
         <li class="tab side text-teal"><a class="waves-effect" href="#Transactions" style="font-size:22px"
             onclick="loadTransactions()">Transactions</a></li>
-        <li id="tabTransactionRules" style="display:none" class="tab side text-teal"><a class="waves-effect" href="#TransactionRules" style="font-size:22px"
-              onclick="loadTransactionRules()">Transaction Rules</a></li>
+        <li id="tabTransactionRules" style="display:none" class="tab side text-teal"><a class="waves-effect" href="#TransactionRules" style="font-size:22px" onclick="loadTransactionRules()">Transaction Rules</a></li>
         <li class="tab side text-teal"><a class="waves-effect" href="#MeterReadings" style="font-size:22px"
             onclick="loadMeterReadings()">Meter Readings</a></li>
             <li class="tab side text-teal"><a class="waves-effect" href="#Properties" style="font-size:22px"
@@ -1757,7 +1756,7 @@
       document.getElementById("Properties_Edit").setAttribute("class","displayBlock");
       document.getElementById("Properties_MetersAdd").setAttribute("class","displayBlock");
       /*document.getElementById("Properties_OwnersAdd_button").style.visibility="visible";*/
-      document.getElementById("tabTransactionRules").style.display = "block";
+      document.getElementById("tabTransactionRules").style.display = "none";
       document.getElementById("commonPartsNewMeterButton").style.visibility = "visible";
       document.getElementById("costCentersNewButton").style.visibility = "visible";
       document.getElementById("provisionsEditButton").style.visibility = "visible";
