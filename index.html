@@ -137,7 +137,7 @@
       <nav id="header" class="nav-fixed teal lighten-1">
         <div class="nav-wrapper container center-align">
           <a href="javascript:void(0)" class="brand-logo right right-align" id="logo-container"
-            style="font-size:24px">MyCondos: Home</a>
+            style="font-size:24px">Home</a>
           <a href="#" data-target="slide-out" class="btn-collapsible sidenav-trigger left left-align"
             onclick="showMenu()"><i class="material-icons">menu</i></a>
         </div>
@@ -148,7 +148,8 @@
             <div class="background">
               <img style="width:100%" src="https://img1.goodfon.com/wallpaper/big/6/d8/android-material-fon-linii.jpg">
             </div>
-            <img width="150" height="100"" class="center" src="https://firebasestorage.googleapis.com/v0/b/slimmeeigendomdb.appspot.com/o/Azur_small.gif?alt=media&token=289506e5-49da-435a-877d-bd00757f3aac">
+            
+            <span class="white-text name" style="font-size:18px"><img width="20" height="20"" class="left" src="https://firebasestorage.googleapis.com/v0/b/slimmeeigendomdb.appspot.com/o/Building-32.png?alt=media&token=9754f9c3-9d56-42fc-bd61-839ce2354a95">MyDigitalCondo</span>
             <span class="white-text name" style="font-size:18px">Résidence Pélican</span>
           </div>
         </li>
@@ -2111,7 +2112,7 @@
       function loadHome() {
       loadAll().then(function(){
         hideMenu();
-        document.getElementById("logo-container").innerHTML = "MyCondos: Home";
+        document.getElementById("logo-container").innerHTML = "Home";
         if (!homeLoaded) {
           refreshNotifications();
           refreshHome();
@@ -2460,7 +2461,7 @@ function loadNotification (n){
       function loadChargesReports() {
       loadAll().then(function(){
         hideMenu();
-        document.getElementById("logo-container").innerHTML = "MyCondos: Charges";
+        document.getElementById("logo-container").innerHTML = "Charges";
         if (!chargesReportsLoaded) {
               refreshChargesReports();
               chargesReportsLoaded = true;
@@ -2670,7 +2671,7 @@ function loadNotification (n){
     function loadDocuments(){
     loadAll().then(function(){
       hideMenu();
-      document.getElementById("logo-container").innerHTML = "MyCondos: Documents";
+      document.getElementById("logo-container").innerHTML = "Documents";
       if (!documentsLoaded) {
         refreshDocuments();
         documentsLoaded = true;
@@ -2987,7 +2988,7 @@ function loadNotification (n){
         function loadTransactions(){
         loadAll().then(function(){
           hideMenu();
-          document.getElementById("logo-container").innerHTML = "MyCondos: Transactions";
+          document.getElementById("logo-container").innerHTML = "Transactions";
           if (!transactionsLoaded) {
             refreshTransactions();
             transactionsLoaded = true;
@@ -4129,7 +4130,7 @@ function loadNotification (n){
       function loadMeterReadings() {
       loadAll().then(function(){  
         hideMenu();
-        document.getElementById("logo-container").innerHTML = "MyCondos:Meter Readings";
+        document.getElementById("logo-container").innerHTML = "Meter Readings";
         if (!meterReadingsLoaded) {
           refreshMeterReadings();
           meterReadingsLoaded = true;
@@ -4431,7 +4432,7 @@ function loadNotification (n){
       function loadMembers(){
       loadAll().then(function(){
         hideMenu();
-        document.getElementById("logo-container").innerHTML = "MyCondos: Members";
+        document.getElementById("logo-container").innerHTML = "Members";
         if (!membersLoaded) {
           refreshMembers();
           membersLoaded = true;
@@ -4857,7 +4858,7 @@ function loadNotification (n){
       function loadProperties(){
       loadAll().then(function(){
         hideMenu();
-        document.getElementById("logo-container").innerHTML = "MyCondos: Properties";
+        document.getElementById("logo-container").innerHTML = "Properties";
         if (!propertiesLoaded) {
           refreshProperties();
           propertiesLoaded = true;
@@ -5887,7 +5888,7 @@ function loadNotification (n){
       function loadSettings() {
       loadAll().then(function(){
         hideMenu();
-        document.getElementById("logo-container").innerHTML = "MyCondos: Settings";
+        document.getElementById("logo-container").innerHTML = "Settings";
         if (!copropertyMetersLoaded) {
           refreshCopropertyMeters();
           copropertyMetersLoaded = true;
