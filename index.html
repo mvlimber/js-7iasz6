@@ -2084,6 +2084,8 @@
     <script>
       var currentCoproperty;
       var currentCopropertyId;
+      var chargesReports = null;
+      var chargesReportsLoaded = false;
       function refreshHome(){
         refCoproperty.get().then(function(copropertyFS){
           currentCopropertyId = copropertyFS.id;
@@ -2099,8 +2101,8 @@
           document.getElementById("Home_Account").appendChild(textN);
           memberGet(currentCoproperty.administrator).then (function(a){
             document.getElementById("home_administrator").appendChild(memberLink(a));
-            refCoproperty.collection("ChargesReports").orderBy("endDate","desc").get().then(function(chargesReportsFS){
-              readCloseAndReguDate(chargesReportsFS);
+            chargesReportsGet().then(function(cRs){
+              readCloseAndReguDate(cRs);
             });
           });
         });
@@ -2296,7 +2298,25 @@ function loadNotification (n){
     <!--   Reports scripts start here -->
     <script>
     var transactionsLoaded = false;
-      
+    var lastCopropertySaldo;
+    var lastOwnersSaldo;
+  
+    
+
+    async function chargesReportsGet(){
+      if (chargesReports) {return chargesReports}
+      else {
+        var querySnapshot = await refCoproperty.collection("Reports").orderBy("endDate","desc").limit(50).get();
+        chargesReports = [];
+        querySnapshot.forEach(function(objectFS) {
+          var thisObject = objectFS.data();
+          thisObject.idFS = objectFS.id;
+          chargesReports.push(thisObject);
+        });
+        return chargesReports;
+      };
+    };
+
     function emptyFieldsChargesReportAdd() {
       document.getElementById("chargesReport_closeDate").value = "";
       document.getElementById("chargesReport_metersIncluded").value = "";
@@ -2332,33 +2352,32 @@ function loadNotification (n){
       };
     };
 
-    function loadChargesReport (objectFS){
-        var object = objectFS.data();
-        if ((!object.confirmed) && (currentUser.role !== roleAdministrator)) {return};
+    function loadChargesReport (cR){
+        if ((!cR.confirmed) && (currentUser.role !== roleAdministrator)) {return};
         var objectsRow= document.createElement('tr');
         
         var cellContent = document.createElement("button");
         cellContent.setAttribute('style','border:none;background-color:Transparent');
         cellContent.setAttribute('class','modal-trigger');
         cellContent.setAttribute('data-target','fileShow');
-        refCopropertyFiles.child("ChargesReports").child(objectFS.id).getDownloadURL().then(function(url) {
+        refCopropertyFiles.child("ChargesReports").child(cR.idFS).getDownloadURL().then(function(url) {
           
         cellContent.setAttribute('onclick','showFile('+JSON.stringify(url)+')');
-        cellContent.innerHTML = "<font color='#0000FF'>" + object.startDate + " to " +object.endDate + "</font>";
+        cellContent.innerHTML = "<font color='#0000FF'>" + cR.startDate + " to " +cR.endDate + "</font>";
         var cell = document.createElement('td');
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);
         
-        if (object.metersIncluded) {cellContent = document.createTextNode("Yes");}
+        if (cR.metersIncluded) {cellContent = document.createTextNode("Yes");}
         else {cellContent = document.createTextNode("No");};
         cell = document.createElement('td');
         cell.appendChild(cellContent);
         objectsRow.appendChild(cell);  
         
-        if (!object.confirmed) {
+        if (!cR.confirmed) {
           cellContent = document.createElement('button');
           cellContent.setAttribute('class','btn-small waves-light');
-          cellContent.setAttribute('onclick','popupChargesReportConfirmed('+JSON.stringify(objectFS.id)+')');
+          cellContent.setAttribute('onclick','popupChargesReportConfirmed('+JSON.stringify(cR.idFS)+')');
           var cellButtonIcon = document.createElement('i');
           cellButtonIcon.setAttribute('class','material-icons right');
           cellButtonIcon.innerHTML="verified_user";           
@@ -2371,7 +2390,7 @@ function loadNotification (n){
 
           cellContent = document.createElement('button');
           cellContent.setAttribute('class','btn-small waves-light red');
-          cellContent.setAttribute('onclick','popupChargesReportRemoved('+JSON.stringify(objectFS.id)+')');
+          cellContent.setAttribute('onclick','popupChargesReportRemoved('+JSON.stringify(cR.idFS)+')');
           var cellButtonIcon = document.createElement('i');
           cellButtonIcon.setAttribute('class','material-icons right');
           cellButtonIcon.innerHTML="delete";           
@@ -2388,19 +2407,17 @@ function loadNotification (n){
         });
       };
 
-      var lastCopropertySaldo;
-      var lastOwnersSaldo;
-
-      function readCloseAndReguDate (chargesReportsFS) {
-        if  (chargesReportsFS.docs.length > 0) {
+      
+      function readCloseAndReguDate (cRs) {
+        if  (cRs.length > 0) {
               document.getElementById("initialSaldos_frame").style.display = "none";
-              var lastReportData = chargesReportsFS.docs[0].data();
+              var lastReportData = cRs[0].data();
               lastCloseDate= lastReportData.endDate;
               lastCopropertySaldo = lastReportData.copropertySaldo;
               lastOwnersSaldo = lastReportData.ownersSaldo;
               var i = 0;
-              while ((i < chargesReportsFS.docs.length) && (!chargesReportsFS.docs[i].data().metersIncluded)) {i = i+1};
-              if (i < chargesReportsFS.docs.length) {lastReguDate = chargesReportsFS.docs[i].data().endDate}
+              while ((i < cRs.length) && (!cRs[i].metersIncluded)) {i = i+1};
+              if (i < cRs.length) {lastReguDate = cRs[i].endDate}
               else {lastReguDate = currentCoproperty.initialStartDate};
             }
             else {
@@ -2414,17 +2431,16 @@ function loadNotification (n){
 
       function refreshChargesReports(){
         emptyHTMLSet(chargesReportsTable);
-        refCoproperty.collection("ChargesReports").orderBy("endDate","desc").get().then(function(chargesReportsFS){
-          if (chargesReportsFS.docs.length) {
+        chargesReportsGet().then(function(cRs){
+          if (cRs.length) {
             document.getElementById("chargesTable_frame").style.display = "block";
             document.getElementById("charges_absentPhrase").style.display = "none";
-            console.log("chargesReportsFS",chargesReportsFS);
-            /*readCloseAndReguDate (chargesReportsFS);*/  /*moet gecorrigeerd worden*/
-            chargesReportsFS.forEach(function(objectFS){
-              loadChargesReport(objectFS);
+            readCloseAndReguDate (cRs);
+            cRs.forEach(function(cR){
+              loadChargesReport(cR);
             });
           } else {
-            readCloseAndReguDate (chargesReportsFS);
+            readCloseAndReguDate (cRs);
             document.getElementById("chargesTable_frame").style.display = "none";
             document.getElementById("charges_absentPhrase").style.display = "block";
           };
