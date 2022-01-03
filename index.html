@@ -6228,8 +6228,9 @@ function loadNotification (n){
       async function generateChargesReport(closeDateTransactions, metersIncluded){  
         ccsInReport = await costCentersGet(); 
         if (!ccsInReport.length){
-        M.toast({html:"Please enter cost centers first" });
-        document.getElementById("chargesReportSubmitButton").disabled=false;
+          M.toast({html:"Please enter cost centers first" });
+          document.getElementById("chargesReportSubmitButton").disabled=false;
+          M.Modal.getInstance(document.getElementById("loading")).close();
         return;
         };
         ccsInReport.forEach(function(cc){
@@ -6265,6 +6266,7 @@ function loadNotification (n){
           if (!mrsInReport.every(meterReadingInPeriod)) {
             M.toast({html:"Not all meter readings are within regularisation period" });
             document.getElementById("chargesReportSubmitButton").disabled=false;
+            M.Modal.getInstance(document.getElementById("loading")).close();
             return;
           }; 
         };
@@ -6292,12 +6294,14 @@ function loadNotification (n){
         if (!ccHere) {
           M.toast({html:"Please first select cost center for provision handling"});
           document.getElementById("chargesReportSubmitButton").disabled=false;
-            return;
+          M.Modal.getInstance(document.getElementById("loading")).close();
+          return;
         };
         if (!ccHere.totalQuota){
           M.toast({html:"Cost center for provision handling must have total > 0"});
           document.getElementById("chargesReportSubmitButton").disabled=false;
-            return;
+          M.Modal.getInstance(document.getElementById("loading")).close();
+          return;
         };
               
         membersInReport.forEach(function(m){
@@ -6435,6 +6439,7 @@ function loadNotification (n){
             if (!totalWaterDifference){
               M.toast({html:"Cold Water Meter for Building is missing: please enter it first"});
               document.getElementById("chargesReportSubmitButton").disabled=false;
+              M.Modal.getInstance(document.getElementById("loading")).close();
               return;
             };
             /* calculate water building and common */
