@@ -6145,12 +6145,12 @@ function loadNotification (n){
 
       var headerBuildingWater = [
         {id:"meter",name:"meter",prompt:"meter",width: 30,align: "center",padding: 0},
-        {id:"last_reading",name:"last_reading",prompt:"last reading",width: 28,align: "center",padding: 0},
-        {id:"reading",name:"reading",prompt:"new reading",width: 28,align: "center",padding: 0},
-        {id:"difference",name:"difference",prompt:"difference",width: 28,align: "center",padding: 0},
-        {id:"differenceCommon",name:"differenceCommon",prompt:"difference Common Parts",width: 28,align: "center",padding: 0},
-        {id:"common",name:"common",prompt:"consumption common parts",width: 30,align: "center",padding: 0},
-        {id:"private",name:"private",prompt:"total private consumption",width: 30,align: "center",padding: 0},
+        {id:"last_reading",name:"last_reading",prompt:"last reading",width: 33,align: "center",padding: 0},
+        {id:"reading",name:"reading",prompt:"new reading",width: 33,align: "center",padding: 0},
+        {id:"difference",name:"difference",prompt:"difference",width: 35,align: "center",padding: 0},
+        {id:"differenceCommon",name:"differenceCommon",prompt:"difference Common Parts",width: 35,align: "center",padding: 0},
+        {id:"common",name:"common",prompt:"consumption common parts",width: 38,align: "center",padding: 0},
+        {id:"private",name:"private",prompt:"total private consumption",width: 38,align: "center",padding: 0},
       ];
       
       var ccsInReport;
@@ -6319,7 +6319,6 @@ function loadNotification (n){
         
         /* initialise common charges holder tabels*/
         var i = 0;
-        console.log("ccsInreport ", ccsInReport);
         ccsInReport.forEach(function(cc) {
           var ccId = cc.idFS;
           function checkId(ccHere){return ccHere.idFS == ccId};
@@ -6329,7 +6328,6 @@ function loadNotification (n){
           headerCharges.splice(2+i, 0, {id:ccId,name:ccId,prompt:"common charges " + ccsInReport.find(checkId).name,width: 40,align: "center",padding: 0});
           i += 1;
         });
-        console.log("headerCharges ", headerCharges);
         
         refCoproperty.collection("Transactions").where("bookDate", ">", lastCloseDate).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){
           /* fill common charges tables */
@@ -6445,15 +6443,15 @@ function loadNotification (n){
             function convertNumberToReadingStringHere(n){if (n) {return n.toFixed(4);} else {return " "} };
             function convertNumberToCurrencyHere(n){if (n) {return n.toLocaleString("nl-BE",currencyStyle);} else {return " "} };
             var thisBuildingWaterData= buildingWaterData[0];
-            /*thisBuildingWaterData.last_reading = convertNumberToStringHere(thisBuildingWaterData.last_reading);
+            thisBuildingWaterData.last_reading = convertNumberToStringHere(thisBuildingWaterData.last_reading);
             thisBuildingWaterData.reading = convertNumberToStringHere(thisBuildingWaterData.reading);
-            thisBuildingWaterData.difference = convertNumberToStringHere(thisBuildingWaterData.difference);
+            thisBuildingWaterData.difference = convertNumberToReadingStringHere(thisBuildingWaterData.difference);
             var differenceCommonHere = totalWaterDifference - (totalColdWaterDifference + totalHotWaterDifference);
             var waterCommonHere = Number((totalWater * differenceCommonHere / (totalWaterDifference)).toFixed(2));
-            thisBuildingWaterData.differenceCommon = convertNumberToStringHere(differenceCommonHere);
+            thisBuildingWaterData.differenceCommon = convertNumberToReadingStringHere(differenceCommonHere);
             thisBuildingWaterData.common = convertNumberToCurrencyHere(waterCommonHere);
             thisBuildingWaterData.private = convertNumberToCurrencyHere(totalWater - waterCommonHere);
-            console.log("buildingWaterData ",buildingWaterData);*/
+            console.log("buildingWaterData ",buildingWaterData);
             /* calculate individual comsumed amounts */
             consumptions.forEach(function(c){
               c.water = 0;c.water_payed = 0;c.water_regu = 0;
@@ -6705,12 +6703,12 @@ function loadNotification (n){
           convertToCurrency(amountsDue, ["amount"]);
           
           
-          writePDF (closeDateTransactions, newCopropertySaldo, newOwnersSaldo, metersIncluded,commonCharges,privateCharges,totalledCharges,waterCharges,heatingCharges,totalledConsumptions,payedByProvisions, copropertySaldo,ownersSaldo, amountsDue);
+          writePDF (closeDateTransactions, newCopropertySaldo, newOwnersSaldo, metersIncluded,commonCharges,privateCharges,totalledCharges,waterCharges,heatingCharges,totalledConsumptions,payedByProvisions, copropertySaldo,ownersSaldo, amountsDue, buildingWaterData);
         });
       
       };
       /*  print starts here ---------------------------------------------------------------------------------*/
-      function writePDF (closeDateTransactions, newCopropertySaldo, newOwnersSaldo, metersIncludedHere, commonCharges ,privateCharges, totalCharges, waterCharges,heatingCharges,totalledConsumptionsHere,payedByProvisions, copropertySaldo,ownersSaldo, amountsDue){
+      function writePDF (closeDateTransactions, newCopropertySaldo, newOwnersSaldo, metersIncludedHere, commonCharges ,privateCharges, totalCharges, waterCharges,heatingCharges,totalledConsumptionsHere,payedByProvisions, copropertySaldo,ownersSaldo, amountsDue, buildingWaterData){
         const rowsLandscapeConsumptions =16;
         const rowsLandscapePrivate =12;
         const rowsLandscapeTotal =15;
@@ -6822,7 +6820,10 @@ function loadNotification (n){
         printTableLandscape("Private expenses", privateCharges, headerPrivate, 10, rowsLandscapePrivate );
         if (metersIncludedHere){
           printTablePortrait("Water expenses since previous regularisation" , waterCharges, headerWH);
-          printTablePortrait("Heating expenses since previous regularisation" , heatingCharges, headerWH);
+          doc.setFontSize(16);
+          doc.text("Cold Water Building", 15, 240);
+          doc.table(15, 250, buildingWaterData, headerBuildingWater,{fontSize:10});
+        printTablePortrait("Heating expenses since previous regularisation" , heatingCharges, headerWH);
           printTableLandscape("Regularisation Water and Heating (CW = Cold Water, HW= Hot Water, HE = Heating)", totalledConsumptionsHere, headerConsumption,8, rowsLandscapeConsumptions );
         };
         printTableLandscape("Total charges", totalCharges, headerCharges, 8, rowsLandscapeTotal );
