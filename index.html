@@ -6144,7 +6144,7 @@ function loadNotification (n){
       ];
 
       var headerBuildingWater = [
-        {id:"meter",name:"meter",prompt:"meter",width: 30,align: "center",padding: 0},
+        {id:"meter",name:"meter",prompt:"meter",width: 35,align: "center",padding: 0},
         {id:"last_reading",name:"last_reading",prompt:"last reading",width: 33,align: "center",padding: 0},
         {id:"reading",name:"reading",prompt:"new reading",width: 33,align: "center",padding: 0},
         {id:"difference",name:"difference",prompt:"difference",width: 35,align: "center",padding: 0},
@@ -6827,7 +6827,7 @@ function loadNotification (n){
           printTablePortrait("Water expenses since previous regularisation" , waterCharges, headerWH);
           doc.setFontSize(16);
           doc.text("Cold Water Building", 15, 240);
-          doc.table(15, 250, buildingWaterData, headerBuildingWater,{fontSize:10});
+          doc.table(15, 245, buildingWaterData, headerBuildingWater,{fontSize:10});
         printTablePortrait("Heating expenses since previous regularisation" , heatingCharges, headerWH);
           printTableLandscape("Regularisation Water and Heating (CW = Cold Water, HW= Hot Water, HE = Heating)", totalledConsumptionsHere, headerConsumption,8, rowsLandscapeConsumptions );
         };
@@ -6839,7 +6839,7 @@ function loadNotification (n){
         /*printTablePortrait("Saldos", copropertySaldo, headerCopropertySaldo);*/
         doc.setFontSize(16);
         doc.text("Saldo Condomynium", 15, 240);
-        doc.table(15, 250, copropertySaldo, headerCopropertySaldo,{fontSize:10});
+        doc.table(15, 245, copropertySaldo, headerCopropertySaldo,{fontSize:10});
         printTablePortrait("Amounts Due" , amountsDue, headerAmountsDue);
         newCopropertySaldo = Number(newCopropertySaldo.toFixed(2));
         Object.keys(newOwnersSaldo).forEach(function(k){newOwnersSaldo[k]= Number(newOwnersSaldo[k].toFixed(2))});  
