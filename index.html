@@ -326,8 +326,14 @@
           <table class="striped" >
             <thead>
               <tr>
-                <th>Period</th>
-                <th>Consumption Regularisation?</th>
+                <th>
+                  <div style="height: 130px;position: relative">
+                    <div style="position: absolute;bottom: 10px;">Period</div>
+                  </div>
+                </th>
+                <th >
+                  <p style="writing-mode: vertical-rl;display:flex;">Consumption <br> Regularisation?</p>
+                </th>
               </tr>
             </thead>
             <tbody id="chargesReportsTable">
@@ -2372,7 +2378,7 @@ function loadNotification (n){
         cellDocLink.setAttribute('class','modal-trigger');
         cellDocLink.setAttribute('data-target','fileShow');
 
-        cellDocLink.innerHTML = "<font color='#0000FF'>" + cR.startDate + " to " +cR.endDate + "</font>";
+        cellDocLink.innerHTML = "<font color='#0000FF'>" + cR.startDate + " - " +cR.endDate + "</font>";
         var cell = document.createElement('td');
         cell.appendChild(cellDocLink);
         objectsRow.appendChild(cell);
