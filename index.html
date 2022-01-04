@@ -2097,9 +2097,12 @@
           var textN = document.createTextNode(currentCoproperty.name);
           document.getElementById("Home_CopropertyName").appendChild(textN);
           textN = document.createTextNode(currentCoproperty.street + " " + currentCoproperty.houseNumber + ", "+ currentCoproperty.zip + " " + currentCoproperty.town);
+          emptyHTMLSet(document.getElementById("Home_CopropertyAddress"));
           document.getElementById("Home_CopropertyAddress").appendChild(textN);
+          emptyHTMLSet(document.getElementById("Home_Account"));
           textN = document.createTextNode(currentCoproperty.account);
           document.getElementById("Home_Account").appendChild(textN);
+          emptyHTMLSet(document.getElementById("home_administrator"));
           memberGet(currentCoproperty.administrator).then (function(a){
             document.getElementById("home_administrator").appendChild(memberLink(a));
             chargesReportsGet().then(function(cRs){
