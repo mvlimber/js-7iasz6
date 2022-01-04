@@ -2648,7 +2648,8 @@ function loadNotification (n){
         getTransactionButton.setAttribute('class','btn-small waves-light modal-trigger');
         getTransactionButton.setAttribute('data-target','transactionView');
         
-        /*getFileButton.setAttribute('style','margin-bottom:5px');*/
+        getFileButton.setAttribute('style','margin-bottom:5px;margin-right:5px');
+        getTransactionButton.setAttribute('style','margin-bottom:5px');
         getTransactionButton.setAttribute('onclick','setSelectedTransactionById('+JSON.stringify(d.link)+')');
         getTransactionButton.innerHTML = "Linked Transaction";
         var icon = document.createElement('i');
