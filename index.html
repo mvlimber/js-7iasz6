@@ -1,11 +1,10 @@
-
 <!DOCTYPE html>
 
 <html>
 
 <head>
   <base target="_top"> 
-  <title style:"color:#00796b bold">MyDigitalCondo</title>
+  <title style:"color:#00796b" bold>MyDigitalCondo</title>
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <link rel="icon"
     href="https://firebasestorage.googleapis.com/v0/b/slimmeeigendomdb.appspot.com/o/Building-32.png?alt=media&token=9754f9c3-9d56-42fc-bd61-839ce2354a95">
@@ -27,16 +26,15 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
    <script>
     var firebaseConfig = {
-        apiKey: "AIzaSyDVT644vSE0ue8KyDy-o9YwbYPX3m0ZmSc",
-        authDomain: "slimmeeigendomdb.firebaseapp.com",
-        projectId: "slimmeeigendomdb",
-        storageBucket: "slimmeeigendomdb.appspot.com",
-        messagingSenderId: "636221237434",
-        appId: "1:636221237434:web:3db507acbf4a6a1e0d7a83",
-        measurementId: "G-2JL08QYJJ3"
+      apiKey: "AIzaSyDVT644vSE0ue8KyDy-o9YwbYPX3m0ZmSc",
+  authDomain: "slimmeeigendomdb.firebaseapp.com",
+  projectId: "slimmeeigendomdb",
+  storageBucket: "slimmeeigendomdb.appspot.com",
+  messagingSenderId: "636221237434",
+  appId: "1:636221237434:web:3db507acbf4a6a1e0d7a83",
+  measurementId: "G-2JL08QYJJ3"
       };
       var thisCoproperty = "OrncEBHp37pJYisfxf79";
       firebase.initializeApp(firebaseConfig);
@@ -55,7 +53,7 @@
 
 <body>
   <center>
-    <div id="loginPanel" <h6 style="font-size:36px;color:#00796b">MyDigitalCondo</h6>
+    <div id="loginPanel"> <h6 style="font-size:36px;color:#00796b">MyDigitalCondo</h6>
       <h6 style="font-size:12px;color:black">Stay connected to your properties</h6>
       <h6 style="font-size:20px;color:black">Please login </h6>
       <div style="width:500px">
@@ -838,6 +836,14 @@
           </div>  
         </div>
         <!------------------------------------------------------------------------------------------------------>
+        <div id="meterReadingExample" class="modal long">
+          <div class="modal-content">
+            <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
+            <h6>example</h6>
+            <img width="300" height="550" class="center" src="https://firebasestorage.googleapis.com/v0/b/mycondos-e9d66.appspot.com/o/271597589_997941057732402_7454652556295526841_n.jpg?alt=media&token=bc603384-0f40-43b8-a8d7-a21afde189dd">
+            <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
+          </div>
+        </div>
         <div id="MeterReadings" class="col s12">
           <div id="meterReadingsTable_frame">
           <table class="striped">
@@ -874,7 +880,7 @@
                 Cancel</a>
             </div>
           </div>
-
+          
           <div id="meterReadingEdit" class="modal normal">
             <div class="modal-content">
               <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
@@ -896,27 +902,31 @@
                 </form>
                 <div class="col s12 m6">
                   <div id="meterReading_picture_edit_frame">
-                    <img id="meterReading_picture_edit_img" width="300" height="225" class="center" >
-                    <button style="float:right;margin-left: 20px;margin-top: 3px" class="btn-small waves-light red"  type="submit" onclick="removePicture()">Remove Picture<i class="material-icons right">delete</i></button>
+                    <img id="meterReading_picture_edit_img" width="300" height="225" class="center" />
+                    <button style="float:right;margin-left: 20px;margin-top: 3px;margin-bottom: 10px" class="btn-small waves-light red"  type="submit" onclick="removePicture()">Remove Picture<i class="material-icons right">delete</i></button>
                   </div>
-                  <form id="meterReading_picture_form">
+                  <div id = "meterReading_picture_form">
+                  <form >
                     <div class="input-field">
                     </div>
                     <div class="file-field input-field ">
                       <div class="btn-small">
-                        <span>Picture<i class="material-icons right">attach_file</i></span>
+                        <span>Add Picture<i class="material-icons right">attach_file</i></span>
                         <input type="file" id="meterReading_picture_edit_file">
                       </div>
-                      <div class="file-path-wrapper">
-                        <input class="file-path validate" type="text" id="meterReading_picture_edit_text">
+                      <div class="file-path-wrapper" style="visibility:hidden">
+                        <input class="file-path validate" type="text" id="meterReading_picture_edit_text" onChange="showPictureMeterReadingEdit()">
                         <span class="helper-text" data-error="only jpeg or png files" >jpeg or png file</span>
                       </div>
                     </div>
                   </form>
+                  <span>Add an horizontal picture like in this </span>
+                    <button data-target="meterReadingExample" class="modal-trigger" style="border:none;background-color:Transparent"><font color='blue'>example</font></button>
+                  </div>
                 </div>
-              
-              <button id="meterReadingSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; writeMeterReading()">Submit<i class="material-icons right">send</i></button>
-              <a style="float: right;margin-bottom: 3px"
+                
+              <button id="meterReadingSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px;margin-top: 5px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; writeMeterReading()">Submit<i class="material-icons right">send</i></button>
+              <a style="float: right;margin-bottom: 3px;margin-top: 5px"
                 class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i> Cancel</a>
             </div>
           </div>
@@ -1262,7 +1272,17 @@
           <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
           </div>
         </div>
-
+        <div id="initialPictureRemove" class="modal normal">
+        <div class="modal-content">
+          <h5> You are about to remove the meter reading picture</h5>
+        </div>
+        <div class="modal-footer">
+          <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="removeInitialPicture()">Confirm<i class="material-icons right">send</i></button>
+          <a style="float: right"
+            class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
+            Cancel</a>
+        </div>
+      </div>
         <div id="meterWrite" class="modal normal">
           <div class="modal-content">
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
@@ -1309,20 +1329,28 @@
                   <span id="meter_initialReading_helper_edit" class="helper-text" ></span>
                 </div>
               </form>
-              <form id="meterinitialReading_picture_form">
+              <div id="meterInitialReading_picture_edit_frame" class="col s12 m12">
+                <img id="meterInitialReading_picture_edit_img" width="300" height="225" class="center" />
+                <button style="float:right;margin-left: 20px;margin-top: 3px;margin-bottom: 10px" class="btn-small waves-light red"  type="submit" onclick="removeInitialPicture()">Remove Picture<i class="material-icons right">delete</i></button>
+              </div>
+              <div id = "meterInitialReading_picture_form" class="col s12 m12">
+              <form>
                 <div class="input-field">
                 </div>
-                <div class="file-field input-field col s12 m8">
+                <div class="file-field input-field ">
                   <div id="meterinitialReading_picture_button" class="btn-small">
-                    <span>Picture<i class="material-icons right">attach_file</i></span>
+                    <span>Add Picture<i class="material-icons right">attach_file</i></span>
                     <input type="file" id="meterInitialReading_picture_edit_file" >
                   </div>
-                  <div class="file-path-wrapper">
-                    <input class="file-path validate" type="text" id="meterInitialReading_picture_edit_text">
+                  <div class="file-path-wrapper" style="visibility:hidden">
+                    <input class="file-path validate" type="text" id="meterInitialReading_picture_edit_text" onChange="showPictureMeterInitialReadingEdit()">
                     <span class="helper-text" data-error="only jpeg or png files" >jpeg or png file</span>
                   </div>
                 </div>
               </form>
+              <span>Add an horizontal picture like in this </span>
+              <button data-target="meterReadingExample" class="modal-trigger" style="border:none;background-color:Transparent"><font color='blue'>example</font></button>
+              </div>
             </div>
           </div>
           <div class="modal-footer">
@@ -1333,6 +1361,7 @@
         </div>
         <!------------------------------------------------------------------------------------------>
         <div id="Properties" class="col s12">
+          
           <div id="propertiesTable_frame">
             <table class="striped">
               <thead>
@@ -2321,13 +2350,11 @@ function loadNotification (n){
           thisObject.idFS = objectFS.id;
           chargesReports.push(thisObject);
         });
-        console.log("chargesReports",chargesReports);
         chargesReports.sort(function(a, b){
           if (b.endDate < a.endDate) {return -1;};
           if (b.endDate > a.endDate) {return 1;};
           return 0;
           });
-        console.log("chargesReports",chargesReports);  
         return chargesReports;
       };
     };
@@ -4152,11 +4179,13 @@ function loadNotification (n){
       var meterReading;
       var containsNewReading;
       var picturePresent;
+      var canvasBlob;
+      
       function selectMeterReading(mr){
         meterReading = mr;
         containsNewReading = null;
         picturePresent = null;
-
+        canvasBlob = null;
         var thisPropertyCode;
         var thisPropertyOwner;
         var historyEl = document.getElementById("meterReadingHistory");
@@ -4306,6 +4335,59 @@ function loadNotification (n){
         M.Modal.getInstance(document.getElementById("pictureRemove")).close();
       };
       
+
+      function showPictureMeterReadingEdit (){
+        if (document.getElementById("meterReading_picture_edit_text").value){
+          if (reduceImage( document.getElementById('meterReading_picture_edit_file').files[0], "meterReading_picture_edit_img")){
+            document.getElementById("meterReading_picture_form").style.display = "none";
+            document.getElementById("meterReading_picture_edit_frame").style.display = "block";
+          } else {removePicture()};
+        };
+      };
+
+      function reduceImage(im, elIdShowPicture) {
+        let allowed_mime_types = [ 'image/jpeg', 'image/png' ];
+        let allowed_size_kb = 6000;
+        var valid = true;
+        if (allowed_mime_types.indexOf(im.type) == -1) {
+          M.toast({html:"Incorrect file type (only jpeg or png allowed)"});
+          valid=false;
+        } else if(im.size > allowed_size_kb*1024) {
+          M.toast({html:"Picture exceeds max size 6MB"});
+          valid=false;
+        };
+        if (valid){
+          picturePresent = true;
+          var canvas = document.createElement("canvas");
+              
+          var reader = new FileReader();
+          reader.readAsDataURL(im);
+          reader.onload = function (event) {
+            var imgElement = document.createElement("img");
+            /*imgElement.setAttribute("width","300");
+            imgElement.setAttribute("heigth","225");*/
+            imgElement.src = event.target.result;
+            imgElement.onload = function (e) {
+              var originalWith = e.target.width;
+              var originalHeigth = Math.ceil(originalWith * 621/828);
+              var targetHeigth = Math.ceil(300 * 621/828);
+              var ctx = canvas.getContext("2d");
+              /*ctx.drawImage(e.target,0,0,e.target.width,e.target.width * scaleSize,0,0,300,225);*/
+              /*ctx.rotate(-90 * Math.PI / 180);*/
+              ctx.drawImage(e.target,0,0,originalWith,originalWith,0,0,300,targetHeigth);
+              canvas.toBlob(function(imgBlob){
+                var uri = URL.createObjectURL(imgBlob);
+                canvasBlob = imgBlob;
+                document.getElementById(elIdShowPicture).setAttribute("src",uri);
+              },"image/jpg",0.5);
+            };
+          };
+        };
+        return valid;
+      };
+
+      
+
       function validateMeterReading(){
         var valid= true;
         if (!document.getElementById("meterReading_reading_edit").checkValidity()) {
@@ -4320,19 +4402,8 @@ function loadNotification (n){
           M.toast({html:"Reading date must be after last meters regulation date being "+lastReguDate});
           valid=false;
         };
-        var readingPicture = document.getElementById('meterReading_picture_edit_file').files[0];
-        let allowed_mime_types = [ 'image/jpeg', 'image/png' ];
-        let allowed_size_kb = 4000;
-        if (readingPicture) {
-          if(allowed_mime_types.indexOf(readingPicture.type) == -1) {
-            M.toast({html:"Incorrect file type (only jpeg or png allowed)"});
-            valid=false;
-          } else if(readingPicture.size > allowed_size_kb*1024) {
-            M.toast({html:"Picture exceeds max size 4MB"});
-            valid=false;
-          } else (picturePresent = true);
-        };
-        if (!valid) {
+        
+       if (!valid) {
           document.getElementById("meterReadingSubmitButton").disabled=false;
         };
         return valid;
@@ -4373,15 +4444,18 @@ function loadNotification (n){
           if (document.getElementById('meterReading_picture_edit_file').files[0]) { 
             // A new picture has been attached
             thisRefFS.collection("Meters").doc(thisMeterIdFS).update({readings:thisReading}).then(function() {
-              var pictureFile = document.getElementById('meterReading_picture_edit_file').files[0];
+              /*var pictureFile = document.getElementById('meterReading_picture_edit_file').files[0];*/
               var fileRef = fileStoreRef.child("Meters").child(thisMeterIdFS).child((thisReading[0].counter).toString());  
-              fileRef.put(pictureFile).then (function (){
-                refreshMeterReadings();
-                selectMeterReading(meterReading);
-                M.Modal.getInstance(document.getElementById("loading")).close();
-                M.Modal.getInstance(document.getElementById("meterReadingEdit")).close();
-              });
+              /*fileRef.put(pictureFile).then (function (){*/
+              /*fileRef.putString(pictureFile, "base64", {contentType:"image/jpg"}).then (function (){*/
               
+                fileRef.put(canvasBlob).then (function (){
+                  refreshMeterReadings();
+                  selectMeterReading(meterReading);
+                  M.Modal.getInstance(document.getElementById("loading")).close();
+                  M.Modal.getInstance(document.getElementById("meterReadingEdit")).close();
+                });
+                
             }).catch(function(error) {
               M.Modal.getInstance(document.getElementById("loading")).close();
                 /*M.toast({html:"Error occurred updating meter reading:" + error}); */
@@ -5011,7 +5085,6 @@ function loadNotification (n){
         });
       };
 
-      
       function toggleMeter(){
         var digitsString = document.getElementById("meter_digits").value;
         var decimalsString = document.getElementById("meter_decimals").value;
@@ -5039,14 +5112,34 @@ function loadNotification (n){
         document.getElementById("meter_digits").value=meterData.digits;
         document.getElementById("meter_decimals").value=meterData.decimals;
         document.getElementById("meter_initialReading_edit").value=meterData.readings[0].reading;
-        document.getElementById("meterInitialReading_picture_edit_text").value="";
         document.getElementById("meterSubmitButton").disabled=false;
         toggleMeter();
-        var elems = document.querySelectorAll('select');
-        M.FormSelect.init(elems);
-        M.updateTextFields();
+        if (meterData.readings[0].picture){
+          picturePresent = true;
+          document.getElementById("meterInitialReading_picture_form").style.display = "none";
+          document.getElementById("meterInitialReading_picture_edit_frame").style.display = "block";
+          refCopropertyFiles.child(selectedPropertyId).child("Meters").child(meter).child("0").getDownloadURL().then(function(url) {
+            document.getElementById("meterInitialReading_picture_edit_img").setAttribute("src",url);
+            var elems = document.querySelectorAll('select');
+            M.FormSelect.init(elems);
+            M.updateTextFields();
+          });
+        } else { 
+          prepareNoInitialPicture();
+          var elems = document.querySelectorAll('select');
+          M.FormSelect.init(elems);
+          M.updateTextFields();
+        };
       };
 
+      function prepareNoInitialPicture(){
+        document.getElementById("meterInitialReading_picture_form").style.display = "block";
+        document.getElementById("meterInitialReading_picture_edit_frame").style.display = "none";
+        document.getElementById("meterInitialReading_picture_edit_file").value = [];
+        document.getElementById("meterInitialReading_picture_edit_text").value="";
+        picturePresent = false;
+      };
+      
       function addMeter(property){
         selectedMeterId = "";
         selectedMeterData = null;
@@ -5056,14 +5149,28 @@ function loadNotification (n){
         document.getElementById("meter_digits").value="";
         document.getElementById("meter_decimals").value="";
         document.getElementById("meter_initialReading_edit").value="";
-        document.getElementById("meterInitialReading_picture_edit_text").value="";
         toggleMeter();
+        prepareNoInitialPicture();
         document.getElementById("meterSubmitButton").disabled=false;
         var elems = document.querySelectorAll('select');
         M.FormSelect.init(elems);
         M.updateTextFields();
       };
 
+      function removeInitialPicture(){
+        prepareNoInitialPicture();
+        M.Modal.getInstance(document.getElementById("initialPictureRemove")).close();
+      };
+      
+
+      function showPictureMeterInitialReadingEdit (){
+        if (document.getElementById("meterInitialReading_picture_edit_text").value){
+          if (reduceImage( document.getElementById('meterInitialReading_picture_edit_file').files[0], "meterInitialReading_picture_edit_img")){
+            document.getElementById("meterInitialReading_picture_form").style.display = "none";
+            document.getElementById("meterInitialReading_picture_edit_frame").style.display = "block";
+          } else {removeInitialPicture()}
+        };
+      };
 
       function validateMeterEntries(){
         var valid= true;
@@ -5091,18 +5198,7 @@ function loadNotification (n){
           M.toast({html:"Please enter valid reading"});
           valid=false;
         };
-        var readingPicture = document.getElementById('meterInitialReading_picture_edit_file').files[0];
-        let allowed_mime_types = [ 'image/jpeg', 'image/png' ];
-        let allowed_size_kb = 4000;
-        if (readingPicture) {
-          if(allowed_mime_types.indexOf(readingPicture.type) == -1) {
-            M.toast({html:"Incorrect file type (only jpeg or png allowed)"});
-            valid=false;
-          } else if(readingPicture.size > allowed_size_kb*1024) {
-            M.toast({html:"Picture exceeds max size 4MB"});
-            valid=false;
-          };
-        };
+        
         if (!valid) {
           document.getElementById("meterSubmitButton").disabled=false;
           
@@ -5139,12 +5235,12 @@ function loadNotification (n){
           };
           if (selectedMeterId) {
             if (document.getElementById("meterInitialReading_picture_edit_text").value){entries.readings[0].picture = true; newPicture = true}
-            else {entries.readings[0].picture = selectedMeterData.readings[0].picture};
+            else {entries.readings[0].picture = picturePresent};
             thisRefFS.collection("Meters").doc(selectedMeterId).update(entries).then(function(docrefmeter) {
               if (newPicture){
-                var pictureFile = document.getElementById('meterInitialReading_picture_edit_file').files[0];
+                /*var pictureFile = document.getElementById('meterInitialReading_picture_edit_file').files[0];*/
                 var fileRef = fileStoreRef.child("Meters").child(selectedMeterId).child("0");  
-                fileRef.put(pictureFile).then (function (){
+                fileRef.put(canvasBlob).then (function (){
                   meterReadingsLoaded = false;
                   if (entries.coproperty){refreshCopropertyMeters();}
                   else {displayMeters(selectedPropertyId)};
@@ -5170,9 +5266,9 @@ function loadNotification (n){
             else {entries.readings[0].picture = false};
             thisRefFS.collection("Meters").add(entries).then(function(docrefmeter) {
               if (newPicture){
-                var pictureFile = document.getElementById('meterInitialReading_picture_edit_file').files[0];
+                /*var pictureFile = document.getElementById('meterInitialReading_picture_edit_file').files[0];*/
                 var fileRef = fileStoreRef.child("Meters").child(docrefmeter.id).child("0");  
-                fileRef.put(pictureFile).then (function (){
+                fileRef.put(canvasBlob).then (function (){
                   handlingCopropertyMeter = false;
                   meterReadingsLoaded = false;
                   if (entries.coproperty){refreshCopropertyMeters();}

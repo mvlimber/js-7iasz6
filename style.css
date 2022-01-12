@@ -29,6 +29,12 @@ body {
   transform: translateY(+50%) !important;
 }
 
+.modal.long {                                                                      
+  height: 1100px !important;
+  width: 350px;
+  transform: translateY(+5%) !important;
+}
+
 .centerAlert {
   margin: auto;
   width: 50%;
