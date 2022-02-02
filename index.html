@@ -3229,7 +3229,7 @@ function loadNotification (n){
               document.getElementById("transactionsTable_frame").style.display = "block";
               document.getElementById("transactions_absentPhrase").style.display = "none";
               objectsFSArray.forEach(function(objectFS){loadTransaction(objectFS);});
-              if (objectsFSArray.docs.length < loadBatchLength){
+              if (objectsFSArray.docs.length < lBL){
                 document.getElementById("transactions_more").style.display = "none";
                 document.getElementById("transactions_noMore").style.display = "block";
               } else {
