@@ -348,13 +348,52 @@
         </div>
         <!------------------------------------------------------------------------------------------------------>
         <div id="Documents" class="col s12">
-        <ul class="collapsible" id="documentsList">
-        </ul>
-        <div id = "documents_absentPhrase" style="display:none">
-        <h5 >There are no Documents yet</h5>
-        </div>
+          <div id="documentFilter" class="modal normal">
+            <div class="modal-content">
+              <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
+              <h5>Enter filter</h5>
+              <div class="row">
+                <form>
+                  <div class="input-field col s12 m4">
+                    <input id="documentFilter_updateDate" type="date">
+                    <label for="documentFilter_updateDate">Updated on or before</label>
+                  </div>
+                  <div class="input-field col s12 m4">
+                    <select id="documentFilter_type"></select>
+                  </div>
+                  <div class="input-field col s12 m4">
+                    <input id="documentFilter_counterparty" type="text" class="validate" maxlength="50" data-length="50" >
+                    <label for="documentFilter_counterparty">Counterparty contains</label>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="setDocumentFilter()">Submit<i class="material-icons right">send</i></button>
+              <a style="float: right"
+                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
+                Cancel</a>
+            </div>
+          </div>
+          <button style="margin-top:5px;margin-left:2px" data-target="documentFilter" class="btn-small waves-light modal-trigger" onclick="prepareSetDocumentFilter()"><i class="material-icons right">filter_list</i>Filter</button>
+          <button id="documentNewButton" style="visibility: hidden; margin-top:5px; float: right" data-target="documentEdit" class="btn-small waves-light modal-trigger" onclick="resetDocument()"><i class="material-icons right">add</i>New document</button>
+          <div id="documents_filterOff">Filter Off</div>
+          <div id="documents_filterOn" style="display:none">Filter On</div>
+          <div id="documentsTable_frame">
+            <ul class="collapsible" id="documentsList">
+            </ul>
+            <center>
+              <div id="documents_more">
+                <button  style="margin-bottom: 3px; margin-top:10px" class="btn-small waves-light" type="submit" onclick="this.disabeld=true; nextBatchDocuments(lastVisibleDocument)">Load More<i class="material-icons right">arrow_downward</i></button>
+              </div>
+              <div id="documents_noMore" style="margin-top: 20px;margin-bottom: 3px" ><i class="material-icons" style="float:bottom;margin-top:10px">all_inclusive</i>    End of List    <i class="material-icons">all_inclusive</i></div>
+            </center>
+          </div>
+          <div id = "documents_absentPhrase" style="display:none">
+          <h5 >There are no Documents yet</h5>
+          </div>
         <br>
-        <button id="documentNewButton" style="visibility: hidden; float: right" data-target="documentEdit" class="btn-small waves-light modal-trigger" onclick="resetDocument()"><i class="material-icons right">add</i>New document</button>
+        
         <div id="documentEdit" class="modal normal">
           <div class="modal-content">
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
@@ -384,7 +423,7 @@
               </div> 
               <div class="input-field col s12 m4" id="document_before_field">
                 <input id="document_before" type="text" class="datepicker datepickerFuture validate" >
-                <label for="document_before">Before</label>
+                <label for="document_before">Act before</label>
                 <span class="helper-text">reminder date</span>
               </div>
               <!--
@@ -403,7 +442,7 @@
           
             </form>
             
-            <button id="documentSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; writeDocument()">Save<i class="material-icons right">send</i></button>
+            <button id="documentSubmitButton" style="float: right;margin-left: 20px;margin-bottom: 3px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; writeDocument()">Submit<i class="material-icons right">send</i></button>
             <a style="float: right;margin-left: 20px;margin-bottom: 3px"
               class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
               Cancel</a>
@@ -579,7 +618,7 @@
             <div class="row">
               
               <form>
-                <div class="input-field col s12 m4">
+                <div class="input-field col s12 m12">
                   <select id="transactionLink_document" required required="true"></select>
                   
                 </div> 
@@ -595,6 +634,46 @@
           </div>
         </div>
         <div id="Transactions" class="col s12">
+          <div id="transactionFilter" class="modal normal">
+            <div class="modal-content">
+            <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
+            <h5>Enter filter</h5>
+            <div class="row">
+              <form>
+                <div class="input-field col s12 m4">
+                  <input id="transactionFilter_bookDate" type="date">
+                  <label for="transactionFilter_bookDate">Booking Date on or before</label>
+                </div>
+                <div class="input-field col s12 m4">
+                  <select id="transactionFilter_type"></select>
+                </div>
+                <div class="input-field col s12 m4">
+                  <select id="transactionFilter_costCenter"></select>
+                </div> 
+                <div class="input-field col s12 m4">
+                  <select id="transactionFilter_owner"></select>
+                </div>
+                <div class="input-field col s12 m4">
+                  <input id="transactionFilter_name" type="text" class="validate" maxlength="50" data-length="50" >
+                  <label for="transactionFilter_name">Counterparty contains</label>
+                </div>
+              </form>
+            </div>
+            </div>
+            <div class="modal-footer">
+              <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="setTransactionFilter()">Submit<i class="material-icons right">send</i></button>
+              <a style="float: right"
+                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
+                Cancel</a>
+            </div>
+          </div>
+          <button style="margin-top:5px;margin-left:2px" data-target="transactionFilter" class="btn-small waves-light modal-trigger" onclick="prepareSetTransactionFilter()"><i class="material-icons right">filter_list</i>Filter</button>
+          <button id="Transactions_Add" style="float: right;margin-top:5px; visibility:hidden" data-target="transactionAdd" class="btn-small waves-light modal-trigger" onclick="resetSelectedTransaction()"><i class="material-icons right">add</i>New transaction</button>
+            <!--
+            <button disabled style="float: right" data-target="transactionLoad" class="btn-small waves-light modal-trigger" onclick="emptyTransactionLoadFields()"><i class="material-icons right">add</i>Load transactions</button>-->
+          
+          <div id="transactions_filterOff">Filter Off</div>
+          <div id="transactions_filterOn" style="display:none">Filter On</div>
           <div id="transactionsTable_frame">
           <table class="striped" >
             <thead>
@@ -614,16 +693,18 @@
             <tbody id="transactionsTable">
             </tbody>
           </table>
+          <center>
+            <div id="transactions_more">
+              <button  style="margin-bottom: 3px; margin-top:10px" class="btn-small waves-light" type="submit" onclick="this.disabeld=true; nextBatchTransactions()">Load More<i class="material-icons right">arrow_downward</i></button>
+            </div>
+            <div id="transactions_noMore" style="margin-top: 20px;margin-bottom: 3px" ><i class="material-icons" style="float:bottom;margin-top:10px">all_inclusive</i>    End of List    <i class="material-icons">all_inclusive</i></div>
+          </center>
           </div>
           <div id="transactions_absentPhrase" style="display:none">
           <h5>There are no Transactions yet</h5>
           </div>
           <br>
-          <div id="Transactions_Add" class="displayHidden">
-            <button style="float: right" data-target="transactionAdd" class="btn-small waves-light modal-trigger" onclick="resetSelectedTransaction()"><i class="material-icons right">add</i>New transaction</button>
-            <br><br>
-            <button disabled style="float: right" data-target="transactionLoad" class="btn-small waves-light modal-trigger" onclick="emptyTransactionLoadFields()"><i class="material-icons right">add</i>Load transactions</button>
-          </div>
+          
           <div id="transactionAdd" class="modal full">
             <div class="modal-content" >
               <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
@@ -1707,7 +1788,7 @@
     <script>
       var lastLoadTime;
       var version;
-
+      var loadBatchLength = 15;
       async function loadAll(){
         var time = (new Date()).getTime();
         if ((time - lastLoadTime) > 90000) {
@@ -1785,7 +1866,7 @@
     
     function enableAdminFunctions(){
       document.getElementById("Reports_Generate").setAttribute("class","displayBlock");
-      document.getElementById("Transactions_Add").setAttribute("class","displayBlock");
+      document.getElementById("Transactions_Add").style.visibility = "visible";
       document.getElementById("Transactions_Edit").setAttribute("class","displayBlock");
       document.getElementById("Transactions_EvidenceAdd").setAttribute("class","displayBlock");
       document.getElementById("Transactions_EvidenceLink").style.display = "block";
@@ -2085,13 +2166,16 @@
       COMPA: 'Company'
     }
 
-    function insertSelectOptions (elBeforeID, keyValuePairs, defaultString, defaultKey) {
+    function insertSelectOptions (elBeforeID, keyValuePairs, mandatory, defaultString, defaultKey) {
       // either defaulString or defaultKey should be nul
       var el = document.getElementById(elBeforeID);
       if (defaultString) {
         var defaultt = document.createElement("option");
         defaultt.setAttribute("value", "");
-        defaultt.innerHTML = "Select " + defaultString + "<b><font color='red'>*</font></b>";
+        if (mandatory){
+          defaultt.setAttribute("disabled",true);
+          defaultt.innerHTML = "Select " + defaultString + "<b><font color='red'>*</font></b>";}
+        else {defaultt.innerHTML = "Select " + defaultString;};
         el.insertAdjacentElement('beforeend', defaultt);
       };
       Object.keys(keyValuePairs).forEach(function(key){
@@ -2102,18 +2186,28 @@
         el.insertAdjacentElement('beforeend', newEl);
       });
     };
-    insertSelectOptions("property_type_add", PropType, "type");
-    insertSelectOptions("property_type_edit", PropType, "type");
-    insertSelectOptions("transaction_type_add", TransType, "type");
-    insertSelectOptions("transactionRule_type", TransRuleType, "type");
-    insertSelectOptions("meter_type", MeterType, "type");
-    insertSelectOptions("meter_status", MeterStatus, "", "ACTIF");
-    insertSelectOptions("notification_type", NotificationType, "type");
-    insertSelectOptions("document_type", DocumentType, "type");
-    insertSelectOptions("transactionEvidence_type", EvidenceType, "type");
-    insertSelectOptions("member_type_edit", MemberType, "", "PERSO");
+    insertSelectOptions("property_type_add", PropType, true, "Type");
+    insertSelectOptions("property_type_edit", PropType, true, "Type");
+    insertSelectOptions("transaction_type_add", TransType, true, "Type");
+    insertSelectOptions("transactionRule_type", TransRuleType, true, "Type");
+    insertSelectOptions("transactionFilter_type", TransTypeRead, false, "Type");
+    insertSelectOptions("meter_type", MeterType, true, "Type");
+    insertSelectOptions("meter_status", MeterStatus, true, "", "ACTIF");
+    insertSelectOptions("notification_type", NotificationType, true, "Type");
+    insertSelectOptions("document_type", DocumentType, true, "Type");
+    insertSelectOptions("documentFilter_type", DocumentType, false, "Type");
+    insertSelectOptions("transactionEvidence_type", EvidenceType, true, "Type");
+    insertSelectOptions("member_type_edit", MemberType, true, "", "PERSO");
 
-    
+    function initialiseForm() {
+      var elems = document.querySelectorAll('select');
+      M.FormSelect.init(elems);
+      M.updateTextFields();
+      elems = document.querySelectorAll('textarea');
+      M.CharacterCounter.init(elems);
+      elems = document.querySelectorAll('text');
+      M.CharacterCounter.init(elems);
+    };
     
     </script>
     <!--   Home scripts start here -->
@@ -2538,45 +2632,125 @@ function loadNotification (n){
     var documentsLoaded = false;
     var paper;
     var documentFile;
+    var lastVisibleDocument;
+    var documentValueFilter = {};
+    var documentSubStringFilter = {};
+    var documentFilterOnUpdateDate="";
+      
 
     async function documentsGet(){
       if (documents) {return documents;}
       else {
-        var querySnapshot = await refCoproperty.collection("Documents").where("before","!=","").orderBy("before","asc").limit(50).get();
-        var documentsBefore = [];
+        var querySnapshot = await refCoproperty.collection("Documents").where("before","!=","").orderBy("before","asc").get();
+        documents = [];
         querySnapshot.forEach(function(objectFS) {
           var thisObject = objectFS.data();
           thisObject.idFS = objectFS.id;
-          documentsBefore.push(thisObject);
+          documents.push(thisObject);
         });
-        querySnapshot = await refCoproperty.collection("Documents").where("before","==","").limit(50).get();
-        var documentsDone = [];
-        querySnapshot.forEach(function(objectFS) {
-          var thisObject = objectFS.data();
-          thisObject.idFS = objectFS.id;
-          documentsDone.push(thisObject);
-        });
-        var documentsDoneSorted = documentsDone.sort(function(a, b){
-          if (b.updatedOn < a.updatedOn) {return -1;};
-          if (b.updatedOn > a.updatedOn) {return 1;};
-          return 0;
-          });
-        documents = documentsBefore.concat(documentsDoneSorted);
-        return documents;
+        var documentsFirstBatch = await documentsGetNext();
+        return {objects:documents, lastFSObject:documentsFirstBatch.lastFSObject};
       };
     };
 
+    async function documentsGetNext(lVD){
+      var refFS = refCoproperty.collection("Documents").where("before","==","").orderBy("updatedOn","desc");
+      if (lVD){refFS = refFS.startAfter(lVD)};
+      var lBL;
+      if ((Object.keys(documentValueFilter).length + Object.keys(documentSubStringFilter).length) == 0) {lBL = loadBatchLength}
+      else {lBL =loadBatchLength*5};
+      refFS = refFS.limit(lBL);
+      objectsFSArray = await refFS.get();
+      /*querySnapshot = await refCoproperty.collection("Documents").where("before","==","").orderBy("updatedOn","desc").limit(loadBatchLength).get();*/
+      var documentsExtra = [];
+      objectsFSArray.forEach(function(objectFS) {
+        var thisObject = objectFS.data();
+        thisObject.idFS = objectFS.id;
+        documentsExtra.push(thisObject);
+      });
+      documents = documents.concat(documentsExtra);
+      var newLVD;
+      if (objectsFSArray.docs.length) {newLVD = objectsFSArray.docs[objectsFSArray.docs.length-1]};
+      return {objects:documentsExtra,lastFSObject:newLVD};
+    };
+
     var documentsList = document.getElementById("documentsList");
+
+    function prepareSetDocumentFilter(){
+      if (documentFilterOnUpdateDate) {document.getElementById("documentFilter_updateDate").value=documentFilterOnUpdateDate;}
+      else {document.getElementById("documentFilter_updateDate").value="";};
+      if (documentValueFilter.type) {document.getElementById("documentFilter_type").value=documentValueFilter.type;}
+      else {document.getElementById("documentFilter_type").value="";};
+      if (documentSubStringFilter.counterparty){ 
+        document.getElementById("documentFilter_counterparty").value=documentSubStringFilter.counterparty;
+      } else {document.getElementById("documentFilter_counterparty").value="";};
+      initialiseForm();
+    };
+
+    function setDocumentFilter(){
+          documentValueFilter = {};
+          documentSubStringFilter = {};
+          documentFilterOnUpdateDate = "";
+          var filterSet=false;
+          var x = document.getElementById("documentFilter_updateDate").value;
+          if (x) {
+            documentFilterOnUpdateDate = x;
+            filterSet=true;
+          };
+          x = document.getElementById("documentFilter_type").value;
+          if (x) {
+            documentValueFilter.type = x;
+            filterSet=true;
+          };
+          x = document.getElementById("documentFilter_counterparty").value;
+          if (x) {
+            documentSubStringFilter.counterparty = x;
+            filterSet=true;
+          };
+          if (filterSet) {
+            document.getElementById("documents_filterOn").style.display="block";
+            document.getElementById("documents_filterOff").style.display="none";}
+          else {
+            document.getElementById("documents_filterOn").style.display="none";
+            document.getElementById("documents_filterOff").style.display="block";};
+          refreshDocuments();
+          M.Modal.getInstance(document.getElementById("documentFilter")).close();
+        };
+
+    function documentsEndOfBatch(objectsBatch){
+      if (objectsBatch.objects.length < loadBatchLength){
+            document.getElementById("documents_more").style.display = "none";
+            document.getElementById("documents_noMore").style.display = "block";
+          } else {
+            document.getElementById("documents_more").style.display = "block";
+            document.getElementById("documents_noMore").style.display = "none";
+          };
+    };
+    
+    function nextBatchDocuments(lVD) {
+      documentsGetNext(lVD).then(function(nextBatch){
+        lastVisibleDocument = nextBatch.lastFSObject;
+        if (nextBatch.objects.length){
+          nextBatch.objects.forEach(function(object){loadDocument(object);});
+          documentsEndOfBatch(nextBatch);
+          
+        } else {
+          document.getElementById("documents_more").style.display = "none";
+          document.getElementById("documents_noMore").style.display = "block";
+        };
+      })
+    };
+
     function refreshDocuments(){
       emptyHTMLSet(documentsList);
       documents = null;
-      documentsGet().then(function(objectsArray){
-        if (objectsArray.length){
+      documentsGet().then(function(objectsBatch){
+        lastVisibleDocument = objectsBatch.lastFSObject;
+        if (objectsBatch.objects.length){
           document.getElementById("documentsList").style.display = "block";
           document.getElementById("documents_absentPhrase").style.display = "none";
-          objectsArray.forEach(function(d){loadDocument(d);});
-          var elems = document.querySelectorAll('.tooltipped');
-          var instances = M.Tooltip.init(elems);
+          objectsBatch.objects.forEach(function(d){loadDocument(d);});
+          documentsEndOfBatch(objectsBatch);
         } else {
           document.getElementById("documentsList").style.display = "none";
           document.getElementById("documents_absentPhrase").style.display = "block";
@@ -2585,6 +2759,8 @@ function loadNotification (n){
     };
 
     function loadDocument(d){
+      if (passFilter(documentValueFilter, documentSubStringFilter, d)) {
+        
       var objectsRow= document.createElement('li');
       objectsRow.setAttribute("style","border-style:solid;border-color: darkgrey");
       var header = document.createElement('div');
@@ -2686,6 +2862,7 @@ function loadNotification (n){
         body.appendChild(getTransactionButton);
       };
       
+      
       var updatedFooter = document.createElement('div');
       var footer = document.createElement('p');
       footer.setAttribute("style","font-size:12px");
@@ -2704,6 +2881,7 @@ function loadNotification (n){
           getFileButton.setAttribute('onclick','showFile('+JSON.stringify(url)+')');
         });
       });
+    };
     };
 
     function loadDocuments(){
@@ -2838,7 +3016,7 @@ function loadNotification (n){
       documentFile = document.getElementById('documentFile').files[0];
       if ((!paper.idFS) && (!documentFile)) {
         M.toast({html:"Please select file"});
-        return false;
+        valid=false;
       } else if (documentFile){
         let allowed_mime_types = ['application/pdf','image/jpeg', 'image/png'];
         let allowed_size_kb = 5000;
@@ -2923,6 +3101,11 @@ function loadNotification (n){
       var transactionsTable = document.getElementById("transactionsTable");
       var distributedAmount = 0;
       var selectedTransactionId;
+      var lastVisibleTransaction;
+      var transactionValueFilter = {};
+      var transactionSubStringFilter = {};
+      var transactionFilterOnBookDate="";
+      var transaction;
       function TransactionObject() {
         this.type = "";
         this.costCenter="";
@@ -2936,10 +3119,12 @@ function loadNotification (n){
         this.distribution= [];
         this.evidence = [];
       };
-      var transaction;
 
+      
+      
       function loadTransaction (objectFS){
         var object = objectFS.data();
+        if (passFilter(transactionValueFilter, transactionSubStringFilter, object)) {
         var objectsRow= document.createElement('tr');
         
         var viewButton = document.createElement('button');
@@ -3007,20 +3192,134 @@ function loadNotification (n){
           };
 
         });
+        }; 
       };
           
-        function refreshTransactions(){
+      function passFilter (aValueFilter, aSubStringFilter, anObject)  {
+        var pass = true;
+        var filterFields =  Object.keys(aValueFilter);
+        for (let i = 0; i < filterFields.length; i++) {
+          var field = filterFields[i];
+          if (aValueFilter[field] != anObject[field]){
+            pass = false;
+            break;
+          };
+        };
+        filterFields =  Object.keys(aSubStringFilter);
+        for (let i = 0; i < filterFields.length; i++) {
+          var field = filterFields[i];
+          if (!anObject[field].includes(aSubStringFilter[field])){
+            pass = false;
+            break;
+          };
+        };
+        return pass;
+      };
+  
+      function refreshTransactions(){
           emptyHTMLSet(transactionsTable);
-          refCoproperty.collection("Transactions").orderBy("bookDate","desc").limit(50).get().then(function(objectsFSArray){
+          var lBL;
+          if ((Object.keys(transactionValueFilter).length + Object.keys(transactionSubStringFilter).length) == 0) {lBL = loadBatchLength}
+          else {lBL =loadBatchLength*5};
+          var thisRefFS = refCoproperty.collection("Transactions");
+          if (transactionFilterOnBookDate){thisRefFS = thisRefFS.where("bookDate","<=",transactionFilterOnBookDate)};
+          thisRefFS.orderBy("bookDate","desc").limit(lBL).get().then(function(objectsFSArray){
             if (objectsFSArray.docs.length){
+              lastVisibleTransaction = objectsFSArray.docs[objectsFSArray.docs.length-1];
               document.getElementById("transactionsTable_frame").style.display = "block";
               document.getElementById("transactions_absentPhrase").style.display = "none";
               objectsFSArray.forEach(function(objectFS){loadTransaction(objectFS);});
+              if (objectsFSArray.docs.length < loadBatchLength){
+                document.getElementById("transactions_more").style.display = "none";
+                document.getElementById("transactions_noMore").style.display = "block";
+              } else {
+                document.getElementById("transactions_more").style.display = "block";
+                document.getElementById("transactions_noMore").style.display = "none";
+              };
             } else {
               document.getElementById("transactionsTable_frame").style.display = "none";
               document.getElementById("transactions_absentPhrase").style.display = "block";
-            };        
+            };
           });
+        };
+
+        function nextBatchTransactions() {
+          var lBL;
+          if ((Object.keys(transactionValueFilter).length + Object.keys(transactionSubStringFilter).length) == 0) {lBL = loadBatchLength}
+          else {lBL =loadBatchLength*5};
+          refCoproperty.collection("Transactions").orderBy("bookDate","desc").startAfter(lastVisibleTransaction).limit(lBL).get().then(function(objectsFSArray){
+            if (objectsFSArray.docs.length){
+              lastVisibleTransaction = objectsFSArray.docs[objectsFSArray.docs.length-1];
+              objectsFSArray.forEach(function(objectFS){loadTransaction(objectFS);});
+              if (objectsFSArray.docs.length < lBL){
+                document.getElementById("transactions_more").style.display = "none";
+                document.getElementById("transactions_noMore").style.display = "block";
+              } else {
+                document.getElementById("transactions_more").style.display = "block";
+                document.getElementById("transactions_noMore").style.display = "none";
+              };
+            } else {
+              document.getElementById("transactions_more").style.display = "none";
+              document.getElementById("transactions_noMore").style.display = "block";
+            };
+          });
+        };
+
+        function prepareSetTransactionFilter(){
+          if (transactionFilterOnBookDate) {document.getElementById("transactionFilter_bookDate").value=transactionFilterOnBookDate;}
+          else {document.getElementById("transactionFilter_bookDate").value="";}
+          if (transactionValueFilter.type) {document.getElementById("transactionFilter_type").value=transactionValueFilter.type;}
+          else {document.getElementById("transactionFilter_type").value="";}
+          if (transactionValueFilter.costCenter){ 
+            listCostCenters(document.getElementById("transactionFilter_costCenter"), false, transactionValueFilter.costCenter);
+          } else {listCostCenters(document.getElementById("transactionFilter_costCenter"), false, "");};
+          if (transactionValueFilter.owner){ 
+            listOwners(document.getElementById("transactionFilter_owner"), transactionValueFilter.owner, false);
+          } else {listOwners(document.getElementById("transactionFilter_owner"), "", false);};
+          if (transactionSubStringFilter.name){ 
+            document.getElementById("transactionFilter_name").value=transactionSubStringFilter.name;
+          } else {document.getElementById("transactionFilter_name").value="";};
+          initialiseForm();
+        };
+
+        function setTransactionFilter(){
+          transactionValueFilter = {};
+          transactionSubStringFilter = {};
+          transactionFilterOnBookDate = "";
+          var filterSet=false;
+          var x = document.getElementById("transactionFilter_bookDate").value;
+          if (x) {
+            transactionFilterOnBookDate = x;
+            filterSet=true;
+          };
+          x = document.getElementById("transactionFilter_type").value;
+          if (x) {
+            transactionValueFilter.type = x;
+            filterSet=true;
+          };
+          x = document.getElementById("transactionFilter_costCenter").value;
+          if (x) {
+            transactionValueFilter.costCenter = x;
+            filterSet=true;
+          };
+          x = document.getElementById("transactionFilter_owner").value;
+          if (x) {
+            transactionValueFilter.owner = x;
+            filterSet=true;
+          };
+          x = document.getElementById("transactionFilter_name").value;
+          if (x) {
+            transactionSubStringFilter.name = x;
+            filterSet=true;
+          };
+          if (filterSet) {
+            document.getElementById("transactions_filterOn").style.display="block";
+            document.getElementById("transactions_filterOff").style.display="none";}
+          else {
+            document.getElementById("transactions_filterOn").style.display="none";
+            document.getElementById("transactions_filterOff").style.display="block";};
+          refreshTransactions();
+          M.Modal.getInstance(document.getElementById("transactionFilter")).close();
         };
 
         function loadTransactions(){
@@ -3277,7 +3576,7 @@ function loadNotification (n){
       selectedTransactionId = null;
       transaction = new TransactionObject();
       document.getElementById("transaction_type_add").value="";
-      listCostCenters(document.getElementById("transaction_costCenter_add"), "");
+      listCostCenters(document.getElementById("transaction_costCenter_add"), true, "");
       document.getElementById("transaction_costCenter_add_field").style.display = "none";
       document.getElementById("transaction_account_add").value="";
       document.getElementById("transaction_name_add").value="";
@@ -3300,7 +3599,7 @@ function loadNotification (n){
     };
     function editTransaction(id,object) {
       document.getElementById("transaction_type_add").value=object.type;
-      listCostCenters(document.getElementById("transaction_costCenter_add"), object.costCenter);
+      listCostCenters(document.getElementById("transaction_costCenter_add"), true, object.costCenter);
       document.getElementById("transaction_account_add").value=object.account;
       document.getElementById("transaction_name_add").value=object.name;
       document.getElementById("transaction_amount_add").value=object.amount;
@@ -3937,7 +4236,7 @@ function loadNotification (n){
       function selectTransactionRule(object) {
         transactionRule = object;
         document.getElementById("transactionRule_type").value=object.type;
-        listCostCenters(document.getElementById("transactionRule_costCenter"),object.costCenter)
+        listCostCenters(document.getElementById("transactionRule_costCenter"), true, object.costCenter)
         document.getElementById("transactionRule_account").value=object.account;
         document.getElementById("transactionRule_name").value=object.name;
         document.getElementById("transactionRule_communication").value=object.communication;
@@ -5388,15 +5687,16 @@ function loadNotification (n){
         });  
       };
 
-      function listOwners(el, selectedOption) {
+      function listOwners(el, selectedOption, mandatory) {
         var option;
         emptyHTMLSet(el);
-        if (!Boolean(selectedOption)) {
+        if (!Boolean(selectedOption) ||(!mandatory)) {
           option = document.createElement("option");
           option.setAttribute("value","");
-          option.setAttribute("disabled",true);
+          if (mandatory){option.setAttribute("disabled",true);};
           option.setAttribute("selected",true);
-          option.innerHTML = "Select Owner<b><font color='red'>*</font></b>";
+          if (mandatory){option.innerHTML = "Select Owner<b><font color='red'>*</font></b>";}
+          else {option.innerHTML = "Select Owner";}
           el.appendChild(option);
         };
         membersGet().then(function(membersHere) {
@@ -5748,15 +6048,16 @@ function loadNotification (n){
         };
       };
 
-      function listCostCenters(el, selectedOption) {
+      function listCostCenters(el, mandatory, selectedOption) {
         var option;
         emptyHTMLSet(el);
-        if (!Boolean(selectedOption)) {
+        if (!Boolean(selectedOption) ||(!mandatory)) {
           option = document.createElement("option");
           option.setAttribute("value","");
-          option.setAttribute("disabled",true);
+          if (mandatory){option.setAttribute("disabled",true);};
           option.setAttribute("selected",true);
-          option.innerHTML = "Select Cost Center<b><font color='red'>*</font></b>";
+          if (mandatory){option.innerHTML = "Select Cost Center<b><font color='red'>*</font></b>";}
+          else {option.innerHTML = "Select Cost Center";}
           el.appendChild(option);
         };
         costCentersGet().then(function(querySnapshot) {
@@ -6129,7 +6430,7 @@ function loadNotification (n){
 
       function provisionsEditPrepare(){
         document.getElementById("provisions_edit").value = currentCoproperty.provisions;
-        listCostCenters(document.getElementById("provisions_costCenter_edit"),currentCoproperty.provisionsCC);
+        listCostCenters(document.getElementById("provisions_costCenter_edit"),true, currentCoproperty.provisionsCC);
         var elems = document.querySelectorAll('select');
         M.FormSelect.init(elems);
         M.updateTextFields();
