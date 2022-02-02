@@ -2755,6 +2755,8 @@ function loadNotification (n){
           objectsBatch.objects.forEach(function(d){loadDocument(d);});
           documentsEndOfBatch(objectsBatch);
         } else {
+          document.getElementById("documents_more").style.display = "none";
+          document.getElementById("documents_noMore").style.display = "none";
           document.getElementById("documentsList").style.display = "none";
           document.getElementById("documents_absentPhrase").style.display = "block";
         };
