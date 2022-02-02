@@ -2718,13 +2718,16 @@ function loadNotification (n){
         };
 
     function documentsEndOfBatch(objectsBatch){
-      if (objectsBatch.objects.length < loadBatchLength){
-            document.getElementById("documents_more").style.display = "none";
-            document.getElementById("documents_noMore").style.display = "block";
-          } else {
-            document.getElementById("documents_more").style.display = "block";
-            document.getElementById("documents_noMore").style.display = "none";
-          };
+      var lBL;
+      if ((Object.keys(documentValueFilter).length + Object.keys(documentSubStringFilter).length) == 0) {lBL = loadBatchLength}
+      else {lBL =loadBatchLength*5};
+      if (objectsBatch.objects.length < lBL){
+        document.getElementById("documents_more").style.display = "none";
+        document.getElementById("documents_noMore").style.display = "block";
+      } else {
+        document.getElementById("documents_more").style.display = "block";
+        document.getElementById("documents_noMore").style.display = "none";
+      };
     };
     
     function nextBatchDocuments(lVD) {
