@@ -4185,7 +4185,7 @@ function loadNotification (n){
             memberGet(tR.owner).then (function(owner){
               title.innerHTML = "Owner payment from " + denomination(owner) ;
               text.innerHTML += " <b>AND</b><br>   owner = "+denomination(owner);
-              text.innerHTML += "<hr><b>Updated on: </b>" + tR.updatedOn + "<b>Updated by: </b>";
+              text.innerHTML += "<hr>Updated on: " + tR.updatedOn + "<br>Updated by: ";
               text.appendChild(memberLink(author));
             });
           } else {
@@ -4193,7 +4193,7 @@ function loadNotification (n){
             title.innerHTML = "Expense " + tR.name;
             costCenterGet(tR.costCenter).then(function(cc){
               text.innerHTML += " <b>AND</b><br>   cost center = "+ cc.name;
-              text.innerHTML += "<hr><b>Updated on: </b>" + tR.updatedOn + "<b>Updated by: </b>";
+              text.innerHTML += "<hr>Updated on: " + tR.updatedOn + "<br>Updated by: ";
               text.appendChild(memberLink(author));})
           };
         });
