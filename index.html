@@ -28,15 +28,15 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
    <script>
     var firebaseConfig = {
-      apiKey: "AIzaSyDVT644vSE0ue8KyDy-o9YwbYPX3m0ZmSc",
-  authDomain: "slimmeeigendomdb.firebaseapp.com",
-  projectId: "slimmeeigendomdb",
-  storageBucket: "slimmeeigendomdb.appspot.com",
-  messagingSenderId: "636221237434",
-  appId: "1:636221237434:web:3db507acbf4a6a1e0d7a83",
-  measurementId: "G-2JL08QYJJ3"
+      apiKey: "AIzaSyCwEi76F7zmWI21awzo7EDuNC69ddSGj0Y",
+  authDomain: "mycondos-e9d66.firebaseapp.com",
+  projectId: "mycondos-e9d66",
+  storageBucket: "mycondos-e9d66.appspot.com",
+  messagingSenderId: "839572460226",
+  appId: "1:839572460226:web:403a8302b282274ee2e15b",
+  measurementId: "G-EEDXR3K5X5"
       };
-      var thisCoproperty = "OrncEBHp37pJYisfxf79";
+      var thisCoproperty = "W11PMCiHMS74mBgAcm5q";
       firebase.initializeApp(firebaseConfig);
       var firestore=firebase.firestore();
       var fileStorageRef =firebase.storage().ref();
@@ -161,9 +161,9 @@
           onclick="loadMeterReadings()">Meter Readings</a></li>
         <li class="tab side text-teal"><a class="waves-effect" href="#Transactions" style="font-size:22px"
             onclick="loadTransactions()">Transactions</a></li>
+        <li id="tabTransactionRules" style="display:none" class="tab side text-teal"><a class="waves-effect" href="#TransactionRules" style="font-size:22px" onclick="loadTransactionRules()">Transaction Rules</a></li>
         <li class="tab side text-teal"><a class="waves-effect" href="#Documents" style="font-size:22px"
               onclick="loadDocuments()">Documents</a></li>
-        <li id="tabTransactionRules" style="display:none" class="tab side text-teal"><a class="waves-effect" href="#TransactionRules" style="font-size:22px" onclick="loadTransactionRules()">Transaction Rules</a></li>
         <li class="tab side text-teal"><a class="waves-effect" href="#Properties" style="font-size:22px"
               onclick="loadProperties()">Properties</a></li>
         <li class="tab side text-teal"><a class="waves-effect" href="#Members" style="font-size:22px"
@@ -347,34 +347,35 @@
           </div>
         </div>
         <!------------------------------------------------------------------------------------------------------>
-        <div id="Documents" class="col s12">
-          <div id="documentFilter" class="modal normal">
-            <div class="modal-content">
-              <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
-              <h5>Enter filter</h5>
-              <div class="row">
-                <form>
-                  <div class="input-field col s12 m4">
-                    <input id="documentFilter_updateDate" type="date">
-                    <label for="documentFilter_updateDate">Updated on or before</label>
-                  </div>
-                  <div class="input-field col s12 m4">
-                    <select id="documentFilter_type"></select>
-                  </div>
-                  <div class="input-field col s12 m4">
-                    <input id="documentFilter_counterparty" type="text" class="validate" maxlength="50" data-length="50" >
-                    <label for="documentFilter_counterparty">Counterparty contains</label>
-                  </div>
-                </form>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="setDocumentFilter()">Submit<i class="material-icons right">send</i></button>
-              <a style="float: right"
-                class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
-                Cancel</a>
+        <div id="documentFilter" class="modal normal">
+          <div class="modal-content">
+            <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
+            <h5>Enter filter</h5>
+            <div class="row">
+              <form>
+                <div class="input-field col s12 m4">
+                  <input id="documentFilter_updateDate" type="date">
+                  <label for="documentFilter_updateDate">Updated on or before</label>
+                </div>
+                <div class="input-field col s12 m4">
+                  <select id="documentFilter_type"></select>
+                </div>
+                <div class="input-field col s12 m4">
+                  <input id="documentFilter_counterparty" type="text" class="validate" maxlength="50" data-length="50" >
+                  <label for="documentFilter_counterparty">Counterparty contains</label>
+                </div>
+              </form>
             </div>
           </div>
+          <div class="modal-footer">
+            <button style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="setDocumentFilter()">Submit<i class="material-icons right">send</i></button>
+            <a style="float: right"
+              class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
+              Cancel</a>
+          </div>
+        </div>
+        <div id="Documents" class="col s12">
+          
           <button style="margin-top:5px;margin-left:2px" data-target="documentFilter" class="btn-small waves-light modal-trigger" onclick="prepareSetDocumentFilter()"><i class="material-icons right">filter_list</i>Filter</button>
           <button id="documentNewButton" style="visibility: hidden; margin-top:5px; float: right" data-target="documentEdit" class="btn-small waves-light modal-trigger" onclick="resetDocument()"><i class="material-icons right">add</i>New document</button>
           <div id="documents_filterOff">Filter Off</div>
@@ -556,6 +557,7 @@
             Cancel</a>
         </div>
         </div>
+        
         <div id="transactionEvidenceRemove" class="modal normal">
         <div class="modal-content">
           <h5> You are about to remove the document from the list of evidences</h5>
@@ -615,8 +617,11 @@
           <div class="modal-content">
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
             <h5> Link to existing document</h5>
-            <div class="row">
-              
+            <button style="margin-top:5px;margin-left:2px" data-target="documentFilter" class="btn-small waves-light modal-trigger" onclick="prepareSetDocumentFilter()"><i class="material-icons right">filter_list</i>Filter</button>
+            <div id="documentsFromTrEvidence_filterOff">Filter Off</div>
+            <div id="documentsFromTrEvidence_filterOn" style="display:none">Filter On</div>
+          
+            
               <form>
                 <div class="input-field col s12 m12">
                   <select id="transactionLink_document" required required="true"></select>
@@ -624,10 +629,16 @@
                 </div> 
                 
               </form>
-            </div>
+            
           </div>
+          <h6>Only documents not yet linked are listed here. "General Assembly" can't be linked either.</h6>
+          <center>
+            <div id="transactionEvidenceLink_more">
+              <button  style="margin-bottom: 3px; margin-top:10px" class="btn-small waves-light" type="submit" onclick="this.disabeld=true; nextBatchDocuments(lastVisibleDocument)">Load More<i class="material-icons right">arrow_downward</i></button>
+            </div>
+          </center>
           <div class="modal-footer">
-            <button id="transactionEvidenceLinkSubmitButton" style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="this.disabled=true; writeTransactionLink()">Submit<i class="material-icons right">send</i></button>
+            <button id="transactionEvidenceLinkSubmitButton" style="float: right;margin-left: 20px" class="btn-small waves-light" type="submit" onclick="writeTransactionLink()">Submit<i class="material-icons right">send</i></button>
             <a style="float: right"
               class="modal-close waves-light btn-small"><i class="material-icons right">cancel</i>
               Cancel</a>
@@ -668,9 +679,8 @@
             </div>
           </div>
           <button style="margin-top:5px;margin-left:2px" data-target="transactionFilter" class="btn-small waves-light modal-trigger" onclick="prepareSetTransactionFilter()"><i class="material-icons right">filter_list</i>Filter</button>
-          <button id="Transactions_Add" style="float: right;margin-top:5px; visibility:hidden" data-target="transactionAdd" class="btn-small waves-light modal-trigger" onclick="resetSelectedTransaction()"><i class="material-icons right">add</i>New transaction</button>
-            <!--
-            <button disabled style="float: right" data-target="transactionLoad" class="btn-small waves-light modal-trigger" onclick="emptyTransactionLoadFields()"><i class="material-icons right">add</i>Load transactions</button>-->
+          <button id="Transactions_Add" style="float: right;margin-right:5px;margin-top:5px; visibility:hidden" data-target="transactionAdd" class="btn-small waves-light modal-trigger" onclick="resetSelectedTransaction()"><i class="material-icons right">add</i>New transaction</button>
+          <button id="Transactions_Upload" style="float: right;margin-right:5px;margin-top:5px; visibility:hidden" data-target="transactionLoad" class="btn-small waves-light modal-trigger" onclick="emptyTransactionLoadFields()"><i class="material-icons right">file_upload</i>Upload transactions</button>
           
           <div id="transactions_filterOff">Filter Off</div>
           <div id="transactions_filterOn" style="display:none">Filter On</div>
@@ -819,7 +829,7 @@
             </div>
           </div>
 
-          <div id="transactionLoadConfirm" class="modal normal">
+          <div id="transactionLoadConfirm" class="modal full">
             <div class="modal-content">
             <a style="float: right" class="modal-close waves-light btn-floating"><i class="material-icons right">cancel</i></a>
               
@@ -872,19 +882,19 @@
                     <label for="transactionRule_account"><b>IF</b> Account<b><font color='red'>*</font></b></label>
                     <span class="helper-text" data-error="BE followed by 14 digits, blancs for printing format allowed. Example: BE40 9799 2578 3625">BE followed by max 14 digits, blancs allowed. Example: BE40 9799 2578 3625</span>
                   </div>
-                  <div class="input-field col s12 m6">
-                    <input id="transactionRule_communication" type="text" class="validate" maxlength="80" data-length="80" >
-                    <label for="transactionRule_communication"><b>IF</b> Communication</label>
-                    <span class="helper-text" data-error="Maximum 80 characters"></span>
+                  <div class="input-field col s12 m4">
+                    <input id="transactionRule_communication" type="text" class="validate" maxlength="20" data-length="20" >
+                    <label for="transactionRule_communication"><b>IF</b> Communication contains</label>
+                    
                   </div>
-                  <div class="input-field col s6 m6">
+                  <div class="input-field col s12 m4">
                     <input id="transactionRule_name" type="text" class="validate" maxlength="50" data-length="50" >
-                    <label for="transactionRule_name"><b>For info only</b> Counterpart</label>
+                    <label for="transactionRule_name"><b>For info only</b> Counterparty</label>
                     <span class="helper-text" data-error="Maximum 50 characters"></span>
                   </div>
                 </div>
                 <div class="w3-panel ">
-                  <h6><b>THEN:</b>below fields will be set with value given</h6> 
+                  <h6><b>THEN:</b> below fields will be set with value given</h6> 
                   <div class="input-field col s12 m4">
                     <select id="transactionRule_type" required required="true" onchange="toggleTransactionRule()"></select>
                   </div>
@@ -1788,7 +1798,7 @@
     <script>
       var lastLoadTime;
       var version;
-      var loadBatchLength = 15;
+      var loadBatchLength = 30;
       async function loadAll(){
         var time = (new Date()).getTime();
         if ((time - lastLoadTime) > 90000) {
@@ -1867,6 +1877,7 @@
     function enableAdminFunctions(){
       document.getElementById("Reports_Generate").setAttribute("class","displayBlock");
       document.getElementById("Transactions_Add").style.visibility = "visible";
+      document.getElementById("Transactions_Upload").style.visibility = "visible";
       document.getElementById("Transactions_Edit").setAttribute("class","displayBlock");
       document.getElementById("Transactions_EvidenceAdd").setAttribute("class","displayBlock");
       document.getElementById("Transactions_EvidenceLink").style.display = "block";
@@ -1874,7 +1885,7 @@
       document.getElementById("Properties_Edit").setAttribute("class","displayBlock");
       document.getElementById("Properties_MetersAdd").setAttribute("class","displayBlock");
       /*document.getElementById("Properties_OwnersAdd_button").style.visibility="visible";*/
-      document.getElementById("tabTransactionRules").style.display = "none";
+      document.getElementById("tabTransactionRules").style.display = "block";
       document.getElementById("commonPartsNewMeterButton").style.visibility = "visible";
       document.getElementById("costCentersNewButton").style.visibility = "visible";
       document.getElementById("provisionsEditButton").style.visibility = "visible";
@@ -2082,7 +2093,7 @@
       OWNER: 'owner payment',
       PROVI: 'payed with provision'
     };
-    function hasCostCenter(aTransType) {return ((aTransType != "") && (aTransType != "PRIVA") && (aTransType != "OWNER") && (aTransType != "PROVI") )};
+    function hasCostCenter(aTransType) {return ((aTransType != "") && (aTransType != "TBSET") && (aTransType != "PRIVA") && (aTransType != "OWNER") && (aTransType != "PROVI") )};
     function hasCounterparty(aTransType) {return ((aTransType != "") && (aTransType != "OWNER") )};
 
     var TransRuleType = {
@@ -2437,7 +2448,7 @@ function loadNotification (n){
     async function chargesReportsGet(){
       if (chargesReports) {return chargesReports}
       else {
-        var querySnapshot = await refCoproperty.collection("ChargesReports").orderBy("endDate","desc").limit(50).get();
+        var querySnapshot = await refCoproperty.collection("ChargesReports").orderBy("endDate","desc").get();
         chargesReports = [];
         querySnapshot.forEach(function(objectFS) {
           var thisObject = objectFS.data();
@@ -2491,7 +2502,7 @@ function loadNotification (n){
     var chargesReportsTable = document.getElementById("chargesReportsTable");
       
     function loadChargesReport (cR){
-        if ((!cR.confirmed) && (currentUser.role !== roleAdministrator)) {return};
+        if ((!cR.confirmed) && (currentUser.role != roleAdministrator)) {return};
         var objectsRow= document.createElement('tr');
         
         var cellDocLink = document.createElement("button");
@@ -2568,6 +2579,7 @@ function loadNotification (n){
 
       function refreshChargesReports(){
         emptyHTMLSet(chargesReportsTable);
+        chargesReports = null;
         chargesReportsGet().then(function(cRs){
           if (cRs.length) {
             document.getElementById("chargesTable_frame").style.display = "block";
@@ -2709,10 +2721,15 @@ function loadNotification (n){
           };
           if (filterSet) {
             document.getElementById("documents_filterOn").style.display="block";
-            document.getElementById("documents_filterOff").style.display="none";}
+            document.getElementById("documents_filterOff").style.display="none";
+            document.getElementById("documentsFromTrEvidence_filterOn").style.display="block";
+            document.getElementById("documentsFromTrEvidence_filterOff").style.display="none";}
           else {
             document.getElementById("documents_filterOn").style.display="none";
-            document.getElementById("documents_filterOff").style.display="block";};
+            document.getElementById("documents_filterOff").style.display="block";
+            document.getElementById("documentsFromTrEvidence_filterOn").style.display="block";
+            document.getElementById("documentsFromTrEvidence_filterOff").style.display="none";
+          };
           refreshDocuments();
           M.Modal.getInstance(document.getElementById("documentFilter")).close();
         };
@@ -2723,9 +2740,11 @@ function loadNotification (n){
       else {lBL =loadBatchLength*5};
       if (objectsBatch.objects.length < lBL){
         document.getElementById("documents_more").style.display = "none";
+        document.getElementById("transactionEvidenceLink_more").style.display = "none";
         document.getElementById("documents_noMore").style.display = "block";
       } else {
         document.getElementById("documents_more").style.display = "block";
+        document.getElementById("transactionEvidenceLink_more").style.display = "block";
         document.getElementById("documents_noMore").style.display = "none";
       };
     };
@@ -2736,9 +2755,10 @@ function loadNotification (n){
         if (nextBatch.objects.length){
           nextBatch.objects.forEach(function(object){loadDocument(object);});
           documentsEndOfBatch(nextBatch);
-          
+          initialiseForm();
         } else {
           document.getElementById("documents_more").style.display = "none";
+          document.getElementById("transactionEvidenceLink_more").style.display = "none";
           document.getElementById("documents_noMore").style.display = "block";
         };
       })
@@ -2746,6 +2766,7 @@ function loadNotification (n){
 
     function refreshDocuments(){
       emptyHTMLSet(documentsList);
+      emptyHTMLSet(transactionEvidenceLinkOptionEl);
       documents = null;
       documentsGet().then(function(objectsBatch){
         lastVisibleDocument = objectsBatch.lastFSObject;
@@ -2754,6 +2775,7 @@ function loadNotification (n){
           document.getElementById("documents_absentPhrase").style.display = "none";
           objectsBatch.objects.forEach(function(d){loadDocument(d);});
           documentsEndOfBatch(objectsBatch);
+          initialiseForm();
         } else {
           document.getElementById("documents_more").style.display = "none";
           document.getElementById("documents_noMore").style.display = "none";
@@ -2765,7 +2787,7 @@ function loadNotification (n){
 
     function loadDocument(d){
       if (passFilter(documentValueFilter, documentSubStringFilter, d)) {
-        
+      addEvidenceLinkOption(d);  
       var objectsRow= document.createElement('li');
       objectsRow.setAttribute("style","border-style:solid;border-color: darkgrey");
       var header = document.createElement('div');
@@ -3123,10 +3145,10 @@ function loadNotification (n){
         this.owner = "";
         this.distribution= [];
         this.evidence = [];
+        this.updatedOn = "";
+        this.updatedBy = "";
       };
 
-      
-      
       function loadTransaction (objectFS){
         var object = objectFS.data();
         if (passFilter(transactionValueFilter, transactionSubStringFilter, object)) {
@@ -3319,7 +3341,8 @@ function loadNotification (n){
           };
           if (filterSet) {
             document.getElementById("transactions_filterOn").style.display="block";
-            document.getElementById("transactions_filterOff").style.display="none";}
+            document.getElementById("transactions_filterOff").style.display="none";
+          }
           else {
             document.getElementById("transactions_filterOn").style.display="none";
             document.getElementById("transactions_filterOff").style.display="block";};
@@ -3332,8 +3355,9 @@ function loadNotification (n){
           hideMenu();
           document.getElementById("logo-container").innerHTML = "Transactions";
           if (!transactionsLoaded) {
-            refreshTransactions();
+            refreshDocuments();refreshTransactions();
             transactionsLoaded = true;
+            
           };
         });
         };
@@ -3504,14 +3528,16 @@ function loadNotification (n){
       else {document.getElementById("transaction_name_field").style.display = "none"; }
       if (hasCostCenter(object.type)) {
         document.getElementById("transaction_costCenter_field").style.display = "block";
-        costCenterGet(object.costCenter).then(function (cc){
-          document.getElementById("transaction_costCenter").value=cc.name;
-          hideEmptyFields(["costCenter","name","account","owner","communication"]);
-          var elems = document.querySelectorAll('select');
-          M.FormSelect.init(elems);
-          M.updateTextFields();
-          insertUpdatedBy(object, "transaction");
-        });
+        
+          costCenterGet(object.costCenter).then(function (cc){
+            document.getElementById("transaction_costCenter").value=cc.name;
+            hideEmptyFields(["costCenter","name","account","owner","communication"]);
+            var elems = document.querySelectorAll('select');
+            M.FormSelect.init(elems);
+            M.updateTextFields();
+            insertUpdatedBy(object, "transaction");
+          });
+        
       } else {
         document.getElementById("transaction_costCenter_field").style.display = "none";
         if (object.type == "OWNER") {
@@ -3771,26 +3797,40 @@ function loadNotification (n){
 
       /* Transaction Evidence scripts start here---------------------------------------------*/
     
+      var transactionEvidenceLinkOptionEl = document.getElementById("transactionLink_document");
+      function addEvidenceLinkOption(docHere){
+        if ((!docHere.link) && (docHere.type != "GEASS")){
+          var newEl = document.createElement("option");
+          newEl.setAttribute("value", docHere.idFS);
+          newEl.innerHTML = DocumentType[docHere.type]+" "+docHere.counterparty+" "+docHere.updatedOn;
+          transactionEvidenceLinkOptionEl.insertAdjacentElement('beforeend', newEl);
+        };
+      };
+      
       function emptyTransactionEvidenceLinkFields(){
+        initialiseForm();
+        /*
+        documentsGet().then(function(docList){
         var thisSelectEl = document.getElementById("transactionLink_document");
         thisSelectEl.value = "";
         emptyHTMLSet(thisSelectEl);
         var thislist = {};
         document.getElementById("transactionEvidenceLinkSubmitButton").disabled=false;
-        refCoproperty.collection("Documents").where("type","!=","GEASS").get().then(function(querySnapshot){
-          querySnapshot.forEach(function(objectFS){
-            var thisData=objectFS.data();
-            if (!thisData.link) {
-              var thisVisual=DocumentType[thisData.type]+" "+thisData.counterparty+" "+thisData.updatedOn;
-              thislist[objectFS.id]=thisVisual;
+        
+          docList.forEach(function(docHere){
+            if ((!docHere.link) && (docHere.type != "GEASS")) {
+              if (passFilter(documentValueFilter, documentSubStringFilter, docHere)){
+                var thisVisual=DocumentType[docHere.type]+" "+docHere.counterparty+" "+docHere.updatedOn;
+                thislist[docHere.idFS]=thisVisual;
+              };
             };
           });
-          insertSelectOptions("transactionLink_document", thislist, "document");
+          insertSelectOptions("transactionLink_document", thislist, true, "document","");
           M.updateTextFields();
           var elems = document.querySelectorAll('select');        
 	        M.FormSelect.init(elems);
         });
-        
+        */
       };
 
       function writeTransactionLink(){
@@ -4028,6 +4068,34 @@ function loadNotification (n){
     return arr;
     };
 
+    function belfiusCsvToArray(str, delimiter = ";") {
+    // slice from \n index + 1 to the end of the text
+    // use split to create an array of each csv value row
+    var rows = str.slice(str.indexOf("\n") + 1).split("\n");
+    for (let i = 0; i < 12; i++) {rows.shift();};
+    rows.pop();
+    
+    const arr = rows.map(function (row) {
+      const values = row.split(delimiter);
+      var resultRow = {};
+      resultRow.type = "TBSET";
+      resultRow.account = values[4];
+      resultRow.name = values[5];
+      resultRow.amount = Number(values[10].replace(",","."));
+      var trDate = values[1];
+      resultRow.date = trDate.substring(6,10) + "-" + trDate.substring(3,5) + "-" + trDate.substring(0,2);
+      resultRow.bookDate = resultRow.date;
+      resultRow.communication = values[14];
+      resultRow.costCenter = "";
+      resultRow.owner = "";
+      return Object.assign(resultRow, getUpdateInfo());
+    });
+
+    // return the array
+    //arr.pop();
+    return arr;
+    };
+
     function appendTransactionRow(object){
       function createMyCell(myText) {
         var cellContent = document.createTextNode(myText);
@@ -4037,9 +4105,9 @@ function loadNotification (n){
       };
       
       var objectsRow = document.createElement('tr');
-      objectsRow.appendChild(createMyCell(object.type));
+      objectsRow.appendChild(createMyCell(TransTypeRead[object.type]));
       objectsRow.appendChild(createMyCell(object.name));
-      objectsRow.appendChild(createMyCell(object.amount));
+      objectsRow.appendChild(createMyCell(object.amount.toLocaleString("nl-BE", currencyStyle)));
       objectsRow.appendChild(createMyCell(object.date));
       objectsRow.appendChild(createMyCell(object.account));
       objectsRow.appendChild(createMyCell(object.communication));
@@ -4048,19 +4116,28 @@ function loadNotification (n){
     };
     
     function applyTransactionRule(el) {
-      var i = 0;
-      while (i < transactionRules.length) {
-        if (transactionRules[i].account == el.account) {
-          el.type = transactionRules[i].type;
-          if ((transactionRules[i].type == "Owner Payment") && (transactionRules[i].owner)){
-            el.owner = transactionRules[i].owner;
+      transactionRulesGet().then(function(trs){
+        for (i=0; i < trs.length; i++) {
+          function matchHere() {
+            el.type = trs[i].type;
+            if ((trs[i].type == "OWNER") && (trs[i].owner)){
+              el.owner = trs[i].owner;
+            };
+            if (hasCostCenter(trs[i].type) && (trs[i].costCenter)){
+              el.costCenter = trs[i].costCenter;
+            };
           };
-          return el;
+          if (trs[i].account == el.account) {
+            if (trs[i].communication) {
+              if (el.communication.includes(trs[i].communication)) {
+                matchHere();
+                break;
+              };
+            } else {matchHere(); break;}
+          };
         };
-        i += 1;
-      };
-      return el;
-
+        appendTransactionRow(el);
+      });
     };
     
     var transactionsBatchData;
@@ -4069,21 +4146,19 @@ function loadNotification (n){
         M.Modal.getInstance(document.getElementById("transactionLoad")).close();
         M.Modal.getInstance(document.getElementById("transactionLoadConfirm")).open();
         const reader = new FileReader();
-
         reader.onload = function (e) {
           const text = e.target.result;
-          transactionsBatchData = argentaCsvToArray(text);
+          /*transactionsBatchData = argentaCsvToArray(text);*/
+          transactionsBatchData = belfiusCsvToArray(text);
           emptyHTMLSet(transactionsLoadConfirmTable);
-          transactionsBatchData.map(function(el){
-            appendTransactionRow(applyTransactionRule(el));
-          });
+          transactionsBatchData.map(function(el){applyTransactionRule(el);});
         };
-      
         reader.readAsText(transactionsLoadFile);
       };
     };
 
     function writeTransactionsFile(){
+      console.log("transactionsBatchData",transactionsBatchData);
       var batch = firestore.batch();
       transactionsBatchData.map(function(el){
         var docRef = refCoproperty.collection("Transactions").doc();
@@ -4187,6 +4262,7 @@ function loadNotification (n){
               text.innerHTML += " <b>AND</b><br>   owner = "+denomination(owner);
               text.innerHTML += "<hr>Updated on: " + tR.updatedOn + "<br>Updated by: ";
               text.appendChild(memberLink(author));
+              
             });
           } else {
             headerIcon.innerHTML = "payment";
@@ -4194,7 +4270,8 @@ function loadNotification (n){
             costCenterGet(tR.costCenter).then(function(cc){
               text.innerHTML += " <b>AND</b><br>   cost center = "+ cc.name;
               text.innerHTML += "<hr>Updated on: " + tR.updatedOn + "<br>Updated by: ";
-              text.appendChild(memberLink(author));})
+              text.appendChild(memberLink(author));
+              })
           };
         });
       };
@@ -6674,6 +6751,16 @@ function loadNotification (n){
           M.Modal.getInstance(document.getElementById("loading")).close();
         return;
         };
+        var transactionsFS = await refCoproperty.collection("Transactions").where("bookDate", ">", lastCloseDate).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get();
+        for (let ii=0; ii<transactionsFS.docs.length; ii++ ){
+         var trData = transactionsFS.docs[ii].data();
+          if (trData.type == "TBSET") {
+            M.toast({html:"Some transactions in period still need to be classified first" });
+            document.getElementById("chargesReportSubmitButton").disabled=false;
+            M.Modal.getInstance(document.getElementById("loading")).close();
+            return;
+          }; 
+        };
         ccsInReport.forEach(function(cc){
           var totalQuota =0;
           Object.values(cc.distribution).forEach(function(quota){totalQuota +=quota;});
@@ -6774,9 +6861,9 @@ function loadNotification (n){
           i += 1;
         });
         
-        refCoproperty.collection("Transactions").where("bookDate", ">", lastCloseDate).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){
+        /*refCoproperty.collection("Transactions").where("bookDate", ">", lastCloseDate).where("bookDate", "<=", closeDateTransactions).orderBy("bookDate").get().then(function(transactionsFS){*/
           /* fill common charges tables */
-          transactionsFS.forEach(function(transactionFS){
+         transactionsFS.forEach(function(transactionFS){
             var trData = transactionFS.data();
             if (hasCostCenter(trData.type)) {
               commonCharges[trData.costCenter].total += reportTransaction(trData);
@@ -7150,7 +7237,7 @@ function loadNotification (n){
           
           
           writePDF (closeDateTransactions, newCopropertySaldo, newOwnersSaldo, metersIncluded,commonCharges,privateCharges,totalledCharges,waterCharges,heatingCharges,totalledConsumptions,payedByProvisions, copropertySaldo,ownersSaldo, amountsDue, buildingWaterData);
-        });
+        /*});*/
       
       };
       /*  print starts here ---------------------------------------------------------------------------------*/
